@@ -1,8 +1,11 @@
 package com.andgate.ikou;
 
+import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.text.ParseException;
 
 public class Ikou extends Game
 {
@@ -16,7 +19,14 @@ public class Ikou extends Game
         Gdx.graphics.setVSync(true);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        setScreen(new GameScreen(this));
+        try
+        {
+            setScreen(new GameScreen(this));
+        }
+        catch(InvalidFileFormatException e)
+        {
+            System.out.println(e.getMessage());
+        }
 	}
 
 	@Override

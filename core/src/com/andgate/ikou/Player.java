@@ -21,7 +21,6 @@ public class Player
     private final World world;
     private final ShapeRenderer shapeRenderer;
     public Body body;
-    PolygonShape box;
 
     private static final float LENGTH = 1.0f;
 
@@ -31,7 +30,7 @@ public class Player
         this.world = world;
         shapeRenderer = new ShapeRenderer();
 
-        createBody(0.0f, 0.0f);
+        createBody(1.0f, 1.0f);
     }
 
     private void createBody(float x, float y)
@@ -48,7 +47,7 @@ public class Player
         body = world.createBody(bodyDef);
 
         // Create a circle shape and set its radius to 6
-        box = new PolygonShape();
+        PolygonShape box = new PolygonShape();
         float halfWidth = LENGTH / 2.0f;
         float halfHeight = LENGTH / 2.0f;
         float originX = halfWidth;
@@ -117,7 +116,6 @@ public class Player
 
     public void dispose()
     {
-        box.dispose();
         shapeRenderer.dispose();
     }
 }
