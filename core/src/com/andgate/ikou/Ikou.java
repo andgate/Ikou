@@ -33,7 +33,7 @@ public class Ikou extends Game
     @Override
     public void resize(int width, int height)
     {
-        ppm = (float)Constants.WORLD_HEIGHT / (float)Gdx.graphics.getHeight();
+        ppm = (float)Gdx.graphics.getHeight() / worldHeight;
         worldWidth = worldHeight * (float)width / (float)height;
     }
 }

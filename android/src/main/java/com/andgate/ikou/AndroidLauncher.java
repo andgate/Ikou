@@ -1,4 +1,4 @@
-package com.andgate.ikou.android;
+package com.andgate.ikou;
 
 import android.os.Bundle;
 

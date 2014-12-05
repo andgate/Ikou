@@ -14,7 +14,6 @@ public class GameScreen extends ScreenAdapter
 {
     private final Ikou game;
     private World world;
-    public SpriteBatch batch;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
@@ -27,8 +26,6 @@ public class GameScreen extends ScreenAdapter
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.worldWidth, game.worldHeight);
-
-        batch = new SpriteBatch();
 
         Box2D.init();
         world = new World(new Vector2(0.0f, 0.0f), true);
@@ -45,6 +42,7 @@ public class GameScreen extends ScreenAdapter
     public void render(float delta)
     {
         renderSetup();
+        player.render(camera);
         debugRenderer.render(world, camera.combined);
 
         doPhysicsStep(delta);
@@ -54,9 +52,6 @@ public class GameScreen extends ScreenAdapter
     {
         Gdx.gl20.glClearColor(0.8f, 0.8f, 0.8f, 1);
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // tell the camera to update its matrices.
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
     }
 
     private float accumulator = 0.0f;
@@ -79,6 +74,8 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
+        player.dispose();
         world.dispose();
+        debugRenderer.dispose();
     }
 }

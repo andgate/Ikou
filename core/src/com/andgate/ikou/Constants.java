@@ -8,5 +8,5 @@ public class Constants
     public static final int VELOCITY_ITERATIONS = 8;
     public static final int POSITION_ITERATIONS = 3;
 
-    public static final int WORLD_HEIGHT = 30;
+    public static final int WORLD_HEIGHT = 10;
 }
