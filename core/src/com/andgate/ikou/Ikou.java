@@ -45,5 +45,10 @@ public class Ikou extends Game
     {
         ppm = (float)Gdx.graphics.getHeight() / worldHeight;
         worldWidth = worldHeight * (float)width / (float)height;
+
+        if(getScreen() != null)
+        {
+            getScreen().resize(width, height);
+        }
     }
 }

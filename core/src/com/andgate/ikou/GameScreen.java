@@ -98,4 +98,11 @@ public class GameScreen extends ScreenAdapter
         world.dispose();
         debugRenderer.dispose();
     }
+
+    @Override
+    public void resize(int width, int height)
+    {
+        camera.setToOrtho(false, game.worldWidth, game.worldHeight);
+        camera.update();
+    }
 }
