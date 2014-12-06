@@ -2,15 +2,19 @@ package com.andgate.ikou;
 
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 import java.text.ParseException;
 
@@ -25,6 +29,8 @@ public class GameScreen extends ScreenAdapter
     private Player player;
     private TileMap map;
 
+    private InputMultiplexer im;
+
     public GameScreen(Ikou game)
             throws InvalidFileFormatException
     {
@@ -37,10 +43,14 @@ public class GameScreen extends ScreenAdapter
         world = new World(new Vector2(0.0f, 0.0f), true);
         debugRenderer = new Box2DDebugRenderer();
 
-        player = new Player(game, world);
-
         FileHandle file = Gdx.files.internal("data/level/1.txt");
         map = TileMapParser.parse(file.readString(), world);
+
+        player = new Player(game, world, map.getStartPosition());
+
+        im = new InputMultiplexer();
+        im.addProcessor(new PlayerDirectionGestureDetector(player));
+        Gdx.input.setInputProcessor(im);
     }
 
     @Override
@@ -51,6 +61,7 @@ public class GameScreen extends ScreenAdapter
     public void render(float delta)
     {
         renderSetup();
+        map.render(camera);
         player.render(camera);
         debugRenderer.render(world, camera.combined);
 

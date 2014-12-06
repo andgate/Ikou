@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -15,22 +16,22 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.Vector;
 
-public class Player
+public class Player implements DirectionListener
 {
     private final Ikou game;
     private final World world;
     private final ShapeRenderer shapeRenderer;
-    public Body body;
+    private Body body;
 
-    private static final float LENGTH = 1.0f;
+    private static final float PLAYER_SPEED = Constants.WORLD_HEIGHT * 2.0f;
 
-    public Player(Ikou game, World world)
+    public Player(Ikou game, World world, Vector2 startPosition)
     {
         this.game = game;
         this.world = world;
         shapeRenderer = new ShapeRenderer();
 
-        createBody(1.0f, 1.0f);
+        createBody(startPosition.x, startPosition.y);
     }
 
     private void createBody(float x, float y)
@@ -47,18 +48,17 @@ public class Player
         body = world.createBody(bodyDef);
 
         // Create a circle shape and set its radius to 6
-        PolygonShape box = new PolygonShape();
-        float halfWidth = LENGTH / 2.0f;
-        float halfHeight = LENGTH / 2.0f;
-        float originX = halfWidth;
-        float originY = halfHeight;
+        CircleShape circle = new CircleShape();
+        float halfLength = Constants.TILE_LENGTH / 2.0f;
+        float originX = halfLength;
+        float originY = halfLength;
         Vector2 origin = new Vector2(originX, originY);
-        float angle = 0.0f;
-        box.setAsBox(halfWidth, halfHeight, origin, angle);
+        circle.setPosition(origin);
+        circle.setRadius(halfLength - Constants.BIG_EPSILON);
 
         // Create a fixture definition to apply our shape to
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = box;
+        fixtureDef.shape = circle;
         fixtureDef.density = 0.0f;
         fixtureDef.friction = 0.0f;
         fixtureDef.restitution = 0.0f; // Make it bounce a little bit
@@ -68,7 +68,7 @@ public class Player
 
         // Remember to dispose of any shapes after you're done with them!
         // BodyDef and FixtureDef don't need disposing, but shapes do.
-        box.dispose();
+        circle.dispose();
     }
 
     public void update(float delta)
@@ -105,17 +105,46 @@ public class Player
 
     public float getWidth()
     {
-
-        return LENGTH;
+        return Constants.TILE_LENGTH;
     }
 
     public float getHeight()
     {
-        return LENGTH;
+        return Constants.TILE_LENGTH;
     }
 
     public void dispose()
     {
         shapeRenderer.dispose();
+    }
+
+    public void onLeft()
+    {
+        move(new Vector2(-PLAYER_SPEED, 0.0f));
+    }
+
+    public void onRight()
+    {
+        move(new Vector2(PLAYER_SPEED, 0.0f));
+    }
+
+    public void onUp()
+    {
+        move(new Vector2(0.0f, PLAYER_SPEED));
+    }
+
+    public void onDown()
+    {
+        move(new Vector2(0.0f, -PLAYER_SPEED));
+    }
+
+    private void move(Vector2 velocity)
+    {
+        Vector2 currentVelocity = body.getLinearVelocity();
+        currentVelocity.len();
+        if(currentVelocity.len() <= (0.0 + Constants.EPSILON))
+        {
+            body.setLinearVelocity(velocity);
+        }
     }
 }
