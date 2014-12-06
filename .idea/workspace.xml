@@ -17,9 +17,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -112,11 +111,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Ikou.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Ikou.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.890511" vertical-offset="127" max-vertical-offset="750">
+            <state vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="750">
               <caret line="51" column="9" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
+              <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -144,23 +153,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RoughTileBehavior.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/RoughTileBehavior.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
-              <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ObstacleTileBehavior.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ObstacleTileBehavior.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="655" max-vertical-offset="1230">
-              <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5620438" vertical-offset="817" max-vertical-offset="1410">
+              <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1482,12 +1479,12 @@
         <option value="$PROJECT_DIR$/android/assets/data/level/1.txt" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/TileMap.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Player.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java" />
         <option value="$PROJECT_DIR$/android/build/intermediates/manifests/full/debug/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/android/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java" />
       </list>
     </option>
   </component>
@@ -1933,7 +1930,11 @@
       <created>1417845724458</created>
       <updated>1417845724458</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Resizes properly.">
+      <created>1417847059849</created>
+      <updated>1417847059849</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1991,7 +1992,8 @@
     <MESSAGE value="Player renders with the correct position and size;" />
     <MESSAGE value="Map file parser is implemented." />
     <MESSAGE value="Obstacle tiles added. Player uses a circle for bounds, to avoid rectangle snags. Radius of said circle is reduced to account for map blocks." />
-    <option name="LAST_COMMIT_MESSAGE" value="Obstacle tiles added. Player uses a circle for bounds, to avoid rectangle snags. Radius of said circle is reduced to account for map blocks." />
+    <MESSAGE value="Resizes properly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Resizes properly." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2299,28 +2301,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-          <caret line="12" column="51" selection-start-line="12" selection-start-column="51" selection-end-line="12" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/RoughTileBehavior.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="570">
           <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="655" max-vertical-offset="1230">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2386,6 +2370,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/android/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+          <caret line="16" column="49" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="127" max-vertical-offset="750">
+          <caret line="51" column="9" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/SmoothTileBehavior.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
@@ -2393,6 +2393,14 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
+          <caret line="19" column="51" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2404,19 +2412,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/src/main/AndroidManifest.xml">
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/tiles/ObstacleTileBehavior.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
-          <caret line="16" column="49" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.890511" vertical-offset="127" max-vertical-offset="750">
-          <caret line="51" column="9" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
-          <folding />
+        <state vertical-scroll-proportion="0.5620438" vertical-offset="817" max-vertical-offset="1410">
+          <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
