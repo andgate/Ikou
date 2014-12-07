@@ -2,29 +2,47 @@ package com.andgate.ikou;
 
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
-
-import java.text.ParseException;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.collision.btBroadphaseInterface;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionConfiguration;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
+import com.badlogic.gdx.physics.bullet.collision.btCollisionWorld;
+import com.badlogic.gdx.physics.bullet.collision.btDbvtBroadphase;
+import com.badlogic.gdx.physics.bullet.collision.btDefaultCollisionConfiguration;
+import com.badlogic.gdx.physics.bullet.collision.btDispatcher;
+import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
+import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
+import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
+import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
 
 public class GameScreen extends ScreenAdapter
 {
     private final Ikou game;
-    private World world;
+    private CameraInputController camController;
 
-    private OrthographicCamera camera;
-    private Box2DDebugRenderer debugRenderer;
+    btCollisionConfiguration collisionConfig;
+    btDispatcher dispatcher;
+    btBroadphaseInterface broadphase;
+    btDynamicsWorld dynamicsWorld;
+    btConstraintSolver constraintSolver;
+
+    //private OrthographicCamera camera;
+    private PerspectiveCamera camera;
+    private ModelBatch modelBatch;
+    private Environment environment;
 
     private Player player;
     private TileMap map;
@@ -36,21 +54,50 @@ public class GameScreen extends ScreenAdapter
     {
         this.game = game;
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, game.worldWidth, game.worldHeight);
+        //camera = new OrthographicCamera();
+        //camera.setToOrtho(false, game.worldWidth, game.worldHeight);
 
-        Box2D.init();
-        world = new World(new Vector2(0.0f, 0.0f), true);
-        debugRenderer = new Box2DDebugRenderer();
+        createCamera();
+        createEnvironment();
+        modelBatch = new ModelBatch();
+
+        collisionConfig = new btDefaultCollisionConfiguration();
+        dispatcher = new btCollisionDispatcher(collisionConfig);
+        broadphase = new btDbvtBroadphase();
+        constraintSolver = new btSequentialImpulseConstraintSolver();
+        dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, constraintSolver, collisionConfig);
+        dynamicsWorld.setGravity(new Vector3(0, -10f, 0));
 
         FileHandle file = Gdx.files.internal("data/level/1.txt");
-        map = TileMapParser.parse(file.readString(), world);
+        map = TileMapParser.parse(file.readString(), dynamicsWorld);
+        player = new Player(game, map.getStartPosition(), dynamicsWorld);
 
-        player = new Player(game, world, map.getStartPosition());
-
-        im = new InputMultiplexer();
+        /*im = new InputMultiplexer();
         im.addProcessor(new PlayerDirectionGestureDetector(player));
-        Gdx.input.setInputProcessor(im);
+        Gdx.input.setInputProcessor(im);*/
+
+        //camController = new CameraInputController(camera);
+        //Gdx.input.setInputProcessor(camController);
+    }
+
+    private void createCamera()
+    {
+        //camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
+        camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
+        camera.position.set(-Constants.WORLD_LENGTH, Constants.WORLD_LENGTH, -Constants.WORLD_LENGTH);
+        camera.lookAt(0,0,0);
+        camera.near = 1f;
+        camera.far = 300f;
+        camera.update();
+        camController = new CameraInputController(camera);
+        Gdx.input.setInputProcessor(camController);
+    }
+
+    private void createEnvironment()
+    {
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 1f, -0.8f, 0.2f));
     }
 
     @Override
@@ -60,18 +107,24 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
+        camController.update();
+
         renderSetup();
-        map.render(camera);
-        player.render(camera);
-        debugRenderer.render(world, camera.combined);
+        modelBatch.begin(camera);
+        map.render(modelBatch, environment);
+        player.render(modelBatch, environment);
+        modelBatch.end();
 
         doPhysicsStep(delta);
+
+        player.update(delta);
+        map.update();
     }
 
     private void renderSetup()
     {
-        Gdx.gl20.glClearColor(0.8f, 0.8f, 0.8f, 1);
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
 
     private float accumulator = 0.0f;
@@ -82,7 +135,8 @@ public class GameScreen extends ScreenAdapter
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            world.step(Constants.TIME_STEP, Constants.VELOCITY_ITERATIONS, Constants.POSITION_ITERATIONS);
+            // Step
+            dynamicsWorld.stepSimulation(Constants.TIME_STEP, 5, 1f/60f);
             accumulator -= Constants.TIME_STEP;
         }
     }
@@ -94,15 +148,18 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
+        dynamicsWorld.dispose();
+        constraintSolver.dispose();
+        broadphase.dispose();
+        dispatcher.dispose();
+        collisionConfig.dispose();
+        map.dispose();
         player.dispose();
-        world.dispose();
-        debugRenderer.dispose();
     }
 
     @Override
     public void resize(int width, int height)
     {
-        camera.setToOrtho(false, game.worldWidth, game.worldHeight);
-        camera.update();
+        createCamera();
     }
 }

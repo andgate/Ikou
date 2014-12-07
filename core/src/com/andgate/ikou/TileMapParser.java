@@ -7,7 +7,7 @@ import com.andgate.ikou.tiles.RoughTileBehavior;
 import com.andgate.ikou.tiles.SmoothTileBehavior;
 import com.andgate.ikou.tiles.TileBehavior;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class TileMapParser
 {
-    public static TileMap parse(String mapString, World world)
+    public static TileMap parse(String mapString, btDynamicsWorld dynamicsWorld)
         throws InvalidFileFormatException
     {
         Scanner in = new Scanner(mapString);
@@ -25,7 +25,7 @@ public class TileMapParser
             Vector2 startPosition = getStartPosition(in);
             ArrayList<Tile> tiles = getTiles(in);
 
-            TileMap map = new TileMap(tiles, world, startPosition);
+            TileMap map = new TileMap(tiles, startPosition, dynamicsWorld);
             return map;
         }
         finally

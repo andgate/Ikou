@@ -4,12 +4,11 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.Tile;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 
 public class EndTileBehavior implements TileBehavior
 {
     @Override
-    public void create(World world, Tile tile)
+    public void create(Tile tile)
     {}
 
     @Override
@@ -23,5 +22,11 @@ public class EndTileBehavior implements TileBehavior
     {
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.rect(0.0f, 0.0f, Constants.TILE_LENGTH, Constants.TILE_LENGTH);
+    }
+
+    @Override
+    public void dispose()
+    {
+
     }
 }
