@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.bullet.DebugDrawer;
 import com.badlogic.gdx.physics.bullet.collision.btBroadphaseInterface;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionConfiguration;
 import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
@@ -27,11 +28,13 @@ import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
 import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
+import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 
 public class GameScreen extends ScreenAdapter
 {
     private final Ikou game;
     private CameraInputController camController;
+    private DebugDrawer debugDrawer;
 
     btCollisionConfiguration collisionConfig;
     btDispatcher dispatcher;
@@ -57,7 +60,6 @@ public class GameScreen extends ScreenAdapter
         //camera = new OrthographicCamera();
         //camera.setToOrtho(false, game.worldWidth, game.worldHeight);
 
-        createCamera();
         createEnvironment();
         modelBatch = new ModelBatch();
 
@@ -68,29 +70,31 @@ public class GameScreen extends ScreenAdapter
         dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, constraintSolver, collisionConfig);
         dynamicsWorld.setGravity(new Vector3(0, -10f, 0));
 
+        debugDrawer = new DebugDrawer();
+        dynamicsWorld.setDebugDrawer(debugDrawer);
+        debugDrawer.setDebugMode(btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE);
+
         FileHandle file = Gdx.files.internal("data/level/1.txt");
         map = TileMapParser.parse(file.readString(), dynamicsWorld);
         player = new Player(game, map.getStartPosition(), dynamicsWorld);
 
-        /*im = new InputMultiplexer();
-        im.addProcessor(new PlayerDirectionGestureDetector(player));
-        Gdx.input.setInputProcessor(im);*/
+        createCamera();
 
-        //camController = new CameraInputController(camera);
-        //Gdx.input.setInputProcessor(camController);
+        im = new InputMultiplexer();
+        im.addProcessor(new PlayerDirectionGestureDetector(player));
+        //im.addProcessor(camController);
+        Gdx.input.setInputProcessor(im);
     }
 
     private void createCamera()
     {
-        //camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
         camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
-        camera.position.set(-Constants.WORLD_LENGTH, Constants.WORLD_LENGTH, -Constants.WORLD_LENGTH);
+        camera.position.set(player.getX(), player.getY() + 3.0f, player.getZ() - 3.0f);
         camera.lookAt(0,0,0);
         camera.near = 1f;
         camera.far = 300f;
         camera.update();
         camController = new CameraInputController(camera);
-        Gdx.input.setInputProcessor(camController);
     }
 
     private void createEnvironment()
@@ -107,13 +111,20 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
-        camController.update();
+        //camera.transform(player.getTransform());
+        camera.position.set(player.getPosition());
+        camera.position.y += 3.0;
+        camera.position.z -= 3.0;
+        camera.lookAt(player.getPosition());
+        camera.update();
 
         renderSetup();
         modelBatch.begin(camera);
-        map.render(modelBatch, environment);
-        player.render(modelBatch, environment);
+            map.render(modelBatch, environment);
+            player.render(modelBatch, environment);
         modelBatch.end();
+
+        renderDebug();
 
         doPhysicsStep(delta);
 
@@ -125,6 +136,13 @@ public class GameScreen extends ScreenAdapter
     {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+    }
+
+    private void renderDebug()
+    {
+        debugDrawer.begin(camera);
+            dynamicsWorld.debugDrawWorld();
+        debugDrawer.end();
     }
 
     private float accumulator = 0.0f;
@@ -160,6 +178,8 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void resize(int width, int height)
     {
-        createCamera();
+        camera.viewportHeight = game.worldHeight;
+        camera.viewportWidth = game.worldWidth;
+        camera.update();
     }
 }

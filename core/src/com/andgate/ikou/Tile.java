@@ -18,14 +18,16 @@ import com.badlogic.gdx.physics.bullet.collision.btCollisionShape;
 import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody.btRigidBodyConstructionInfo;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Tile
+public class Tile implements Disposable
 {
+    private static final float length = Constants.TILE_LENGTH;
+    private static final float height = Constants.TILE_LENGTH / 10.0f;
+
     public TileBehavior behavior;
     private int x;
     private int y;
-    private static final float length = Constants.TILE_LENGTH;
-    private static final float height = Constants.TILE_LENGTH / 10.0f;
     private Model tileModel;
     private ModelInstance tileInstance;
     private btCollisionShape tileShape;
@@ -60,7 +62,7 @@ public class Tile
 
     public void createBody()
     {
-        tileShape = new btBoxShape(new Vector3(length, height, length));
+        tileShape = new btBoxShape(new Vector3(length/2.0f, height/2.0f, length/2.0f));
         tileObject = new btCollisionObject();
         tileObject.setCollisionShape(tileShape);
         tileObject.setWorldTransform(tileInstance.transform);
@@ -77,6 +79,8 @@ public class Tile
             localInertia.set(0, 0, 0);
         }
         constructionInfo = new btRigidBody.btRigidBodyConstructionInfo(mass, null, tileShape, localInertia);
+        constructionInfo.setFriction(0.0f);
+        constructionInfo.setRestitution(0.0f);
         body = new btRigidBody(constructionInfo);
         body.setWorldTransform(tileInstance.transform);
     }
@@ -108,9 +112,13 @@ public class Tile
         return body;
     }
 
+    @Override
     public void dispose()
     {
-        behavior.dispose();
+        constructionInfo.dispose();
+        body.dispose();
+        tileObject.dispose();
+        tileShape.dispose();
         tileModel.dispose();
     }
 }

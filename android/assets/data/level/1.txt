@@ -1,7 +1,9 @@
-0 0
-onnenn
-ooooox
-ooooox
-ooooox
-oooooo
+4 4
+ onnenn
+ ooooox
+oooooxoo
+oooooxooo
+oooooooo
 oonooo
+  o o
+   o

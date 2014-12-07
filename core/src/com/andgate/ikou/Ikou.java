@@ -23,6 +23,7 @@ public class Ikou extends Game
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        //Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         try
         {

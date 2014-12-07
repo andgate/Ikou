@@ -97,6 +97,10 @@ public class TileMapParser
                 row++;
                 column = 0;
             }
+            else if(token == ' ')
+            {
+                column++;
+            }
             else if(behavior == null)
             {
                 throw new InvalidFileFormatException("Unrecognized tile code: " + token);
