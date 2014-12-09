@@ -18,7 +18,7 @@ public class Constants
     public static final float TIME_STEP = 1.0f / 60.0f;
 
     public static final int WORLD_LENGTH = 5;
-    public static final float BUTTON_LENGTH = 0.5f;
+    public static final float BUTTON_LENGTH = 0.7f;
 
     public static final String CAMERA_ICON_LOCATION
             = "data/icons/camera.png";
@@ -34,7 +34,7 @@ public class Constants
     public static final float BIG_EPSILON = 1.0f / 1E3f;
 
     public static final float TILE_LENGTH = 1.0f;
-    public static final float TILE_THICKNESS = TILE_LENGTH / 10.0f;
+    public static final float TILE_THICKNESS = TILE_LENGTH / 50.0f;
 
     /*public static final float LIGHT_THICKNESS = 0.05f;
     public static final float MEDIUM_THICKNESS = 0.1f;

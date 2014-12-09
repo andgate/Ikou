@@ -36,44 +36,42 @@ public class Player extends Tile
 
     Vector3 prevPosition = new Vector3();
     Vector3 currPosition = new Vector3();
-    Vector3 prevDistance = new Vector3();
-    Vector3 currDistance = new Vector3();
+    private float tweenTime = 0.0f;
+    private float accumulator = 0.0f;
 
     public void update(float delta)
     {
         if(isMoving)
         {
-            prevDistance.set(destination);
-            prevDistance.sub(prevPosition);
+            float percentTween = delta / tweenTime;
+            accumulator += percentTween;
 
-            velocity.set(prevDistance);
-            velocity.nor().scl(SPEED*delta);
-
-            prevPosition.set(getPosition());
-            currPosition.set(prevPosition);
-            currPosition.add(velocity);
-
-            currDistance.set(destination);
-            currDistance.sub(currPosition);
-
-            if( currPosition.epsilonEquals(destination, 0.5f)
-             || currDistance.hasOppositeDirection(prevDistance))
+            if(accumulator >= 1.0f)
             {
-                setPosition(destination);
                 isMoving = false;
 
-                System.out.println(getPosition().toString());
+                setPosition(destination);
+                accumulator = 0.0f;
             }
             else
             {
+                currPosition.set(prevPosition);
+                currPosition.lerp(destination, accumulator);
                 setPosition(currPosition);
             }
         }
     }
 
+    private Vector3 distance = new Vector3();
+
     public void moveTo(Vector3 destination)
     {
         isMoving = true;
+
+        distance.set(destination);
+        distance.sub(getPosition());
+        tweenTime = distance.len() / SPEED;
+        prevPosition.set(getPosition());
         this.destination.set(destination);
     }
 

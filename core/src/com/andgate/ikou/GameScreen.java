@@ -34,6 +34,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter implements DirectionListener
@@ -115,9 +116,10 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
             camera.position.set(player.getPosition());
             camera.position.y += 3.0f;
             camera.position.z -= 3.0f;
-            camera.lookAt(player.getPosition().x + player.WIDTH / 2.0f,
+            camera.lookAt(player.getPosition().x,
                           player.HEIGHT,
-                          player.getPosition().z + player.DEPTH / 2.0f);
+                          player.getPosition().z);
+            camera.normalizeUp();
             camera.update();
         }
         else

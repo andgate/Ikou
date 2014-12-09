@@ -59,6 +59,7 @@ public class Tile implements Disposable
     public void setPosition(Vector3 position)
     {
         this.position.set(position);
+        tileModelInstance.transform.idt();
         tileModelInstance.transform.setTranslation(position);
     }
 
