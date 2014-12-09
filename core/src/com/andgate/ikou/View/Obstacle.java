@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Obstacle extends Tile
 {
     Tile obstacleTile;
+
     public Obstacle(Vector3 position)
     {
         super(position);

@@ -144,6 +144,10 @@ public class TileMaze
                 case TileCode.OBSTACLE_TILE:
                     playerVelocity = Direction.None;
                     break;
+                case TileCode.END_TILE:
+                    playerPosition.set(nextPosition);
+                    playerVelocity = Direction.None;
+                    break;
                 default:
                     playerVelocity = Direction.None;
                     break;

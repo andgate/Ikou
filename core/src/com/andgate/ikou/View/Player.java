@@ -58,7 +58,8 @@ public class Player extends Tile
 
             System.out.println(currPosition.toString());
 
-            if(currDistance.hasOppositeDirection(prevDistance))
+            if( currDistance.epsilonEquals(destination, 0.5f)
+             || currDistance.hasOppositeDirection(prevDistance))
             {
                 setPosition(destination);
                 isMoving = false;

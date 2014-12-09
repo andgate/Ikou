@@ -57,18 +57,26 @@ public class TileMazeView implements Disposable
         {
             for(int x = 0; x < maze.getTiles()[z].length; x++)
             {
-                switch(maze.getTiles()[z][x])
+                char currentTile = maze.getTiles()[z][x];
+                switch(currentTile)
                 {
                     case TileCode.SMOOTH_TILE:
                         tiles[currentTileIndex] = new Tile(new Vector3(x, y, z));
                         break;
+                    case TileCode.ROUGH_TILE:
+                        tiles[currentTileIndex] = new RoughTile(new Vector3(x, y, z));
+                        break;
                     case TileCode.OBSTACLE_TILE:
                         tiles[currentTileIndex] = new Obstacle(new Vector3(x, y, z));
+                        break;
+                    case TileCode.END_TILE:
+                        tiles[currentTileIndex] = new Goal(new Vector3(x, y, z));
+                        break;
                     default:
                         break;
                 }
 
-                if(maze.getTiles()[z][x] != ' ')
+                if(currentTile != TileCode.BLANK_TILE)
                     currentTileIndex++;
             }
         }
