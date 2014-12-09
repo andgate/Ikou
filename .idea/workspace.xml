@@ -17,14 +17,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Goal.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/RoughTile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/level/1.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Obstacle.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Obstacle.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/icons/camera.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/icons/camera_down.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/icons/move.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/icons/move_down.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/GameControlsMenu.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Utility/Icon.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/TileCode.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/TileCode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Model/TileMaze.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Model/TileMaze.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/TileMazeView.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/View/TileMazeView.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -53,28 +54,87 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TileMazeView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/TileMazeView.java">
+      <file leaf-file-name="GameScreen.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="709" max-vertical-offset="1815">
-              <caret line="67" column="30" selection-start-line="67" selection-start-column="30" selection-end-line="67" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.8490566" vertical-offset="1410" max-vertical-offset="3255">
+              <caret line="124" column="56" selection-start-line="124" selection-start-column="56" selection-end-line="124" selection-end-column="56" />
               <folding>
-                <element signature="e#0#3782#0" expanded="true" />
+                <element signature="e#0#6814#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Goal.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Goal.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Goal.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5660377" vertical-offset="0" max-vertical-offset="530">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#241#242#0" expanded="true" />
                 <element signature="e#272#273#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameControlsMenu.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/GameControlsMenu.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="563" max-vertical-offset="1845">
+              <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1621#2118#0" expanded="true" />
+                <element signature="e#2099#2100#0" expanded="true" />
+                <element signature="e#2635#3041#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="1305">
+              <caret line="62" column="33" selection-start-line="62" selection-start-column="33" selection-end-line="62" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#2572#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="move.png" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/assets/data/icons/move.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="190" max-vertical-offset="720">
+              <caret line="29" column="35" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#1678#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Icon.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Utility/Icon.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -105,67 +165,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TileCode.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/TileCode.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-              <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Ikou.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="460" max-vertical-offset="1035">
-              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TileMaze.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Model/TileMaze.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1545" max-vertical-offset="2715">
-              <caret line="148" column="52" selection-start-line="148" selection-start-column="52" selection-end-line="148" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#4856#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="1.txt" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/android/assets/data/level/1.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="240">
               <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="790" max-vertical-offset="1320">
-              <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
-              <folding>
-                <element signature="e#0#2605#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TileMazeParser.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Utility/TileMazeParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1395">
-              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -1493,13 +1497,10 @@
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/TileFactory.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/PlayerDirectionGestureDetector.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/DirectionListener.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Tile.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Utility/TileMazeParser.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/exception/InvalidFileFormatException.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Goal.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Obstacle.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/TileCode.java" />
@@ -1507,6 +1508,11 @@
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/TileMazeView.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Model/TileMaze.java" />
         <option value="$PROJECT_DIR$/android/assets/data/level/1.txt" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Utility/Icon.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/GameControlsMenu.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java" />
       </list>
     </option>
   </component>
@@ -1691,50 +1697,6 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exception" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="android" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
@@ -1778,6 +1740,28 @@
               <option name="myItemId" value="android" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icons" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -1801,12 +1785,15 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/zetta/Projects/Ikou/core/src/com/andgate/ikou/Ikou.java" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/zetta/Projects/Ikou/core/src/com/andgate/ikou/GameScreen.java" />
     <property name="last_opened_file_path" value="$USER_HOME$/Pictures/Ikou" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.andgate.ikou.Utility" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/android/assets/data/icons" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.andgate.ikou" />
@@ -2075,7 +2062,11 @@
       <created>1418084474613</created>
       <updated>1418084474613</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Rough and Goal tiles functional.">
+      <created>1418091134362</created>
+      <updated>1418091134362</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2094,7 +2085,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3247963" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3515716" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3515716" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2139,7 +2130,8 @@
     <MESSAGE value="Player tile moves with user input. Camera follows player." />
     <MESSAGE value="Bullet is out. Simulating physics. Core was split into a model-view-controller layout." />
     <MESSAGE value="GPL licensed added to the source." />
-    <option name="LAST_COMMIT_MESSAGE" value="GPL licensed added to the source." />
+    <MESSAGE value="Rough and Goal tiles functional." />
+    <option name="LAST_COMMIT_MESSAGE" value="Rough and Goal tiles functional." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2162,7 +2154,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="600" max-vertical-offset="1425">
           <caret line="40" column="65" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="65" />
           <folding>
-            <element signature="e#0#6327#0" expanded="true" />
+            <element signature="e#0#6814#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
@@ -2335,33 +2327,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31132075" vertical-offset="0" max-vertical-offset="630">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-          <folding>
-            <element signature="e#0#1418#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/DirectionListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.31132075" vertical-offset="0" max-vertical-offset="530">
           <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
           <folding>
             <element signature="e#0#801#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0754716" vertical-offset="0" max-vertical-offset="3030">
-          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#6327#0" expanded="true" />
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2382,43 +2353,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="573" max-vertical-offset="1320">
-          <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#2605#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/TileCode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
           <caret line="16" column="46" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Obstacle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="154" max-vertical-offset="720">
-          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="33" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#1557#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/RoughTile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-          <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2452,14 +2391,95 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Obstacle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="154" max-vertical-offset="720">
+          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="33" selection-end-column="76" />
+          <folding>
+            <element signature="e#0#1557#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/RoughTile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+          <caret line="14" column="63" selection-start-line="14" selection-start-column="63" selection-end-line="14" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Goal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5660377" vertical-offset="0" max-vertical-offset="530">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#241#242#0" expanded="true" />
             <element signature="e#272#273#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/icons/move.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Utility/Icon.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="630">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="190" max-vertical-offset="720">
+          <caret line="29" column="35" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#1678#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/GameControlsMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="923" max-vertical-offset="1845">
+          <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1621#2118#0" expanded="true" />
+            <element signature="e#2099#2100#0" expanded="true" />
+            <element signature="e#2635#3041#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/View/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="595" max-vertical-offset="1305">
+          <caret line="62" column="33" selection-start-line="62" selection-start-column="33" selection-end-line="62" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#2572#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/GameScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8490566" vertical-offset="1410" max-vertical-offset="3255">
+          <caret line="124" column="56" selection-start-line="124" selection-start-column="56" selection-end-line="124" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#6814#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -17,11 +17,17 @@ public class Constants
 {
     public static final float TIME_STEP = 1.0f / 60.0f;
 
-    // Suggested iteration count from the box2d documentation
-    public static final int VELOCITY_ITERATIONS = 8;
-    public static final int POSITION_ITERATIONS = 3;
-
     public static final int WORLD_LENGTH = 5;
+    public static final float BUTTON_LENGTH = 0.5f;
+
+    public static final String CAMERA_ICON_LOCATION
+            = "data/icons/camera.png";
+    public static final String CAMERA_ICON_DOWN_LOCATION
+            = "data/icons/camera_down.png";
+    public static final String MOVE_ICON_LOCATION
+            = "data/icons/move.png";
+    public static final String MOVE_ICON_DOWN_LOCATION
+            = "data/icons/move_down.png";
 
     public static final float LITTLE_EPSILON = 1.0f / 1E10f;
     public static final float EPSILON = 1.0f / 1E7f;

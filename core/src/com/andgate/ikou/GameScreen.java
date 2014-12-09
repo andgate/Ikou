@@ -41,6 +41,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     private final Ikou game;
     private CameraInputController camController;
 
+    private GameControlsMenu controlsMenu;
+
     private PerspectiveCamera camera;
     private ModelBatch modelBatch;
     private Environment environment;
@@ -72,10 +74,12 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
         createCamera();
 
+        InputProcessor moveController = new PlayerDirectionGestureDetector(this);
         im = new InputMultiplexer();
-        im.addProcessor(new PlayerDirectionGestureDetector(this));
-        //im.addProcessor(camController);
+        im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
+
+        controlsMenu = new GameControlsMenu(game, im, moveController, camController);
     }
 
     private void createCamera()
@@ -106,18 +110,29 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     @Override
     public void render(float delta)
     {
-        camera.position.set(player.getPosition());
-        camera.position.y += 3.0f;
-        camera.position.z -= 3.0f;
-        camera.lookAt(player.getPosition().x, 0.1f, player.getPosition().z);
-        camera.update();
-        camController.update();
+        if(controlsMenu.currentMode == GameControlsMenu.Mode.MOVEMENT)
+        {
+            camera.position.set(player.getPosition());
+            camera.position.y += 3.0f;
+            camera.position.z -= 3.0f;
+            camera.lookAt(player.getPosition().x + player.WIDTH / 2.0f,
+                          player.HEIGHT,
+                          player.getPosition().z + player.DEPTH / 2.0f);
+            camera.update();
+        }
+        else
+        {
+            camController.target = player.getPosition();
+            camController.update();
+        }
 
         renderSetup();
         modelBatch.begin(camera);
             mazeView.render(modelBatch, environment);
             player.render(modelBatch, environment);
         modelBatch.end();
+
+        controlsMenu.render();
 
         doPhysicsStep(delta);
     }
