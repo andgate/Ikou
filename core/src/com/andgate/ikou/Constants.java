@@ -10,12 +10,14 @@ public class Constants
 
     public static final int WORLD_LENGTH = 5;
 
-    public static final float EPSILON = 1.0f / 1E14f;
+    public static final float LITTLE_EPSILON = 1.0f / 1E10f;
+    public static final float EPSILON = 1.0f / 1E7f;
     public static final float BIG_EPSILON = 1.0f / 1E3f;
 
     public static final float TILE_LENGTH = 1.0f;
+    public static final float TILE_THICKNESS = TILE_LENGTH / 10.0f;
 
-    public static final float LIGHT_THICKNESS = 0.05f;
+    /*public static final float LIGHT_THICKNESS = 0.05f;
     public static final float MEDIUM_THICKNESS = 0.1f;
-    public static final float HEAVY_THICKNESS = 0.2f;
+    public static final float HEAVY_THICKNESS = 0.2f;*/
 }

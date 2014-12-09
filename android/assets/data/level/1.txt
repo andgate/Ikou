@@ -1,9 +1,11 @@
-4 4
- onnenn
- ooooox
-oooooxoo
-oooooxooo
-oooooooo
-oonooo
-  o o
-   o
+2 1
+ nnnnnnnnnnnn
+nnoooooooonnn
+nnooooooooonn
+noooooooooon
+nnooooooonnn
+nnoonnnoooon
+nooonnnoooon
+noooooooooon
+noooonooooon
+nnnnnnnnnnnn

@@ -1,5 +1,10 @@
 package com.andgate.ikou;
 
+import com.andgate.ikou.Model.TileMaze;
+import com.andgate.ikou.Utility.TileMazeParser;
+import com.andgate.ikou.View.Player;
+import com.andgate.ikou.View.Tile;
+import com.andgate.ikou.View.TileMazeView;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,6 +14,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -16,39 +22,19 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.bullet.DebugDrawer;
-import com.badlogic.gdx.physics.bullet.collision.btBroadphaseInterface;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionConfiguration;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionDispatcher;
-import com.badlogic.gdx.physics.bullet.collision.btCollisionWorld;
-import com.badlogic.gdx.physics.bullet.collision.btDbvtBroadphase;
-import com.badlogic.gdx.physics.bullet.collision.btDefaultCollisionConfiguration;
-import com.badlogic.gdx.physics.bullet.collision.btDispatcher;
-import com.badlogic.gdx.physics.bullet.dynamics.btConstraintSolver;
-import com.badlogic.gdx.physics.bullet.dynamics.btDiscreteDynamicsWorld;
-import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
-import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
-import com.badlogic.gdx.physics.bullet.linearmath.btIDebugDraw;
 
-public class GameScreen extends ScreenAdapter
+public class GameScreen extends ScreenAdapter implements DirectionListener
 {
     private final Ikou game;
     private CameraInputController camController;
-    private DebugDrawer debugDrawer;
 
-    btCollisionConfiguration collisionConfig;
-    btDispatcher dispatcher;
-    btBroadphaseInterface broadphase;
-    btDynamicsWorld dynamicsWorld;
-    btConstraintSolver constraintSolver;
-
-    //private OrthographicCamera camera;
     private PerspectiveCamera camera;
     private ModelBatch modelBatch;
     private Environment environment;
 
     private Player player;
-    private TileMap map;
+    private TileMaze maze;
+    private TileMazeView mazeView;
 
     private InputMultiplexer im;
 
@@ -57,31 +43,24 @@ public class GameScreen extends ScreenAdapter
     {
         this.game = game;
 
-        //camera = new OrthographicCamera();
-        //camera.setToOrtho(false, game.worldWidth, game.worldHeight);
-
         createEnvironment();
         modelBatch = new ModelBatch();
 
-        collisionConfig = new btDefaultCollisionConfiguration();
-        dispatcher = new btCollisionDispatcher(collisionConfig);
-        broadphase = new btDbvtBroadphase();
-        constraintSolver = new btSequentialImpulseConstraintSolver();
-        dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, broadphase, constraintSolver, collisionConfig);
-        dynamicsWorld.setGravity(new Vector3(0, -10f, 0));
-
-        debugDrawer = new DebugDrawer();
-        dynamicsWorld.setDebugDrawer(debugDrawer);
-        debugDrawer.setDebugMode(btIDebugDraw.DebugDrawModes.DBG_MAX_DEBUG_DRAW_MODE);
-
         FileHandle file = Gdx.files.internal("data/level/1.txt");
-        map = TileMapParser.parse(file.readString(), dynamicsWorld);
-        player = new Player(game, map.getStartPosition(), dynamicsWorld);
+        maze = TileMazeParser.parse(file.readString());
+        mazeView = new TileMazeView(maze);
+
+        Vector3 playerStartPosition = new Vector3();
+        playerStartPosition.x = maze.getInitialPlayerPosition().x;
+        playerStartPosition.y = Tile.HEIGHT; // Above the floor
+        playerStartPosition.z = maze.getInitialPlayerPosition().y;
+
+        player = new Player(playerStartPosition);
 
         createCamera();
 
         im = new InputMultiplexer();
-        im.addProcessor(new PlayerDirectionGestureDetector(player));
+        im.addProcessor(new PlayerDirectionGestureDetector(this));
         //im.addProcessor(camController);
         Gdx.input.setInputProcessor(im);
     }
@@ -89,8 +68,11 @@ public class GameScreen extends ScreenAdapter
     private void createCamera()
     {
         camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
-        camera.position.set(player.getX(), player.getY() + 3.0f, player.getZ() - 3.0f);
-        camera.lookAt(0,0,0);
+        camera.position.set(player.getPosition().x,
+                            player.getPosition().y + 3.0f,
+                            player.getPosition().z - 3.0f);
+        //camera.position.set(0.0f, 3.0f, -3.0f);
+        camera.lookAt(player.getPosition());
         camera.near = 1f;
         camera.far = 300f;
         camera.update();
@@ -111,38 +93,20 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
-        //camera.transform(player.getTransform());
         camera.position.set(player.getPosition());
-        camera.position.y += 3.0;
-        camera.position.z -= 3.0;
-        camera.lookAt(player.getPosition());
+        camera.position.y += 3.0f;
+        camera.position.z -= 3.0f;
+        camera.lookAt(player.getPosition().x, 0.1f, player.getPosition().z);
         camera.update();
+        camController.update();
 
         renderSetup();
         modelBatch.begin(camera);
-            map.render(modelBatch, environment);
+            mazeView.render(modelBatch, environment);
             player.render(modelBatch, environment);
         modelBatch.end();
 
-        renderDebug();
-
         doPhysicsStep(delta);
-
-        player.update(delta);
-        map.update();
-    }
-
-    private void renderSetup()
-    {
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-    }
-
-    private void renderDebug()
-    {
-        debugDrawer.begin(camera);
-            dynamicsWorld.debugDrawWorld();
-        debugDrawer.end();
     }
 
     private float accumulator = 0.0f;
@@ -153,10 +117,25 @@ public class GameScreen extends ScreenAdapter
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            // Step
-            dynamicsWorld.stepSimulation(Constants.TIME_STEP, 5, 1f/60f);
+            update(deltaTime);
             accumulator -= Constants.TIME_STEP;
         }
+    }
+
+    private void update(float delta)
+    {
+        player.update(delta);
+    }
+
+    private void renderSetup()
+    {
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        Gdx.gl.glCullFace(GL20.GL_BACK);
+        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl.glDepthFunc(GL20.GL_LEQUAL);
+        Gdx.gl.glDepthMask(true);
     }
 
     @Override
@@ -166,12 +145,7 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
-        dynamicsWorld.dispose();
-        constraintSolver.dispose();
-        broadphase.dispose();
-        dispatcher.dispose();
-        collisionConfig.dispose();
-        map.dispose();
+        mazeView.dispose();
         player.dispose();
     }
 
@@ -181,5 +155,44 @@ public class GameScreen extends ScreenAdapter
         camera.viewportHeight = game.worldHeight;
         camera.viewportWidth = game.worldWidth;
         camera.update();
+    }
+
+    public void movePlayer(TileMaze.Direction velocity)
+    {
+        if(!player.isMoving())
+        {
+            maze.move(velocity);
+
+            Vector3 nextPosition = new Vector3();
+            nextPosition.x = maze.getPlayerPosition().x;
+            nextPosition.y = player.getPosition().y;
+            nextPosition.z = maze.getPlayerPosition().y;
+
+            player.moveTo(nextPosition);
+        }
+    }
+
+    @Override
+    public void onLeft()
+    {
+        movePlayer(TileMaze.Direction.Left);
+    }
+
+    @Override
+    public void onRight()
+    {
+        movePlayer(TileMaze.Direction.Right);
+    }
+
+    @Override
+    public void onUp()
+    {
+        movePlayer(TileMaze.Direction.Up);
+    }
+
+    @Override
+    public void onDown()
+    {
+        movePlayer(TileMaze.Direction.Down);
     }
 }
