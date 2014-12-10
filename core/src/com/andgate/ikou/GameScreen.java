@@ -16,25 +16,21 @@ package com.andgate.ikou;
 import com.andgate.ikou.Model.TileMaze;
 import com.andgate.ikou.Utility.TileMazeParser;
 import com.andgate.ikou.View.Player;
-import com.andgate.ikou.View.Tile;
+import com.andgate.ikou.Tiles.TileData;
 import com.andgate.ikou.View.TileMazeView;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
-import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter implements DirectionListener
@@ -49,8 +45,10 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     private Environment environment;
 
     private Player player;
-    private TileMaze maze;
-    private TileMazeView mazeView;
+    private TileMaze currMaze;
+    private TileMaze nextMaze;
+    private TileMazeView nextMazeView;
+    private TileMazeView currMazeView;
 
     private InputMultiplexer im;
 
@@ -63,19 +61,23 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         modelBatch = new ModelBatch();
 
         FileHandle file = Gdx.files.internal("data/level/1.txt");
-        maze = TileMazeParser.parse(file.readString());
-        mazeView = new TileMazeView(maze);
+
+        currMaze = TileMazeParser.parse(file.readString());
+        currMazeView = new TileMazeView(currMaze, new Vector3(0.0f, 0.0f, 0.0f));
+
+        nextMaze = TileMazeParser.parse(file.readString());
+        nextMazeView = new TileMazeView(nextMaze, new Vector3(0.0f, -Constants.LEVEL_SPACING, 0.0f));
 
         Vector3 playerStartPosition = new Vector3();
-        playerStartPosition.x = maze.getInitialPlayerPosition().x;
-        playerStartPosition.y = Tile.HEIGHT; // Above the floor
-        playerStartPosition.z = maze.getInitialPlayerPosition().y;
+        playerStartPosition.x = currMaze.getInitialPlayerPosition().x;
+        playerStartPosition.y = TileData.HEIGHT; // Above the floor
+        playerStartPosition.z = currMaze.getInitialPlayerPosition().y;
 
         player = new Player(playerStartPosition);
 
         createCamera();
 
-        InputProcessor moveController = new PlayerDirectionGestureDetector(this);
+        InputProcessor moveController = new PlayerDirectionGestureDetector(this, camera);
         im = new InputMultiplexer();
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
@@ -89,7 +91,6 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         camera.position.set(player.getPosition().x,
                             player.getPosition().y + 3.0f,
                             player.getPosition().z - 3.0f);
-        //camera.position.set(0.0f, 3.0f, -3.0f);
         camera.lookAt(player.getPosition());
         camera.near = 1f;
         camera.far = 300f;
@@ -116,10 +117,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
             camera.position.set(player.getPosition());
             camera.position.y += 3.0f;
             camera.position.z -= 3.0f;
-            camera.lookAt(player.getPosition().x,
-                          player.HEIGHT,
-                          player.getPosition().z);
-            camera.normalizeUp();
+            camera.lookAt(player.getPosition());
             camera.update();
         }
         else
@@ -130,13 +128,17 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
         renderSetup();
         modelBatch.begin(camera);
-            mazeView.render(modelBatch, environment);
+            //nextMazeView.render(modelBatch, environment);
+            currMazeView.render(modelBatch, environment);
             player.render(modelBatch, environment);
         modelBatch.end();
 
         controlsMenu.render();
 
         doPhysicsStep(delta);
+
+
+        System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     private float accumulator = 0.0f;
@@ -161,11 +163,6 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-        Gdx.gl.glCullFace(GL20.GL_BACK);
-        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-        Gdx.gl.glDepthFunc(GL20.GL_LEQUAL);
-        Gdx.gl.glDepthMask(true);
     }
 
     @Override
@@ -175,7 +172,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     @Override
     public void dispose()
     {
-        mazeView.dispose();
+        currMazeView.dispose();
         player.dispose();
     }
 
@@ -184,19 +181,19 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         camera.viewportHeight = game.worldHeight;
         camera.viewportWidth = game.worldWidth;
-        camera.update();
+        camera.update(true);
     }
 
     public void movePlayer(TileMaze.Direction velocity)
     {
         if(!player.isMoving())
         {
-            maze.move(velocity);
+            currMaze.move(velocity);
 
             Vector3 nextPosition = new Vector3();
-            nextPosition.x = maze.getPlayerPosition().x;
+            nextPosition.x = currMaze.getPlayerPosition().x;
             nextPosition.y = player.getPosition().y;
-            nextPosition.z = maze.getPlayerPosition().y;
+            nextPosition.z = currMaze.getPlayerPosition().y;
 
             player.moveTo(nextPosition);
         }

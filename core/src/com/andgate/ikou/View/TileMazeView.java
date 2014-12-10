@@ -13,103 +13,38 @@
 
 package com.andgate.ikou.View;
 
-import com.andgate.ikou.DirectionListener;
 import com.andgate.ikou.Model.TileMaze;
+import com.andgate.ikou.Render.TileMazeModelBuilder;
 import com.andgate.ikou.TileCode;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 public class TileMazeView implements Disposable
 {
-    TileMaze maze;
+    private Model tileMazeModel;
+    private ModelInstance tileMazeModelInstance;
 
-    private Tile[] tiles;
-
-    public TileMazeView(TileMaze maze)
+    public TileMazeView(TileMaze maze, Vector3 position)
     {
-        this.maze = maze;
-        buildTiles();
+        tileMazeModel = TileMazeModelBuilder.build(maze);
+        tileMazeModelInstance = new ModelInstance(tileMazeModel);
+        tileMazeModelInstance.transform.setTranslation(position);
     }
 
     public void render(ModelBatch modelBatch, Environment environment)
     {
-        for(Tile tile : tiles)
-        {
-            tile.render(modelBatch, environment);
-        }
+        modelBatch.render(tileMazeModelInstance, environment);
     }
 
     @Override
     public void dispose()
     {
+        tileMazeModel.dispose();
     }
-
-    private void buildTiles()
-    {
-        int tileCount = maze.getTileCount();
-        tiles = new Tile[tileCount];
-
-        int currentTileIndex = 0;
-        float y = 0.0f;
-        for(int z = 0; z < maze.getTiles().length; z++)
-        {
-            for(int x = 0; x < maze.getTiles()[z].length; x++)
-            {
-                char currentTile = maze.getTiles()[z][x];
-                switch(currentTile)
-                {
-                    case TileCode.SMOOTH_TILE:
-                        tiles[currentTileIndex] = new Tile(new Vector3(x, y, z));
-                        break;
-                    case TileCode.ROUGH_TILE:
-                        tiles[currentTileIndex] = new RoughTile(new Vector3(x, y, z));
-                        break;
-                    case TileCode.OBSTACLE_TILE:
-                        tiles[currentTileIndex] = new Obstacle(new Vector3(x, y, z));
-                        break;
-                    case TileCode.END_TILE:
-                        tiles[currentTileIndex] = new Goal(new Vector3(x, y, z));
-                        break;
-                    default:
-                        break;
-                }
-
-                if(currentTile != TileCode.BLANK_TILE)
-                    currentTileIndex++;
-            }
-        }
-    }
-
-    /*private void buildModel()
-    {
-        int tileAttributes = Usage.Position | Usage.Normal;
-        Material tileMaterial = new Material(ColorAttribute.createDiffuse(Color.LIGHT_GRAY));
-
-        ModelBuilder mob = new ModelBuilder();
-        MeshPartBuilder mpb;
-        mob.begin();
-        char[][] tiles = maze.getTiles();
-        for(int y = 0; y < tiles.length; y++)
-        {
-            for(int x = 0; x < tiles[y].length; x++)
-            {
-                float xPos = (float)x;
-                float yPos = 0.0f;
-                float zPos = (float)y;
-                float width = Constants.TILE_LENGTH;
-                float height = Constants.TILE_THICKNESS;
-                float depth = Constants.TILE_LENGTH;
-                String name = "Tile" + ((x+1) * (y+1));
-
-                mob.node().id = name;
-                mpb = mob.part(name, GL20.GL_TRIANGLES, tileAttributes, tileMaterial);
-                mpb.box(xPos, yPos, zPos, width, height, depth);
-            }
-        }
-
-        mazeModel = mob.end();
-        mazeModelInstance = new ModelInstance(mazeModel);
-    }*/
 }

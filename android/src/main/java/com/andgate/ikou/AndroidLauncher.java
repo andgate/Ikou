@@ -2,6 +2,7 @@ package com.andgate.ikou;
 
 import android.os.Bundle;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.andgate.ikou.Ikou;
@@ -12,6 +13,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.numSamples = 16;
-		initialize(new Ikou(), config);
+        initialize(new Ikou(), config);
 	}
 }
