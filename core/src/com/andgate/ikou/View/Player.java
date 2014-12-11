@@ -13,16 +13,11 @@
 
 package com.andgate.ikou.View;
 
-import com.andgate.ikou.Render.PlayerModelBuilder;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.andgate.ikou.Render.PlayerModelRender;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -32,20 +27,17 @@ public class Player implements Disposable
     private boolean isMoving = false;
     private final Vector3 destination = new Vector3();
 
-    Model playerModel;
-    ModelInstance playerModelInstance;
+    PlayerModelRender playerModel = new PlayerModelRender();
 
     public Player(Vector3 position)
     {
-        playerModel = PlayerModelBuilder.build();
-        playerModelInstance = new ModelInstance(playerModel);
         setPosition(position);
         destination.set(position);
     }
 
     public void render(ModelBatch modelBatch, Environment environment)
     {
-        modelBatch.render(playerModelInstance, environment);
+        modelBatch.render(playerModel, environment);
     }
 
     Vector3 prevPosition = new Vector3();
@@ -96,15 +88,15 @@ public class Player implements Disposable
 
     public void setPosition(Vector3 position)
     {
-        playerModelInstance.transform.idt();
-        playerModelInstance.transform.translate(position);
+        playerModel.transform.idt();
+        playerModel.transform.translate(position);
     }
 
 
     Vector3 position = new Vector3();
     public Vector3 getPosition()
     {
-        playerModelInstance.transform.getTranslation(position);
+        playerModel.transform.getTranslation(position);
         return position;
     }
 

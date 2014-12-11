@@ -14,37 +14,30 @@
 package com.andgate.ikou.View;
 
 import com.andgate.ikou.Model.TileMaze;
-import com.andgate.ikou.Render.TileMazeModelBuilder;
-import com.andgate.ikou.TileCode;
+import com.andgate.ikou.Render.TileWorldRender;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 public class TileMazeView implements Disposable
 {
-    private Model tileMazeModel;
-    private ModelInstance tileMazeModelInstance;
+    private TileWorldRender tileWorldModel;
 
     public TileMazeView(TileMaze maze, Vector3 position)
     {
-        tileMazeModel = TileMazeModelBuilder.build(maze);
-        tileMazeModelInstance = new ModelInstance(tileMazeModel);
-        tileMazeModelInstance.transform.setTranslation(position);
+        tileWorldModel = new TileWorldRender(maze);
+        tileWorldModel.transform.setTranslation(position);
     }
 
     public void render(ModelBatch modelBatch, Environment environment)
     {
-        modelBatch.render(tileMazeModelInstance, environment);
+        modelBatch.render(tileWorldModel, environment);
     }
 
     @Override
     public void dispose()
     {
-        tileMazeModel.dispose();
+        tileWorldModel.dispose();
     }
 }

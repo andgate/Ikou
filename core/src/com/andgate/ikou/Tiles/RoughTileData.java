@@ -9,6 +9,6 @@ public class RoughTileData extends TileData
     public RoughTileData()
     {
         super();
-        tileMaterial = new Material(ColorAttribute.createDiffuse(Color.DARK_GRAY));
+        tileColor = new Color(Color.DARK_GRAY);
     }
 }

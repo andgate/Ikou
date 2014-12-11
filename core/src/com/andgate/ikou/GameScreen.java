@@ -128,7 +128,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
         renderSetup();
         modelBatch.begin(camera);
-            //nextMazeView.render(modelBatch, environment);
+            nextMazeView.render(modelBatch, environment);
             currMazeView.render(modelBatch, environment);
             player.render(modelBatch, environment);
         modelBatch.end();

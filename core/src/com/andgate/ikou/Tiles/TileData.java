@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.IntAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -36,23 +37,23 @@ public class TileData
     public static final float HEIGHT = Constants.TILE_THICKNESS;
     public static final float DEPTH = Constants.TILE_LENGTH;
 
-    protected Material tileMaterial;
+    public static final Material TILE_MATERIAL
+            = new Material(
+                new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
+                new IntAttribute(IntAttribute.CullFace, GL20.GL_BACK));
+    protected Color tileColor;
     protected boolean isVisible;
 
     public TileData()
     {
         isVisible = true;
-        tileMaterial = new Material(
-                ColorAttribute.createDiffuse(Color.LIGHT_GRAY),
-                ColorAttribute.createSpecular(Color.WHITE),
-                new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-        );
-
+        tileColor = new Color(Color.LIGHT_GRAY);
+        tileColor.a = 0.7f;
     }
 
-    public Material getMaterial()
+    public Color getColor()
     {
-        return tileMaterial;
+        return tileColor;
     }
 
     public boolean isVisible()

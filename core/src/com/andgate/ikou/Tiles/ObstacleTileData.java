@@ -20,13 +20,9 @@ import com.badlogic.gdx.math.Vector3;
 
 public class ObstacleTileData extends TileData
 {
-    TileData obstacleTileData;
-
-    Vector3 offset = new Vector3(0.0f, TileData.HEIGHT, 0.0f);
-
     public ObstacleTileData()
     {
         super();
-        tileMaterial = new Material(ColorAttribute.createDiffuse(Color.GRAY));
+        tileColor = Color.DARK_GRAY;
     }
 }
