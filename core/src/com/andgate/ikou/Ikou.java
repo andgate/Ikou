@@ -16,7 +16,6 @@ package com.andgate.ikou;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.physics.bullet.Bullet;
 
 public class Ikou extends Game
 {
@@ -26,7 +25,6 @@ public class Ikou extends Game
 
     public Ikou()
     {
-        Bullet.init();
     }
 	
 	@Override

@@ -23,41 +23,7 @@ public class TileWorldRender implements RenderableProvider, Disposable
     {
         // Build a master sector of the maze
         TileSector masterSector = new TileSector(maze);
-        buildMesh(masterSector);
-    }
-
-    private void buildMesh(TileSector sector)
-    {
-        TileMeshBuilder worldMeshBuilder = new TileMeshBuilder();
-
-        for (int z = 0; z < sector.size; z++)
-        {
-            Array<TileStack> currSectorRow = sector.get(z);
-
-            for (int x = 0; x < currSectorRow.size; x++)
-            {
-                TileStack currTileStack = currSectorRow.get(x);
-
-                for (int y = 0; y < currTileStack.size; y++)
-                {
-                    TileData currTile = currTileStack.get(y);
-
-                    if (currTile.isVisible())
-                    {
-                        float width = Constants.TILE_LENGTH;
-                        float height = Constants.TILE_THICKNESS;
-                        float depth = Constants.TILE_LENGTH;
-
-                        float xPos = (float) x * width;
-                        float yPos = (float) y * height;
-                        float zPos = (float) z * depth;
-
-                        worldMeshBuilder.addTile(currTile, xPos, yPos, zPos);
-                    }
-                }
-            }
-        }
-
+        SectorMeshBuilder worldMeshBuilder = new SectorMeshBuilder(masterSector);
         mesh = worldMeshBuilder.build();
     }
 

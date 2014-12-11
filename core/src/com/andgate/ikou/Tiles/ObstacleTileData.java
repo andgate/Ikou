@@ -23,6 +23,6 @@ public class ObstacleTileData extends TileData
     public ObstacleTileData()
     {
         super();
-        tileColor = Color.DARK_GRAY;
+        tileColor = Color.GRAY;
     }
 }

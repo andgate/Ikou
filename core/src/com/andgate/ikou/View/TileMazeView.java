@@ -30,6 +30,11 @@ public class TileMazeView implements Disposable
         tileWorldModel.transform.setTranslation(position);
     }
 
+    public TileWorldRender getModel()
+    {
+        return getModel();
+    }
+
     public void render(ModelBatch modelBatch, Environment environment)
     {
         modelBatch.render(tileWorldModel, environment);

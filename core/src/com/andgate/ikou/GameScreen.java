@@ -24,14 +24,20 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.BaseLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
 public class GameScreen extends ScreenAdapter implements DirectionListener
 {
@@ -57,7 +63,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         this.game = game;
 
-        createEnvironment();
+        Gdx.graphics.setVSync(false);
+
         modelBatch = new ModelBatch();
 
         FileHandle file = Gdx.files.internal("data/level/1.txt");
@@ -76,6 +83,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         player = new Player(playerStartPosition);
 
         createCamera();
+
+        createEnvironment();
 
         InputProcessor moveController = new PlayerDirectionGestureDetector(this, camera);
         im = new InputMultiplexer();
@@ -102,7 +111,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 1f, -0.8f, 0.2f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
     }
 
     @Override
@@ -115,6 +124,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         if(controlsMenu.currentMode == GameControlsMenu.Mode.MOVEMENT)
         {
             camera.position.set(player.getPosition());
+            camera.position.x += TileData.WIDTH / 2.0f;
             camera.position.y += 3.0f;
             camera.position.z -= 3.0f;
             camera.lookAt(player.getPosition());
@@ -127,6 +137,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         }
 
         renderSetup();
+
         modelBatch.begin(camera);
             nextMazeView.render(modelBatch, environment);
             currMazeView.render(modelBatch, environment);
@@ -138,7 +149,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         doPhysicsStep(delta);
 
 
-        System.out.println(Gdx.graphics.getFramesPerSecond());
+        //System.out.println(Gdx.graphics.getFramesPerSecond());
     }
 
     private float accumulator = 0.0f;

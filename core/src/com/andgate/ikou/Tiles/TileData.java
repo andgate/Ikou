@@ -39,8 +39,9 @@ public class TileData
 
     public static final Material TILE_MATERIAL
             = new Material(
-                new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
-                new IntAttribute(IntAttribute.CullFace, GL20.GL_BACK));
+                  new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+                , new IntAttribute(IntAttribute.CullFace, GL20.GL_NONE)
+            );
     protected Color tileColor;
     protected boolean isVisible;
 
@@ -48,7 +49,7 @@ public class TileData
     {
         isVisible = true;
         tileColor = new Color(Color.LIGHT_GRAY);
-        tileColor.a = 0.7f;
+        //tileColor.a = 0.7f;
     }
 
     public Color getColor()

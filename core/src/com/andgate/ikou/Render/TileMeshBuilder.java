@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ShortArray;
@@ -33,6 +32,8 @@ public class TileMeshBuilder
 
     public static final int VERTICES_PER_FACE = 4;
     public static final int INDICES_PER_FACE = 6;
+
+    public static final int SUBQUADS = 10;
 
 
     // Normal pointers for all the six sides. They never changes.
@@ -68,7 +69,7 @@ public class TileMeshBuilder
 
     public void addTile(TileData tile, float x, float y, float z)
     {
-        setupMesh(x, y, z);
+        calculateVerts(x, y, z);
         addFront(tile);
         addBack(tile);
         addRight(tile);
@@ -77,23 +78,27 @@ public class TileMeshBuilder
         addBottom(tile);
     }
 
-    private void setupMesh(float x, float y, float z)
+    public void calculateVerts(float x, float y, float z)
     {
+        final float width = TileData.WIDTH;
+        final float height = TileData.HEIGHT;
+        final float depth = TileData.DEPTH;
         // Creates the 8 vector points that exists on a box. Those will be used to create the vertex.
-        points[0] = pointVector0.set(x,         y,          z + DEPTH);
-        points[1] = pointVector1.set(x + WIDTH, y,          z + DEPTH);
-        points[2] = pointVector2.set(x + WIDTH, y + HEIGHT, z + DEPTH);
-        points[3] = pointVector3.set(x,         y + HEIGHT, z + DEPTH);
-        points[4] = pointVector4.set(x + WIDTH, y,          z);
+        points[0] = pointVector0.set(x,         y,          z + depth);
+        points[1] = pointVector1.set(x + width, y,          z + depth);
+        points[2] = pointVector2.set(x + width, y + height, z + depth);
+        points[3] = pointVector3.set(x,         y + height, z + depth);
+        points[4] = pointVector4.set(x + width, y,          z);
         points[5] = pointVector5.set(x,         y,          z);
-        points[6] = pointVector6.set(x,         y + HEIGHT, z);
-        points[7] = pointVector7.set(x + WIDTH, y + HEIGHT, z);
+        points[6] = pointVector6.set(x,         y + height, z);
+        points[7] = pointVector7.set(x + width, y + height, z);
     }
 
-    void addFront(TileData tile)
+    public void addFront(TileData tile)
     {
         Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+
         vertices.addAll(
                 points[0].x, points[0].y, points[0].z, color.toFloatBits(), frontNormal[0], frontNormal[1], frontNormal[2],
                 points[1].x, points[1].y, points[1].z, color.toFloatBits(), frontNormal[0], frontNormal[1], frontNormal[2],
@@ -103,10 +108,11 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    void addBack(TileData tile)
+    public void addBack(TileData tile)
     {
         Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+
         vertices.addAll(
                 points[4].x, points[4].y, points[4].z, color.toFloatBits(), backNormal[0], backNormal[1], backNormal[2],
                 points[5].x, points[5].y, points[5].z, color.toFloatBits(), backNormal[0], backNormal[1], backNormal[2],
@@ -116,23 +122,24 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    void addRight(TileData tile)
+    public void addRight(TileData tile)
     {
         Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+
         vertices.addAll(
                 points[1].x, points[1].y, points[1].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2],
                 points[4].x, points[4].y, points[4].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2],
                 points[7].x, points[7].y, points[7].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2],
                 points[2].x, points[2].y, points[2].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2]);
-
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    void addLeft(TileData tile)
+    public void addLeft(TileData tile)
     {
         Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+
         vertices.addAll(
                 points[5].x, points[5].y, points[5].z, color.toFloatBits(), leftNormal[0], leftNormal[1], leftNormal[2],
                 points[0].x, points[0].y, points[0].z, color.toFloatBits(), leftNormal[0], leftNormal[1], leftNormal[2],
@@ -142,10 +149,11 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    void addTop(TileData tile)
+    public void addTop(TileData tile)
     {
         Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+
         vertices.addAll(
                 points[3].x, points[3].y, points[3].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
                 points[2].x, points[2].y, points[2].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
@@ -153,13 +161,49 @@ public class TileMeshBuilder
                 points[6].x, points[6].y, points[6].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2]);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
-
     }
+
+    // Code to subdivide the top.
+    // Causes the map to have trouble rendering
+    // when SUBQUADS is around 5.
+    // TODO Investigate rendering loss associated with SUBQUADS
+    /*void addTop(TileData tile, float x, float y, float z)
+    {
+        Color color = tile.getColor();
+        for (int hDiv = 0; hDiv < SUBQUADS; hDiv++)
+        {
+            for (int vDiv = 0; vDiv < SUBQUADS; vDiv++)
+            {
+                calculateVerts(
+                        x + hDiv * WIDTH / SUBQUADS,
+                        y,
+                        z + vDiv * DEPTH / SUBQUADS,
+                        WIDTH / SUBQUADS,
+                        HEIGHT,
+                        DEPTH / SUBQUADS
+                );
+
+                int vertexOffset = vertices.size / NUM_COMPONENTS;
+
+                vertices.addAll(
+                        points[3].x, points[3].y, points[3].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
+                        points[2].x, points[2].y, points[2].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
+                        points[7].x, points[7].y, points[7].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
+                        points[6].x, points[6].y, points[6].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2]);
+
+                indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
+            }
+        }
+
+        calculateVerts(x, y, z, WIDTH, HEIGHT, DEPTH);
+    }*/
+
 
     void addBottom(TileData tile)
     {
         Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+
         vertices.addAll(
                 points[5].x, points[5].y, points[5].z, color.toFloatBits(), bottomNormal[0], bottomNormal[1], bottomNormal[2],
                 points[4].x, points[4].y, points[4].z, color.toFloatBits(), bottomNormal[0], bottomNormal[1], bottomNormal[2],

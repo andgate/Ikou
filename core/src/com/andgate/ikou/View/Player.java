@@ -81,6 +81,11 @@ public class Player implements Disposable
         this.destination.set(destination);
     }
 
+    public PlayerModelRender getModel()
+    {
+        return playerModel;
+    }
+
     public boolean isMoving()
     {
         return isMoving;
@@ -91,7 +96,6 @@ public class Player implements Disposable
         playerModel.transform.idt();
         playerModel.transform.translate(position);
     }
-
 
     Vector3 position = new Vector3();
     public Vector3 getPosition()

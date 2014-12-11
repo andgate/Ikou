@@ -13,6 +13,7 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.numSamples = 16;
+        config.useGLSurfaceView20API18 = true;
         initialize(new Ikou(), config);
 	}
 }
