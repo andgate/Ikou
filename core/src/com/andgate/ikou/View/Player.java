@@ -23,6 +23,8 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class Player implements Disposable
 {
+    private static final String TAG = "Player";
+
     private static final float SPEED = 15.0f;
     private boolean isMoving = false;
     private final Vector3 destination = new Vector3();

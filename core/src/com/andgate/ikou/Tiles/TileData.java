@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.DepthTestAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.IntAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
@@ -40,8 +41,9 @@ public class TileData
     public static final Material TILE_MATERIAL
             = new Material(
                   new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-                , new IntAttribute(IntAttribute.CullFace, GL20.GL_NONE)
+                //, new IntAttribute(IntAttribute.CullFace, GL20.GL_NONE)
             );
+
     protected Color tileColor;
     protected boolean isVisible;
 

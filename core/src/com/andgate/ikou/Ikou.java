@@ -14,11 +14,14 @@
 package com.andgate.ikou;
 
 import com.andgate.ikou.exception.InvalidFileFormatException;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 
 public class Ikou extends Game
 {
+    private static final String TAG = "Ikou Main Class";
     public float ppm = 0.0f;
     public float worldWidth = 0.0f;
     public float worldHeight = 0.0f;
@@ -31,10 +34,12 @@ public class Ikou extends Game
 	public void create ()
     {
         Gdx.graphics.setVSync(true);
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         //Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
         try
         {
@@ -42,7 +47,7 @@ public class Ikou extends Game
         }
         catch(InvalidFileFormatException e)
         {
-            System.out.println(e.getMessage());
+            Gdx.app.error(TAG, e.getMessage(), e);
         }
 	}
 

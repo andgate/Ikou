@@ -14,6 +14,7 @@
 package com.andgate.ikou.Utility;
 
 import com.andgate.ikou.Model.TileMaze;
+import com.andgate.ikou.TileCode;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.math.Vector2;
 
@@ -30,7 +31,9 @@ public class TileMazeParser
         Vector2 startPosition = getStartPosition(mapString);
         char[][] tiles = getTiles(mapLines);
 
-        TileMaze maze = new TileMaze(tiles, startPosition);
+        Vector2 endPosition = getEndPosition(tiles);
+
+        TileMaze maze = new TileMaze(tiles, startPosition, endPosition);
         return maze;
     }
 
@@ -64,6 +67,38 @@ public class TileMazeParser
         }
 
         return new Vector2((float)startX, (float)startY);
+    }
+
+    private static Vector2 getEndPosition(char[][] tiles)
+            throws InvalidFileFormatException
+    {
+        Vector2 endPosition = null;
+
+        for(int rowIndex = 0; rowIndex < tiles.length; rowIndex++)
+        {
+            char[] tileRow = tiles[rowIndex];
+            for(int columnIndex = 0; columnIndex < tileRow.length; columnIndex++)
+            {
+                char currTile = tileRow[columnIndex];
+                if(currTile == TileCode.END_TILE)
+                {
+                    if(endPosition != null)
+                    {
+                        throw new InvalidFileFormatException("Multiple end tiles found.");
+                    }
+
+                    endPosition = new Vector2(rowIndex, columnIndex);
+                }
+
+            }
+        }
+
+        if(endPosition == null)
+        {
+            throw new InvalidFileFormatException("Missing end tile.");
+        }
+
+        return endPosition;
     }
 
     private static char[][] getTiles(String[] mapLines)

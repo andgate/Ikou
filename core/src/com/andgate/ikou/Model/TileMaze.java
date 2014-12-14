@@ -45,18 +45,20 @@ public class TileMaze
 
     private char[][] tiles;
     private final Vector2 initialPlayerPosition;
+    private final Vector2 endPosition;
     private Vector2 playerPosition;
     private Vector2 nextPosition;
     private Direction playerVelocity = Direction.None;
 
     private boolean isWon = false;
 
-    public TileMaze(char[][] tiles, Vector2 initialPlayerPosition)
+    public TileMaze(char[][] tiles, Vector2 initialPlayerPosition, Vector2 endPosition)
     {
         this.tiles = tiles;
         this.initialPlayerPosition = new Vector2(initialPlayerPosition);
         playerPosition = new Vector2(initialPlayerPosition);
         nextPosition = new Vector2(playerPosition);
+        this.endPosition = new Vector2(endPosition);
     }
 
     public boolean hasWon()

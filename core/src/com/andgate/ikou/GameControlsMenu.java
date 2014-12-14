@@ -9,8 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Disposable;
 
-public class GameControlsMenu
+public class GameControlsMenu implements Disposable
 {
     private final Ikou game;
 
@@ -24,27 +25,46 @@ public class GameControlsMenu
 
     private Stage cameraModeStage;
     private Stage movementModeStage;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
+
+    private final InputMultiplexer im;
+    private final InputProcessor moveController;
+    private final InputProcessor camController;
 
     public GameControlsMenu(Ikou game, InputMultiplexer im, InputProcessor moveController, InputProcessor camController)
     {
         this.game = game;
         batch = new SpriteBatch();
 
-        build(im, moveController, camController);
+        this.im = im;
+        this.moveController = moveController;
+        this.camController = camController;
 
-        // Game always starts in movement mode
-        im.addProcessor(movementModeStage);
+        build();
     }
 
-    private void build(InputMultiplexer im, InputProcessor moveController, InputProcessor camController)
+    public void build()
     {
-        buildCameraMode(im, moveController, camController);
-        buildMovementMode(im, moveController, camController);
+        buildCameraMode();
+        buildMovementMode();
+
+        if(currentMode == Mode.CAMERA)
+        {
+            im.addProcessor(cameraModeStage);
+        }
+        else
+        {
+            im.addProcessor(movementModeStage);
+        }
     }
 
-    private void buildCameraMode(final InputMultiplexer im, final InputProcessor moveController, final InputProcessor camController)
+    private void buildCameraMode()
     {
+        if(cameraModeStage != null)
+        {
+            cameraModeStage.dispose();
+        }
+
         cameraModeStage = new Stage();
 
         ImageButton moveButton = Icon.createIconButton(game, Constants.MOVE_ICON_LOCATION, Constants.MOVE_ICON_DOWN_LOCATION, new ClickListener()
@@ -54,7 +74,6 @@ public class GameControlsMenu
                     {
                         im.removeProcessor(cameraModeStage);
                         im.removeProcessor(camController);
-
 
                         im.addProcessor(movementModeStage);
                         im.addProcessor(moveController);
@@ -71,8 +90,13 @@ public class GameControlsMenu
         cameraModeStage.addActor(table);
     }
 
-    private void buildMovementMode(final InputMultiplexer im, final InputProcessor moveController, final InputProcessor camController)
+    private void buildMovementMode()
     {
+        if(movementModeStage != null)
+        {
+            movementModeStage.dispose();
+        }
+
         movementModeStage = new Stage();
 
         ImageButton cameraButton = Icon.createIconButton(game, Constants.CAMERA_ICON_LOCATION, Constants.CAMERA_ICON_DOWN_LOCATION, new ClickListener()
@@ -113,5 +137,13 @@ public class GameControlsMenu
                 break;
         }
         batch.end();
+    }
+
+    @Override
+    public void dispose()
+    {
+        cameraModeStage.dispose();
+        movementModeStage.dispose();
+        batch.dispose();
     }
 }

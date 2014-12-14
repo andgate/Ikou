@@ -12,12 +12,14 @@
  */
 package com.andgate.ikou;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
 
 public class PlayerDirectionGestureDetector extends GestureDetector
 {
+    private static final String TAG = "PlayerDirectionGestureDetector";
     public PlayerDirectionGestureDetector(DirectionListener directionListener, PerspectiveCamera camera) {
         super(new DirectionGestureListener(directionListener, camera));
     }
@@ -65,8 +67,8 @@ public class PlayerDirectionGestureDetector extends GestureDetector
             screenFoward.set(worldFoward);
             camera.project(screenFoward);
 
-            System.out.println("Screen coords: " + screenFoward.toString());
-            System.out.println("World coords: " + worldFoward.toString());
+            Gdx.app.debug(TAG, "Screen coords: " + screenFoward.toString());
+            Gdx.app.debug(TAG, "World coords: " + worldFoward.toString());
 
             return super.fling(velocityX, velocityY, button);
         }

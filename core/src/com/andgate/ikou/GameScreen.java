@@ -41,6 +41,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class GameScreen extends ScreenAdapter implements DirectionListener
 {
+    private static final String TAG = "GameScreen";
+
     private final Ikou game;
     private CameraInputController camController;
 
@@ -149,7 +151,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         doPhysicsStep(delta);
 
 
-        //System.out.println(Gdx.graphics.getFramesPerSecond());
+        //Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 
     private float accumulator = 0.0f;
@@ -193,6 +195,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         camera.viewportHeight = game.worldHeight;
         camera.viewportWidth = game.worldWidth;
         camera.update(true);
+
+        controlsMenu.build();
     }
 
     public void movePlayer(TileMaze.Direction velocity)

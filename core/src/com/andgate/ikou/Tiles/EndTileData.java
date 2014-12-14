@@ -9,6 +9,6 @@ public class EndTileData extends TileData
         super();
         //isVisible = false;
         tileColor = new Color(Color.RED);
-        tileColor.a = 0.5f;
+        //tileColor.a = 0.5f;
     }
 }
