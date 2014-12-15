@@ -17,7 +17,15 @@ import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Ikou extends Game
 {
@@ -26,6 +34,16 @@ public class Ikou extends Game
     public float worldWidth = 0.0f;
     public float worldHeight = 0.0f;
 
+    public Skin skin;
+
+
+    public FreeTypeFontGenerator logoFontGenerator;
+    public BitmapFont logoFont;
+
+    public FreeTypeFontGenerator menuFontGenerator;
+    public BitmapFont menuTitleFont;
+    public BitmapFont menuOptionFont;
+
     public Ikou()
     {
     }
@@ -33,56 +51,105 @@ public class Ikou extends Game
 	@Override
 	public void create ()
     {
-        Gdx.graphics.setVSync(true);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.input.setCatchBackKey(true);
+        Gdx.graphics.setVSync(true);
+        screenAdjustments(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         //Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
-        try
-        {
-            setScreen(new GameScreen(this));
-        }
-        catch(InvalidFileFormatException e)
-        {
-            Gdx.app.error(TAG, e.getMessage(), e);
-        }
+        skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
+        createFontGenerators();
+        createFonts();
+
+        setScreen(new MainMenuScreen(this));
 	}
 
-	@Override
-	public void render () {
-		super.render();
-	}
+    private void createFontGenerators()
+    {
+        logoFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.LOGO_FONT_LOCATION));
+        menuFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.MENU_FONT_LOCATION));
+    }
+
+    private void createFonts()
+    {
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        parameter.size = (int) ((float)Constants.LOGO_FONT_SIZE * ppm);
+        logoFont = logoFontGenerator.generateFont(parameter);
+
+        parameter.size = (int) ((float)Constants.MENU_TITLE_FONT_SIZE * ppm);
+        menuTitleFont = menuFontGenerator.generateFont(parameter);
+
+        parameter.size = (int) ((float)Constants.MENU_OPTION_FONT_SIZE * ppm);
+        menuOptionFont = menuFontGenerator.generateFont(parameter);
+    }
 
     @Override
     public void dispose()
     {
-        getScreen().dispose();
+        disposeFonts();
+        disposeFontGenerators();
+
+        if(getScreen() != null)
+            getScreen().dispose();
+    }
+
+    private void disposeFontGenerators()
+    {
+        if(logoFontGenerator != null)
+            logoFontGenerator.dispose();
+        if(menuFontGenerator != null)
+            menuFontGenerator.dispose();
+    }
+
+    private void disposeFonts()
+    {
+        if(menuOptionFont != null)
+            menuOptionFont.dispose();
+        if(menuTitleFont != null)
+            menuTitleFont.dispose();
+        if(logoFont != null)
+            logoFont.dispose();
+    }
+
+
+    @Override
+    public void render () {
+        super.render();
     }
 
     @Override
     public void resize(int width, int height)
+    {
+        screenAdjustments(width, height);
+
+        disposeFonts();
+        createFonts();
+
+        if(getScreen() != null)
+        {
+            getScreen().resize(width, height);
+        }
+    }
+
+    public void screenAdjustments(int width, int height)
     {
         float res = (float)width / (float)height;
 
         if(width <= height)
         {
             worldWidth = Constants.WORLD_LENGTH;
+            ppm = (float)Gdx.graphics.getWidth() / worldWidth;
             worldHeight = worldWidth * (float)height / (float)width;
         }
         else
         {
             worldHeight = Constants.WORLD_LENGTH;
+            ppm = (float)Gdx.graphics.getHeight() / worldHeight;
             worldWidth = worldHeight * (float)width / (float)height;
-        }
-
-        ppm = (float)Gdx.graphics.getHeight() / worldHeight;
-
-        if(getScreen() != null)
-        {
-            getScreen().resize(width, height);
         }
     }
 }

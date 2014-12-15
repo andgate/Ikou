@@ -20,6 +20,7 @@ import com.andgate.ikou.Tiles.TileData;
 import com.andgate.ikou.View.TileMazeView;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
@@ -60,7 +61,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
     private InputMultiplexer im;
 
-    public GameScreen(Ikou game)
+    public GameScreen(Ikou game, String levelName)
             throws InvalidFileFormatException
     {
         this.game = game;
@@ -69,22 +70,21 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
         modelBatch = new ModelBatch();
 
-        FileHandle file = Gdx.files.internal("data/level/1.txt");
+        FileHandle file = Gdx.files.internal("data/level/" + levelName + ".txt");
 
         currMaze = TileMazeParser.parse(file.readString());
-        currMazeView = new TileMazeView(currMaze, new Vector3(0.0f, 0.0f, 0.0f));
-
         nextMaze = TileMazeParser.parse(file.readString());
-        nextMazeView = new TileMazeView(nextMaze, new Vector3(0.0f, -Constants.LEVEL_SPACING, 0.0f));
 
         Vector3 playerStartPosition = new Vector3();
         playerStartPosition.x = currMaze.getInitialPlayerPosition().x;
         playerStartPosition.y = TileData.HEIGHT; // Above the floor
         playerStartPosition.z = currMaze.getInitialPlayerPosition().y;
-
         player = new Player(playerStartPosition);
 
         createCamera();
+
+        currMazeView = new TileMazeView(currMaze, new Vector3(0.0f, 0.0f, 0.0f), camera);
+        nextMazeView = new TileMazeView(nextMaze, new Vector3(0.0f, -Constants.LEVEL_SPACING, 0.0f), camera);
 
         createEnvironment();
 
@@ -104,7 +104,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
                             player.getPosition().z - 3.0f);
         camera.lookAt(player.getPosition());
         camera.near = 1f;
-        camera.far = 300f;
+        camera.far = 30f;
         camera.update();
         camController = new CameraInputController(camera);
     }
@@ -113,6 +113,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
     }
 
@@ -151,6 +152,12 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         doPhysicsStep(delta);
 
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        {
+            game.setScreen(new MainMenuScreen(game));
+            this.dispose();
+        }
+
         //Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 
@@ -186,7 +193,10 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     public void dispose()
     {
         currMazeView.dispose();
+        nextMazeView.dispose();
         player.dispose();
+        modelBatch.dispose();
+        controlsMenu.dispose();
     }
 
     @Override

@@ -15,10 +15,24 @@ package com.andgate.ikou;
 
 public class Constants
 {
+    public static final String GAME_NAME = "Ikou";
+
     public static final float TIME_STEP = 1.0f / 60.0f;
 
-    public static final int WORLD_LENGTH = 5;
-    public static final float BUTTON_LENGTH = 0.7f;
+    public static final int WORLD_LENGTH = 30;
+    public static final float BUTTON_LENGTH = 3.0f;
+
+    public static final String SKIN_LOCATION
+            = "data/ui/uiskin.json";
+
+    public static final String LOGO_FONT_LOCATION
+            = "data/fonts/blockbusta.ttf";
+    public static final int LOGO_FONT_SIZE = 7;
+
+    public static final String MENU_FONT_LOCATION
+            = "data/fonts/arial.ttf";
+    public static final int MENU_TITLE_FONT_SIZE = 5;
+    public static final int MENU_OPTION_FONT_SIZE = 3;
 
     public static final String CAMERA_ICON_LOCATION
             = "data/icons/camera.png";
@@ -29,6 +43,9 @@ public class Constants
     public static final String MOVE_ICON_DOWN_LOCATION
             = "data/icons/move_down.png";
 
+    public static final String LEVELS_DIRECTORY
+            = "data/level";
+
     public static final float LITTLE_EPSILON = 1.0f / 1E10f;
     public static final float EPSILON = 1.0f / 1E7f;
     public static final float BIG_EPSILON = 1.0f / 1E3f;
@@ -37,8 +54,4 @@ public class Constants
     public static final float TILE_THICKNESS = TILE_LENGTH / 50.0f;
 
     public static final float LEVEL_SPACING = 5.0f;
-
-    /*public static final float LIGHT_THICKNESS = 0.05f;
-    public static final float MEDIUM_THICKNESS = 0.1f;
-    public static final float HEAVY_THICKNESS = 0.2f;*/
 }

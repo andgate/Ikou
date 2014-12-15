@@ -35,6 +35,21 @@ public class Array2d<T> extends Array<Array<T>>
         return size;
     }
 
+    public int maxColumns()
+    {
+        int max = 0;
+        for(int row = 0; row < size; row++)
+        {
+            int columnCount = get(row).size;
+            if(columnCount > max)
+            {
+                max = columnCount;
+            }
+        }
+
+        return max;
+    }
+
     public T last()
     {
         int lastRowIndex = size - 1;

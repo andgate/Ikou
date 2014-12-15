@@ -10,10 +10,15 @@ public class SectorMeshBuilder extends TileMeshBuilder
 {
     public SectorMeshBuilder(TileSector sector)
     {
-        this(sector, true);
+        this(sector, 0, 0, true);
     }
 
-    public SectorMeshBuilder(TileSector sector, boolean cullFaces)
+    public SectorMeshBuilder(TileSector sector, int offsetX, int offsetZ)
+    {
+        this(sector, offsetX, offsetZ, true);
+    }
+
+    public SectorMeshBuilder(TileSector sector, int offsetX, int offsetZ, boolean cullFaces)
     {
         super();
 
@@ -31,9 +36,9 @@ public class SectorMeshBuilder extends TileMeshBuilder
 
                     if (currTile.isVisible())
                     {
-                        float xPos = (float) x * TileData.WIDTH;
+                        float xPos = (float) x * TileData.WIDTH + offsetX;
                         float yPos = (float) y * TileData.HEIGHT;
-                        float zPos = (float) z * TileData.DEPTH;
+                        float zPos = (float) z * TileData.DEPTH + offsetZ;
 
                         if(cullFaces)
                         {
@@ -49,26 +54,36 @@ public class SectorMeshBuilder extends TileMeshBuilder
         }
     }
 
+    /**
+     * Adds a culled tile to the mesh, culling non-visible sides.
+     * @param sector The sector to fetch information from
+     * @param x Used to fetch tile information
+     * @param y Used to fetch tile information
+     * @param z Used to fetch tile information
+     * @param xPos Used to designate tile location
+     * @param yPos Used to designate tile location
+     * @param zPos Used to designate tile location
+     */
     public void addCulledTile(TileSector sector, int x, int y, int z, float xPos, float yPos, float zPos)
     {
         TileData tile = sector.getTile(x, y, z);
 
-        if(tile == null)
+        if(tile == null || !tile.isVisible())
             return;
 
         calculateVerts(xPos, yPos, zPos);
 
-        if (!sector.doesTileExist(x, y, z + 1))
+        if (!sector.isTileVisible(x, y, z + 1))
             addFront(tile);
-        if (!sector.doesTileExist(x, y, z - 1))
+        if (!sector.isTileVisible(x, y, z - 1))
             addBack(tile);
-        if (!sector.doesTileExist(x - 1, y, z))
+        if (!sector.isTileVisible(x - 1, y, z))
             addLeft(tile);
-        if (!sector.doesTileExist(x + 1, y, z))
+        if (!sector.isTileVisible(x + 1, y, z))
             addRight(tile);
-        if (!sector.doesTileExist(x, y + 1, z))
+        if (!sector.isTileVisible(x, y + 1, z))
             addTop(tile);
-        if (!sector.doesTileExist(x, y - 1, z))
+        if (!sector.isTileVisible(x, y - 1, z))
             addBottom(tile);
     }
 }
