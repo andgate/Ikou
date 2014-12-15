@@ -28,7 +28,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="gdx-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-1.4.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-bullet-1.4.1" level="project" />
   </component>
 </module>
 

@@ -30,9 +30,8 @@
     <orderEntry type="library" exported="" name="gdx-backend-lwjgl-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-platform-1.4.1-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-platform-1.4.1-natives-desktop" level="project" />
-    <orderEntry type="library" exported="" name="gdx-bullet-platform-1.4.1-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" name="gdx-tools-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.4.1" level="project" />
-    <orderEntry type="library" exported="" name="gdx-bullet-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="lwjgl_util-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="jlayer-1.0.1-gdx" level="project" />
