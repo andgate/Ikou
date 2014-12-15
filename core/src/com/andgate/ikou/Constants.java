@@ -44,7 +44,7 @@ public class Constants
             = "data/icons/move_down.png";
 
     public static final String LEVELS_DIRECTORY
-            = "data/level";
+            = "data/levels";
 
     public static final float LITTLE_EPSILON = 1.0f / 1E10f;
     public static final float EPSILON = 1.0f / 1E7f;
