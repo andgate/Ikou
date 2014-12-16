@@ -70,7 +70,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
         modelBatch = new ModelBatch();
 
-        FileHandle file = Gdx.files.internal("data/level/" + levelName + ".txt");
+        FileHandle file = Gdx.files.internal("data/levels/" + levelName + ".txt");
 
         currMaze = TileMazeParser.parse(file.readString());
         nextMaze = TileMazeParser.parse(file.readString());
