@@ -54,7 +54,7 @@ public class LevelSelectScreen implements Screen
 
         Table levelsTable = new Table();
 
-        String[] levelNames = getLevelNames();
+        String[] levelNames = LevelManager.getLevelNames();
         TextButton[] levelOptions = new TextButton[levelNames.length];
 
         for(int i = 0; i < levelNames.length; i++)
@@ -109,21 +109,6 @@ public class LevelSelectScreen implements Screen
         {
             Gdx.app.exit();
         }
-    }
-
-    public String[] getLevelNames()
-    {
-        FileHandle dirHandle = Gdx.files.internal(Constants.LEVELS_DIRECTORY);
-
-        ArrayList<String> levelNamesList = new ArrayList<String>();
-
-        for(FileHandle entry : dirHandle.list())
-        {
-            String levelName = entry.nameWithoutExtension();
-            levelNamesList.add(levelName);
-        }
-
-        return levelNamesList.toArray(new String[levelNamesList.size()]);
     }
 
     @Override
