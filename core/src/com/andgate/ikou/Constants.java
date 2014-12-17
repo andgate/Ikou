@@ -46,6 +46,9 @@ public class Constants
     public static final String LEVELS_DIRECTORY
             = "data/levels";
 
+    public static final String PROGRESS_DATABASE_PATH
+            = "Android/data/com.andgate.ikou/progress.data";
+
     public static final float LITTLE_EPSILON = 1.0f / 1E10f;
     public static final float EPSILON = 1.0f / 1E7f;
     public static final float BIG_EPSILON = 1.0f / 1E3f;
