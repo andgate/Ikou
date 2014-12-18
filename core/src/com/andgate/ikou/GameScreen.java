@@ -150,6 +150,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         controlsMenu.render();
 
         doPhysicsStep(delta);
+        controlsMenu.update();
 
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))

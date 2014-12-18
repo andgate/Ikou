@@ -139,6 +139,12 @@ public class GameControlsMenu implements Disposable
         batch.end();
     }
 
+    public void update()
+    {
+        cameraModeStage.act();
+        movementModeStage.act();
+    }
+
     @Override
     public void dispose()
     {

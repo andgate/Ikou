@@ -52,43 +52,29 @@ public class LevelSelectScreen implements Screen
                                                                                       game.skin.getDrawable("default-round"),
                                                                                       game.menuOptionFont);
 
-        Table levelsTable = new Table();
+        Table levelOptionsTable = new Table();
 
         String[] levelNames = LevelManager.getLevelNames();
+        final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
         TextButton[] levelOptions = new TextButton[levelNames.length];
 
         for(int i = 0; i < levelNames.length; i++)
         {
             levelOptions[i] = new TextButton(levelNames[i], buttonStyle);
 
-            final String levelName = levelNames[i];
+            String levelName = levelNames[i];
 
-            levelOptions[i].addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    //game.buttonPressedSound.play();
-                    try
-                    {
-                        game.setScreen(new GameScreen(game, levelName));
-                    }
-                    catch(InvalidFileFormatException e)
-                    {
-                        Gdx.app.error(TAG, "Error loading level", e);
-                    }
+            levelOptions[i].addListener(new LevelOptionClickListener(game, this, levelName));
 
-                    LevelSelectScreen.this.dispose();
-                }
-            });
-
-            levelsTable.add(levelOptions[i]).row();
+            levelOptionsTable.add(levelOptions[i]).row();
         }
 
-        ScrollPane scrollPane = new ScrollPane(levelsTable, game.skin);
+        ScrollPane scrollPane = new ScrollPane(levelOptionsTable);
 
         Table table = new Table();
 
-        table.add(titleLabel).expand().center().top().row();
-        table.add(scrollPane).spaceBottom(20.0f).row();
+        table.add(titleLabel).center().top().row();
+        table.add(scrollPane).expand();
 
         table.setFillParent(true);
 
@@ -107,12 +93,21 @@ public class LevelSelectScreen implements Screen
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK))
         {
-            Gdx.app.exit();
+            gotoMainMenu();
         }
+
+        stage.act();
+    }
+
+    public void gotoMainMenu()
+    {
+        game.setScreen(new MainMenuScreen(game));
+        dispose();
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         buildStage();
     }
 
@@ -138,5 +133,38 @@ public class LevelSelectScreen implements Screen
             stage.dispose();
         if(batch != null)
             batch.dispose();
+    }
+
+    private class LevelOptionClickListener extends ClickListener
+    {
+        private static final String TAG = "LevelOptionClickListener";
+
+        private final Ikou game;
+        private final LevelSelectScreen screen;
+        private final String levelName;
+
+        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, String levelName)
+        {
+            super();
+
+            this.game = game;
+            this.screen = screen;
+            this.levelName = levelName;
+        }
+
+        @Override
+        public void clicked(InputEvent event, float x, float y)
+        {
+            //game.buttonPressedSound.play();
+            try
+            {
+                game.setScreen(new GameScreen(game, levelName));
+                screen.dispose();
+            }
+            catch(InvalidFileFormatException e)
+            {
+                Gdx.app.error(TAG, "Error loading level", e);
+            }
+        }
     }
 }

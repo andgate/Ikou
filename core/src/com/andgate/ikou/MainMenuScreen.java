@@ -83,6 +83,8 @@ public class MainMenuScreen implements Screen
         {
             Gdx.app.exit();
         }
+
+        stage.act();
     }
 
     @Override

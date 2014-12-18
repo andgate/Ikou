@@ -15,8 +15,11 @@ public class LevelManager
 
         for(FileHandle entry : dirHandle.list())
         {
-            String levelName = entry.nameWithoutExtension();
-            levelNamesList.add(levelName);
+            if(entry.isDirectory())
+            {
+                String levelName = entry.name();
+                levelNamesList.add(levelName);
+            }
         }
 
         return levelNamesList.toArray(new String[levelNamesList.size()]);
