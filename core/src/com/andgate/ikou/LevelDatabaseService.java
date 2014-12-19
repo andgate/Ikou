@@ -1,5 +1,6 @@
 package com.andgate.ikou;
 
+import com.andgate.ikou.Model.TileMaze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 

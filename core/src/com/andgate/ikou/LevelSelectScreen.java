@@ -157,15 +157,6 @@ public class LevelSelectScreen implements Screen
             //game.buttonPressedSound.play();
             game.setScreen(new FloorSelectScreen(game, level));
             screen.dispose();
-            /*try
-            {
-                game.setScreen(new GameScreen(game, level));
-                screen.dispose();
-            }
-            catch(InvalidFileFormatException e)
-            {
-                Gdx.app.error(TAG, "Error loading level", e);
-            }*/
         }
     }
 }

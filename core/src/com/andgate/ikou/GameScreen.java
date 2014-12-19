@@ -13,7 +13,9 @@
 
 package com.andgate.ikou;
 
+import com.andgate.ikou.Model.Level;
 import com.andgate.ikou.Model.TileMaze;
+import com.andgate.ikou.Render.LevelRender;
 import com.andgate.ikou.Utility.TileMazeParser;
 import com.andgate.ikou.View.Player;
 import com.andgate.ikou.Tiles.TileData;
@@ -48,33 +50,24 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     private Environment environment;
 
     private Player player;
-    private TileMaze maze;
-    private TileMazeView mazeView;
+    private final Level level;
+    private final LevelRender levelRender;
 
     private InputMultiplexer im;
 
-    public GameScreen(Ikou game, LevelData level, int currFloor)
-            throws InvalidFileFormatException
+    public GameScreen(Ikou game, Level level)
     {
         this.game = game;
+        this.level = level;
 
         Gdx.graphics.setVSync(false);
 
         modelBatch = new ModelBatch();
+        camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
 
-        FileHandle file = Gdx.files.internal(level.getFloorPath(currFloor));
+        player = new Player(level.getIntialPlayerPostion());
 
-        maze = TileMazeParser.parse(file.readString());
-
-        Vector3 playerStartPosition = new Vector3();
-        playerStartPosition.x = maze.getInitialPlayerPosition().x;
-        playerStartPosition.y = TileData.HEIGHT; // Above the floor
-        playerStartPosition.z = maze.getInitialPlayerPosition().y;
-        player = new Player(playerStartPosition);
-
-        createCamera();
-
-        mazeView = new TileMazeView(maze, new Vector3(0.0f, 0.0f, 0.0f), camera);
+        levelRender = new LevelRender(level, camera);
 
         createEnvironment();
 
@@ -83,12 +76,13 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
 
+        setupCamera();
+
         controlsMenu = new GameControlsMenu(game, im, moveController, camController);
     }
 
-    private void createCamera()
+    private void setupCamera()
     {
-        camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
         camera.position.set(player.getPosition().x,
                             player.getPosition().y + 3.0f,
                             player.getPosition().z - 3.0f);
@@ -132,7 +126,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         renderSetup();
 
         modelBatch.begin(camera);
-            mazeView.render(modelBatch, environment);
+            modelBatch.render(levelRender, environment);
             player.render(modelBatch, environment);
         modelBatch.end();
 
@@ -182,7 +176,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     @Override
     public void dispose()
     {
-        mazeView.dispose();
+        levelRender.dispose();
         player.dispose();
         modelBatch.dispose();
         controlsMenu.dispose();
@@ -202,6 +196,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         if(!player.isMoving())
         {
+            TileMaze maze = level.getCurrentTileMaze();
             maze.move(velocity);
 
             Vector3 nextPosition = new Vector3();

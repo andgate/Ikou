@@ -1,5 +1,7 @@
 package com.andgate.ikou;
 
+import com.andgate.ikou.Model.Level;
+import com.andgate.ikou.Utility.LevelLoader;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -140,16 +142,16 @@ public class FloorSelectScreen extends ScreenAdapter
 
         private final Ikou game;
         private final FloorSelectScreen screen;
-        private final LevelData level;
+        private final LevelData levelData;
         private final int floor;
 
-        public FloorOptionClickListener(Ikou game, FloorSelectScreen screen, LevelData level, int floor)
+        public FloorOptionClickListener(Ikou game, FloorSelectScreen screen, LevelData levelData, int floor)
         {
             super();
 
             this.game = game;
             this.screen = screen;
-            this.level = level;
+            this.levelData = levelData;
             this.floor = floor;
         }
 
@@ -159,12 +161,14 @@ public class FloorSelectScreen extends ScreenAdapter
             //game.buttonPressedSound.play();
             try
             {
-                game.setScreen(new GameScreen(game, level, floor));
+                Level level = LevelLoader.load(levelData, floor);
+                game.setScreen(new GameScreen(game, level));
                 screen.dispose();
             }
             catch(InvalidFileFormatException e)
             {
                 Gdx.app.error(TAG, "Error loading level", e);
+                // Display a prompt of the error
             }
         }
     }

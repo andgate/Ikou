@@ -14,7 +14,7 @@
 package com.andgate.ikou.View;
 
 import com.andgate.ikou.Model.TileMaze;
-import com.andgate.ikou.Render.TileWorldRender;
+import com.andgate.ikou.Render.TileMazeRender;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -23,15 +23,15 @@ import com.badlogic.gdx.utils.Disposable;
 
 public class TileMazeView implements Disposable
 {
-    private TileWorldRender tileWorldModel;
+    private TileMazeRender tileWorldModel;
 
     public TileMazeView(TileMaze maze, Vector3 position, PerspectiveCamera camera)
     {
-        tileWorldModel = new TileWorldRender(maze, camera);
+        tileWorldModel = new TileMazeRender(maze, camera);
         tileWorldModel.transform.setTranslation(position);
     }
 
-    public TileWorldRender getModel()
+    public TileMazeRender getModel()
     {
         return getModel();
     }

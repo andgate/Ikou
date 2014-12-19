@@ -16,14 +16,14 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
-public class TileWorldRender implements RenderableProvider, Disposable
+public class TileMazeRender implements RenderableProvider, Disposable
 {
     private static final int SUBSECTOR_SIZE = 8;
     private Mesh[][] meshes;
     public final Matrix4 transform = new Matrix4();
     private final PerspectiveCamera camera;
 
-    public TileWorldRender(TileMaze maze, PerspectiveCamera camera)
+    public TileMazeRender(TileMaze maze, PerspectiveCamera camera)
     {
         this.camera = camera;
         // Build a master sector of the maze
@@ -52,6 +52,11 @@ public class TileWorldRender implements RenderableProvider, Disposable
                 meshes[currRow][currColumn] = worldMeshBuilder.build();
             }
         }
+    }
+
+    public void setPosition(Vector3 position)
+    {
+        transform.idt().translate(position);
     }
 
 

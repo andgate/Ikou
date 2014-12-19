@@ -58,5 +58,5 @@ public class Constants
     public static final float TILE_LENGTH = 1.0f;
     public static final float TILE_THICKNESS = TILE_LENGTH / 50.0f;
 
-    public static final float LEVEL_SPACING = 5.0f;
+    public static final float FLOOR_SPACING = 5.0f;
 }
