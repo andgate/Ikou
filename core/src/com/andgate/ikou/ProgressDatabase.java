@@ -1,7 +1,5 @@
 package com.andgate.ikou;
 
-import com.badlogic.gdx.utils.Disposable;
-
 import java.util.Hashtable;
 
 public class ProgressDatabase
@@ -22,7 +20,12 @@ public class ProgressDatabase
 
     public int getFloorsVisited(String levelName)
     {
-        return progressTable.get(levelName);
+        if(progressTable.containsKey(levelName))
+        {
+            return progressTable.get(levelName);
+        }
+
+        return 0;
     }
 
     public void setFloorsVisited(String levelName, int floorsVisited)

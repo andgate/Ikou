@@ -4,7 +4,6 @@ import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
-import java.util.ArrayList;
 
 public class LevelSelectScreen implements Screen
 {
@@ -52,29 +49,38 @@ public class LevelSelectScreen implements Screen
                                                                                       game.skin.getDrawable("default-round"),
                                                                                       game.menuOptionFont);
 
+
+        final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
+        LevelData[] levels = LevelDatabaseService.getLevels();
         Table levelOptionsTable = new Table();
 
-        String[] levelNames = LevelManager.getLevelNames();
-        final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
-        TextButton[] levelOptions = new TextButton[levelNames.length];
-
-        for(int i = 0; i < levelNames.length; i++)
+        for(int i = 0; i < levels.length; i++)
         {
-            levelOptions[i] = new TextButton(levelNames[i], buttonStyle);
+            final Table levelInfoTable = new Table();
 
-            String levelName = levelNames[i];
+            LevelData level = levels[i];
 
-            levelOptions[i].addListener(new LevelOptionClickListener(game, this, levelName));
+            final Label levelNameLabel = new Label(level.name, levelOptionLabelStyle);
 
-            levelOptionsTable.add(levelOptions[i]).row();
+            final String levelCompletion = level.completedFloors + " out of " + level.totalFloors;
+            final Label levelProgressLabel = new Label(levelCompletion, levelOptionLabelStyle);
+
+            levelInfoTable.addListener(new LevelOptionClickListener(game, this, level));
+
+            levelInfoTable.add(levelNameLabel).row();
+            levelInfoTable.add(levelProgressLabel);
+
+            float sidePadding = 1.0f * game.ppm;
+            levelOptionsTable.add(levelInfoTable).pad(0.0f, sidePadding, 0.0f, sidePadding);
         }
+
 
         ScrollPane scrollPane = new ScrollPane(levelOptionsTable);
 
         Table table = new Table();
 
         table.add(titleLabel).center().top().row();
-        table.add(scrollPane).expand();
+        table.add(scrollPane).fill().expand().top().left();
 
         table.setFillParent(true);
 
@@ -141,30 +147,32 @@ public class LevelSelectScreen implements Screen
 
         private final Ikou game;
         private final LevelSelectScreen screen;
-        private final String levelName;
+        private final LevelData level;
 
-        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, String levelName)
+        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, LevelData level)
         {
             super();
 
             this.game = game;
             this.screen = screen;
-            this.levelName = levelName;
+            this.level = level;
         }
 
         @Override
         public void clicked(InputEvent event, float x, float y)
         {
             //game.buttonPressedSound.play();
-            try
+            game.setScreen(new FloorSelectScreen(game, level));
+            screen.dispose();
+            /*try
             {
-                game.setScreen(new GameScreen(game, levelName));
+                game.setScreen(new GameScreen(game, level));
                 screen.dispose();
             }
             catch(InvalidFileFormatException e)
             {
                 Gdx.app.error(TAG, "Error loading level", e);
-            }
+            }*/
         }
     }
 }

@@ -7,9 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-/**
- * Created by Gabe on 12/18/2014.
- */
 public class FloorSelectScreen extends ScreenAdapter
 {
     private static final String TAG = "FloorSelectScreen";
@@ -18,21 +15,25 @@ public class FloorSelectScreen extends ScreenAdapter
     private SpriteBatch batch;
     private Stage stage;
 
-    private final String levelName;
+    private final LevelData level;
 
     private static final String SELECT_FLOOR_TEXT = "Select a Floor";
 
-    public FloorSelectScreen(final Ikou newGame, String levelName)
+    public FloorSelectScreen(final Ikou newGame, LevelData level)
     {
         game = newGame;
         batch = new SpriteBatch();
-        this.levelName = levelName;
+        this.level = level;
 
         buildStage();
     }
 
     public void buildStage()
     {
+        if(stage != null) stage.dispose();
+        stage = new Stage();
+
+
     }
 
     @Override
@@ -46,7 +47,7 @@ public class FloorSelectScreen extends ScreenAdapter
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK))
         {
-            Gdx.app.exit();
+            gotoLevelSelect();
         }
 
         stage.act();
@@ -54,7 +55,8 @@ public class FloorSelectScreen extends ScreenAdapter
 
     public void gotoLevelSelect()
     {
-
+        game.setScreen(new LevelSelectScreen(game));
+        dispose();
     }
 
     @Override

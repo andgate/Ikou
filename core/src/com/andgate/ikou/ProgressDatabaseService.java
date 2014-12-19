@@ -17,7 +17,6 @@ public class ProgressDatabaseService
 
         if(saveFile.exists())
         {
-
             String jsonString;
             try
             {
@@ -40,8 +39,9 @@ public class ProgressDatabaseService
         }
 
         // Always return a fresh db,
-        // no matter how badly things get
-        // mucked up.
+        // if something is mucked up.
+        // Only executes if something is wrong
+        // with the
         return new ProgressDatabase();
     }
 
