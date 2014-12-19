@@ -87,9 +87,8 @@ public class TileMazeParser
                         throw new InvalidFileFormatException("Multiple end tiles found.");
                     }
 
-                    endPosition = new Vector2(rowIndex, columnIndex);
+                    endPosition = new Vector2(columnIndex, rowIndex);
                 }
-
             }
         }
 

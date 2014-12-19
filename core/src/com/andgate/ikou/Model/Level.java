@@ -5,7 +5,7 @@ import com.andgate.ikou.LevelData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-public class Level
+public class Level implements TileMaze.WinListener
 {
     public final LevelData levelData;
     public final TileMaze[] mazes;
@@ -18,6 +18,11 @@ public class Level
         this.mazes = mazes;
         this.startingFloor = startingFloor;
         this.currentFloor = startingFloor;
+
+        /*for(TileMaze maze : mazes)
+        {
+            maze.addWinListener(this);
+        }*/
     }
 
     public TileMaze[] getMazes()
@@ -50,16 +55,31 @@ public class Level
         return mazes[currentFloor - 1];
     }
 
-
     Vector3 initialPlayerPosition = new Vector3();
 
     public Vector3 getIntialPlayerPostion()
     {
-        Vector2 initialMazePlayerPosition = mazes[startingFloor - 1].getInitialPlayerPosition();
+        Vector2 initialMazePlayerPosition = mazes[startingFloor - 1].getStartPosition();
         initialPlayerPosition.x = initialMazePlayerPosition.x;
         initialPlayerPosition.y = Constants.TILE_THICKNESS - (startingFloor - 1) * Constants.FLOOR_SPACING;
         initialPlayerPosition.z = initialMazePlayerPosition.y;
 
         return initialPlayerPosition;
+    }
+
+    @Override
+    public void mazeWon()
+    {
+        /*currentFloor++;
+
+        // save progress
+        ProgressDatabase progressDB = ProgressDatabaseService.read();
+        int farthestFloor = progressDB.getFloorsVisited(getName());
+
+        if(currentFloor > farthestFloor)
+        {
+            progressDB.setFloorsVisited(getName(), currentFloor);
+            ProgressDatabaseService.write(progressDB);
+        }*/
     }
 }

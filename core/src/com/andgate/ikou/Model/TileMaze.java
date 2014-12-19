@@ -17,6 +17,8 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.TileCode;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 public class TileMaze
 {
     public static enum Direction
@@ -44,26 +46,40 @@ public class TileMaze
     }
 
     private char[][] tiles;
-    private final Vector2 initialPlayerPosition;
+    private final Vector2 startPosition;
     private final Vector2 endPosition;
     private Vector2 playerPosition;
     private Vector2 nextPosition;
     private Direction playerVelocity = Direction.None;
+    private ArrayList<WinListener> winListeners;
 
-    private boolean isWon = false;
-
-    public TileMaze(char[][] tiles, Vector2 initialPlayerPosition, Vector2 endPosition)
+    public TileMaze(char[][] tiles, Vector2 startPosition, Vector2 endPosition)
     {
         this.tiles = tiles;
-        this.initialPlayerPosition = new Vector2(initialPlayerPosition);
-        playerPosition = new Vector2(initialPlayerPosition);
-        nextPosition = new Vector2(playerPosition);
+        this.startPosition = new Vector2(startPosition);
+        this.playerPosition = new Vector2(startPosition);
+        this.nextPosition = new Vector2(playerPosition);
         this.endPosition = new Vector2(endPosition);
+
+        winListeners = new ArrayList<>();
     }
 
-    public boolean hasWon()
+    public void addWinListener(WinListener winListener)
     {
-        return isWon;
+        winListeners.add(winListener);
+    }
+
+    public void removeWinListener(WinListener winListener)
+    {
+        winListeners.remove(winListener);
+    }
+
+    private void triggerWin()
+    {
+        for(WinListener winListener : winListeners)
+        {
+            winListener.mazeWon();
+        }
     }
 
     public char[][] getTiles()
@@ -71,9 +87,14 @@ public class TileMaze
         return tiles;
     }
 
-    public Vector2 getInitialPlayerPosition()
+    public Vector2 getStartPosition()
     {
-        return initialPlayerPosition;
+        return startPosition;
+    }
+
+    public Vector2 getEndPosition()
+    {
+        return endPosition;
     }
 
     public Vector2 getPlayerPosition()
@@ -156,7 +177,7 @@ public class TileMaze
                 case TileCode.END_TILE:
                     playerPosition.set(nextPosition);
                     playerVelocity = Direction.None;
-                    isWon = true;
+                    triggerWin();
                     break;
                 default:
                     playerVelocity = Direction.None;
@@ -199,5 +220,10 @@ public class TileMaze
         }
 
         return out;
+    }
+
+    public interface WinListener
+    {
+        public void mazeWon();
     }
 }

@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.View;
 
+import com.andgate.ikou.Model.TileMaze;
 import com.andgate.ikou.Render.PlayerModelRender;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -21,12 +22,13 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Player implements Disposable
+public class Player implements Disposable, TileMaze.WinListener
 {
     private static final String TAG = "Player";
 
     private static final float SPEED = 15.0f;
     private boolean isMoving = false;
+    private boolean isFalling = false;
     private final Vector3 destination = new Vector3();
 
     PlayerModelRender playerModel = new PlayerModelRender();
@@ -51,23 +53,33 @@ public class Player implements Disposable
     {
         if(isMoving)
         {
-            float percentTween = delta / tweenTime;
-            accumulator += percentTween;
-
-            if(accumulator >= 1.0f)
-            {
-                isMoving = false;
-
-                setPosition(destination);
-                accumulator = 0.0f;
-            }
-            else
-            {
-                currPosition.set(prevPosition);
-                currPosition.lerp(destination, accumulator);
-                setPosition(currPosition);
-            }
+            updateMovement(delta);
         }
+    }
+
+    private void updateMovement(float delta)
+    {
+        float percentTween = delta / tweenTime;
+        accumulator += percentTween;
+
+        if(accumulator >= 1.0f)
+        {
+            isMoving = false;
+
+            setPosition(destination);
+            accumulator = 0.0f;
+        }
+        else
+        {
+            currPosition.set(prevPosition);
+            currPosition.lerp(destination, accumulator);
+            setPosition(currPosition);
+        }
+    }
+
+    private void updateFall(float delta)
+    {
+
     }
 
     private Vector3 distance = new Vector3();
@@ -92,6 +104,10 @@ public class Player implements Disposable
     {
         return isMoving;
     }
+    public boolean isFalling()
+    {
+        return isMoving;
+    }
 
     public void setPosition(Vector3 position)
     {
@@ -110,5 +126,11 @@ public class Player implements Disposable
     public void dispose()
     {
         playerModel.dispose();
+    }
+
+    @Override
+    public void mazeWon()
+    {
+        isFalling = true;
     }
 }

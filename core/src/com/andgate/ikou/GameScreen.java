@@ -142,7 +142,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
             this.dispose();
         }
 
-        //Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
+        Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 
     private float accumulator = 0.0f;
