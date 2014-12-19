@@ -43,13 +43,6 @@ public class LevelSelectScreen implements Screen
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.CYAN);
         final Label titleLabel = new Label(SELECT_LEVEL_TEXT, titleLabelStyle);
 
-
-        final TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle(game.skin.getDrawable("default-round"),
-                                                                                      game.skin.getDrawable("default-round-down"),
-                                                                                      game.skin.getDrawable("default-round"),
-                                                                                      game.menuOptionFont);
-
-
         final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
         LevelData[] levels = LevelDatabaseService.getLevels();
         Table levelOptionsTable = new Table();
