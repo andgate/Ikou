@@ -45,6 +45,8 @@ public class Constants
 
     public static final String LEVELS_DIRECTORY
             = "data/levels";
+    public static final String FLOOR_EXTENSION
+            = ".txt";
 
     public static final String PROGRESS_DATABASE_PATH
             = "Android/data/com.andgate.ikou/progress.data";

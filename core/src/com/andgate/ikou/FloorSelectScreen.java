@@ -1,15 +1,18 @@
 package com.andgate.ikou;
 
+import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class FloorSelectScreen extends ScreenAdapter
 {
@@ -49,16 +52,15 @@ public class FloorSelectScreen extends ScreenAdapter
         Table floorOptionsTable = new Table();
 
 
-        float sidePadding = 1.0f * game.ppm;
-        float actorLength = (float)Gdx.graphics.getWidth() / COLUMNS - sidePadding * 2.0f;
+        float padding = 0.5f * game.ppm;
+        float actorLength = (float)Gdx.graphics.getWidth() / COLUMNS - padding * 2.0f;
 
-        for(int i = 0; i < level.totalFloors; i++)
+        for(int floorNumber = 1; floorNumber <= level.totalFloors; floorNumber++)
         {
-            int floorNumber = i + 1;
             final Label floorLabel = new Label("" + floorNumber, floorOptionLabelStyle);
-            //floorLabel.addListener(new FloorOptionClickListener(game, this, level));
+            floorLabel.addListener(new FloorOptionClickListener(game, this, level, floorNumber));
 
-            floorOptionsTable.add(floorLabel).pad(sidePadding).width(actorLength).height(actorLength);
+            floorOptionsTable.add(floorLabel).pad(padding).width(actorLength).height(actorLength).center();
 
             if(floorNumber % COLUMNS == 0)
             {
@@ -130,5 +132,40 @@ public class FloorSelectScreen extends ScreenAdapter
             stage.dispose();
         if(batch != null)
             batch.dispose();
+    }
+
+    private class FloorOptionClickListener extends ClickListener
+    {
+        private static final String TAG = "FloorOptionClickListener";
+
+        private final Ikou game;
+        private final FloorSelectScreen screen;
+        private final LevelData level;
+        private final int floor;
+
+        public FloorOptionClickListener(Ikou game, FloorSelectScreen screen, LevelData level, int floor)
+        {
+            super();
+
+            this.game = game;
+            this.screen = screen;
+            this.level = level;
+            this.floor = floor;
+        }
+
+        @Override
+        public void clicked(InputEvent event, float x, float y)
+        {
+            //game.buttonPressedSound.play();
+            try
+            {
+                game.setScreen(new GameScreen(game, level, floor));
+                screen.dispose();
+            }
+            catch(InvalidFileFormatException e)
+            {
+                Gdx.app.error(TAG, "Error loading level", e);
+            }
+        }
     }
 }
