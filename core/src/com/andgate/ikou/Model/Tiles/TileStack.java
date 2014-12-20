@@ -1,4 +1,4 @@
-package com.andgate.ikou.Tiles;
+package com.andgate.ikou.model.Tiles;
 
 import com.andgate.ikou.TileCode;
 import com.badlogic.gdx.utils.Array;

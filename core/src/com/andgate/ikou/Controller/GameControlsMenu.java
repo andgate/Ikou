@@ -1,6 +1,8 @@
-package com.andgate.ikou;
+package com.andgate.ikou.controller;
 
-import com.andgate.ikou.Utility.Icon;
+import com.andgate.ikou.Constants;
+import com.andgate.ikou.Ikou;
+import com.andgate.ikou.utility.Icon;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

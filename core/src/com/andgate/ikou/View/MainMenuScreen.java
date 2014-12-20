@@ -1,6 +1,7 @@
-package com.andgate.ikou;
+package com.andgate.ikou.view;
 
-import com.andgate.ikou.exception.InvalidFileFormatException;
+import com.andgate.ikou.Constants;
+import com.andgate.ikou.Ikou;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;

@@ -11,20 +11,21 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.View;
+package com.andgate.ikou.view;
 
-import com.andgate.ikou.Model.TileMaze;
-import com.andgate.ikou.Render.PlayerModelRender;
+import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.render.PlayerModelRender;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
 public class Player implements Disposable, TileMaze.WinListener
 {
     private static final String TAG = "Player";
+
+    private final Level level;
 
     private static final float SPEED = 15.0f;
     private boolean isMoving = false;
@@ -33,10 +34,11 @@ public class Player implements Disposable, TileMaze.WinListener
 
     PlayerModelRender playerModel = new PlayerModelRender();
 
-    public Player(Vector3 position)
+    public Player(Level level)
     {
-        setPosition(position);
-        destination.set(position);
+        this.level = level;
+        setPosition(level.getIntialPlayerPostion());
+        destination.set(getPosition());
     }
 
     public void render(ModelBatch modelBatch, Environment environment)

@@ -1,10 +1,6 @@
-package com.andgate.ikou;
+package com.andgate.ikou.model;
 
-import com.andgate.ikou.Model.TileMaze;
-import com.andgate.ikou.Utility.TileMazeParser;
-import com.andgate.ikou.exception.InvalidFileFormatException;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.andgate.ikou.Constants;
 
 public class LevelData
 {

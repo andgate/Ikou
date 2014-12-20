@@ -1,7 +1,7 @@
-package com.andgate.ikou.Render;
+package com.andgate.ikou.render;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.Tiles.TileData;
+import com.andgate.ikou.model.Tiles.TileData;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;

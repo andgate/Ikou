@@ -1,8 +1,6 @@
-package com.andgate.ikou.Tiles;
+package com.andgate.ikou.model.Tiles;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 
 public class RoughTileData extends TileData
 {

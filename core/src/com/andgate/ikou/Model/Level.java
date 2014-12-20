@@ -1,7 +1,6 @@
-package com.andgate.ikou.Model;
+package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.LevelData;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 

@@ -1,10 +1,8 @@
-package com.andgate.ikou.Render;
+package com.andgate.ikou.render;
 
-import com.andgate.ikou.Constants;
-import com.andgate.ikou.Model.TileMaze;
-import com.andgate.ikou.Tiles.TileSector;
-import com.andgate.ikou.Tiles.TileStack;
-import com.andgate.ikou.Tiles.TileData;
+import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.model.Tiles.TileSector;
+import com.andgate.ikou.model.Tiles.TileData;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.PerspectiveCamera;

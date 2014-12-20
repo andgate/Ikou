@@ -11,22 +11,22 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou;
+package com.andgate.ikou.view;
 
-import com.andgate.ikou.Model.Level;
-import com.andgate.ikou.Model.TileMaze;
-import com.andgate.ikou.Render.LevelRender;
-import com.andgate.ikou.Utility.TileMazeParser;
-import com.andgate.ikou.View.Player;
-import com.andgate.ikou.Tiles.TileData;
-import com.andgate.ikou.View.TileMazeView;
-import com.andgate.ikou.exception.InvalidFileFormatException;
+import com.andgate.ikou.Constants;
+import com.andgate.ikou.controller.DirectionListener;
+import com.andgate.ikou.controller.GameControlsMenu;
+import com.andgate.ikou.Ikou;
+import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
+import com.andgate.ikou.render.LevelRender;
+import com.andgate.ikou.model.Tiles.TileData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -65,7 +65,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         modelBatch = new ModelBatch();
         camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
 
-        player = new Player(level.getIntialPlayerPostion());
+        player = new Player(level);
 
         levelRender = new LevelRender(level, camera);
 

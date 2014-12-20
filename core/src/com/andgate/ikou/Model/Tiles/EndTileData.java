@@ -1,4 +1,4 @@
-package com.andgate.ikou.Tiles;
+package com.andgate.ikou.model.Tiles;
 
 import com.badlogic.gdx.graphics.Color;
 

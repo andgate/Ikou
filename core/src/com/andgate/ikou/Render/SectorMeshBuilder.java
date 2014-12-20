@@ -1,9 +1,8 @@
-package com.andgate.ikou.Render;
+package com.andgate.ikou.render;
 
-import com.andgate.ikou.Constants;
-import com.andgate.ikou.Tiles.TileData;
-import com.andgate.ikou.Tiles.TileSector;
-import com.andgate.ikou.Tiles.TileStack;
+import com.andgate.ikou.model.Tiles.TileData;
+import com.andgate.ikou.model.Tiles.TileSector;
+import com.andgate.ikou.model.Tiles.TileStack;
 import com.badlogic.gdx.utils.Array;
 
 public class SectorMeshBuilder extends TileMeshBuilder

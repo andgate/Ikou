@@ -1,6 +1,8 @@
-package com.andgate.ikou;
+package com.andgate.ikou.view;
 
-import com.andgate.ikou.exception.InvalidFileFormatException;
+import com.andgate.ikou.Ikou;
+import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.io.LevelDatabaseService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class LevelSelectScreen implements Screen
