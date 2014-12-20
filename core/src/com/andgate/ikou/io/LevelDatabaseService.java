@@ -1,8 +1,8 @@
 package com.andgate.ikou.io;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.LevelData;
-import com.andgate.ikou.model.ProgressDatabase;
+import com.andgate.ikou.LevelData;
+import com.andgate.ikou.ProgressDatabase;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 

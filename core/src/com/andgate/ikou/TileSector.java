@@ -1,7 +1,5 @@
-package com.andgate.ikou.model.Tiles;
+package com.andgate.ikou;
 
-import com.andgate.ikou.model.TileMaze;
-import com.andgate.ikou.utility.Array2d;
 import com.badlogic.gdx.utils.Array;
 
 public class TileSector extends Array2d<TileStack>

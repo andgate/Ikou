@@ -1,7 +1,5 @@
-package com.andgate.ikou.view;
+package com.andgate.ikou;
 
-import com.andgate.ikou.Ikou;
-import com.andgate.ikou.model.LevelData;
 import com.andgate.ikou.io.LevelDatabaseService;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

@@ -1,7 +1,5 @@
-package com.andgate.ikou.render;
+package com.andgate.ikou;
 
-import com.andgate.ikou.model.Tiles.PlayerData;
-import com.andgate.ikou.model.Tiles.TileData;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.Renderable;

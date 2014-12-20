@@ -10,7 +10,7 @@
      You should have received a copy of the GNU General Public License
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.andgate.ikou.controller;
+package com.andgate.ikou;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;

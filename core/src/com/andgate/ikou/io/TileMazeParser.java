@@ -13,7 +13,7 @@
 
 package com.andgate.ikou.io;
 
-import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.TileMaze;
 import com.andgate.ikou.TileCode;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.math.Vector2;

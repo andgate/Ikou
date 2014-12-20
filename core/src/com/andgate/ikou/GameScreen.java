@@ -11,17 +11,8 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.view;
+package com.andgate.ikou;
 
-import com.andgate.ikou.Constants;
-import com.andgate.ikou.controller.DirectionListener;
-import com.andgate.ikou.controller.GameControlsMenu;
-import com.andgate.ikou.Ikou;
-import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.TileMaze;
-import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
-import com.andgate.ikou.render.LevelRender;
-import com.andgate.ikou.model.Tiles.TileData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;

@@ -1,8 +1,5 @@
-package com.andgate.ikou.render;
+package com.andgate.ikou;
 
-import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.TileMaze;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;

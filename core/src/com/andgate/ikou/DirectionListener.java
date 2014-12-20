@@ -11,15 +11,12 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.model.Tiles;
+package com.andgate.ikou;
 
-import com.badlogic.gdx.graphics.Color;
-
-public class ObstacleTileData extends TileData
+public interface DirectionListener
 {
-    public ObstacleTileData()
-    {
-        super();
-        tileColor = Color.GRAY;
-    }
+    public void onLeft();
+    public void onRight();
+    public void onUp();
+    public void onDown();
 }

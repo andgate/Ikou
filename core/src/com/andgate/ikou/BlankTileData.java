@@ -1,4 +1,4 @@
-package com.andgate.ikou.model.Tiles;
+package com.andgate.ikou;
 
 public class BlankTileData extends TileData
 {
