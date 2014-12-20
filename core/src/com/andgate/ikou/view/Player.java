@@ -13,15 +13,18 @@
 
 package com.andgate.ikou.view;
 
+import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.TileMaze;
 import com.andgate.ikou.render.PlayerModelRender;
+import com.andgate.ikou.utility.LinearTween;
+import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Player implements Disposable, TileMaze.WinListener
+public class Player implements Disposable, TileMaze.WinListener, TileMaze.PlayerMoveListener
 {
     private static final String TAG = "Player";
 
@@ -30,15 +33,20 @@ public class Player implements Disposable, TileMaze.WinListener
     private static final float SPEED = 15.0f;
     private boolean isMoving = false;
     private boolean isFalling = false;
-    private final Vector3 destination = new Vector3();
-
+    private LinearTween movementTween = new LinearTween();
+    private LinearTween fallingTween = new LinearTween();
     PlayerModelRender playerModel = new PlayerModelRender();
 
     public Player(Level level)
     {
         this.level = level;
-        setPosition(level.getIntialPlayerPostion());
-        destination.set(getPosition());
+        setPosition(level.getIntialPlayerPosition());
+
+        for(TileMaze maze : level.getMazes())
+        {
+            maze.addWinListener(this);
+            maze.addPlayerMoveListener(this);
+        }
     }
 
     public void render(ModelBatch modelBatch, Environment environment)
@@ -46,55 +54,46 @@ public class Player implements Disposable, TileMaze.WinListener
         modelBatch.render(playerModel, environment);
     }
 
-    Vector3 prevPosition = new Vector3();
-    Vector3 currPosition = new Vector3();
-    private float tweenTime = 0.0f;
-    private float accumulator = 0.0f;
-
     public void update(float delta)
     {
         if(isMoving)
         {
             updateMovement(delta);
         }
+        else if(isFalling)
+        {
+            updateFall(delta);
+        }
     }
 
     private void updateMovement(float delta)
     {
-        float percentTween = delta / tweenTime;
-        accumulator += percentTween;
-
-        if(accumulator >= 1.0f)
+        if(movementTween.update(delta))
         {
             isMoving = false;
+        }
 
-            setPosition(destination);
-            accumulator = 0.0f;
+        setPosition(movementTween.get());
+    }
+
+    private boolean isFallingStarted = false;
+    private void updateFall(float delta)
+    {
+        if(!isFallingStarted)
+        {
+            fallingTween.setup(getPosition(), level.getCurrentPlayerPosition(), SPEED);
+            isFallingStarted = true;
         }
         else
         {
-            currPosition.set(prevPosition);
-            currPosition.lerp(destination, accumulator);
-            setPosition(currPosition);
+
+            if (fallingTween.update(delta)) {
+                isFalling = false;
+                isFallingStarted = false;
+            }
+
+            setPosition(fallingTween.get());
         }
-    }
-
-    private void updateFall(float delta)
-    {
-
-    }
-
-    private Vector3 distance = new Vector3();
-
-    public void moveTo(Vector3 destination)
-    {
-        isMoving = true;
-
-        distance.set(destination);
-        distance.sub(getPosition());
-        tweenTime = distance.len() / SPEED;
-        prevPosition.set(getPosition());
-        this.destination.set(destination);
     }
 
     public PlayerModelRender getModel()
@@ -108,7 +107,7 @@ public class Player implements Disposable, TileMaze.WinListener
     }
     public boolean isFalling()
     {
-        return isMoving;
+        return isFalling;
     }
 
     public void setPosition(Vector3 position)
@@ -134,5 +133,18 @@ public class Player implements Disposable, TileMaze.WinListener
     public void mazeWon()
     {
         isFalling = true;
+    }
+
+
+    Vector3 end = new Vector3();
+    @Override
+    public void movePlayerBy(int x, int y)
+    {
+        isMoving = true;
+
+        end.set(getPosition());
+        end.add(x, 0, y);
+
+        movementTween.setup(getPosition(), end, SPEED);
     }
 }

@@ -18,7 +18,7 @@ public class ProgressDatabase
         this.progressTable = levelTable;
     }
 
-    public int getFloorsVisited(String levelName)
+    public int getFloorsCompleted(String levelName)
     {
         if(progressTable.containsKey(levelName))
         {
@@ -28,7 +28,7 @@ public class ProgressDatabase
         return 0;
     }
 
-    public void setFloorsVisited(String levelName, int floorsVisited)
+    public void setFloorsCompleted(String levelName, int floorsVisited)
     {
         progressTable.put(levelName, new Integer(floorsVisited));
     }

@@ -3,9 +3,11 @@ package com.andgate.ikou.render;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -20,10 +22,6 @@ public class LevelRender implements RenderableProvider, Disposable
         TileMaze[] mazes = level.getMazes();
         renders = new TileMazeRender[mazes.length];
 
-        Vector3 offset = new Vector3();
-        Vector3 currStartPosition = new Vector3();
-        Vector3 lastEndPosition = new Vector3();
-
         for(int i = 0; i < renders.length; i++)
         {
             renders[i] = new TileMazeRender(mazes[i], camera);
@@ -33,18 +31,10 @@ public class LevelRender implements RenderableProvider, Disposable
             position.y -= i * Constants.FLOOR_SPACING;
             renders[i].setPosition(position);
 
-            if( (i-1) >= 0)
+            if(i > 0)
             {
-                currStartPosition.x = mazes[i].getStartPosition().x;
-                currStartPosition.z = mazes[i].getStartPosition().y;
-
-                lastEndPosition.x = mazes[i-1].getEndPosition().x;
-                lastEndPosition.z = mazes[i-1].getEndPosition().y;
-
-                offset.add(lastEndPosition);
-                offset.sub(currStartPosition);
-
-                renders[i].transform.translate(offset);
+                Vector2i offset = level.calculateFloorOffset(i+1);
+                renders[i].transform.translate(offset.x, 0.0f, offset.y);
             }
         }
     }

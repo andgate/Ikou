@@ -16,6 +16,7 @@ package com.andgate.ikou.io;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.model.TileMaze;
 import com.andgate.ikou.model.tile.TileCode;
+import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.NoSuchElementException;
@@ -28,16 +29,16 @@ public class TileMazeParser
     {
         String[] mapLines = mapString.split("\n");
 
-        Vector2 startPosition = getStartPosition(mapString);
+        Vector2i startPosition = getStartPosition(mapString);
         char[][] tiles = getTiles(mapLines);
 
-        Vector2 endPosition = getEndPosition(tiles);
+        Vector2i endPosition = getEndPosition(tiles);
 
         TileMaze maze = new TileMaze(tiles, startPosition, endPosition);
         return maze;
     }
 
-    private static Vector2 getStartPosition(String firstLine)
+    private static Vector2i getStartPosition(String firstLine)
             throws InvalidFileFormatException
     {
         int startX = 0;
@@ -66,13 +67,13 @@ public class TileMazeParser
             throw new InvalidFileFormatException("Error parsing starting position.");
         }
 
-        return new Vector2((float)startX, (float)startY);
+        return new Vector2i(startX, startY);
     }
 
-    private static Vector2 getEndPosition(char[][] tiles)
+    private static Vector2i getEndPosition(char[][] tiles)
             throws InvalidFileFormatException
     {
-        Vector2 endPosition = null;
+        Vector2i endPosition = null;
 
         for(int rowIndex = 0; rowIndex < tiles.length; rowIndex++)
         {
@@ -87,7 +88,7 @@ public class TileMazeParser
                         throw new InvalidFileFormatException("Multiple end tiles found.");
                     }
 
-                    endPosition = new Vector2(columnIndex, rowIndex);
+                    endPosition = new Vector2i(columnIndex, rowIndex);
                 }
             }
         }

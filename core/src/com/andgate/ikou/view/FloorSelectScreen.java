@@ -26,17 +26,17 @@ public class FloorSelectScreen extends ScreenAdapter
     private SpriteBatch batch;
     private Stage stage;
 
-    private final LevelData level;
+    private final LevelData levelData;
 
     private static final String SELECT_FLOOR_TEXT = "Select a Floor";
 
     private static final int COLUMNS = 7;
 
-    public FloorSelectScreen(final Ikou newGame, LevelData level)
+    public FloorSelectScreen(final Ikou newGame, LevelData levelData)
     {
         game = newGame;
         batch = new SpriteBatch();
-        this.level = level;
+        this.levelData = levelData;
 
         buildStage();
     }
@@ -53,16 +53,25 @@ public class FloorSelectScreen extends ScreenAdapter
         final Label titleLabel = new Label(SELECT_FLOOR_TEXT, titleLabelStyle);
 
         final Label.LabelStyle floorOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
+        final Label.LabelStyle lockedFloorOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.GRAY);
         Table floorOptionsTable = new Table();
 
 
         float padding = 0.5f * game.ppm;
         float actorLength = (float)Gdx.graphics.getWidth() / COLUMNS - padding * 2.0f;
 
-        for(int floorNumber = 1; floorNumber <= level.totalFloors; floorNumber++)
+        for(int floorNumber = 1; floorNumber <= levelData.totalFloors; floorNumber++)
         {
-            final Label floorLabel = new Label("" + floorNumber, floorOptionLabelStyle);
-            floorLabel.addListener(new FloorOptionClickListener(game, this, level, floorNumber));
+            Label floorLabel = null;
+            if(floorNumber <= levelData.completedFloors+1)
+            {
+                floorLabel = new Label("" + floorNumber, floorOptionLabelStyle);
+                floorLabel.addListener(new FloorOptionClickListener(game, this, levelData, floorNumber));
+            }
+            else
+            {
+                floorLabel = new Label("?", lockedFloorOptionLabelStyle);
+            }
 
             floorOptionsTable.add(floorLabel).pad(padding).width(actorLength).height(actorLength).center();
 

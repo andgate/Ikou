@@ -23,7 +23,7 @@ public class LevelDatabaseService
             {
                 String levelName = level.name();
                 int totalFloors = level.list().length;
-                int completedFloors = progressDB.getFloorsVisited(levelName);
+                int completedFloors = progressDB.getFloorsCompleted(levelName);
 
                 levelsList.add(new LevelData(levelName, totalFloors, completedFloors));
             }

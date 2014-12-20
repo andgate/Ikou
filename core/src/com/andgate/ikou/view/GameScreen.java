@@ -22,6 +22,7 @@ import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.TileMaze;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -142,7 +143,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
             this.dispose();
         }
 
-        Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
+        //Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
     }
 
     private float accumulator = 0.0f;
@@ -192,43 +193,36 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         controlsMenu.build();
     }
 
-    public void movePlayer(TileMaze.Direction velocity)
+    public void movePlayer(Vector2i velocity)
     {
-        if(!player.isMoving())
+        if(!player.isMoving() && !player.isFalling())
         {
             TileMaze maze = level.getCurrentTileMaze();
             maze.move(velocity);
-
-            Vector3 nextPosition = new Vector3();
-            nextPosition.x = maze.getPlayerPosition().x;
-            nextPosition.y = player.getPosition().y;
-            nextPosition.z = maze.getPlayerPosition().y;
-
-            player.moveTo(nextPosition);
         }
     }
 
     @Override
     public void onLeft()
     {
-        movePlayer(TileMaze.Direction.Left);
+        movePlayer(TileMaze.LEFT);
     }
 
     @Override
     public void onRight()
     {
-        movePlayer(TileMaze.Direction.Right);
+        movePlayer(TileMaze.RIGHT);
     }
 
     @Override
     public void onUp()
     {
-        movePlayer(TileMaze.Direction.Up);
+        movePlayer(TileMaze.UP);
     }
 
     @Override
     public void onDown()
     {
-        movePlayer(TileMaze.Direction.Down);
+        movePlayer(TileMaze.DOWN);
     }
 }

@@ -7,5 +7,4 @@ public class BlankTileData extends TileData
         super();
         isVisible = false;
     }
-
 }

@@ -6,7 +6,7 @@ public class LevelData
 {
     public final String name;
     public final int totalFloors;
-    public final int completedFloors;
+    public int completedFloors;
 
     public final String LEVEL_DIRECTORY;
 

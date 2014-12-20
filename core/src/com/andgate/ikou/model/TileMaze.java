@@ -15,53 +15,34 @@ package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.tile.TileCode;
+import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
 public class TileMaze
 {
-    public static enum Direction
-    {
-        Up(0, 1), Down(0, -1), Left(1, 0), Right(-1, 0), None(0, 0);
+    private static final String TAG = "TileMaze";
 
-        private final int xVel;
-        private final int yVel;
-
-        private Direction(int xVel, int yVel)
-        {
-            this.xVel = xVel;
-            this.yVel = yVel;
-        }
-
-        public int xVel()
-        {
-            return xVel;
-        }
-
-        public int yVel()
-        {
-            return yVel;
-        }
-    }
+    public static final Vector2i UP = new Vector2i(0, 1);
+    public static final Vector2i DOWN = new Vector2i(0, -1);
+    public static final Vector2i LEFT = new Vector2i(1, 0);
+    public static final Vector2i RIGHT = new Vector2i(-1, 0);
+    public static final Vector2i NONE = new Vector2i(0, 0);
 
     private char[][] tiles;
-    private final Vector2 startPosition;
-    private final Vector2 endPosition;
-    private Vector2 playerPosition;
-    private Vector2 nextPosition;
-    private Direction playerVelocity = Direction.None;
-    private ArrayList<WinListener> winListeners;
+    private final Vector2i startPosition;
+    private final Vector2i endPosition;
+    private Vector2i playerPosition;
+    private ArrayList<WinListener> winListeners = new ArrayList<>();
+    private ArrayList<PlayerMoveListener> playerMoveListeners = new ArrayList<>();
 
-    public TileMaze(char[][] tiles, Vector2 startPosition, Vector2 endPosition)
+    public TileMaze(char[][] tiles, Vector2i startPosition, Vector2i endPosition)
     {
         this.tiles = tiles;
-        this.startPosition = new Vector2(startPosition);
-        this.playerPosition = new Vector2(startPosition);
-        this.nextPosition = new Vector2(playerPosition);
-        this.endPosition = new Vector2(endPosition);
-
-        winListeners = new ArrayList<>();
+        this.startPosition = new Vector2i(startPosition);
+        this.playerPosition = new Vector2i(startPosition);
+        this.endPosition = new Vector2i(endPosition);
     }
 
     public void addWinListener(WinListener winListener)
@@ -72,6 +53,16 @@ public class TileMaze
     public void removeWinListener(WinListener winListener)
     {
         winListeners.remove(winListener);
+    }
+
+    public void addPlayerMoveListener(PlayerMoveListener playerMoveListener)
+    {
+        playerMoveListeners.add(playerMoveListener);
+    }
+
+    public void removePlayerMoveListener(PlayerMoveListener playerMoveListener)
+    {
+        playerMoveListeners.remove(playerMoveListener);
     }
 
     private void triggerWin()
@@ -87,24 +78,19 @@ public class TileMaze
         return tiles;
     }
 
-    public Vector2 getStartPosition()
+    public Vector2i getStartPosition()
     {
         return startPosition;
     }
 
-    public Vector2 getEndPosition()
+    public Vector2i getEndPosition()
     {
         return endPosition;
     }
 
-    public Vector2 getPlayerPosition()
+    public Vector2i getPlayerPosition()
     {
         return playerPosition;
-    }
-
-    public Direction getPlayerVelocity()
-    {
-        return playerVelocity;
     }
 
     public char getTile(int x, int y)
@@ -137,23 +123,36 @@ public class TileMaze
         return tileCount;
     }
 
-    public void move(Direction playerVelocity)
+    Vector2i accumMoveDelta = new Vector2i();
+    Vector2i prevAccumMoveDelta = new Vector2i();
+    public void move(Vector2i velocity)
     {
-        this.playerVelocity = playerVelocity;
+        accumMoveDelta.set(0, 0);
 
-        // While the player is still moving...
-        while(this.playerVelocity != Direction.None)
+        do
         {
-            step();
+            prevAccumMoveDelta.set(accumMoveDelta);
+            accumMoveDelta.add(step(velocity));
+        }
+        while(!accumMoveDelta.equals(prevAccumMoveDelta)
+                && !isStopped);
+
+        isStopped = false;
+
+        for(PlayerMoveListener listener : playerMoveListeners)
+        {
+            listener.movePlayerBy(accumMoveDelta.x, accumMoveDelta.y);
         }
     }
 
-    private void step()
+    Vector2i moveDelta = new Vector2i();
+    private boolean isStopped = false;
+    private Vector2i step(Vector2i velocity)
     {
-        nextPosition.add(playerVelocity.xVel(), playerVelocity.yVel());
+        int x = playerPosition.x + velocity.x;
+        int y = playerPosition.y + velocity.y;
 
-        int x = (int)nextPosition.x;
-        int y = (int)nextPosition.y;
+        moveDelta.set(0, 0);
 
         // Is the next position within the map bounds?
         if( (0 <= y && y < tiles.length)
@@ -165,35 +164,28 @@ public class TileMaze
             switch(nextTile)
             {
                 case TileCode.SMOOTH_TILE:
-                    playerPosition.set(nextPosition);
+                    moveDelta.set(velocity);
+                    playerPosition.add(moveDelta);
                     break;
                 case TileCode.ROUGH_TILE:
-                    playerPosition.set(nextPosition);
-                    playerVelocity = Direction.None;
+                    moveDelta.set(velocity);
+                    playerPosition.add(moveDelta);
+                    isStopped = true;
                     break;
                 case TileCode.OBSTACLE_TILE:
-                    playerVelocity = Direction.None;
+                    isStopped = true;
                     break;
                 case TileCode.END_TILE:
-                    playerPosition.set(nextPosition);
-                    playerVelocity = Direction.None;
+                    moveDelta.set(velocity);
+                    playerPosition.add(moveDelta);
                     triggerWin();
                     break;
                 default:
-                    playerVelocity = Direction.None;
                     break;
             }
         }
-        else
-        {
-            playerVelocity = Direction.None;
-        }
 
-        if(!nextPosition.epsilonEquals(playerPosition, Constants.LITTLE_EPSILON))
-        {
-            nextPosition.set(playerPosition);
-        }
-
+        return moveDelta;
     }
 
     @Override
@@ -203,10 +195,6 @@ public class TileMaze
 
         out += "Player position: ";
         out += playerPosition.toString();
-        out += '\n';
-
-        out += "Next position: ";
-        out += nextPosition.toString();
         out += '\n';
 
         for(int i = 0; i < tiles.length; i++)
@@ -225,5 +213,10 @@ public class TileMaze
     public interface WinListener
     {
         public void mazeWon();
+    }
+
+    public interface PlayerMoveListener
+    {
+        public void movePlayerBy(int dx, int dy);
     }
 }

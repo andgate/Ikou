@@ -48,8 +48,8 @@ public class Constants
     public static final String FLOOR_EXTENSION
             = ".txt";
 
-    public static final String PROGRESS_DATABASE_PATH
-            = "Android/data/com.andgate.ikou/progress.data";
+    public static final String PROGRESS_DATABASE_EXTERNAL_PATH
+            = "Ikou/progress.data";
 
     public static final float LITTLE_EPSILON = 1.0f / 1E10f;
     public static final float EPSILON = 1.0f / 1E7f;

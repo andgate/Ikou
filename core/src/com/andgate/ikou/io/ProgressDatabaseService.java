@@ -13,7 +13,7 @@ public class ProgressDatabaseService
 
     public static ProgressDatabase read()
     {
-        FileHandle saveFile = Gdx.files.external(Constants.PROGRESS_DATABASE_PATH);
+        FileHandle saveFile = Gdx.files.external(Constants.PROGRESS_DATABASE_EXTERNAL_PATH);
 
         if(saveFile.exists())
         {
@@ -50,7 +50,7 @@ public class ProgressDatabaseService
         Json json = new Json();
         String jsonString = json.toJson(progressDatabase);
         String encodedString = Base64Coder.encodeString(jsonString);
-        FileHandle saveFile = Gdx.files.external(Constants.PROGRESS_DATABASE_PATH);
+        FileHandle saveFile = Gdx.files.external(Constants.PROGRESS_DATABASE_EXTERNAL_PATH);
         saveFile.writeString(encodedString, false);
     }
 }
