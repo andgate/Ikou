@@ -11,7 +11,7 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.Model;
+package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.TileCode;

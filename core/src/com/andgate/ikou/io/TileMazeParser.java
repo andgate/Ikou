@@ -11,9 +11,9 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.Utility;
+package com.andgate.ikou.io;
 
-import com.andgate.ikou.Model.TileMaze;
+import com.andgate.ikou.model.TileMaze;
 import com.andgate.ikou.TileCode;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.badlogic.gdx.math.Vector2;

@@ -1,4 +1,4 @@
-package com.andgate.ikou.Utility;
+package com.andgate.ikou.utility;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
