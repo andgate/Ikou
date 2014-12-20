@@ -11,7 +11,7 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou;
+package com.andgate.ikou.controller;
 
 public interface DirectionListener
 {

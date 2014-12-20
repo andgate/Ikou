@@ -1,9 +1,9 @@
 package com.andgate.ikou.io;
 
-import com.andgate.ikou.LevelData;
-import com.andgate.ikou.Level;
-import com.andgate.ikou.TileMaze;
 import com.andgate.ikou.exception.InvalidFileFormatException;
+import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.model.TileMaze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 

@@ -11,8 +11,11 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou;
+package com.andgate.ikou.view;
 
+import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.render.PlayerModelRender;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;

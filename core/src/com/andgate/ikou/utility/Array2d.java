@@ -1,4 +1,4 @@
-package com.andgate.ikou;
+package com.andgate.ikou.utility;
 
 import com.badlogic.gdx.utils.Array;
 

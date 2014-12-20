@@ -1,5 +1,8 @@
-package com.andgate.ikou;
+package com.andgate.ikou.controller;
 
+import com.andgate.ikou.Constants;
+import com.andgate.ikou.Ikou;
+import com.andgate.ikou.utility.Icon;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -66,19 +69,17 @@ public class GameControlsMenu implements Disposable
 
         cameraModeStage = new Stage();
 
-        ImageButton moveButton = Icon.createIconButton(game, Constants.MOVE_ICON_LOCATION, Constants.MOVE_ICON_DOWN_LOCATION, new ClickListener()
-                {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y)
-                    {
-                        im.removeProcessor(cameraModeStage);
-                        im.removeProcessor(camController);
+        ImageButton moveButton = Icon.createIconButton(game, Constants.MOVE_ICON_LOCATION, Constants.MOVE_ICON_DOWN_LOCATION, new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                im.removeProcessor(cameraModeStage);
+                im.removeProcessor(camController);
 
-                        im.addProcessor(movementModeStage);
-                        im.addProcessor(moveController);
-                        currentMode = Mode.MOVEMENT;
-                    }
-                });
+                im.addProcessor(movementModeStage);
+                im.addProcessor(moveController);
+                currentMode = Mode.MOVEMENT;
+            }
+        });
 
         Table table = new Table();
         table.bottom().left();

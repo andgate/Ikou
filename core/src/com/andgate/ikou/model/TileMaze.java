@@ -11,10 +11,10 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou;
+package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.TileCode;
+import com.andgate.ikou.model.tile.TileCode;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;

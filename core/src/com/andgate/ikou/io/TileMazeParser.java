@@ -13,9 +13,9 @@
 
 package com.andgate.ikou.io;
 
-import com.andgate.ikou.TileMaze;
-import com.andgate.ikou.TileCode;
 import com.andgate.ikou.exception.InvalidFileFormatException;
+import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.model.tile.TileCode;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.NoSuchElementException;
@@ -103,7 +103,6 @@ public class TileMazeParser
     private static char[][] getTiles(String[] mapLines)
             throws InvalidFileFormatException
     {
-        System.out.println(mapLines);
         int rows = mapLines.length - 1;
         char[][] tiles = new char[rows][];
 

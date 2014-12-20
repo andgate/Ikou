@@ -1,5 +1,11 @@
-package com.andgate.ikou;
+package com.andgate.ikou.model;
 
+import com.andgate.ikou.model.tile.BlankTileData;
+import com.andgate.ikou.model.tile.EndTileData;
+import com.andgate.ikou.model.tile.ObstacleTileData;
+import com.andgate.ikou.model.tile.RoughTileData;
+import com.andgate.ikou.model.tile.TileCode;
+import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.utils.Array;
 
 public class TileStack extends Array<TileData>

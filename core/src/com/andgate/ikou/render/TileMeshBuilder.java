@@ -1,5 +1,7 @@
-package com.andgate.ikou;
+package com.andgate.ikou.render;
 
+import com.andgate.ikou.Constants;
+import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -164,7 +166,6 @@ public class TileMeshBuilder
     // Code to subdivide the top.
     // Causes the map to have trouble rendering
     // when SUBQUADS is around 5.
-    // TODO Investigate rendering loss associated with SUBQUADS
     /*void addTop(TileData tile, float x, float y, float z)
     {
         Color color = tile.getColor();
