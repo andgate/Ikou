@@ -19,9 +19,7 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
     private Vector3 target = new Vector3();
 
-    public boolean translateTarget = true;
-    public boolean forwardTarget = true;
-    public float rotateAngle = 360f;
+    public final float ROTATE_ANGLE = 360f;
 
     protected int button = -1;
 
@@ -29,7 +27,7 @@ public class CameraInputController extends GestureDetector implements Player.Pla
     public static final float PINCH_ZOOM_MIN = 0.3f;
 
     public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
-    public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER;
+    public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 5.0f;
 
     private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();
@@ -105,10 +103,10 @@ public class CameraInputController extends GestureDetector implements Player.Pla
     {
         tmpV1.set(camera.direction).crs(camera.up).y = 0f;
 
-        float deltaAngleX = deltaX * -rotateAngle;
+        float deltaAngleX = deltaX * -ROTATE_ANGLE;
         angleX += deltaAngleX;
 
-        float deltaAngleY = deltaY * rotateAngle;
+        float deltaAngleY = deltaY * ROTATE_ANGLE;
         float tmpAngleY = angleY + deltaAngleY;
         if(inRange(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
         {
@@ -125,6 +123,11 @@ public class CameraInputController extends GestureDetector implements Player.Pla
         camera.rotateAround(target, Vector3.Y, deltaAngleX);
         camera.update();
         return true;
+    }
+
+    public float getAngleX()
+    {
+        return angleX;
     }
 
     private static float pickClosestBound(float n, float low, float high)

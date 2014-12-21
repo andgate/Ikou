@@ -15,64 +15,79 @@ package com.andgate.ikou.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class PlayerDirectionGestureDetector extends GestureDetector
 {
     private static final String TAG = "PlayerDirectionGestureDetector";
-    public PlayerDirectionGestureDetector(DirectionListener directionListener, PerspectiveCamera camera) {
-        super(new DirectionGestureListener(directionListener, camera));
+
+    private final DirectionGestureListener directionGestureListener;
+
+    public PlayerDirectionGestureDetector(DirectionListener directionListener, CameraInputController cameraController) {
+        this(new DirectionGestureListener(directionListener, cameraController));
     }
 
-    private static class DirectionGestureListener extends GestureAdapter{
-        DirectionListener directionListener;
-        private final PerspectiveCamera camera;
+    public PlayerDirectionGestureDetector(DirectionGestureListener directionGestureListener)
+    {
+        super(directionGestureListener);
+        this.directionGestureListener = directionGestureListener;
+    }
 
-        public DirectionGestureListener(DirectionListener directionListener, PerspectiveCamera camera){
+    public void setDirectionListener(DirectionListener directionListener)
+    {
+        directionGestureListener.setDirectionListener(directionListener);
+    }
+
+    private static class DirectionGestureListener extends GestureAdapter
+    {
+        DirectionListener directionListener;
+        private final CameraInputController cameraController;
+
+        public DirectionGestureListener(DirectionListener directionListener, CameraInputController cameraController){
             this.directionListener = directionListener;
-            this.camera = camera;
+            this.cameraController = cameraController;
         }
 
-        Vector3 velocity = new Vector3();
+        public void setDirectionListener(DirectionListener directionListener)
+        {
+            this.directionListener = directionListener;
+        }
 
-        Vector3 worldFoward = new Vector3(0.0f, 0.0f, 1.0f);
-        Vector3 worldBackward = new Vector3(0.0f, 0.0f, -1.0f);
-        Vector3 worldLeft = new Vector3(1.0f, 0.0f, 0.0f);
-        Vector3 worldRight = new Vector3(-1.0f, 0.0f, 0.0f);
 
-        Vector3 screenFoward = new Vector3();
-        Vector3 screenBackward = new Vector3();
-        Vector3 screenLeft = new Vector3();
-        Vector3 screenRight = new Vector3();
-
+        Vector2 velocity = new Vector2();
+        Vector2 direction = new Vector2();
 
         @Override
-        public boolean fling(float velocityX, float velocityY, int button)
+        public boolean fling(float x, float y, int button)
         {
-            velocity.set(velocityX, velocityY, 0.0f);
-            if(Math.abs(velocityX) > Math.abs(velocityY)){
-                if(velocityX > 0){
-                    directionListener.onRight();
-                }else{
-                    directionListener.onLeft();
-                }
-            }else{
-                if(velocityY > 0){
-                    directionListener.onDown();
-                }else{
-                    directionListener.onUp();
-                }
+            float directionX = 0.0f;
+            float directionY = 0.0f;
+
+            velocity.set(x, y);
+            // negate the cameraController angleX (it's clockwise, rotate needs counter clockwise)
+            velocity.rotate(-cameraController.getAngleX());
+
+            float absVelocityX = Math.abs(velocity.x);
+            float absVelocityY = Math.abs(velocity.y);
+            if(absVelocityX > absVelocityY)
+            {
+                directionX = -1 * velocity.x / absVelocityX;
+            }
+            else if (absVelocityX < absVelocityY)
+            {
+                directionY = -1 * velocity.y / absVelocityY;
             }
 
-            screenFoward.set(worldFoward);
-            camera.project(screenFoward);
+            direction.set(directionX, directionY);
+            directionListener.moveInDirection(direction);
 
-            Gdx.app.debug(TAG, "Screen coords: " + screenFoward.toString());
-            Gdx.app.debug(TAG, "World coords: " + worldFoward.toString());
-
-            return super.fling(velocityX, velocityY, button);
+            return super.fling(x, y, button);
         }
-
     }
 
+    public static interface DirectionListener
+    {
+        public void moveInDirection(Vector2 direction);
+    }
 }

@@ -1,5 +1,7 @@
 package com.andgate.ikou.utility;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Vector2i
 {
     public int x;
@@ -29,6 +31,11 @@ public class Vector2i
     public void set(Vector2i other)
     {
         set(other.x, other.y);
+    }
+
+    public void set(Vector2 other)
+    {
+        set(Math.round(other.x), Math.round(other.y));
     }
 
     public void add(int x, int y)

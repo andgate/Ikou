@@ -18,7 +18,6 @@ import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.TileMaze;
 import com.andgate.ikou.render.PlayerModelRender;
 import com.andgate.ikou.utility.LinearTween;
-import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -32,7 +31,8 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
 
     private final Level level;
 
-    private static final float SPEED = 15.0f;
+    private static final float MOVE_SPEED = 15.0f; // units per second
+    private static final float FALL_SPEED = Constants.FLOOR_SPACING / 0.25f; // units per second
     private boolean isMoving = false;
     private boolean isFalling = false;
     private LinearTween movementTween = new LinearTween();
@@ -112,7 +112,7 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
     {
         if(!isFallingStarted)
         {
-            fallingTween.setup(getPosition(), level.getCurrentPlayerPosition(), SPEED);
+            fallingTween.setup(getPosition(), level.getCurrentPlayerPosition(), FALL_SPEED);
             isFallingStarted = true;
         }
         else
@@ -176,7 +176,7 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
         end.set(getPosition());
         end.add(x, 0, y);
 
-        movementTween.setup(getPosition(), end, SPEED);
+        movementTween.setup(getPosition(), end, MOVE_SPEED);
     }
 
     public interface PlayerPositionListener

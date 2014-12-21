@@ -152,4 +152,5 @@ public class GameControlsMenu implements Disposable
         movementModeStage.dispose();
         batch.dispose();
     }
+
 }

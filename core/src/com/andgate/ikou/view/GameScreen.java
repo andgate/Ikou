@@ -16,7 +16,6 @@ package com.andgate.ikou.view;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.CameraInputController;
-import com.andgate.ikou.controller.DirectionListener;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
 import com.andgate.ikou.model.Level;
@@ -35,9 +34,9 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 
-public class GameScreen extends ScreenAdapter implements DirectionListener
+public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureDetector.DirectionListener
 {
     private static final String TAG = "GameScreen";
 
@@ -72,13 +71,13 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
         createEnvironment();
 
-        InputProcessor moveController = new PlayerDirectionGestureDetector(this, camera);
+        setupCamera();
+        InputProcessor moveController = new PlayerDirectionGestureDetector(this, camController);
+
+
         im = new InputMultiplexer();
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
-
-        setupCamera();
-
         controlsMenu = new GameControlsMenu(game, im, moveController, camController);
     }
 
@@ -183,36 +182,16 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         controlsMenu.build();
     }
 
-    public void movePlayer(Vector2i velocity)
+
+    Vector2i tmpDirection = new Vector2i();
+    @Override
+    public void moveInDirection(Vector2 direction)
     {
         if(!player.isMoving() && !player.isFalling())
         {
             TileMaze maze = level.getCurrentTileMaze();
-            maze.move(velocity);
+            tmpDirection.set(direction);
+            maze.move(tmpDirection);
         }
-    }
-
-    @Override
-    public void onLeft()
-    {
-        movePlayer(TileMaze.LEFT);
-    }
-
-    @Override
-    public void onRight()
-    {
-        movePlayer(TileMaze.RIGHT);
-    }
-
-    @Override
-    public void onUp()
-    {
-        movePlayer(TileMaze.UP);
-    }
-
-    @Override
-    public void onDown()
-    {
-        movePlayer(TileMaze.DOWN);
     }
 }
