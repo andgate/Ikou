@@ -64,7 +64,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         Gdx.graphics.setVSync(false);
 
         modelBatch = new ModelBatch();
-        camera = new PerspectiveCamera(67, game.worldWidth, game.worldHeight);
+        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
 
         player = new Player(level);
 
@@ -84,12 +84,14 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
     private void setupCamera()
     {
-        camera.position.set(player.getPosition().x,
-                            player.getPosition().y + 3.0f,
-                            player.getPosition().z - 3.0f);
-        camera.lookAt(player.getPosition());
+        float playerCenterX = player.getPosition().x + TileData.HALF_WIDTH;
+        float playerCenterZ = player.getPosition().z + TileData.HALF_DEPTH;
+        camera.position.set(playerCenterX,
+                            player.getPosition().y + Constants.CAMERA_HEIGHT,
+                            playerCenterZ - Constants.CAMERA_DISTANCE);
+        camera.lookAt(playerCenterX, player.getPosition().y, playerCenterZ);
         camera.near = 1f;
-        camera.far = 30f;
+        camera.far = Constants.CAMERA_FAR;
         camera.update();
 
         camController = new CameraInputController(camera, player);

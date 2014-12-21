@@ -58,5 +58,12 @@ public class Constants
     public static final float TILE_LENGTH = 1.0f;
     public static final float TILE_THICKNESS = TILE_LENGTH / 50.0f;
 
-    public static final float FLOOR_SPACING = 5.0f;
+    public static final float FLOOR_SPACING = 10.0f;
+
+    public static final float DEFAULT_FIELD_OF_VIEW =  67f;
+    public static final float CAMERA_FAR = 40.0f;
+    public static final float CAMERA_HEIGHT = 3.0f;
+    public static final float CAMERA_DISTANCE = 4.0f;
+    public static final float CAMERA_ANGLE_TO_PLAYER
+            = (float)Math.toDegrees(Math.atan(CAMERA_HEIGHT / CAMERA_DISTANCE));
 }
