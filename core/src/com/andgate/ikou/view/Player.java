@@ -24,6 +24,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
+import java.util.ArrayList;
+
 public class Player implements Disposable, TileMaze.WinListener, TileMaze.PlayerMoveListener
 {
     private static final String TAG = "Player";
@@ -37,6 +39,8 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
     private LinearTween fallingTween = new LinearTween();
     PlayerModelRender playerModel = new PlayerModelRender();
 
+    private ArrayList<PlayerPositionListener> playerPositionListeners = new ArrayList<>();
+
     public Player(Level level)
     {
         this.level = level;
@@ -49,20 +53,47 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
         }
     }
 
+    public void addPlayerPositionListener(PlayerPositionListener playerPositionListener)
+    {
+        playerPositionListeners.add(playerPositionListener);
+    }
+
+    public void removePlayerPositionListener(PlayerPositionListener playerPositionListener)
+    {
+        playerPositionListeners.remove(playerPositionListener);
+    }
+
+    public void notifyPlayerPositionListeners(float x, float y, float z)
+    {
+        for(PlayerPositionListener playerPositionListener : playerPositionListeners)
+        {
+            playerPositionListener.playerPositionModified(x, y, z);
+        }
+    }
+
     public void render(ModelBatch modelBatch, Environment environment)
     {
         modelBatch.render(playerModel, environment);
     }
 
+    /** Distance moved, for notifying listeners like the camera. **/
+    private Vector3 distance = new Vector3();
     public void update(float delta)
     {
-        if(isMoving)
+        if(isMoving || isFalling)
         {
-            updateMovement(delta);
-        }
-        else if(isFalling)
-        {
-            updateFall(delta);
+            distance.set(getPosition());
+
+            if (isMoving) {
+                updateMovement(delta);
+            } else if (isFalling) {
+                updateFall(delta);
+            }
+
+            distance.sub(getPosition());
+            distance.scl(-1);
+
+            notifyPlayerPositionListeners(distance.x, distance.y, distance.z);
         }
     }
 
@@ -116,7 +147,7 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
         playerModel.transform.translate(position);
     }
 
-    Vector3 position = new Vector3();
+    private Vector3 position = new Vector3();
     public Vector3 getPosition()
     {
         playerModel.transform.getTranslation(position);
@@ -146,5 +177,10 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
         end.add(x, 0, y);
 
         movementTween.setup(getPosition(), end, SPEED);
+    }
+
+    public interface PlayerPositionListener
+    {
+        public void playerPositionModified(float dx, float dy, float dz);
     }
 }

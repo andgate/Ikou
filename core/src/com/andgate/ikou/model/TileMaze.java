@@ -55,6 +55,14 @@ public class TileMaze
         winListeners.remove(winListener);
     }
 
+    public void notifyWinListeners()
+    {
+        for(WinListener winListener : winListeners)
+        {
+            winListener.mazeWon();
+        }
+    }
+
     public void addPlayerMoveListener(PlayerMoveListener playerMoveListener)
     {
         playerMoveListeners.add(playerMoveListener);
@@ -65,11 +73,11 @@ public class TileMaze
         playerMoveListeners.remove(playerMoveListener);
     }
 
-    private void triggerWin()
+    public void notifyPlayerMoveListeners(int dx, int dy)
     {
-        for(WinListener winListener : winListeners)
+        for(PlayerMoveListener playerMoveListener : playerMoveListeners)
         {
-            winListener.mazeWon();
+            playerMoveListener.movePlayerBy(dx, dy);
         }
     }
 
@@ -139,10 +147,7 @@ public class TileMaze
 
         isStopped = false;
 
-        for(PlayerMoveListener listener : playerMoveListeners)
-        {
-            listener.movePlayerBy(accumMoveDelta.x, accumMoveDelta.y);
-        }
+        notifyPlayerMoveListeners(accumMoveDelta.x, accumMoveDelta.y);
     }
 
     Vector2i moveDelta = new Vector2i();
@@ -178,7 +183,7 @@ public class TileMaze
                 case TileCode.END_TILE:
                     moveDelta.set(velocity);
                     playerPosition.add(moveDelta);
-                    triggerWin();
+                    notifyWinListeners();
                     break;
                 default:
                     break;

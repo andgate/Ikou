@@ -15,6 +15,7 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.controller.CameraInputController;
 import com.andgate.ikou.controller.DirectionListener;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
@@ -34,7 +35,6 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter implements DirectionListener
@@ -91,7 +91,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         camera.near = 1f;
         camera.far = 30f;
         camera.update();
-        camController = new CameraInputController(camera);
+
+        camController = new CameraInputController(camera, player);
     }
 
     private void createEnvironment()
@@ -109,20 +110,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     @Override
     public void render(float delta)
     {
-        if(controlsMenu.currentMode == GameControlsMenu.Mode.MOVEMENT)
-        {
-            camera.position.set(player.getPosition());
-            camera.position.x += TileData.WIDTH / 2.0f;
-            camera.position.y += 3.0f;
-            camera.position.z -= 3.0f;
-            camera.lookAt(player.getPosition());
-            camera.update();
-        }
-        else
-        {
-            camController.target = player.getPosition();
-            camController.update();
-        }
+        camController.update(delta);
 
         renderSetup();
 
