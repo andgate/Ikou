@@ -2,6 +2,7 @@ package com.andgate.ikou.utility;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,11 +14,11 @@ public class Icon
 {
     public static ImageButton createIconButton(Ikou game, String upFilename, String downFilename, ClickListener listener)
     {
-        Texture buttonTexture = new Texture(upFilename);
-        buttonTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        Texture buttonTexture = new Texture(Gdx.files.internal(upFilename), true);
+        buttonTexture.setFilter(TextureFilter.MipMapLinearLinear, TextureFilter.Linear);
 
-        Texture buttonDownTexture = new Texture(upFilename);
-        buttonDownTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+        Texture buttonDownTexture = new Texture(Gdx.files.internal(downFilename), true);
+        buttonDownTexture.setFilter(TextureFilter.MipMapLinearLinear, TextureFilter.Linear);
 
         TextureRegionDrawable buttonDrawable
                 = new TextureRegionDrawable(new TextureRegion(buttonTexture));

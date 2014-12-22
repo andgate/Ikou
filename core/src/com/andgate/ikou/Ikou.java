@@ -13,13 +13,18 @@
 
 package com.andgate.ikou;
 
+import com.andgate.ikou.utility.graphics.ShaderFont;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Ikou extends Game
@@ -31,13 +36,11 @@ public class Ikou extends Game
 
     public Skin skin;
 
+    public ShaderFont logoFont;
+    public ShaderFont menuTitleFont;
+    public ShaderFont menuOptionFont;
 
-    public FreeTypeFontGenerator logoFontGenerator;
-    public BitmapFont logoFont;
-
-    public FreeTypeFontGenerator menuFontGenerator;
-    public BitmapFont menuTitleFont;
-    public BitmapFont menuOptionFont;
+    public ShaderProgram fontShader;
 
     public Ikou()
     {
@@ -56,48 +59,34 @@ public class Ikou extends Game
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
         skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
-        createFontGenerators();
-        createFonts();
+        loadFonts();
+        loadShader();
 
         setScreen(new MainMenuScreen(this));
 	}
 
-    private void createFontGenerators()
+    private void loadFonts()
     {
-        logoFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.LOGO_FONT_LOCATION));
-        menuFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(Constants.MENU_FONT_LOCATION));
+        logoFont = new ShaderFont(Constants.LOGO_FONT_FNT, Constants.LOGO_FONT_PNG);
+        menuTitleFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG);
+        menuOptionFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG);
     }
 
-    private void createFonts()
+    private void loadShader()
     {
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-
-        parameter.size = (int) ((float)Constants.LOGO_FONT_SIZE * ppm);
-        logoFont = logoFontGenerator.generateFont(parameter);
-
-        parameter.size = (int) ((float)Constants.MENU_TITLE_FONT_SIZE * ppm);
-        menuTitleFont = menuFontGenerator.generateFont(parameter);
-
-        parameter.size = (int) ((float)Constants.MENU_OPTION_FONT_SIZE * ppm);
-        menuOptionFont = menuFontGenerator.generateFont(parameter);
+        fontShader = new ShaderProgram(Gdx.files.internal(Constants.FONT_VERT_SHADER), Gdx.files.internal(Constants.FONT_FRAG_SHADER));
+        if (!fontShader.isCompiled()) {
+            Gdx.app.error(TAG + " fontShader", "compilation failed:\n" + fontShader.getLog());
+        }
     }
 
     @Override
     public void dispose()
     {
         disposeFonts();
-        disposeFontGenerators();
 
         if(getScreen() != null)
             getScreen().dispose();
-    }
-
-    private void disposeFontGenerators()
-    {
-        if(logoFontGenerator != null)
-            logoFontGenerator.dispose();
-        if(menuFontGenerator != null)
-            menuFontGenerator.dispose();
     }
 
     private void disposeFonts()
@@ -120,9 +109,7 @@ public class Ikou extends Game
     public void resize(int width, int height)
     {
         screenAdjustments(width, height);
-
-        disposeFonts();
-        createFonts();
+        scaleFonts();
 
         if(getScreen() != null)
         {
@@ -134,17 +121,32 @@ public class Ikou extends Game
     {
         float res = (float)width / (float)height;
 
-        if(width <= height)
+        if(width < height)
         {
             worldWidth = Constants.WORLD_LENGTH;
             ppm = (float)Gdx.graphics.getWidth() / worldWidth;
-            worldHeight = worldWidth * (float)height / (float)width;
+            worldHeight = worldWidth / res;
         }
         else
         {
             worldHeight = Constants.WORLD_LENGTH;
             ppm = (float)Gdx.graphics.getHeight() / worldHeight;
-            worldWidth = worldHeight * (float)width / (float)height;
+            worldWidth = worldHeight * res;
         }
+    }
+
+    public void scaleFonts()
+    {
+        logoFont.resetScale();
+        float logoFontScale = Constants.LOGO_FONT_SIZE / (logoFont.getCapHeight() / ppm);
+        logoFont.setScale(logoFontScale);
+
+        menuTitleFont.resetScale();
+        float menuTitleFontScale = Constants.MENU_TITLE_FONT_SIZE / (menuTitleFont.getCapHeight() / ppm);
+        menuTitleFont.setScale(menuTitleFontScale);
+
+        menuOptionFont.resetScale();
+        float menuOptionFontScale = Constants.MENU_OPTION_FONT_SIZE / (menuOptionFont.getCapHeight() / ppm);
+        menuOptionFont.setScale(menuOptionFontScale);
     }
 }

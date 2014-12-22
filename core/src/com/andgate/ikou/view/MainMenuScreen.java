@@ -2,6 +2,7 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -42,7 +43,7 @@ public class MainMenuScreen implements Screen
         Gdx.input.setInputProcessor(stage);
 
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
-        final Label titleLabel = new Label(Constants.GAME_NAME, titleLabelStyle);
+        final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
 
 
         final TextButtonStyle buttonStyle = new TextButtonStyle(game.skin.getDrawable("default-round"),
@@ -89,7 +90,8 @@ public class MainMenuScreen implements Screen
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         buildStage();
     }
 

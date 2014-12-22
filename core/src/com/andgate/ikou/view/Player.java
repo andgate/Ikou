@@ -32,7 +32,7 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
     private final Level level;
 
     private static final float MOVE_SPEED = 15.0f; // units per second
-    private static final float FALL_SPEED = Constants.FLOOR_SPACING / 0.25f; // units per second
+    private static final float FALL_SPEED = Constants.FLOOR_SPACING / 0.4f; // units per second
     private boolean isMoving = false;
     private boolean isFalling = false;
     private LinearTween movementTween = new LinearTween();

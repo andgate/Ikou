@@ -28,8 +28,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -55,10 +57,13 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
 
     private InputMultiplexer im;
 
+    private SpriteBatch batch;
+
     public GameScreen(Ikou game, Level level)
     {
         this.game = game;
         this.level = level;
+        batch = new SpriteBatch();
 
         Gdx.graphics.setVSync(false);
 
@@ -132,7 +137,14 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
             this.dispose();
         }
 
-        //Gdx.app.debug(TAG, "FPS: " + Gdx.graphics.getFramesPerSecond());
+        batch.begin();
+        batch.setShader(game.fontShader);
+        String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond();
+        float fontHeight = game.menuOptionFont.getCapHeight() / game.ppm;
+        game.menuOptionFont.setColor(Color.BLACK);
+        game.menuOptionFont.draw(batch, fpsString, game.ppm, Gdx.graphics.getHeight() - fontHeight);
+        batch.setShader(null);
+        batch.end();
     }
 
     private float accumulator = 0.0f;

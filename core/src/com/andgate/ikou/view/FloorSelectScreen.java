@@ -5,6 +5,7 @@ import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.io.LevelLoader;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -50,7 +51,7 @@ public class FloorSelectScreen extends ScreenAdapter
         Gdx.input.setInputProcessor(stage);
 
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.CYAN);
-        final Label titleLabel = new Label(SELECT_FLOOR_TEXT, titleLabelStyle);
+        final ShaderLabel titleLabel = new ShaderLabel(SELECT_FLOOR_TEXT, titleLabelStyle, game.fontShader);
 
         final Label.LabelStyle floorOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
         final Label.LabelStyle lockedFloorOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.GRAY);
@@ -62,15 +63,15 @@ public class FloorSelectScreen extends ScreenAdapter
 
         for(int floorNumber = 1; floorNumber <= levelData.totalFloors; floorNumber++)
         {
-            Label floorLabel = null;
+            ShaderLabel floorLabel = null;
             if(floorNumber <= levelData.completedFloors+1)
             {
-                floorLabel = new Label("" + floorNumber, floorOptionLabelStyle);
+                floorLabel = new ShaderLabel("" + floorNumber, floorOptionLabelStyle, game.fontShader);
                 floorLabel.addListener(new FloorOptionClickListener(game, this, levelData, floorNumber));
             }
             else
             {
-                floorLabel = new Label("?", lockedFloorOptionLabelStyle);
+                floorLabel = new ShaderLabel("?", lockedFloorOptionLabelStyle, game.fontShader);
             }
 
             floorOptionsTable.add(floorLabel).pad(padding).width(actorLength).height(actorLength).center();

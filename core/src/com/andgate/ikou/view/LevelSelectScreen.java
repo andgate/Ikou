@@ -3,6 +3,7 @@ package com.andgate.ikou.view;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.io.LevelDatabaseService;
 import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -42,7 +43,7 @@ public class LevelSelectScreen implements Screen
         Gdx.input.setInputProcessor(stage);
 
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.CYAN);
-        final Label titleLabel = new Label(SELECT_LEVEL_TEXT, titleLabelStyle);
+        final ShaderLabel titleLabel = new ShaderLabel(SELECT_LEVEL_TEXT, titleLabelStyle, game.fontShader);
 
         final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
         LevelData[] levels = LevelDatabaseService.getLevels();
@@ -54,10 +55,10 @@ public class LevelSelectScreen implements Screen
 
             LevelData level = levels[i];
 
-            final Label levelNameLabel = new Label(level.name, levelOptionLabelStyle);
+            final ShaderLabel levelNameLabel = new ShaderLabel(level.name, levelOptionLabelStyle, game.fontShader);
 
             final String levelCompletion = level.completedFloors + " out of " + level.totalFloors;
-            final Label levelProgressLabel = new Label(levelCompletion, levelOptionLabelStyle);
+            final ShaderLabel levelProgressLabel = new ShaderLabel(levelCompletion, levelOptionLabelStyle, game.fontShader);
 
             levelInfoTable.addListener(new LevelOptionClickListener(game, this, level));
 

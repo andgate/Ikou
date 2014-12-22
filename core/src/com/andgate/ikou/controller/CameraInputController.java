@@ -31,7 +31,6 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
     private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();
-    private final Vector3 tmpV2 = new Vector3();
 
     public CameraInputController(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final Player player)
     {

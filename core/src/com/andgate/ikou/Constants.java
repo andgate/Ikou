@@ -25,14 +25,39 @@ public class Constants
     public static final String SKIN_LOCATION
             = "data/ui/uiskin.json";
 
-    public static final String LOGO_FONT_LOCATION
-            = "data/fonts/blockbusta.ttf";
-    public static final int LOGO_FONT_SIZE = 7;
+    public static final String SHADER_FOLDER
+            = "data/shader/";
+    public static final String FONT_VERT_SHADER
+            = SHADER_FOLDER + "font.vert.glsl";
+    public static final String FONT_FRAG_SHADER
+            = SHADER_FOLDER + "font.frag.glsl";
 
-    public static final String MENU_FONT_LOCATION
-            = "data/fonts/arial.ttf";
-    public static final int MENU_TITLE_FONT_SIZE = 5;
-    public static final int MENU_OPTION_FONT_SIZE = 3;
+    public static final String FONTS_FOLDER
+            = "data/fonts/";
+
+    private static final String FNT_EXTENSION
+            = ".fnt";
+    private static final String PNG_EXTENSION
+            = ".png";
+
+    private static final String LOGO_FONT_NAME
+            = FONTS_FOLDER + "arial";
+    private static final String MENU_FONT_NAME
+            = FONTS_FOLDER + "arial";
+
+    public static final String LOGO_FONT_FNT
+            = LOGO_FONT_NAME + FNT_EXTENSION;
+    public static final String LOGO_FONT_PNG
+            = LOGO_FONT_NAME + PNG_EXTENSION;
+
+    public static final String MENU_FONT_FNT
+            = MENU_FONT_NAME + FNT_EXTENSION;
+    public static final String MENU_FONT_PNG
+            = MENU_FONT_NAME + PNG_EXTENSION;
+
+    public static final int LOGO_FONT_SIZE = 7;
+    public static final int MENU_TITLE_FONT_SIZE = 3;
+    public static final int MENU_OPTION_FONT_SIZE = 2;
 
     public static final String CAMERA_ICON_LOCATION
             = "data/icons/camera.png";
