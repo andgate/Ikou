@@ -24,13 +24,15 @@ public class LevelSelectScreen implements Screen
     private final Ikou game;
     private SpriteBatch batch;
     private Stage stage;
+    private LevelData[] levels;
 
     private static final String SELECT_LEVEL_TEXT = "Select Level";
 
-    public LevelSelectScreen(final Ikou newGame)
+    public LevelSelectScreen(final Ikou game)
     {
-        game = newGame;
+        this.game = game;
         batch = new SpriteBatch();
+        levels = LevelDatabaseService.getLevels();
         buildStage();
     }
 
@@ -46,7 +48,6 @@ public class LevelSelectScreen implements Screen
         final ShaderLabel titleLabel = new ShaderLabel(SELECT_LEVEL_TEXT, titleLabelStyle, game.fontShader);
 
         final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
-        LevelData[] levels = LevelDatabaseService.getLevels();
         Table levelOptionsTable = new Table();
 
         for(int i = 0; i < levels.length; i++)

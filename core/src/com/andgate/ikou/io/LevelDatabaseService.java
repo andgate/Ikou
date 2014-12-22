@@ -13,23 +13,25 @@ public class LevelDatabaseService
     public static LevelData[] getLevels()
     {
         ProgressDatabase progressDB = ProgressDatabaseService.read();
-        ArrayList<LevelData> levelsList = new ArrayList<>();
+        FileHandle[] levelsDirFolders = Gdx.files.internal(Constants.LEVELS_DIRECTORY).list();
 
-        FileHandle levelsDir = Gdx.files.internal(Constants.LEVELS_DIRECTORY);
+        LevelData[] levels = new LevelData[levelsDirFolders.length];
 
-        for(FileHandle level : levelsDir.list())
+        for(int i = 0; i < levelsDirFolders.length; i++)
         {
+            FileHandle level = levelsDirFolders[i];
+
             if(level.isDirectory())
             {
                 String levelName = level.name();
-                int totalFloors = level.list().length;
+                int totalFloors = levelsDirFolders.length;
                 int completedFloors = progressDB.getFloorsCompleted(levelName);
 
-                levelsList.add(new LevelData(levelName, totalFloors, completedFloors));
+                levels[i] = new LevelData(levelName, totalFloors, completedFloors);
             }
         }
 
-        return levelsList.toArray(new LevelData[levelsList.size()]);
+        return levels;
 
     }
 
