@@ -1,11 +1,13 @@
-2 1
- nnnnnnnnnnnn
-nnooo oooonnn
-nnooooooooonn
-neooooooooon
-nnooooooonnn
-nnoonnnoooon
-nooonnnoooon
-nxxoooooxxon
-nxxoooooxxon
-nnnnnnnnnnnn
+18 10
+nnnnnnnnnnnnnnnnnnnn
+noooooooooooonooooon
+nonoooooooooooooooon
+nnooonoooooonoooooon
+nooooooooooooooooonn
+nooooooooonoooooooon
+noonoooooooooooooooe
+nooooonooooooooooonn
+noooooooooonooooooon
+noooooooonooonooooon
+noooooooooooooooooon
+nnnnnnnnnnnnnnnnnnnn
