@@ -22,9 +22,6 @@
     <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/4.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/4.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/5.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/5.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -2657,7 +2654,11 @@
       <created>1419295465581</created>
       <updated>1419295465581</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Improved camera zoom. Translates instead of zooms, as it is more appropriate.">
+      <created>1419295555138</created>
+      <updated>1419295555138</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2734,7 +2735,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Rendering code changed to allow generation of level meshes." />
     <MESSAGE value="60 fps, everything works." />
     <MESSAGE value="per-face culling introduced." />
     <MESSAGE value="TileMazeParser stores end position now. GameControlsMenu is functional again." />
@@ -2759,7 +2759,8 @@
     <MESSAGE value="floor 1-4 is a reproduction of a pokemon ice maze. It's really hard and fun!" />
     <MESSAGE value="Fixed" />
     <MESSAGE value="Fixed bug where all the levels had the same number of floors (11)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed bug where all the levels had the same number of floors (11)." />
+    <MESSAGE value="Improved camera zoom. Translates instead of zooms, as it is more appropriate." />
+    <option name="LAST_COMMIT_MESSAGE" value="Improved camera zoom. Translates instead of zooms, as it is more appropriate." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
