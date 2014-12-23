@@ -24,7 +24,7 @@ public class LevelDatabaseService
             if(level.isDirectory())
             {
                 String levelName = level.name();
-                int totalFloors = levelsDirFolders.length;
+                int totalFloors = level.list().length;
                 int completedFloors = progressDB.getFloorsCompleted(levelName);
 
                 levels[i] = new LevelData(levelName, totalFloors, completedFloors);
