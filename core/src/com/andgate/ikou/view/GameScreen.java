@@ -91,8 +91,8 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
         float playerCenterX = player.getPosition().x + TileData.HALF_WIDTH;
         float playerCenterZ = player.getPosition().z + TileData.HALF_DEPTH;
         camera.position.set(playerCenterX,
-                            player.getPosition().y + Constants.CAMERA_HEIGHT,
-                            playerCenterZ - Constants.CAMERA_DISTANCE);
+                            player.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
+                            playerCenterZ - Constants.CAMERA_HORIZONTAL_DISTANCE);
         camera.lookAt(playerCenterX, player.getPosition().y, playerCenterZ);
         camera.near = 1f;
         camera.far = Constants.CAMERA_FAR;

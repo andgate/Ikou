@@ -23,8 +23,10 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
     protected int button = -1;
 
-    public static final float PINCH_ZOOM_MAX = 1.0f;
-    public static final float PINCH_ZOOM_MIN = 0.3f;
+    /** World units per screen size **/
+    public static final float PINCH_ZOOM_FACTOR = Constants.WORLD_LENGTH;
+    public static final float MAX_PLAYER_DISTANCE = Constants.FLOOR_SPACING;
+    public static final float MIN_PLAYER_DISTANCE = 3.0f;
 
     public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
     public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 5.0f;
@@ -129,33 +131,32 @@ public class CameraInputController extends GestureDetector implements Player.Pla
         return angleX;
     }
 
-    private static float pickClosestBound(float n, float low, float high)
-    {
-        float highDistance = Math.abs(high - n);
-        float lowDistance = Math.abs(n - low);
-
-        if(lowDistance < highDistance)
-        {
-            return low;
-        }
-
-        return high;
-    }
-
-    private static boolean inRange(float n, float low, float high)
-    {
-        return (low <= n && n <= high);
-    }
-
     public boolean zoom (float amount)
     {
-        camera.fieldOfView = amount * Constants.DEFAULT_FIELD_OF_VIEW;
+        camera.translate(tmpV1.set(camera.direction).scl(amount));
         camera.update();
         return true;
     }
 
-    protected boolean pinchZoom (float amount) {
-        return zoom(amount);
+
+    private float currentDistance = Constants.CAMERA_DISTANCE;
+    protected boolean pinchZoom (float amount)
+    {
+        float moveAmount = amount * PINCH_ZOOM_FACTOR;
+        float newDistance = currentDistance - moveAmount;
+
+        if(inRange(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE))
+        {
+            currentDistance = newDistance;
+        }
+        else
+        {
+            float bound = pickClosestBound(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE);
+            moveAmount = bound - currentDistance;
+            currentDistance = bound;
+        }
+
+        return zoom(moveAmount);
     }
 
 
@@ -172,7 +173,6 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
         private CameraInputController controller = null;
         private float previousZoom;
-        private float totalPercentZoom = 100.f;
 
         public void setController(CameraInputController controller)
         {
@@ -215,26 +215,12 @@ public class CameraInputController extends GestureDetector implements Player.Pla
         {
             float newZoom = distance - initialDistance;
             float amount = newZoom - previousZoom;
-            previousZoom = 0.0f;
+            previousZoom = newZoom;
 
             float w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
             float percentZoom = amount / ((w > h) ? w : h);
-            if(totalPercentZoom + percentZoom  < PINCH_ZOOM_MIN)
-            {
-                totalPercentZoom = PINCH_ZOOM_MIN;
-            }
-            else if(totalPercentZoom + percentZoom > PINCH_ZOOM_MAX)
-            {
-                totalPercentZoom = PINCH_ZOOM_MAX;
-            }
-            else
-            {
-                // If the zoom provides a change...
-                totalPercentZoom += percentZoom;
-                previousZoom = newZoom;
-            }
 
-            return controller.pinchZoom(totalPercentZoom);
+            return controller.pinchZoom(percentZoom);
         }
 
         @Override
@@ -243,4 +229,22 @@ public class CameraInputController extends GestureDetector implements Player.Pla
             return false;
         }
     };
+
+    private static float pickClosestBound(float n, float low, float high)
+    {
+        float highDistance = Math.abs(high - n);
+        float lowDistance = Math.abs(n - low);
+
+        if(lowDistance < highDistance)
+        {
+            return low;
+        }
+
+        return high;
+    }
+
+    private static boolean inRange(float n, float low, float high)
+    {
+        return (low <= n && n <= high);
+    }
 }
