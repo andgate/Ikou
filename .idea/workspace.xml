@@ -19,9 +19,7 @@
     <bookmark url="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" line="93" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/4.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/4.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/5.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/5.txt" />
+    <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="Improved camera zoom. Translates instead of zooms, as it is more appropriate.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -2658,7 +2656,11 @@
       <created>1419295555138</created>
       <updated>1419295555138</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Improved camera zoom. Translates instead of zooms, as it is more appropriate.">
+      <created>1419295577102</created>
+      <updated>1419295577102</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
