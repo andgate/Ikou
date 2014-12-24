@@ -11,23 +11,6 @@ public class TileSector extends Array2d<TileStack>
         super();
     }
 
-    public TileSector(TileMaze maze)
-    {
-        super();
-
-        char[][] tiles = maze.getTiles();
-
-        for(int i = 0; i < tiles.length; i++)
-        {
-            for(int j = 0; j < tiles[i].length; j++)
-            {
-                addToRow(new TileStack(tiles[i][j]));
-            }
-
-            addRow();
-        }
-    }
-
     public boolean doesTileExist(int x, int y, int z)
     {
         if(isInArray(z, size))

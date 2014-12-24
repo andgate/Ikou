@@ -3,32 +3,27 @@ package com.andgate.ikou.model;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.utility.Vector2i;
-import com.badlogic.gdx.math.Vector2;
+import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.math.Vector3;
 
-public class Level implements TileMaze.WinListener
+public class Level implements TileMazeSimulator.WinListener
 {
     public final LevelData levelData;
-    public final TileMaze[] mazes;
+    public Floor[] floors;
     private int startingFloor;
     private int currentFloor;
 
-    public Level(LevelData levelData, TileMaze[] mazes, int startingFloor)
+    public Level(LevelData levelData, Floor[] floors, int startingFloor)
     {
         this.levelData = levelData;
-        this.mazes = mazes;
+        this.floors = floors;
         this.startingFloor = startingFloor;
         this.currentFloor = startingFloor;
-
-        for(TileMaze maze : mazes)
-        {
-            maze.addWinListener(this);
-        }
     }
 
-    public TileMaze[] getMazes()
+    public Floor[] getFloors()
     {
-        return mazes;
+        return floors;
     }
 
     public String getName()
@@ -51,34 +46,34 @@ public class Level implements TileMaze.WinListener
         return currentFloor;
     }
 
-    public TileMaze getCurrentTileMaze()
+    public Floor getCurrentFloor()
     {
-        return mazes[currentFloor - 1];
+        return floors[currentFloor - 1];
     }
 
     private Vector3 initialPlayerPosition = new Vector3();
     public Vector3 getIntialPlayerPosition()
     {
-        Vector2i initialMazePlayerPosition = mazes[startingFloor - 1].getStartPosition();
+        Vector3i initialFloorStart = floors[startingFloor - 1].getStart();
         Vector2i offset = calculateFloorOffset(startingFloor);
 
         Vector3 initialPlayerPosition = new Vector3();
-        initialPlayerPosition.x = initialMazePlayerPosition.x + offset.x;
+        initialPlayerPosition.x = initialFloorStart.x + offset.x;
         initialPlayerPosition.y = Constants.TILE_THICKNESS - (startingFloor - 1) * Constants.FLOOR_SPACING;
-        initialPlayerPosition.z = initialMazePlayerPosition.y + offset.y;
+        initialPlayerPosition.z = initialFloorStart.z + offset.y;
 
         return initialPlayerPosition;
     }
 
     public Vector3 getCurrentPlayerPosition()
     {
-        Vector2i currentMazePlayerPosition = mazes[currentFloor - 1].getPlayerPosition();
+        Vector3i currentFloorStart = floors[currentFloor - 1].getStart();
         Vector2i offset = calculateFloorOffset(currentFloor);
 
         Vector3 currentPlayerPosition = new Vector3();
-        currentPlayerPosition.x = currentMazePlayerPosition.x + offset.x;
+        currentPlayerPosition.x = currentFloorStart.x + offset.x;
         currentPlayerPosition.y = Constants.TILE_THICKNESS - (currentFloor - 1) * Constants.FLOOR_SPACING;
-        currentPlayerPosition.z = currentMazePlayerPosition.y + offset.y;
+        currentPlayerPosition.z = currentFloorStart.z + offset.y;
 
         return currentPlayerPosition;
     }
@@ -94,11 +89,11 @@ public class Level implements TileMaze.WinListener
 
         for(int floorIndex = 1; floorIndex < floor; floorIndex++)
         {
-            TileMaze currMaze = mazes[floorIndex];
-            TileMaze lastMaze = mazes[floorIndex-1];
+            Vector3i currentStart = floors[floorIndex].getStart();
+            Vector3i lastEnd = floors[floorIndex-1].getEnd();
 
-            offset.add(lastMaze.getEndPosition());
-            offset.sub(currMaze.getStartPosition());
+            offset.add(lastEnd.x, lastEnd.z);
+            offset.sub(currentStart.x, currentStart.z);
         }
 
         return offset;

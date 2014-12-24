@@ -14,35 +14,42 @@
 package com.andgate.ikou.io;
 
 import com.andgate.ikou.exception.InvalidFileFormatException;
-import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.model.Floor;
+import com.andgate.ikou.model.TilePalette;
+import com.andgate.ikou.model.TileSector;
+import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.tile.TileCode;
-import com.andgate.ikou.utility.Vector2i;
-import com.badlogic.gdx.math.Vector2;
+import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.model.tile.TileData.TileType;
+import com.andgate.ikou.model.tile.TileFactory;
+import com.andgate.ikou.utility.Vector3i;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TileMazeParser
 {
-    public static TileMaze parse(String mapString)
+    public static Floor parse(String mapString)
         throws InvalidFileFormatException
     {
         String[] mapLines = mapString.split("\n");
 
-        Vector2i startPosition = getStartPosition(mapString);
-        char[][] tiles = getTiles(mapLines);
+        Vector3i startPosition = getStartPosition(mapString);
+        char[][] tileCodes = getTileCodes(mapLines);
+        TileSector masterSector = buildMasterSector(tileCodes);
+        Vector3i endPosition = getEndPosition(masterSector);
 
-        Vector2i endPosition = getEndPosition(tiles);
-
-        TileMaze maze = new TileMaze(tiles, startPosition, endPosition);
-        return maze;
+        Floor floor = new Floor(masterSector, startPosition, endPosition);
+        return floor;
     }
 
-    private static Vector2i getStartPosition(String firstLine)
+    private static Vector3i getStartPosition(String firstLine)
             throws InvalidFileFormatException
     {
         int startX = 0;
         int startY = 0;
+        int startZ = 0;
 
         Scanner in = new Scanner(firstLine);
 
@@ -51,7 +58,7 @@ public class TileMazeParser
             try
             {
                 startX = Integer.parseInt(in.next());
-                startY = Integer.parseInt(in.next());
+                startZ = Integer.parseInt(in.next());
             }
             finally
             {
@@ -67,28 +74,32 @@ public class TileMazeParser
             throw new InvalidFileFormatException("Error parsing starting position.");
         }
 
-        return new Vector2i(startX, startY);
+        return new Vector3i(startX, startY, startZ);
     }
 
-    private static Vector2i getEndPosition(char[][] tiles)
+    private static Vector3i getEndPosition(TileSector masterSector)
             throws InvalidFileFormatException
     {
-        Vector2i endPosition = null;
-
-        for(int rowIndex = 0; rowIndex < tiles.length; rowIndex++)
+        Vector3i endPosition = null;
+        for(int z = 0; z < masterSector.size; z++)
         {
-            char[] tileRow = tiles[rowIndex];
-            for(int columnIndex = 0; columnIndex < tileRow.length; columnIndex++)
+            Array<TileStack> sectorRow = masterSector.get(z);
+            for(int x = 0; x < sectorRow.size; x++)
             {
-                char currTile = tileRow[columnIndex];
-                if(currTile == TileCode.END_TILE)
+                TileStack currTileStack = sectorRow.get(x);
+                for(int y = 0; y < currTileStack.size; y++)
                 {
-                    if(endPosition != null)
-                    {
-                        throw new InvalidFileFormatException("Multiple end tiles found.");
-                    }
+                    TileData currTileData = currTileStack.get(y);
 
-                    endPosition = new Vector2i(columnIndex, rowIndex);
+                    if(currTileData.getType() == TileType.End)
+                    {
+                        if(endPosition != null)
+                        {
+                            throw new InvalidFileFormatException("Multiple end tiles found.");
+                        }
+
+                        endPosition = new Vector3i(x, y, z);
+                    }
                 }
             }
         }
@@ -101,7 +112,7 @@ public class TileMazeParser
         return endPosition;
     }
 
-    private static char[][] getTiles(String[] mapLines)
+    private static char[][] getTileCodes(String[] mapLines)
             throws InvalidFileFormatException
     {
         int rows = mapLines.length - 1;
@@ -114,6 +125,53 @@ public class TileMazeParser
         }
 
         return tiles;
+    }
+
+    private static TileSector buildMasterSector(char[][] tileCodes)
+    {
+        TileSector masterSector = new TileSector();
+        TilePalette palette = new TilePalette();
+
+        for(int row = 0; row < tileCodes.length; row++)
+        {
+            for(int column = 0; column < tileCodes[row].length; column++)
+            {
+                char currTileCode = tileCodes[row][column];
+                TileStack currTileStack = buildTileStack(currTileCode, palette);
+                masterSector.addToRow(currTileStack);
+            }
+
+            masterSector.addRow();
+        }
+
+        return masterSector;
+    }
+
+    private static TileStack buildTileStack(char tileCode, TilePalette palette)
+    {
+        TileStack tileStack = new TileStack();
+
+        switch(tileCode)
+        {
+            case TileCode.SMOOTH_TILE:
+                tileStack.add(TileFactory.build(TileType.Smooth, palette));
+                break;
+            case TileCode.OBSTACLE_TILE:
+                tileStack.add(TileFactory.build(TileType.Smooth, palette));
+                tileStack.add(TileFactory.build(TileType.Obstacle, palette));
+                break;
+            case TileCode.ROUGH_TILE:
+                tileStack.add(TileFactory.build(TileType.Rough, palette));
+                break;
+            case TileCode.END_TILE:
+                tileStack.add(TileFactory.build(TileType.End, palette));
+                break;
+            default:
+                tileStack.add(TileFactory.build(TileType.Blank, palette));
+                break;
+        }
+
+        return tileStack;
     }
 
     /*private static String reverseLineOrder(String original)

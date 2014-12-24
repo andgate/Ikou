@@ -2,6 +2,7 @@ package com.andgate.ikou.controller;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.utility.MathExtra;
 import com.andgate.ikou.view.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -24,7 +25,7 @@ public class CameraInputController extends GestureDetector implements Player.Pla
     protected int button = -1;
 
     /** World units per screen size **/
-    public static final float PINCH_ZOOM_FACTOR = Constants.WORLD_LENGTH;
+    public static final float PINCH_ZOOM_FACTOR = 10.0f;
     public static final float MAX_PLAYER_DISTANCE = Constants.FLOOR_SPACING;
     public static final float MIN_PLAYER_DISTANCE = 3.0f;
 
@@ -109,13 +110,13 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
         float deltaAngleY = deltaY * ROTATE_ANGLE;
         float tmpAngleY = angleY + deltaAngleY;
-        if(inRange(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
+        if(MathExtra.inRangeInclusive(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
         {
             angleY = tmpAngleY;
         }
         else
         {
-            float bound = pickClosestBound(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX);
+            float bound = MathExtra.pickClosestBound(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX);
             angleY = bound;
             deltaAngleY = bound - angleY;
         }
@@ -138,25 +139,20 @@ public class CameraInputController extends GestureDetector implements Player.Pla
         return true;
     }
 
-
-    private float currentDistance = Constants.CAMERA_DISTANCE;
     protected boolean pinchZoom (float amount)
     {
-        float moveAmount = amount * PINCH_ZOOM_FACTOR;
-        float newDistance = currentDistance - moveAmount;
+        float currentDistance = camera.position.dst(player.getPosition());
 
-        if(inRange(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE))
+        float displacement = amount * PINCH_ZOOM_FACTOR;
+        float newDistance = currentDistance - displacement;
+
+        if(!MathExtra.inRangeExclusive(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE))
         {
-            currentDistance = newDistance;
-        }
-        else
-        {
-            float bound = pickClosestBound(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE);
-            moveAmount = bound - currentDistance;
-            currentDistance = bound;
+            float bound = MathExtra.pickClosestBound(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE);
+            displacement = currentDistance - bound;
         }
 
-        return zoom(moveAmount);
+        return zoom(displacement);
     }
 
 
@@ -230,21 +226,4 @@ public class CameraInputController extends GestureDetector implements Player.Pla
         }
     };
 
-    private static float pickClosestBound(float n, float low, float high)
-    {
-        float highDistance = Math.abs(high - n);
-        float lowDistance = Math.abs(n - low);
-
-        if(lowDistance < highDistance)
-        {
-            return low;
-        }
-
-        return high;
-    }
-
-    private static boolean inRange(float n, float low, float high)
-    {
-        return (low <= n && n <= high);
-    }
 }

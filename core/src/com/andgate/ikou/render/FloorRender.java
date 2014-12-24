@@ -1,6 +1,7 @@
 package com.andgate.ikou.render;
 
-import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.model.Floor;
+import com.andgate.ikou.model.TileMazeSimulator;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,18 +15,18 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
-public class TileMazeRender implements RenderableProvider, Disposable
+public class FloorRender implements RenderableProvider, Disposable
 {
     private static final int SUBSECTOR_SIZE = 8;
     private Mesh[][] meshes;
     public final Matrix4 transform = new Matrix4();
     private final PerspectiveCamera camera;
 
-    public TileMazeRender(TileMaze maze, PerspectiveCamera camera)
+    public FloorRender(TileSector masterSector, PerspectiveCamera camera)
     {
         this.camera = camera;
-        // Build a master sector of the maze
-        TileSector masterSector = new TileSector(maze);
+        // Split the master sector into
+        // easier to render sub-sectors.
         TileSector[][] subsectors = masterSector.split(0, 0, SUBSECTOR_SIZE);
 
         buildMeshes(subsectors);

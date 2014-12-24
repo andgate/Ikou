@@ -18,11 +18,14 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.CameraInputController;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
+import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
 import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.model.TileMazeSimulator;
+import com.andgate.ikou.model.TileMazeSimulator.WinListener;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.Vector2i;
+import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -38,7 +41,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector2;
 
-public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureDetector.DirectionListener
+public class GameScreen extends ScreenAdapter implements DirectionListener, WinListener
 {
     private static final String TAG = "GameScreen";
 
@@ -59,6 +62,9 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
 
     private SpriteBatch batch;
 
+    private TileMazeSimulator mazeSim;
+    private boolean mazeSimNeedsRefresh = false;
+
     public GameScreen(Ikou game, Level level)
     {
         this.game = game;
@@ -69,10 +75,14 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
 
         modelBatch = new ModelBatch();
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
-
+        levelRender = new LevelRender(level, camera);
         player = new Player(level);
 
-        levelRender = new LevelRender(level, camera);
+        mazeSim = new TileMazeSimulator(level.getCurrentFloor());
+        mazeSim.addWinListener(player);
+        mazeSim.addWinListener(level);
+        mazeSim.addWinListener(this);
+        mazeSim.addPlayerMoveListener(player);
 
         createEnvironment();
 
@@ -117,6 +127,11 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
     public void render(float delta)
     {
         camController.update(delta);
+
+        if(mazeSimNeedsRefresh)
+        {
+            mazeSimRefresh();
+        }
 
         renderSetup();
 
@@ -195,15 +210,26 @@ public class GameScreen extends ScreenAdapter implements PlayerDirectionGestureD
     }
 
 
-    Vector2i tmpDirection = new Vector2i();
+    Vector3i tmpDirection = new Vector3i();
     @Override
     public void moveInDirection(Vector2 direction)
     {
         if(!player.isMoving() && !player.isFalling())
         {
-            TileMaze maze = level.getCurrentTileMaze();
-            tmpDirection.set(direction);
-            maze.move(tmpDirection);
+            tmpDirection.set(direction.x, 0.0f, direction.y);
+            mazeSim.move(tmpDirection);
         }
+    }
+
+    @Override
+    public void mazeWon()
+    {
+        mazeSimNeedsRefresh = true;
+    }
+
+    public void mazeSimRefresh()
+    {
+        mazeSim.setFloor(level.getCurrentFloor());
+        mazeSimNeedsRefresh = false;
     }
 }

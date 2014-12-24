@@ -15,7 +15,7 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.TileMaze;
+import com.andgate.ikou.model.TileMazeSimulator;
 import com.andgate.ikou.render.PlayerModelRender;
 import com.andgate.ikou.utility.LinearTween;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
 
-public class Player implements Disposable, TileMaze.WinListener, TileMaze.PlayerMoveListener
+public class Player implements Disposable, TileMazeSimulator.WinListener, TileMazeSimulator.PlayerMoveListener
 {
     private static final String TAG = "Player";
 
@@ -45,12 +45,6 @@ public class Player implements Disposable, TileMaze.WinListener, TileMaze.Player
     {
         this.level = level;
         setPosition(level.getIntialPlayerPosition());
-
-        for(TileMaze maze : level.getMazes())
-        {
-            maze.addWinListener(this);
-            maze.addPlayerMoveListener(this);
-        }
     }
 
     public void addPlayerPositionListener(PlayerPositionListener playerPositionListener)

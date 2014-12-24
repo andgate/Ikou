@@ -39,7 +39,7 @@ public class SectorMeshBuilder extends TileMeshBuilder
                         float yPos = (float) y * TileData.HEIGHT;
                         float zPos = (float) z * TileData.DEPTH + offsetZ;
 
-                        if(cullFaces)
+                        if(cullFaces && currTile.isOpaque())
                         {
                             addCulledTile(sector, x, y, z, xPos, yPos, zPos);
                         }
