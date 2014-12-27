@@ -14,13 +14,11 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.LinearTween;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class PlayerTransformer
 {

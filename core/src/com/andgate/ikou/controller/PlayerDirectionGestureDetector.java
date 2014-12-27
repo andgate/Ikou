@@ -13,11 +13,8 @@
 
 package com.andgate.ikou.controller;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 public class PlayerDirectionGestureDetector extends GestureDetector
 {

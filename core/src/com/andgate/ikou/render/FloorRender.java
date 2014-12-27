@@ -13,8 +13,6 @@
 
 package com.andgate.ikou.render;
 
-import com.andgate.ikou.model.Floor;
-import com.andgate.ikou.model.TileMazeSimulator;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.GL20;

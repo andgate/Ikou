@@ -13,14 +13,8 @@
 
 package com.andgate.ikou.model;
 
-import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.tile.TileCode;
 import com.andgate.ikou.model.tile.TileData;
-import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
-import com.badlogic.gdx.math.Vector2;
-
-import java.util.ArrayList;
 
 public class TileMazeSimulator
 {

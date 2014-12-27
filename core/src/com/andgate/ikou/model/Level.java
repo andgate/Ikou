@@ -14,7 +14,6 @@
 package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
