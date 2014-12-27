@@ -24,7 +24,6 @@ public class FloorSelectScreen extends ScreenAdapter
     private static final String TAG = "FloorSelectScreen";
 
     private final Ikou game;
-    private SpriteBatch batch;
     private Stage stage;
 
     private final LevelData levelData;
@@ -36,7 +35,10 @@ public class FloorSelectScreen extends ScreenAdapter
     public FloorSelectScreen(final Ikou newGame, LevelData levelData)
     {
         game = newGame;
-        batch = new SpriteBatch();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
         this.levelData = levelData;
 
         buildStage();
@@ -44,11 +46,9 @@ public class FloorSelectScreen extends ScreenAdapter
 
     public void buildStage()
     {
-        if(stage != null)
-            stage.dispose();
-
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+        stage.clear();
+        stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(SELECT_FLOOR_TEXT, titleLabelStyle, game.fontShader);
@@ -100,9 +100,7 @@ public class FloorSelectScreen extends ScreenAdapter
     {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
         stage.draw();
-        batch.end();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK))
         {
@@ -144,8 +142,6 @@ public class FloorSelectScreen extends ScreenAdapter
     public void dispose() {
         if(stage != null)
             stage.dispose();
-        if(batch != null)
-            batch.dispose();
     }
 
     private class FloorOptionClickListener extends ClickListener
@@ -173,8 +169,8 @@ public class FloorSelectScreen extends ScreenAdapter
             //game.buttonPressedSound.play();
             try
             {
-                Level level = LevelLoader.load(levelData, floor);
-                game.setScreen(new GameScreen(game, level));
+                Level level = LevelLoader.load(levelData);
+                game.setScreen(new GameScreen(game, level, floor));
                 screen.dispose();
             }
             catch(InvalidFileFormatException e)

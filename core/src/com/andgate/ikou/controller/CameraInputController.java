@@ -3,7 +3,8 @@ package com.andgate.ikou.controller;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.MathExtra;
-import com.andgate.ikou.view.Player;
+import com.andgate.ikou.view.PlayerTransformer;
+import com.andgate.ikou.view.PlayerTransformer.PlayerTransformListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -11,12 +12,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-public class CameraInputController extends GestureDetector implements Player.PlayerPositionListener
+public class CameraInputController extends GestureDetector implements PlayerTransformListener
 {
     private static final String TAG = "CameraInputController";
 
     private final PerspectiveCamera camera;
-    private final Player player;
+    private final PlayerTransformer playerTransformer;
 
     private Vector3 target = new Vector3();
 
@@ -35,27 +36,27 @@ public class CameraInputController extends GestureDetector implements Player.Pla
     private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();
 
-    public CameraInputController(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final Player player)
+    public CameraInputController(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final PlayerTransformer playerTransformer)
     {
         super(gestureListener);
         gestureListener.setController(this);
         this.camera = camera;
-        this.player = player;
-        player.addPlayerPositionListener(this);
+        this.playerTransformer = playerTransformer;
+        playerTransformer.addPlayerTransformListener(this);
 
         setTarget();
     }
 
     private void setTarget()
     {
-        target.set(player.getPosition());
+        target.set(playerTransformer.getPosition());
         target.x += TileData.HALF_WIDTH;
         target.z += TileData.HALF_DEPTH;
     }
 
-    public CameraInputController(final PerspectiveCamera camera, final Player player)
+    public CameraInputController(final PerspectiveCamera camera, final PlayerTransformer playerTransformer)
     {
-        this(new CameraGestureListener(), camera, player);
+        this(new CameraGestureListener(), camera, playerTransformer);
     }
 
     public void update (final float delta)
@@ -141,7 +142,7 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
     protected boolean pinchZoom (float amount)
     {
-        float currentDistance = camera.position.dst(player.getPosition());
+        float currentDistance = camera.position.dst(playerTransformer.getPosition());
 
         float displacement = amount * PINCH_ZOOM_FACTOR;
         float newDistance = currentDistance - displacement;
@@ -157,7 +158,7 @@ public class CameraInputController extends GestureDetector implements Player.Pla
 
 
     @Override
-    public void playerPositionModified(float dx, float dy, float dz)
+    public void playerTransformModified(float dx, float dy, float dz)
     {
         camera.translate(dx, dy, dz);
         target.add(dx, dy, dz);

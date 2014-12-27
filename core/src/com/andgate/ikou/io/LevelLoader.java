@@ -4,24 +4,23 @@ import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
-import com.andgate.ikou.model.TileMazeSimulator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class LevelLoader
 {
-    public static Level load(LevelData levelData, int startingFloor)
+    public static Level load(LevelData levelData)
         throws InvalidFileFormatException
     {
         Floor[] floors = new Floor[levelData.totalFloors];
 
-        for(int mazeIndex = 0; mazeIndex < floors.length; mazeIndex++)
+        for(int floorIndex = 0; floorIndex < floors.length; floorIndex++)
         {
-            String mazeFilePath = levelData.getFloorPath(mazeIndex + 1);
+            String mazeFilePath = levelData.getFloorPath(floorIndex + 1);
             FileHandle mazeFile = Gdx.files.internal(mazeFilePath);
-            floors[mazeIndex] = TileMazeParser.parse(mazeFile.readString());
+            floors[floorIndex] = (TileFloorParser.parse(mazeFile.readString()));
         }
 
-        return new Level(levelData, floors, startingFloor);
+        return new Level(floors, levelData.name);
     }
 }

@@ -19,11 +19,13 @@ import com.andgate.ikou.controller.CameraInputController;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
+import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.ProgressDatabase;
 import com.andgate.ikou.model.TileMazeSimulator;
-import com.andgate.ikou.model.TileMazeSimulator.WinListener;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.render.PlayerRender;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.Gdx;
@@ -41,7 +43,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector2;
 
-public class GameScreen extends ScreenAdapter implements DirectionListener, WinListener
+public class GameScreen extends ScreenAdapter implements DirectionListener
 {
     private static final String TAG = "GameScreen";
 
@@ -54,35 +56,39 @@ public class GameScreen extends ScreenAdapter implements DirectionListener, WinL
     private ModelBatch modelBatch;
     private Environment environment;
 
-    private Player player;
     private final Level level;
     private final LevelRender levelRender;
+    private final PlayerTransformer playerTransformer;
+    private final PlayerRender playerRender;
+
+    private int currentFloor;
 
     private InputMultiplexer im;
 
     private SpriteBatch batch;
 
     private TileMazeSimulator mazeSim;
-    private boolean mazeSimNeedsRefresh = false;
 
-    public GameScreen(Ikou game, Level level)
+    public GameScreen(Ikou game, Level level, int startingFloor)
     {
         this.game = game;
         this.level = level;
         batch = new SpriteBatch();
+
+        this.currentFloor = startingFloor;
 
         Gdx.graphics.setVSync(false);
 
         modelBatch = new ModelBatch();
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
         levelRender = new LevelRender(level, camera);
-        player = new Player(level);
 
-        mazeSim = new TileMazeSimulator(level.getCurrentFloor());
-        mazeSim.addWinListener(player);
-        mazeSim.addWinListener(level);
-        mazeSim.addWinListener(this);
-        mazeSim.addPlayerMoveListener(player);
+        playerTransformer = new PlayerTransformer(level.getStartPosition(currentFloor - 1));
+
+        playerRender = new PlayerRender();
+        playerRender.transform.set(playerTransformer.transform);
+
+        mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
 
         createEnvironment();
 
@@ -98,17 +104,17 @@ public class GameScreen extends ScreenAdapter implements DirectionListener, WinL
 
     private void setupCamera()
     {
-        float playerCenterX = player.getPosition().x + TileData.HALF_WIDTH;
-        float playerCenterZ = player.getPosition().z + TileData.HALF_DEPTH;
+        float playerCenterX = playerTransformer.getPosition().x + TileData.HALF_WIDTH;
+        float playerCenterZ = playerTransformer.getPosition().z + TileData.HALF_DEPTH;
         camera.position.set(playerCenterX,
-                            player.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
+                            playerTransformer.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
                             playerCenterZ - Constants.CAMERA_HORIZONTAL_DISTANCE);
-        camera.lookAt(playerCenterX, player.getPosition().y, playerCenterZ);
+        camera.lookAt(playerCenterX, playerTransformer.getPosition().y, playerCenterZ);
         camera.near = 1f;
         camera.far = Constants.CAMERA_FAR;
         camera.update();
 
-        camController = new CameraInputController(camera, player);
+        camController = new CameraInputController(camera, playerTransformer);
     }
 
     private void createEnvironment()
@@ -128,16 +134,16 @@ public class GameScreen extends ScreenAdapter implements DirectionListener, WinL
     {
         camController.update(delta);
 
-        if(mazeSimNeedsRefresh)
+        if(mazeSim.hasWon())
         {
-            mazeSimRefresh();
+            gotoNextFloor();
         }
 
         renderSetup();
 
         modelBatch.begin(camera);
             modelBatch.render(levelRender, environment);
-            player.render(modelBatch, environment);
+            modelBatch.render(playerRender, environment);
         modelBatch.end();
 
         controlsMenu.render();
@@ -177,7 +183,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener, WinL
 
     private void update(float delta)
     {
-        player.update(delta);
+        playerTransformer.update(delta);
+        playerRender.transform.idt().translate(playerTransformer.getPosition());
     }
 
     private void renderSetup()
@@ -194,7 +201,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener, WinL
     public void dispose()
     {
         levelRender.dispose();
-        player.dispose();
+        playerRender.dispose();
         modelBatch.dispose();
         controlsMenu.dispose();
     }
@@ -211,25 +218,36 @@ public class GameScreen extends ScreenAdapter implements DirectionListener, WinL
 
 
     Vector3i tmpDirection = new Vector3i();
+    Vector3i displacement = new Vector3i();
     @Override
     public void moveInDirection(Vector2 direction)
     {
-        if(!player.isMoving() && !player.isFalling())
+        if(!playerTransformer.isMoving() && !playerTransformer.isFalling())
         {
             tmpDirection.set(direction.x, 0.0f, direction.y);
-            mazeSim.move(tmpDirection);
+            Vector3i displacement = mazeSim.move(tmpDirection);
+
+            playerTransformer.moveBy(displacement.x, displacement.z);
         }
     }
 
-    @Override
-    public void mazeWon()
+    public void gotoNextFloor()
     {
-        mazeSimNeedsRefresh = true;
+        saveProgress();
+        currentFloor++;
+        playerTransformer.gotoNextLevel();
+
+        mazeSim.setFloor(level.getFloor(currentFloor));
     }
 
-    public void mazeSimRefresh()
+    private void saveProgress()
     {
-        mazeSim.setFloor(level.getCurrentFloor());
-        mazeSimNeedsRefresh = false;
+        ProgressDatabase progressDB = ProgressDatabaseService.read();
+        int completedFloors = progressDB.getFloorsCompleted(level.getName());
+        if(currentFloor > completedFloors)
+        {
+            progressDB.setFloorsCompleted(level.getName(), currentFloor);
+            ProgressDatabaseService.write(progressDB);
+        }
     }
 }

@@ -2,120 +2,101 @@ package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.io.ProgressDatabaseService;
+import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
-public class Level implements TileMazeSimulator.WinListener
+public class Level
 {
-    public final LevelData levelData;
-    public Floor[] floors;
-    private int startingFloor;
-    private int currentFloor;
+    public Array<Floor> floors = new Array<>();
+    private String name;
 
-    public Level(LevelData levelData, Floor[] floors, int startingFloor)
+    public Level()
     {
-        this.levelData = levelData;
-        this.floors = floors;
-        this.startingFloor = startingFloor;
-        this.currentFloor = startingFloor;
+        name = "";
+    }
+
+    public Level(String name)
+    {
+        this.name = name;
+    }
+
+    public Level(Floor[] floors)
+    {
+        this();
+        this.floors.addAll(floors, 0, floors.length);
+        calculateFloorOffsets();
+    }
+
+    public Level(Floor[] floors, String name)
+    {
+        this(floors);
+        setName(name);
     }
 
     public Floor[] getFloors()
     {
-        return floors;
+        return floors.toArray(new Floor[floors.size].getClass().getComponentType());
+    }
+
+    public void addFloor(Floor floor)
+    {
+        floors.add(floor);
+    }
+
+    public Floor getFloor(int floorNumber)
+    {
+        int floorIndex = floorNumber - 1;
+        return floors.get(floorIndex);
+    }
+
+    private Vector3 startPosition = new Vector3();
+    public Vector3 getStartPosition(int floorIndex)
+    {
+        Vector3i floorStart = floors.get(floorIndex).getStart();
+        startPosition.set(floorStart.x, 0.0f, floorStart.z);
+
+        Vector2i offset = getFloorOffset(floorIndex);
+        startPosition.add(offset.x, 0.0f, offset.y);
+
+        startPosition.y = TileData.HEIGHT - floorIndex * Constants.FLOOR_SPACING;
+
+        return startPosition;
     }
 
     public String getName()
     {
-        return levelData.name;
+        return name;
     }
 
-    public int getCompletedFloors()
+    public void setName(String name)
     {
-        return levelData.completedFloors;
+        this.name = name;
     }
 
-    public int getTotalFloors()
+    public Vector2i getFloorOffset(int floorIndex)
     {
-        return levelData.totalFloors;
+        return floors.get(floorIndex).getOffset();
     }
 
-    public int getCurrentFloorNumber()
+    public void calculateFloorOffsets()
     {
-        return currentFloor;
-    }
+        // for this to work, the first floor
+        // must have no offset.
+        floors.get(0).getOffset().set(0, 0);
 
-    public Floor getCurrentFloor()
-    {
-        return floors[currentFloor - 1];
-    }
-
-    private Vector3 initialPlayerPosition = new Vector3();
-    public Vector3 getIntialPlayerPosition()
-    {
-        Vector3i initialFloorStart = floors[startingFloor - 1].getStart();
-        Vector2i offset = calculateFloorOffset(startingFloor);
-
-        Vector3 initialPlayerPosition = new Vector3();
-        initialPlayerPosition.x = initialFloorStart.x + offset.x;
-        initialPlayerPosition.y = Constants.TILE_THICKNESS - (startingFloor - 1) * Constants.FLOOR_SPACING;
-        initialPlayerPosition.z = initialFloorStart.z + offset.y;
-
-        return initialPlayerPosition;
-    }
-
-    public Vector3 getCurrentPlayerPosition()
-    {
-        Vector3i currentFloorStart = floors[currentFloor - 1].getStart();
-        Vector2i offset = calculateFloorOffset(currentFloor);
-
-        Vector3 currentPlayerPosition = new Vector3();
-        currentPlayerPosition.x = currentFloorStart.x + offset.x;
-        currentPlayerPosition.y = Constants.TILE_THICKNESS - (currentFloor - 1) * Constants.FLOOR_SPACING;
-        currentPlayerPosition.z = currentFloorStart.z + offset.y;
-
-        return currentPlayerPosition;
-    }
-
-    public float getPlayerY()
-    {
-        return Constants.TILE_THICKNESS - (currentFloor - 1) * Constants.FLOOR_SPACING;
-    }
-
-    public Vector2i calculateFloorOffset(int floor)
-    {
-        Vector2i offset = new Vector2i(0, 0);
-
-        for(int floorIndex = 1; floorIndex < floor; floorIndex++)
+        for(int floorIndex = 1; floorIndex < floors.size; floorIndex++)
         {
-            Vector3i currentStart = floors[floorIndex].getStart();
-            Vector3i lastEnd = floors[floorIndex-1].getEnd();
+            Vector3i currentStart = floors.get(floorIndex).getStart();
+            Vector3i lastEnd = floors.get(floorIndex-1).getEnd();
+
+            Vector2i offset = floors.get(floorIndex).getOffset();
+            offset.set(floors.get(floorIndex - 1).getOffset());
 
             offset.add(lastEnd.x, lastEnd.z);
             offset.sub(currentStart.x, currentStart.z);
-        }
-
-        return offset;
-    }
-
-    @Override
-    public void mazeWon()
-    {
-        saveProgress();
-        currentFloor++;
-    }
-
-    private void saveProgress()
-    {
-        if(currentFloor > levelData.completedFloors)
-        {
-            levelData.completedFloors = currentFloor;
-
-            ProgressDatabase progressDB = ProgressDatabaseService.read();
-            progressDB.setFloorsCompleted(getName(), currentFloor);
-
-            ProgressDatabaseService.write(progressDB);
         }
     }
 }

@@ -78,4 +78,11 @@ public class Vector3i
     {
         return equals(other.x, other.y, other.z);
     }
+
+    Vector3 vector3f = new Vector3();
+    public Vector3 toFloat()
+    {
+        vector3f.set(x, y, z);
+        return vector3f;
+    }
 }

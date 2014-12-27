@@ -28,7 +28,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class TileMazeParser
+public class TileFloorParser
 {
     public static Floor parse(String mapString)
         throws InvalidFileFormatException

@@ -23,24 +23,24 @@ public class MainMenuScreen implements Screen
     private static final String TAG = "MainMenuScreen";
 
     private final Ikou game;
-    private SpriteBatch batch;
     private Stage stage;
 
     private static final String PLAY_BUTTON_TEXT = "Play";
+    private static final String BUILD_BUTTON_TEXT = "Build";
 
-    public MainMenuScreen(final Ikou newGame) {
-        game = newGame;
-        batch = new SpriteBatch();
+    public MainMenuScreen(final Ikou game) {
+        this.game = game;
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
         buildStage();
     }
 
     public void buildStage()
     {
-        if(stage != null)
-            stage.dispose();
-
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+        stage.clear();
+        stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
@@ -62,10 +62,22 @@ public class MainMenuScreen implements Screen
             }
         });
 
+        final TextButton buildButton = new TextButton(BUILD_BUTTON_TEXT, buttonStyle);
+
+        buildButton.addListener(new ClickListener() {
+                                   @Override
+                                   public void clicked(InputEvent event, float x, float y) {
+                                       //game.buttonPressedSound.play();
+                                       game.setScreen(new LevelBuilderScreen(game));
+                                       MainMenuScreen.this.dispose();
+                                   }
+                               });
+
         Table table = new Table();
 
         table.add(titleLabel).center().top().spaceBottom(25.0f).row();
         table.add(playButton).fill().spaceBottom(20.0f).center().bottom().row();
+        table.add(buildButton).fill().spaceBottom(20.0f).center().bottom().row();
 
         table.setFillParent(true);
 
@@ -77,9 +89,9 @@ public class MainMenuScreen implements Screen
     {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
+        //batch.begin();
         stage.draw();
-        batch.end();
+        //batch.end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
         {
@@ -113,9 +125,6 @@ public class MainMenuScreen implements Screen
 
     @Override
     public void dispose() {
-        if(stage != null)
-            stage.dispose();
-        if(batch != null)
-            batch.dispose();
+        if(stage != null) stage.dispose();
     }
 }

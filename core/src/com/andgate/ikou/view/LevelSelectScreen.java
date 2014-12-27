@@ -22,7 +22,6 @@ public class LevelSelectScreen implements Screen
     private static final String TAG = "LevelSelectScreen";
 
     private final Ikou game;
-    private SpriteBatch batch;
     private Stage stage;
     private LevelData[] levels;
 
@@ -31,18 +30,18 @@ public class LevelSelectScreen implements Screen
     public LevelSelectScreen(final Ikou game)
     {
         this.game = game;
-        batch = new SpriteBatch();
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
         levels = LevelDatabaseService.getLevels();
+
         buildStage();
     }
 
     public void buildStage()
     {
-        if(stage != null)
-            stage.dispose();
-
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+        stage.clear();
+        stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(SELECT_LEVEL_TEXT, titleLabelStyle, game.fontShader);
@@ -89,9 +88,7 @@ public class LevelSelectScreen implements Screen
     {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
         stage.draw();
-        batch.end();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK))
         {
@@ -133,8 +130,6 @@ public class LevelSelectScreen implements Screen
     public void dispose() {
         if(stage != null)
             stage.dispose();
-        if(batch != null)
-            batch.dispose();
     }
 
     private class LevelOptionClickListener extends ClickListener

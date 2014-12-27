@@ -32,7 +32,7 @@ public class LevelRender implements RenderableProvider, Disposable
 
             if(i > 0)
             {
-                Vector2i offset = level.calculateFloorOffset(i+1);
+                Vector2i offset = level.getFloorOffset(i);
                 renders[i].transform.translate(offset.x, 0.0f, offset.y);
             }
         }

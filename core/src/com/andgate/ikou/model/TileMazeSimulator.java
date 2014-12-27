@@ -28,8 +28,8 @@ public class TileMazeSimulator
 
     private Floor floor;
     private Vector3i playerPosition = new Vector3i();
-    private ArrayList<WinListener> winListeners = new ArrayList<>();
-    private ArrayList<PlayerMoveListener> playerMoveListeners = new ArrayList<>();
+
+    private boolean mazeWon = false;
 
     public TileMazeSimulator(Floor floor)
     {
@@ -41,42 +41,12 @@ public class TileMazeSimulator
     {
         this.floor = floor;
         this.playerPosition.set(floor.getStart());
+        mazeWon = false;
     }
 
-    public void addWinListener(WinListener winListener)
+    public boolean hasWon()
     {
-        winListeners.add(winListener);
-    }
-
-    public void removeWinListener(WinListener winListener)
-    {
-        winListeners.remove(winListener);
-    }
-
-    public void notifyWinListeners()
-    {
-        for(WinListener winListener : winListeners)
-        {
-            winListener.mazeWon();
-        }
-    }
-
-    public void addPlayerMoveListener(PlayerMoveListener playerMoveListener)
-    {
-        playerMoveListeners.add(playerMoveListener);
-    }
-
-    public void removePlayerMoveListener(PlayerMoveListener playerMoveListener)
-    {
-        playerMoveListeners.remove(playerMoveListener);
-    }
-
-    public void notifyPlayerMoveListeners(int dx, int dy)
-    {
-        for(PlayerMoveListener playerMoveListener : playerMoveListeners)
-        {
-            playerMoveListener.movePlayerBy(dx, dy);
-        }
+        return mazeWon;
     }
 
     public Vector3i getPlayerPosition()
@@ -86,7 +56,7 @@ public class TileMazeSimulator
 
     Vector3i accumMoveDelta = new Vector3i();
     Vector3i prevAccumMoveDelta = new Vector3i();
-    public void move(Vector3i velocity)
+    public Vector3i move(Vector3i velocity)
     {
         accumMoveDelta.set(0, 0, 0);
 
@@ -100,7 +70,7 @@ public class TileMazeSimulator
 
         isStopped = false;
 
-        notifyPlayerMoveListeners(accumMoveDelta.x, accumMoveDelta.z);
+        return accumMoveDelta;
     }
 
     Vector3i moveDelta = new Vector3i();
@@ -145,7 +115,7 @@ public class TileMazeSimulator
                     case End:
                         moveDelta.set(velocity);
                         playerPosition.add(moveDelta);
-                        notifyWinListeners();
+                        mazeWon = true;
                         break;
                     default:
                         break;
@@ -154,15 +124,5 @@ public class TileMazeSimulator
         }
 
         return moveDelta;
-    }
-
-    public interface WinListener
-    {
-        public void mazeWon();
-    }
-
-    public interface PlayerMoveListener
-    {
-        public void movePlayerBy(int dx, int dy);
     }
 }
