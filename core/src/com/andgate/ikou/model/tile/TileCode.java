@@ -10,6 +10,7 @@
      You should have received a copy of the GNU General Public License
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.andgate.ikou.model.tile;
 
 public class TileCode

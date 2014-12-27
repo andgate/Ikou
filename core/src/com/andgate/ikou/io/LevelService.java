@@ -14,40 +14,40 @@
 package com.andgate.ikou.io;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.ProgressDatabase;
+import com.andgate.ikou.model.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 
-public class ProgressDatabaseService
+public class LevelService
 {
-    private static final String TAG = "ProgressDatabaseService";
+    private static final String TAG = "LevelService";
 
-    public static ProgressDatabase read()
+    public static Level read(String name)
     {
-        FileHandle saveFile = Gdx.files.external(Constants.PROGRESS_DATABASE_EXTERNAL_PATH);
+        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_INTERNAL_PATH + name + Constants.LEVEL_EXTENSION);
 
-        if(saveFile.exists())
+        if(levelFile.exists())
         {
             String jsonString;
             try
             {
-                jsonString = Base64Coder.decodeString(saveFile.readString());
+                jsonString = Base64Coder.decodeString(levelFile.readString());
             }
             catch (java.lang.IllegalArgumentException e)
             {
                 // The highscore has been tampered with,
                 // so now they get a new one.
-                return new ProgressDatabase();
+                return new Level();
             }
 
             Json json = new Json();
 
-            ProgressDatabase progressDatabase = json.fromJson(ProgressDatabase.class, jsonString);
-            if(progressDatabase != null)
+            Level level = json.fromJson(Level.class, jsonString);
+            if(level != null)
             {
-                return progressDatabase;
+                return level;
             }
         }
 
@@ -55,15 +55,15 @@ public class ProgressDatabaseService
         // if something is mucked up.
         // Only executes if something is wrong
         // with the
-        return new ProgressDatabase();
+        return new Level();
     }
 
-    public static void write(ProgressDatabase progressDatabase)
+    public static void write(Level level)
     {
         Json json = new Json();
-        String jsonString = json.toJson(progressDatabase);
+        String jsonString = json.toJson(level);
         String encodedString = Base64Coder.encodeString(jsonString);
-        FileHandle saveFile = Gdx.files.external(Constants.PROGRESS_DATABASE_EXTERNAL_PATH);
-        saveFile.writeString(encodedString, false);
+        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);
+        levelFile.writeString(encodedString, false);
     }
 }
