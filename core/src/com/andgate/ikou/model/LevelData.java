@@ -29,7 +29,7 @@ public class LevelData
         this.totalFloors = totalFloors;
         this.completedFloors = completedFloors;
 
-        LEVEL_DIRECTORY = Constants.LEVELS_INTERNAL_PATH + name + "/";
+        LEVEL_DIRECTORY = Constants.LEVELS_INTERNAL_PATH + "old/" + name + "/";
     }
 
     public String getFloorPath(int floor)

@@ -15,7 +15,10 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.io.LevelDatabaseService;
+import com.andgate.ikou.io.ProgressDatabaseService;
+import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.model.ProgressDatabase;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -35,7 +38,8 @@ public class LevelSelectScreen implements Screen
 
     private final Ikou game;
     private Stage stage;
-    private LevelData[] levels;
+    private Level[] levels;
+    ProgressDatabase progressDB;
 
     private static final String SELECT_LEVEL_TEXT = "Select Level";
 
@@ -44,6 +48,7 @@ public class LevelSelectScreen implements Screen
         this.game = game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+        progressDB = ProgressDatabaseService.read();
         levels = LevelDatabaseService.getLevels();
 
         buildStage();
@@ -65,11 +70,12 @@ public class LevelSelectScreen implements Screen
         {
             final Table levelInfoTable = new Table();
 
-            LevelData level = levels[i];
+            Level level = levels[i];
 
-            final ShaderLabel levelNameLabel = new ShaderLabel(level.name, levelOptionLabelStyle, game.fontShader);
+            final ShaderLabel levelNameLabel = new ShaderLabel(level.getName(), levelOptionLabelStyle, game.fontShader);
 
-            final String levelCompletion = level.completedFloors + " out of " + level.totalFloors;
+            int completedFloors = progressDB.getFloorsCompleted(level.getName());
+            final String levelCompletion = completedFloors + " out of " + level.floors.size;
             final ShaderLabel levelProgressLabel = new ShaderLabel(levelCompletion, levelOptionLabelStyle, game.fontShader);
 
             levelInfoTable.addListener(new LevelOptionClickListener(game, this, level));
@@ -150,9 +156,9 @@ public class LevelSelectScreen implements Screen
 
         private final Ikou game;
         private final LevelSelectScreen screen;
-        private final LevelData level;
+        private final Level level;
 
-        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, LevelData level)
+        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, Level level)
         {
             super();
 

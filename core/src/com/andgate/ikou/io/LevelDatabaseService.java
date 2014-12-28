@@ -14,19 +14,40 @@
 package com.andgate.ikou.io;
 
 import com.andgate.ikou.Constants;
+import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
 import com.andgate.ikou.model.ProgressDatabase;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
 public class LevelDatabaseService
 {
-    public static LevelData[] getLevels()
+    public static Level[] getLevels()
+    {
+        FileHandle[] levelFiles = Gdx.files.internal(Constants.LEVELS_INTERNAL_PATH).list();
+
+        Array<Level> levels = new Array<>();
+
+        for(FileHandle levelFile : levelFiles)
+        {
+            String extension = levelFile.extension();
+
+            if(!levelFile.isDirectory() && extension.equals(Constants.LEVEL_EXTENSION_NO_DOT))
+            {
+                levels.add(LevelService.read(levelFile));
+            }
+        }
+
+        return levels.toArray(new Level[levels.size].getClass().getComponentType());
+    }
+
+    public static LevelData[] getOldLevels()
     {
         ProgressDatabase progressDB = ProgressDatabaseService.read();
-        FileHandle[] levelsDirFolders = Gdx.files.internal(Constants.LEVELS_INTERNAL_PATH).list();
+        FileHandle[] levelsDirFolders = Gdx.files.internal(Constants.LEVELS_INTERNAL_PATH + "old/").list();
 
         LevelData[] levels = new LevelData[levelsDirFolders.length];
 
@@ -45,24 +66,5 @@ public class LevelDatabaseService
         }
 
         return levels;
-
-    }
-
-    public static String[] getLevelNames()
-    {
-        FileHandle dirHandle = Gdx.files.internal(Constants.LEVELS_INTERNAL_PATH);
-
-        ArrayList<String> levelNamesList = new ArrayList<String>();
-
-        for(FileHandle entry : dirHandle.list())
-        {
-            if(entry.isDirectory())
-            {
-                String levelName = entry.name();
-                levelNamesList.add(levelName);
-            }
-        }
-
-        return levelNamesList.toArray(new String[levelNamesList.size()]);
     }
 }

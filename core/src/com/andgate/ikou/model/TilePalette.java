@@ -23,4 +23,9 @@ public class TilePalette {
     public Color end = Color.RED;
     public Color blank = Color.CLEAR;
     public Color background = Color.WHITE;
+
+    public TilePalette()
+    {
+
+    }
 }

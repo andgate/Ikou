@@ -42,7 +42,7 @@ public class TileData
             );
 
     private TileType type;
-    protected Color color;
+    private Color color;
 
     public TileData()
     {

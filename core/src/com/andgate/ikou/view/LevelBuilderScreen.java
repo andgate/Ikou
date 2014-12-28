@@ -14,7 +14,11 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.io.LevelDatabaseService;
+import com.andgate.ikou.io.LevelLoader;
+import com.andgate.ikou.io.LevelService;
 import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.LevelData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -29,11 +33,16 @@ public class LevelBuilderScreen implements Screen
 
     public LevelBuilderScreen(Ikou game)
     {
+        this(game, new Level());
+    }
+
+    public LevelBuilderScreen(Ikou game, Level level)
+    {
         this.game = game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        level = new Level();
+        this.level = level;
 
         buildStage();
     }

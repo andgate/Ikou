@@ -29,9 +29,9 @@ public class LevelLoader
 
         for(int floorIndex = 0; floorIndex < floors.length; floorIndex++)
         {
-            String mazeFilePath = levelData.getFloorPath(floorIndex + 1);
-            FileHandle mazeFile = Gdx.files.internal(mazeFilePath);
-            floors[floorIndex] = (TileFloorParser.parse(mazeFile.readString()));
+            String floorFilePath = levelData.getFloorPath(floorIndex + 1);
+            FileHandle floorFile = Gdx.files.internal(floorFilePath);
+            floors[floorIndex] = (TileFloorParser.parse(floorFile.readString()));
         }
 
         return new Level(floors, levelData.name);

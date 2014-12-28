@@ -71,11 +71,14 @@ public class Constants
     public static final String LEVELS_INTERNAL_PATH
             = "data/levels/";
     public static final String LEVELS_EXTERNAL_PATH
-            = "data/levels/";
+            = "Ikou/levels/";
     public static final String FLOOR_EXTENSION
             = ".txt";
+
+    public static final String LEVEL_EXTENSION_NO_DOT
+            = "json";
     public static final String LEVEL_EXTENSION
-            = ".dat";
+            = "." + LEVEL_EXTENSION_NO_DOT;
 
     public static final String PROGRESS_DATABASE_EXTERNAL_PATH
             = "Ikou/progress.data";

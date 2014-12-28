@@ -18,16 +18,21 @@ import com.andgate.ikou.utility.Vector3i;
 
 public class Floor
 {
-    private TileSector masterSector;
-    private Vector3i start;
-    private Vector3i end;
-    private Vector2i offset = new Vector2i();
+    public TileSector masterSector;
+    public Vector3i start = new Vector3i();
+    public Vector3i end = new Vector3i();
+    public Vector2i offset = new Vector2i();
+    public TilePalette palette = new TilePalette();
+
+    public Floor()
+    {
+    }
 
     public Floor(TileSector masterSector, Vector3i start, Vector3i end)
     {
         this.masterSector = masterSector;
-        this.start = start;
-        this.end = end;
+        this.start.set(start);
+        this.end.set(end);
     }
 
     public TileSector getMasterSector()

@@ -30,6 +30,7 @@
     <orderEntry type="library" exported="" name="robovm-rt-1.0.0-alpha-04" level="project" />
     <orderEntry type="library" exported="" name="robovm-cocoatouch-1.0.0-alpha-04" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-robovm-1.4.1" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="robovm-objc-1.0.0-alpha-04" level="project" />
   </component>
