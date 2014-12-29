@@ -36,7 +36,7 @@ public class LevelRender implements RenderableProvider, Disposable
 
         for(int i = 0; i < renders.length; i++)
         {
-            renders[i] = new FloorRender(floors[i].getMasterSector(), camera);
+            renders[i] = new FloorRender(floors[i], camera);
 
             // x and z calculated from start and goal positions of maze and next maze, yea?
             Vector3 position = new Vector3();

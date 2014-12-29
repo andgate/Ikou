@@ -13,6 +13,8 @@
 
 package com.andgate.ikou.render;
 
+import com.andgate.ikou.model.Floor;
+import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.GL20;
@@ -33,17 +35,17 @@ public class FloorRender implements RenderableProvider, Disposable
     public final Matrix4 transform = new Matrix4();
     private final PerspectiveCamera camera;
 
-    public FloorRender(TileSector masterSector, PerspectiveCamera camera)
+    public FloorRender(Floor floor, PerspectiveCamera camera)
     {
         this.camera = camera;
         // Split the master sector into
         // easier to render sub-sectors.
-        TileSector[][] subsectors = masterSector.split(0, 0, SUBSECTOR_SIZE);
+        TileSector[][] subsectors = floor.getMasterSector().split(0, 0, SUBSECTOR_SIZE);
 
-        buildMeshes(subsectors);
+        buildMeshes(subsectors, floor.getPalette());
     }
 
-    private void buildMeshes(TileSector[][] subsectors)
+    private void buildMeshes(TileSector[][] subsectors, TilePalette palette)
     {
         int rows = subsectors.length;
         meshes = new Mesh[rows][];
@@ -57,7 +59,7 @@ public class FloorRender implements RenderableProvider, Disposable
                 int offsetZ = currRow * SUBSECTOR_SIZE;
 
                 SectorMeshBuilder worldMeshBuilder
-                        = new SectorMeshBuilder(subsectors[currRow][currColumn], offsetX, offsetZ);
+                        = new SectorMeshBuilder(subsectors[currRow][currColumn], palette, offsetX, offsetZ);
 
                 meshes[currRow][currColumn] = worldMeshBuilder.build();
             }

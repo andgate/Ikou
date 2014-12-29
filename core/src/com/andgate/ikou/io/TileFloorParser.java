@@ -21,7 +21,6 @@ import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.tile.TileCode;
 import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.model.tile.TileData.TileType;
-import com.andgate.ikou.model.tile.TileFactory;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.utils.Array;
 
@@ -154,20 +153,20 @@ public class TileFloorParser
         switch(tileCode)
         {
             case TileCode.SMOOTH_TILE:
-                tileStack.add(TileFactory.build(TileType.Smooth, palette));
+                tileStack.add(new TileData(TileType.Smooth));
                 break;
             case TileCode.OBSTACLE_TILE:
-                tileStack.add(TileFactory.build(TileType.Smooth, palette));
-                tileStack.add(TileFactory.build(TileType.Obstacle, palette));
+                tileStack.add(new TileData(TileType.Smooth));
+                tileStack.add(new TileData(TileType.Obstacle));
                 break;
             case TileCode.ROUGH_TILE:
-                tileStack.add(TileFactory.build(TileType.Rough, palette));
+                tileStack.add(new TileData(TileType.Rough));
                 break;
             case TileCode.END_TILE:
-                tileStack.add(TileFactory.build(TileType.End, palette));
+                tileStack.add(new TileData(TileType.End));
                 break;
             default:
-                tileStack.add(TileFactory.build(TileType.Blank, palette));
+                tileStack.add(new TileData(TileType.Blank));
                 break;
         }
 

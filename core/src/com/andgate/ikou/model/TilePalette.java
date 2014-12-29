@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.model;
 
+import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.Color;
 
 public class TilePalette {
@@ -27,5 +28,24 @@ public class TilePalette {
     public TilePalette()
     {
 
+    }
+
+    public Color getColor(TileData.TileType type)
+    {
+        switch(type)
+        {
+            case Smooth:
+                return smooth;
+            case Obstacle:
+                return obstacle;
+            case Rough:
+                return rough;
+            case Player:
+                return player;
+            case End:
+                return end;
+            default:
+                return blank;
+        }
     }
 }

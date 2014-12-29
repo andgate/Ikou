@@ -15,7 +15,6 @@ package com.andgate.ikou.render;
 
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.tile.TileData;
-import com.andgate.ikou.model.tile.TileFactory;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
@@ -37,10 +36,10 @@ public class PlayerRender implements RenderableProvider, Disposable
     {
         // TODO make customizable
         TilePalette palette = new TilePalette();
-        TileData playerTileData = TileFactory.build(TileData.TileType.Player, palette);
+        TileData playerTileData = new TileData(TileData.TileType.Player);
 
         TileMeshBuilder tileMeshBuilder = new TileMeshBuilder();
-        tileMeshBuilder.addTile(playerTileData, 0, 0, 0);
+        tileMeshBuilder.addTile(playerTileData, palette.getColor(TileData.TileType.Player), 0, 0, 0);
         mesh = tileMeshBuilder.build();
 
         material = new Material(TileData.TILE_MATERIAL);

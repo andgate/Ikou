@@ -45,6 +45,26 @@ public class LevelBuilderScreen implements Screen
         this.level = level;
 
         buildStage();
+
+        LevelData[] levelDatas = LevelDatabaseService.getOldLevels();
+        Level[] levels = new Level[levelDatas.length];
+
+        for(int i = 0; i < levelDatas.length; i++)
+        {
+            try
+            {
+                levels[i] = LevelLoader.load(levelDatas[i]);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        for(Level newLevel : levels)
+        {
+            LevelService.write(newLevel);
+        }
     }
 
     public void buildStage()

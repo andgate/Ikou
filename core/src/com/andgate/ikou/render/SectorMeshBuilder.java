@@ -13,24 +13,26 @@
 
 package com.andgate.ikou.render;
 
+import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.tile.TileData;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
 public class SectorMeshBuilder extends TileMeshBuilder
 {
-    public SectorMeshBuilder(TileSector sector)
+    public SectorMeshBuilder(TileSector sector, TilePalette palette)
     {
-        this(sector, 0, 0, true);
+        this(sector, palette, 0, 0, true);
     }
 
-    public SectorMeshBuilder(TileSector sector, int offsetX, int offsetZ)
+    public SectorMeshBuilder(TileSector sector, TilePalette palette, int offsetX, int offsetZ)
     {
-        this(sector, offsetX, offsetZ, true);
+        this(sector, palette, offsetX, offsetZ, true);
     }
 
-    public SectorMeshBuilder(TileSector sector, int offsetX, int offsetZ, boolean cullFaces)
+    public SectorMeshBuilder(TileSector sector, TilePalette palette, int offsetX, int offsetZ, boolean cullFaces)
     {
         super();
 
@@ -45,20 +47,21 @@ public class SectorMeshBuilder extends TileMeshBuilder
                 for (int y = 0; y < currTileStack.size; y++)
                 {
                     TileData currTile = currTileStack.get(y);
+                    Color currTileColor = palette.getColor(currTile.getType());
 
-                    if (currTile.isVisible())
+                    if (currTile.isVisible(currTileColor))
                     {
                         float xPos = (float) x * TileData.WIDTH + offsetX;
                         float yPos = (float) y * TileData.HEIGHT;
                         float zPos = (float) z * TileData.DEPTH + offsetZ;
 
-                        if(cullFaces && currTile.isOpaque())
+                        if(cullFaces && currTile.isOpaque(currTileColor))
                         {
-                            addCulledTile(sector, x, y, z, xPos, yPos, zPos);
+                            addCulledTile(sector, currTileColor, x, y, z, xPos, yPos, zPos);
                         }
                         else
                         {
-                            addTile(currTile, xPos, yPos, zPos);
+                            addTile(currTile, currTileColor, xPos, yPos, zPos);
                         }
                     }
                 }
@@ -76,26 +79,26 @@ public class SectorMeshBuilder extends TileMeshBuilder
      * @param yPos Used to designate tile location
      * @param zPos Used to designate tile location
      */
-    public void addCulledTile(TileSector sector, int x, int y, int z, float xPos, float yPos, float zPos)
+    public void addCulledTile(TileSector sector, Color tileColor, int x, int y, int z, float xPos, float yPos, float zPos)
     {
         TileData tile = sector.getTile(x, y, z);
 
-        if(tile == null || !tile.isVisible())
+        if(tile == null || !tile.isVisible(tileColor))
             return;
 
         calculateVerts(xPos, yPos, zPos);
 
-        if (!sector.isTileVisible(x, y, z + 1))
-            addFront(tile);
-        if (!sector.isTileVisible(x, y, z - 1))
-            addBack(tile);
-        if (!sector.isTileVisible(x - 1, y, z))
-            addLeft(tile);
-        if (!sector.isTileVisible(x + 1, y, z))
-            addRight(tile);
-        if (!sector.isTileVisible(x, y + 1, z))
-            addTop(tile);
-        if (!sector.isTileVisible(x, y - 1, z))
-            addBottom(tile);
+        if (!sector.isTileVisible(tileColor, x, y, z + 1))
+            addFront(tile, tileColor);
+        if (!sector.isTileVisible(tileColor, x, y, z - 1))
+            addBack(tile, tileColor);
+        if (!sector.isTileVisible(tileColor, x - 1, y, z))
+            addLeft(tile, tileColor);
+        if (!sector.isTileVisible(tileColor, x + 1, y, z))
+            addRight(tile, tileColor);
+        if (!sector.isTileVisible(tileColor, x, y + 1, z))
+            addTop(tile, tileColor);
+        if (!sector.isTileVisible(tileColor, x, y - 1, z))
+            addBottom(tile, tileColor);
     }
 }

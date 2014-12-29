@@ -80,15 +80,15 @@ public class TileMeshBuilder
         indicies = new ShortArray();
     }
 
-    public void addTile(TileData tile, float x, float y, float z)
+    public void addTile(TileData tile, Color color, float x, float y, float z)
     {
         calculateVerts(x, y, z);
-        addFront(tile);
-        addBack(tile);
-        addRight(tile);
-        addLeft(tile);
-        addTop(tile);
-        addBottom(tile);
+        addFront(tile, color);
+        addBack(tile, color);
+        addRight(tile, color);
+        addLeft(tile, color);
+        addTop(tile, color);
+        addBottom(tile, color);
     }
 
     public void calculateVerts(float x, float y, float z)
@@ -107,9 +107,8 @@ public class TileMeshBuilder
         points[7] = pointVector7.set(x + width, y + height, z);
     }
 
-    public void addFront(TileData tile)
+    public void addFront(TileData tile, Color color)
     {
-        Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
         vertices.addAll(
@@ -121,9 +120,8 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addBack(TileData tile)
+    public void addBack(TileData tile, Color color)
     {
-        Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
         vertices.addAll(
@@ -135,9 +133,8 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addRight(TileData tile)
+    public void addRight(TileData tile, Color color)
     {
-        Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
         vertices.addAll(
@@ -148,9 +145,8 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addLeft(TileData tile)
+    public void addLeft(TileData tile, Color color)
     {
-        Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
         vertices.addAll(
@@ -162,9 +158,8 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addTop(TileData tile)
+    public void addTop(TileData tile, Color color)
     {
-        Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
         vertices.addAll(
@@ -179,9 +174,8 @@ public class TileMeshBuilder
     // Code to subdivide the top.
     // Causes the map to have trouble rendering
     // when SUBQUADS is around 5.
-    /*void addTop(TileData tile, float x, float y, float z)
+    /*void addTop(TileData tile, Color color, float x, float y, float z)
     {
-        Color color = tile.getColor();
         for (int hDiv = 0; hDiv < SUBQUADS; hDiv++)
         {
             for (int vDiv = 0; vDiv < SUBQUADS; vDiv++)
@@ -211,9 +205,8 @@ public class TileMeshBuilder
     }*/
 
 
-    void addBottom(TileData tile)
+    void addBottom(TileData tile, Color color)
     {
-        Color color = tile.getColor();
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
         vertices.addAll(

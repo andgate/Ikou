@@ -42,27 +42,15 @@ public class TileData
             );
 
     private TileType type;
-    private Color color;
 
     public TileData()
     {
-        this(TileType.Blank, Color.CLEAR);
+        this(TileType.Blank);
     }
 
-    public TileData(TileType type, Color color)
+    public TileData(TileType type)
     {
         this.type = type;
-        this.color = new Color(color);
-    }
-
-    public Color getColor()
-    {
-        return color;
-    }
-
-    public void setColor(Color color)
-    {
-        this.color = color;
     }
 
     public void setType(TileType type)
@@ -75,17 +63,17 @@ public class TileData
         return type;
     }
 
-    public boolean isOpaque()
+    public static boolean isOpaque(Color color)
     {
         return MathExtra.epsilonEquals(color.a, 1.0f);
     }
 
-    public boolean isTransparent()
+    public static boolean isTransparent(Color color)
     {
-        return ( isVisible() && (color.a < 1.0f) );
+        return ( isVisible(color) && (color.a < 1.0f) );
     }
 
-    public boolean isVisible()
+    public static boolean isVisible(Color color)
     {
         return (color.a > 0.0f);
     }

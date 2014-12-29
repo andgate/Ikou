@@ -15,6 +15,7 @@ package com.andgate.ikou.model;
 
 import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.Array2d;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
 public class TileSector extends Array2d<TileStack>
@@ -50,12 +51,12 @@ public class TileSector extends Array2d<TileStack>
         return false;
     }
 
-    public boolean isTileVisible(int x, int y, int z)
+    public boolean isTileVisible(Color color, int x, int y, int z)
     {
         TileData tile = getTile(x, y, z);
         if(tile != null)
         {
-            return tile.isVisible();
+            return tile.isVisible(color);
         }
 
         return false;
