@@ -13,68 +13,31 @@
 
 package com.andgate.ikou.model.tile;
 
-import com.andgate.ikou.Constants;
-import com.andgate.ikou.utility.MathExtra;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.andgate.ikou.model.TileStack;
 
 public class TileData
 {
-    public enum TileType
-    {
-        Smooth, Obstacle, Rough, Player, End, Blank
-    }
 
-    public static final float WIDTH = Constants.TILE_LENGTH;
-    public static final float HEIGHT = Constants.TILE_THICKNESS;
-    public static final float DEPTH = Constants.TILE_LENGTH;
-
-    public static final float HALF_WIDTH = WIDTH / 2.0f;
-    public static final float HALF_HEIGHT = HEIGHT / 2.0f;
-    public static final float HALF_DEPTH = DEPTH / 2.0f;
-
-    public static final Material TILE_MATERIAL
-            = new Material(
-                  new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-                //, new IntAttribute(IntAttribute.CullFace, GL20.GL_NONE)
-            );
-
-    private TileType type;
+    private TileStack.Tile type;
 
     public TileData()
     {
-        this(TileType.Blank);
+        this(TileStack.Tile.Blank);
     }
 
-    public TileData(TileType type)
+    public TileData(TileStack.Tile type)
     {
         this.type = type;
     }
 
-    public void setType(TileType type)
+    public void setType(TileStack.Tile type)
     {
         this.type = type;
     }
 
-    public TileType getType()
+    public TileStack.Tile getType()
     {
         return type;
     }
 
-    public static boolean isOpaque(Color color)
-    {
-        return MathExtra.epsilonEquals(color.a, 1.0f);
-    }
-
-    public static boolean isTransparent(Color color)
-    {
-        return ( isVisible(color) && (color.a < 1.0f) );
-    }
-
-    public static boolean isVisible(Color color)
-    {
-        return (color.a > 0.0f);
-    }
 }

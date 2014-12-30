@@ -18,9 +18,7 @@ import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.model.tile.TileCode;
-import com.andgate.ikou.model.tile.TileData;
-import com.andgate.ikou.model.tile.TileData.TileType;
+import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.utils.Array;
 
@@ -86,11 +84,11 @@ public class TileFloorParser
             for(int x = 0; x < sectorRow.size; x++)
             {
                 TileStack currTileStack = sectorRow.get(x);
-                for(int y = 0; y < currTileStack.size; y++)
+                for(int y = 0; y < currTileStack.size(); y++)
                 {
-                    TileData currTileData = currTileStack.get(y);
+                    Tile currTile = currTileStack.get(y);
 
-                    if(currTileData.getType() == TileType.End)
+                    if(currTile == Tile.End)
                     {
                         if(endPosition != null)
                         {
@@ -136,7 +134,7 @@ public class TileFloorParser
             for(int column = 0; column < tileCodes[row].length; column++)
             {
                 char currTileCode = tileCodes[row][column];
-                TileStack currTileStack = buildTileStack(currTileCode, palette);
+                TileStack currTileStack = new TileStack(currTileCode);
                 masterSector.addToRow(currTileStack);
             }
 
@@ -144,33 +142,6 @@ public class TileFloorParser
         }
 
         return masterSector;
-    }
-
-    private static TileStack buildTileStack(char tileCode, TilePalette palette)
-    {
-        TileStack tileStack = new TileStack();
-
-        switch(tileCode)
-        {
-            case TileCode.SMOOTH_TILE:
-                tileStack.add(new TileData(TileType.Smooth));
-                break;
-            case TileCode.OBSTACLE_TILE:
-                tileStack.add(new TileData(TileType.Smooth));
-                tileStack.add(new TileData(TileType.Obstacle));
-                break;
-            case TileCode.ROUGH_TILE:
-                tileStack.add(new TileData(TileType.Rough));
-                break;
-            case TileCode.END_TILE:
-                tileStack.add(new TileData(TileType.End));
-                break;
-            default:
-                tileStack.add(new TileData(TileType.Blank));
-                break;
-        }
-
-        return tileStack;
     }
 
     /*private static String reverseLineOrder(String original)

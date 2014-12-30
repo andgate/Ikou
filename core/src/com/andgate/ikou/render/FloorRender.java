@@ -16,7 +16,7 @@ package com.andgate.ikou.render;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
-import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.model.TileStack;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -92,7 +92,7 @@ public class FloorRender implements RenderableProvider, Disposable
                     Mesh mesh = meshes[i][j];
 
                     Renderable renderable = pool.obtain();
-                    renderable.material = TileData.TILE_MATERIAL;
+                    renderable.material = TileStack.TILE_MATERIAL;
                     renderable.meshPartOffset = 0;
                     renderable.meshPartSize = mesh.getNumIndices();
                     renderable.primitiveType = GL20.GL_TRIANGLES;

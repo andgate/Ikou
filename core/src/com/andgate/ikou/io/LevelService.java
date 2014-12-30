@@ -20,6 +20,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class LevelService
 {
@@ -60,7 +61,7 @@ public class LevelService
 
     public static void write(Level level)
     {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonString = gson.toJson(level);
         FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);
         levelFile.writeString(jsonString, false);

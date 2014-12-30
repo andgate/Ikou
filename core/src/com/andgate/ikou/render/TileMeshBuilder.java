@@ -14,6 +14,7 @@
 package com.andgate.ikou.render;
 
 import com.andgate.ikou.Constants;
+import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
@@ -80,22 +81,22 @@ public class TileMeshBuilder
         indicies = new ShortArray();
     }
 
-    public void addTile(TileData tile, Color color, float x, float y, float z)
+    public void addTile(Color color, float x, float y, float z)
     {
         calculateVerts(x, y, z);
-        addFront(tile, color);
-        addBack(tile, color);
-        addRight(tile, color);
-        addLeft(tile, color);
-        addTop(tile, color);
-        addBottom(tile, color);
+        addFront(color);
+        addBack(color);
+        addRight(color);
+        addLeft(color);
+        addTop(color);
+        addBottom(color);
     }
 
     public void calculateVerts(float x, float y, float z)
     {
-        final float width = TileData.WIDTH;
-        final float height = TileData.HEIGHT;
-        final float depth = TileData.DEPTH;
+        final float width = TileStack.WIDTH;
+        final float height = TileStack.HEIGHT;
+        final float depth = TileStack.DEPTH;
         // Creates the 8 vector points that exists on a box. Those will be used to create the vertex.
         points[0] = pointVector0.set(x,         y,          z + depth);
         points[1] = pointVector1.set(x + width, y,          z + depth);
@@ -107,7 +108,7 @@ public class TileMeshBuilder
         points[7] = pointVector7.set(x + width, y + height, z);
     }
 
-    public void addFront(TileData tile, Color color)
+    public void addFront(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
@@ -120,7 +121,7 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addBack(TileData tile, Color color)
+    public void addBack(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
@@ -133,7 +134,7 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addRight(TileData tile, Color color)
+    public void addRight(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
@@ -145,7 +146,7 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addLeft(TileData tile, Color color)
+    public void addLeft(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
@@ -158,7 +159,7 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addTop(TileData tile, Color color)
+    public void addTop(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 
@@ -205,7 +206,7 @@ public class TileMeshBuilder
     }*/
 
 
-    void addBottom(TileData tile, Color color)
+    void addBottom(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
 

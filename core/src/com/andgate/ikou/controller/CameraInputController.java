@@ -14,7 +14,7 @@
 package com.andgate.ikou.controller;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.utility.MathExtra;
 import com.andgate.ikou.view.PlayerTransformer;
 import com.andgate.ikou.view.PlayerTransformer.PlayerTransformListener;
@@ -63,8 +63,8 @@ public class CameraInputController extends GestureDetector implements PlayerTran
     private void setTarget()
     {
         target.set(playerTransformer.getPosition());
-        target.x += TileData.HALF_WIDTH;
-        target.z += TileData.HALF_DEPTH;
+        target.x += TileStack.HALF_WIDTH;
+        target.z += TileStack.HALF_DEPTH;
     }
 
     public CameraInputController(final PerspectiveCamera camera, final PlayerTransformer playerTransformer)

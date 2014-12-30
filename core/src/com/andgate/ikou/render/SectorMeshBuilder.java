@@ -16,7 +16,9 @@ package com.andgate.ikou.render;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
+import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
@@ -44,24 +46,24 @@ public class SectorMeshBuilder extends TileMeshBuilder
             {
                 TileStack currTileStack = currSectorRow.get(x);
 
-                for (int y = 0; y < currTileStack.size; y++)
+                for (int y = 0; y < currTileStack.size(); y++)
                 {
-                    TileData currTile = currTileStack.get(y);
-                    Color currTileColor = palette.getColor(currTile.getType());
+                    Tile currTile = currTileStack.get(y);
+                    Color currTileColor = palette.getColor(currTile);
 
-                    if (currTile.isVisible(currTileColor))
+                    if (ColorUtils.isVisible(currTileColor))
                     {
-                        float xPos = (float) x * TileData.WIDTH + offsetX;
-                        float yPos = (float) y * TileData.HEIGHT;
-                        float zPos = (float) z * TileData.DEPTH + offsetZ;
+                        float xPos = (float) x * TileStack.WIDTH + offsetX;
+                        float yPos = (float) y * TileStack.HEIGHT;
+                        float zPos = (float) z * TileStack.DEPTH + offsetZ;
 
-                        if(cullFaces && currTile.isOpaque(currTileColor))
+                        if(cullFaces && ColorUtils.isOpaque(currTileColor))
                         {
                             addCulledTile(sector, currTileColor, x, y, z, xPos, yPos, zPos);
                         }
                         else
                         {
-                            addTile(currTile, currTileColor, xPos, yPos, zPos);
+                            addTile(currTileColor, xPos, yPos, zPos);
                         }
                     }
                 }
@@ -81,24 +83,24 @@ public class SectorMeshBuilder extends TileMeshBuilder
      */
     public void addCulledTile(TileSector sector, Color tileColor, int x, int y, int z, float xPos, float yPos, float zPos)
     {
-        TileData tile = sector.getTile(x, y, z);
+        Tile tile = sector.getTile(x, y, z);
 
-        if(tile == null || !tile.isVisible(tileColor))
+        if(tile == null || !ColorUtils.isVisible(tileColor))
             return;
 
         calculateVerts(xPos, yPos, zPos);
 
         if (!sector.isTileVisible(tileColor, x, y, z + 1))
-            addFront(tile, tileColor);
+            addFront(tileColor);
         if (!sector.isTileVisible(tileColor, x, y, z - 1))
-            addBack(tile, tileColor);
+            addBack(tileColor);
         if (!sector.isTileVisible(tileColor, x - 1, y, z))
-            addLeft(tile, tileColor);
+            addLeft(tileColor);
         if (!sector.isTileVisible(tileColor, x + 1, y, z))
-            addRight(tile, tileColor);
+            addRight(tileColor);
         if (!sector.isTileVisible(tileColor, x, y + 1, z))
-            addTop(tile, tileColor);
+            addTop(tileColor);
         if (!sector.isTileVisible(tileColor, x, y - 1, z))
-            addBottom(tile, tileColor);
+            addBottom(tileColor);
     }
 }

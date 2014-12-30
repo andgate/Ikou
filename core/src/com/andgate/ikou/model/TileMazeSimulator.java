@@ -13,7 +13,7 @@
 
 package com.andgate.ikou.model;
 
-import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Vector3i;
 
 public class TileMazeSimulator
@@ -85,15 +85,15 @@ public class TileMazeSimulator
             // Use the next tile to decide
             // what to do.
             TileStack nextTileStack = masterSector.getTileStack(x, z);
-            for(int y = 0; y < nextTileStack.size; y++)
+            for(int y = 0; y < nextTileStack.size(); y++)
             {
-                if (nextTileStack.size == 2)
+                if (nextTileStack.size() == 2)
                 {
-                    y = nextTileStack.size - 1;
+                    y = nextTileStack.size() - 1;
                 }
 
-                TileData nextTile = nextTileStack.get(y);
-                switch (nextTile.getType()) {
+                Tile nextTile = nextTileStack.get(y);
+                switch (nextTile) {
                     case Smooth:
                         moveDelta.set(velocity);
                         playerPosition.add(moveDelta);

@@ -23,7 +23,7 @@ import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.ProgressDatabase;
 import com.andgate.ikou.model.TileMazeSimulator;
-import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.render.PlayerRender;
 import com.andgate.ikou.utility.Vector3i;
@@ -103,8 +103,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
     private void setupCamera()
     {
-        float playerCenterX = playerTransformer.getPosition().x + TileData.HALF_WIDTH;
-        float playerCenterZ = playerTransformer.getPosition().z + TileData.HALF_DEPTH;
+        float playerCenterX = playerTransformer.getPosition().x + TileStack.HALF_WIDTH;
+        float playerCenterZ = playerTransformer.getPosition().z + TileStack.HALF_DEPTH;
         camera.position.set(playerCenterX,
                             playerTransformer.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
                             playerCenterZ - Constants.CAMERA_HORIZONTAL_DISTANCE);

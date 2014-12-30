@@ -14,7 +14,6 @@
 package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.math.Vector3;
@@ -74,7 +73,7 @@ public class Level
         Vector2i offset = getFloorOffset(floorIndex);
         startPosition.add(offset.x, 0.0f, offset.y);
 
-        startPosition.y = TileData.HEIGHT - floorIndex * Constants.FLOOR_SPACING;
+        startPosition.y = TileStack.HEIGHT - floorIndex * Constants.FLOOR_SPACING;
 
         return startPosition;
     }

@@ -27,7 +27,7 @@ public class LevelDatabaseService
 {
     public static Level[] getLevels()
     {
-        FileHandle[] levelFiles = Gdx.files.internal(Constants.LEVELS_INTERNAL_PATH).list();
+        FileHandle[] levelFiles = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH).list();
 
         Array<Level> levels = new Array<>();
 

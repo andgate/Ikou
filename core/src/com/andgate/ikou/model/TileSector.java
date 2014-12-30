@@ -13,8 +13,9 @@
 
 package com.andgate.ikou.model;
 
-import com.andgate.ikou.model.tile.TileData;
+import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Array2d;
+import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
@@ -33,7 +34,7 @@ public class TileSector extends Array2d<TileStack>
             if(isInArray(x, sectorRow.size))
             {
                 TileStack tileStack = sectorRow.get(x);
-                return isInArray(y, tileStack.size);
+                return isInArray(y, tileStack.size());
             }
         }
 
@@ -53,16 +54,16 @@ public class TileSector extends Array2d<TileStack>
 
     public boolean isTileVisible(Color color, int x, int y, int z)
     {
-        TileData tile = getTile(x, y, z);
+        Tile tile = getTile(x, y, z);
         if(tile != null)
         {
-            return tile.isVisible(color);
+            return ColorUtils.isVisible(color);
         }
 
         return false;
     }
 
-    public TileData getTile(int x, int y, int z)
+    public Tile getTile(int x, int y, int z)
     {
         if(doesTileExist(x, y, z))
         {
@@ -153,13 +154,7 @@ public class TileSector extends Array2d<TileStack>
             for (int x = 0; x < currSectorRow.size; x++)
             {
                 TileStack currTileStack = currSectorRow.get(x);
-
-                for (int y = 0; y < currTileStack.size; y++)
-                {
-                    //TileData currTile = currTileStack.get(y);
-
-                    count++;
-                }
+                count += currTileStack.size();
             }
         }
 
