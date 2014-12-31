@@ -78,15 +78,4 @@ public class Array2d<T> extends Array<Array<T>>
         int lastColumnIndex = get(lastRowIndex).size - 1;
         return get(lastRowIndex).get(lastColumnIndex);
     }
-
-    @Override
-    public Array<T>[] shrink()
-    {
-        for(Array<T> item : items)
-        {
-            item.shrink();
-        }
-
-        return super.shrink();
-    }
 }

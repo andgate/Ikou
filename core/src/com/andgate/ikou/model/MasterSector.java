@@ -124,7 +124,14 @@ public class MasterSector
         int rowCount = rowIndex + 1;
         if(rowCount > sectors.size)
         {
-            sectors.ensureCapacity(rowCount);
+            int distance = rowCount - sectors.size;
+            sectors.ensureCapacity(distance);
+
+            while(distance > 0)
+            {
+                sectors.add(null);
+                distance--;
+            }
         }
 
         Array<TileSector> sectorsRow = sectors.get(rowIndex);
@@ -142,7 +149,14 @@ public class MasterSector
         int columnCount = columnIndex +1;
         if(columnCount > sectorsRow.size)
         {
-            sectorsRow.ensureCapacity(columnCount);
+            int distance = columnCount - sectorsRow.size;
+            sectorsRow.ensureCapacity(distance);
+
+            while(distance > 0)
+            {
+                sectorsRow.add(null);
+                distance--;
+            }
         }
 
         TileSector sector = sectorsRow.get(columnIndex);
@@ -153,5 +167,14 @@ public class MasterSector
         }
 
         return sector;
+    }
+
+    public void shrink()
+    {
+        sectors.shrink();
+        for(Array<TileSector> sectorsRow : sectors)
+        {
+            sectorsRow.shrink();
+        }
     }
 }
