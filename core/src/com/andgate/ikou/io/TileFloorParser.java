@@ -15,10 +15,12 @@ package com.andgate.ikou.io;
 
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.model.Floor;
+import com.andgate.ikou.model.MasterSector;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.TileStack.Tile;
+import com.andgate.ikou.utility.Array2d;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.utils.Array;
 
@@ -28,74 +30,69 @@ import java.util.Scanner;
 public class TileFloorParser
 {
     public static Floor parse(String mapString)
-        throws InvalidFileFormatException
     {
         String[] mapLines = mapString.split("\n");
 
         Vector3i startPosition = getStartPosition(mapString);
         char[][] tileCodes = getTileCodes(mapLines);
-        TileSector masterSector = buildMasterSector(tileCodes);
+        MasterSector masterSector = buildMasterSector(tileCodes);
         Vector3i endPosition = getEndPosition(masterSector);
 
-        Floor floor = new Floor(masterSector, startPosition, endPosition);
+        TilePalette palette = new TilePalette();
+
+        Floor floor = new Floor(masterSector, palette, startPosition, endPosition);
         return floor;
     }
 
     private static Vector3i getStartPosition(String firstLine)
-            throws InvalidFileFormatException
     {
-        int startX = 0;
-        int startY = 0;
-        int startZ = 0;
-
         Scanner in = new Scanner(firstLine);
 
-        try
-        {
-            try
-            {
-                startX = Integer.parseInt(in.next());
-                startZ = Integer.parseInt(in.next());
-            }
-            finally
-            {
-                in.close();
-            }
-        }
-        catch(NumberFormatException  e)
-        {
-            throw new InvalidFileFormatException("Error reading starting position.");
-        }
-        catch(NoSuchElementException e)
-        {
-            throw new InvalidFileFormatException("Error parsing starting position.");
-        }
+        int startX = Integer.parseInt(in.next());
+        int startY = 0;
+        int startZ = Integer.parseInt(in.next());
+
+        in.close();
 
         return new Vector3i(startX, startY, startZ);
     }
 
-    private static Vector3i getEndPosition(TileSector masterSector)
-            throws InvalidFileFormatException
+    private static Vector3i getEndPosition(MasterSector masterSector)
     {
         Vector3i endPosition = null;
-        for(int z = 0; z < masterSector.size; z++)
+
+        Array2d<TileSector> sectors = masterSector.getSectors();
+        for(int sectorsRowIndex = 0; sectorsRowIndex < sectors.size; sectorsRowIndex++)
         {
-            Array<TileStack> sectorRow = masterSector.get(z);
-            for(int x = 0; x < sectorRow.size; x++)
+            Array<TileSector> sectorsRow = sectors.get(sectorsRowIndex);
+            for(int sectorsColumnIndex = 0; sectorsColumnIndex < sectorsRow.size; sectorsColumnIndex++)
             {
-                TileStack currTileStack = sectorRow.get(x);
-                for(int y = 0; y < currTileStack.size(); y++)
+                TileSector sector = sectorsRow.get(sectorsColumnIndex);
+                if(sector != null)
                 {
-                    Tile currTile = currTileStack.get(y);
-
-                    if(currTile == Tile.End)
+                    TileStack[][] stacks = sector.getStacks();
+                    for (int stacksRowIndex = 0; stacksRowIndex < TileSector.SIZE; stacksRowIndex++)
                     {
-                        if(endPosition != null)
+                        TileStack[] stacksRow = stacks[stacksRowIndex];
+                        for (int stacksColumnIndex = 0; stacksColumnIndex < TileSector.SIZE; stacksColumnIndex++)
                         {
-                            throw new InvalidFileFormatException("Multiple end tiles found.");
-                        }
+                            // No need for yet another for loop, End tiles should ALWAYS be on the bottom layer.
+                            int x = sectorsColumnIndex * TileSector.SIZE + stacksColumnIndex;
+                            int y = 0;
+                            int z = sectorsRowIndex * TileSector.SIZE + stacksRowIndex;
 
-                        endPosition = new Vector3i(x, y, z);
+                            Tile currTile = stacksRow[stacksColumnIndex].get(y);
+
+                            if (currTile == Tile.End)
+                            {
+                                if (endPosition != null)
+                                {
+                                    throw new RuntimeException("Multiple end tiles found.");
+                                }
+
+                                endPosition = new Vector3i(x, y, z);
+                            }
+                        }
                     }
                 }
             }
@@ -103,14 +100,13 @@ public class TileFloorParser
 
         if(endPosition == null)
         {
-            throw new InvalidFileFormatException("Missing end tile.");
+            throw new RuntimeException("Missing end tile.");
         }
 
         return endPosition;
     }
 
     private static char[][] getTileCodes(String[] mapLines)
-            throws InvalidFileFormatException
     {
         int rows = mapLines.length - 1;
         char[][] tiles = new char[rows][];
@@ -124,21 +120,18 @@ public class TileFloorParser
         return tiles;
     }
 
-    private static TileSector buildMasterSector(char[][] tileCodes)
+    private static MasterSector buildMasterSector(char[][] tileCodes)
     {
-        TileSector masterSector = new TileSector();
-        TilePalette palette = new TilePalette();
+        MasterSector masterSector = new MasterSector();
 
         for(int row = 0; row < tileCodes.length; row++)
         {
             for(int column = 0; column < tileCodes[row].length; column++)
             {
-                char currTileCode = tileCodes[row][column];
-                TileStack currTileStack = new TileStack(currTileCode);
-                masterSector.addToRow(currTileStack);
+                char tileCode = tileCodes[row][column];
+                TileStack tileStack = new TileStack(tileCode);
+                masterSector.setStack(tileStack, row, column);
             }
-
-            masterSector.addRow();
         }
 
         return masterSector;

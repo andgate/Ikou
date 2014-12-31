@@ -23,9 +23,18 @@ public class Array2d<T> extends Array<Array<T>>
         add(new Array<T>());
     }
 
-    public T get(int i, int j)
+    public T get(int rowIndex, int columnIndex)
     {
-        return get(i).get(j);
+        if(rowIndex < size)
+        {
+            Array<T> row = get(rowIndex);
+            if(columnIndex < row.size)
+            {
+                return row.get(columnIndex);
+            }
+        }
+
+        return null;
     }
 
     public void set(int i, int j, T value)
@@ -68,5 +77,16 @@ public class Array2d<T> extends Array<Array<T>>
         int lastRowIndex = size - 1;
         int lastColumnIndex = get(lastRowIndex).size - 1;
         return get(lastRowIndex).get(lastColumnIndex);
+    }
+
+    @Override
+    public Array<T>[] shrink()
+    {
+        for(Array<T> item : items)
+        {
+            item.shrink();
+        }
+
+        return super.shrink();
     }
 }

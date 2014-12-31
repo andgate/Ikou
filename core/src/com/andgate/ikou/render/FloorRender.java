@@ -14,9 +14,11 @@
 package com.andgate.ikou.render;
 
 import com.andgate.ikou.model.Floor;
+import com.andgate.ikou.model.MasterSector;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
+import com.andgate.ikou.utility.Array2d;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -30,7 +32,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class FloorRender implements RenderableProvider, Disposable
 {
-    private static final int SUBSECTOR_SIZE = 8;
+    private static final int SUBSECTOR_SIZE = TileSector.SIZE;
     private Mesh[][] meshes;
     public final Matrix4 transform = new Matrix4();
     private final PerspectiveCamera camera;
@@ -38,30 +40,37 @@ public class FloorRender implements RenderableProvider, Disposable
     public FloorRender(Floor floor, PerspectiveCamera camera)
     {
         this.camera = camera;
-        // Split the master sector into
-        // easier to render sub-sectors.
-        TileSector[][] subsectors = floor.getMasterSector().split(0, 0, SUBSECTOR_SIZE);
-
-        buildMeshes(subsectors, floor.getPalette());
+        buildMeshes(floor);
     }
 
-    private void buildMeshes(TileSector[][] subsectors, TilePalette palette)
+    private void buildMeshes(Floor floor)
     {
-        int rows = subsectors.length;
+        Array2d<TileSector> sectors = floor.getMasterSector().getSectors();
+        TilePalette palette = floor.getPalette();
+
+        int rows = sectors.size;
         meshes = new Mesh[rows][];
         for(int currRow = 0; currRow < rows; currRow++)
         {
-            int columns = subsectors[currRow].length;
+            int columns = sectors.get(currRow).size;
             meshes[currRow] = new Mesh[columns];
             for(int currColumn = 0; currColumn < columns; currColumn++)
             {
-                int offsetX = currColumn * SUBSECTOR_SIZE;
-                int offsetZ = currRow * SUBSECTOR_SIZE;
+                int offsetX = currColumn * TileSector.SIZE;
+                int offsetZ = currRow * TileSector.SIZE;
 
-                SectorMeshBuilder worldMeshBuilder
-                        = new SectorMeshBuilder(subsectors[currRow][currColumn], palette, offsetX, offsetZ);
+                TileSector sector = sectors.get(currRow, currColumn);
+                if(sector != null)
+                {
+                    SectorMeshBuilder worldMeshBuilder
+                            = new SectorMeshBuilder(sector, palette, offsetX, offsetZ);
 
-                meshes[currRow][currColumn] = worldMeshBuilder.build();
+                    meshes[currRow][currColumn] = worldMeshBuilder.build();
+                }
+                else
+                {
+                    meshes[currRow][currColumn] = null;
+                }
             }
         }
     }
@@ -87,10 +96,11 @@ public class FloorRender implements RenderableProvider, Disposable
 
                 boolean inFrustum = camera.frustum.sphereInFrustum(subsectorPosition, SUBSECTOR_SIZE * 1.5f);
 
-                if(inFrustum)
-                {
-                    Mesh mesh = meshes[i][j];
 
+                Mesh mesh = meshes[i][j];
+
+                if(inFrustum && (mesh != null))
+                {
                     Renderable renderable = pool.obtain();
                     renderable.material = TileStack.TILE_MATERIAL;
                     renderable.meshPartOffset = 0;
@@ -117,7 +127,9 @@ public class FloorRender implements RenderableProvider, Disposable
         {
             for(int j = 0; j < meshes.length; j++)
             {
-                meshes[i][j].dispose();
+                Mesh mesh = meshes[i][j];
+                if(mesh != null)
+                    mesh.dispose();
             }
         }
     }

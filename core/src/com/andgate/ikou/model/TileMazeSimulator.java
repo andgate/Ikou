@@ -76,15 +76,15 @@ public class TileMazeSimulator
 
         moveDelta.set(0, 0, 0);
 
-        TileSector masterSector = floor.getMasterSector();
+        MasterSector masterSector = floor.getMasterSector();
 
         // Is the next position within the map bounds?
-        if( (0 <= z && z < masterSector.size)
-         && (0 <= x && x < masterSector.get(z).size))
+        if( (0 <= z && z < masterSector.getHeight())
+         && (0 <= x && x < masterSector.getWidth(masterSector.toSectorIndex(z))) )
         {
             // Use the next tile to decide
             // what to do.
-            TileStack nextTileStack = masterSector.getTileStack(x, z);
+            TileStack nextTileStack = masterSector.getTileStack(z, x);
             for(int y = 0; y < nextTileStack.size(); y++)
             {
                 if (nextTileStack.size() == 2)

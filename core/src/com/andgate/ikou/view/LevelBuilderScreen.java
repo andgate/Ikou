@@ -14,6 +14,7 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.io.LevelDatabaseService;
 import com.andgate.ikou.io.LevelLoader;
 import com.andgate.ikou.io.LevelService;
@@ -51,19 +52,8 @@ public class LevelBuilderScreen implements Screen
 
         for(int i = 0; i < levelDatas.length; i++)
         {
-            try
-            {
-                levels[i] = LevelLoader.load(levelDatas[i]);
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-
-        for(Level newLevel : levels)
-        {
-            LevelService.write(newLevel);
+            levels[i] = LevelLoader.load(levelDatas[i]);
+            LevelService.write(levels[i]);
         }
     }
 

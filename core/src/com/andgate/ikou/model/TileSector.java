@@ -19,22 +19,45 @@ import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
-public class TileSector extends Array2d<TileStack>
+public class TileSector
 {
+    private static final String TAG = "TileSector";
+
+    public static final int SIZE = 4;
+
+    private TileStack[][] stacks;
+
     public TileSector()
     {
-        super();
+        stacks = new TileStack[TileSector.SIZE][TileSector.SIZE];
+
+        for(int i = 0; i < TileSector.SIZE; i++)
+        {
+            for(int j = 0; j < TileSector.SIZE; j++)
+            {
+                stacks[i][j] = new TileStack(Tile.Blank);
+            }
+        }
+    }
+
+    public void set(TileStack stack, int row, int column)
+    {
+        stacks[row][column] = stack;
     }
 
     public boolean doesTileExist(int x, int y, int z)
     {
-        if(isInArray(z, size))
+        if(isInArray(z, stacks.length))
         {
-            Array<TileStack> sectorRow = get(z);
-            if(isInArray(x, sectorRow.size))
+            TileStack[] stacksRow = stacks[z];
+            if(isInArray(x, stacksRow.length))
             {
-                TileStack tileStack = sectorRow.get(x);
-                return isInArray(y, tileStack.size());
+                TileStack stack = stacksRow[x];
+                if(isInArray(y, stack.size()))
+                {
+                    Tile tile = stack.get(y);
+                    return ((tile != Tile.Blank) && (tile != null));
+                }
             }
         }
 
@@ -43,10 +66,10 @@ public class TileSector extends Array2d<TileStack>
 
     public boolean doesTileStackExist(int x, int z)
     {
-        if(isInArray(z, size))
+        if(isInArray(z, stacks.length))
         {
-            Array<TileStack> sectorRow = get(z);
-            return isInArray(x, sectorRow.size);
+            TileStack[] stacksRow = stacks[x];
+            return isInArray(x, stacksRow.length);
         }
 
         return false;
@@ -67,9 +90,9 @@ public class TileSector extends Array2d<TileStack>
     {
         if(doesTileExist(x, y, z))
         {
-            Array<TileStack> sectorRow = get(z);
-            TileStack tileStack = sectorRow.get(x);
-            return tileStack.get(y);
+            TileStack[] stacksRow = stacks[z];
+            TileStack stack = stacksRow[x];
+            return stack.get(y);
         }
 
         return null;
@@ -79,14 +102,22 @@ public class TileSector extends Array2d<TileStack>
     {
         if(doesTileStackExist(x, z))
         {
-            Array<TileStack> sectorRow = get(z);
-            return sectorRow.get(x);
+            TileStack[] stacksRow = stacks[z];
+            return stacksRow[x];
         }
 
         return null;
     }
 
-    public TileSector[][] split(int startRow, int startColumn, int size)
+    public TileStack[][] getStacks()
+    {
+        return stacks;
+    }
+
+    // This used to be very useful for subdividing a tilesector into a master tilesector.
+    // Now that there is a specific master tilesector object for this,
+    // split is much less useful and revelevant.
+    /**public TileSector[][] split(int startRow, int startColumn, int size)
     {
         int endRow = (int) Math.ceil((float)countRows() / size);
         int endColumn = (int) Math.ceil((float)maxColumns() / size);
@@ -141,25 +172,7 @@ public class TileSector extends Array2d<TileStack>
         }
 
         return subsector;
-    }
-
-    public int countTiles()
-    {
-        int count = 0;
-
-        for (int z = 0; z < this.size; z++)
-        {
-            Array<TileStack> currSectorRow = this.get(z);
-
-            for (int x = 0; x < currSectorRow.size; x++)
-            {
-                TileStack currTileStack = currSectorRow.get(x);
-                count += currTileStack.size();
-            }
-        }
-
-        return count;
-    }
+    }**/
 
     private boolean isInArray(int n, int size)
     {

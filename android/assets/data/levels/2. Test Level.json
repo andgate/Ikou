@@ -1,1 +1,1514 @@
-{"floors":{"items":[{"end":{"vector3f":{"x":0.0,"y":0.0,"z":0.0},"x":1,"y":0,"z":3},"masterSector":{"items":[{"items":[{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null],"ordered":true,"size":14},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null],"ordered":true,"size":14},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null],"ordered":true,"size":14},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"End"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null,null],"ordered":true,"size":13},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null,null],"ordered":true,"size":13},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null,null],"ordered":true,"size":13},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null,null],"ordered":true,"size":13},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null,null],"ordered":true,"size":13},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Rough"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Blank"},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},null,null,null],"ordered":true,"size":13},{"items":[{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},{"items":[{"type":"Smooth"},{"type":"Obstacle"},null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":2},null,null,null,null],"ordered":true,"size":12},{"items":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":0},null,null,null,null,null],"ordered":true,"size":11},"offset":{"x":0,"y":0},"palette":{"background":{"a":1.0,"b":1.0,"g":1.0,"r":1.0},"blank":{"a":0.0,"b":0.0,"g":0.0,"r":0.0},"end":{"a":1.0,"b":0.0,"g":0.0,"r":1.0},"obstacle":{"a":1.0,"b":0.5,"g":0.5,"r":0.5},"player":{"a":1.0,"b":1.0,"g":1.0,"r":0.0},"rough":{"a":1.0,"b":0.25,"g":0.25,"r":0.25},"smooth":{"a":1.0,"b":0.75,"g":0.75,"r":0.75}},"start":{"vector3f":{"x":0.0,"y":0.0,"z":0.0},"x":2,"y":0,"z":1}},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"ordered":true,"size":1},"name":"2. Test Level","startPosition":{"x":0.0,"y":0.0,"z":0.0}}
+{
+  "floors": {
+    "items": [
+      {
+        "end": {
+          "vector3f": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "x": 3,
+          "y": 0,
+          "z": 1
+        },
+        "masterSector": {
+          "sectors": {
+            "items": [
+              {
+                "items": [
+                  {
+                    "stacks": [
+                      [
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "End"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Rough"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Smooth",
+                            "Obstacle"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ],
+                      [
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        },
+                        {
+                          "tiles": [
+                            "Blank"
+                          ]
+                        }
+                      ]
+                    ]
+                  },
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "ordered": true,
+                "size": 2
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "ordered": true,
+            "size": 1
+          }
+        },
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "palette": {
+          "background": {
+            "a": 1.0,
+            "b": 1.0,
+            "g": 1.0,
+            "r": 1.0
+          },
+          "blank": {
+            "a": 0.0,
+            "b": 0.0,
+            "g": 0.0,
+            "r": 0.0
+          },
+          "end": {
+            "a": 1.0,
+            "b": 0.0,
+            "g": 0.0,
+            "r": 1.0
+          },
+          "obstacle": {
+            "a": 1.0,
+            "b": 0.5,
+            "g": 0.5,
+            "r": 0.5
+          },
+          "player": {
+            "a": 1.0,
+            "b": 1.0,
+            "g": 1.0,
+            "r": 0.0
+          },
+          "rough": {
+            "a": 1.0,
+            "b": 0.25,
+            "g": 0.25,
+            "r": 0.25
+          },
+          "smooth": {
+            "a": 1.0,
+            "b": 0.75,
+            "g": 0.75,
+            "r": 0.75
+          }
+        },
+        "start": {
+          "vector3f": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "x": 2,
+          "y": 0,
+          "z": 1
+        }
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "ordered": true,
+    "size": 1
+  },
+  "name": "2. Test Level",
+  "startPosition": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  }
+}

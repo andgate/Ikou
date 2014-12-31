@@ -38,13 +38,13 @@ public class SectorMeshBuilder extends TileMeshBuilder
     {
         super();
 
-        for (int z = 0; z < sector.size; z++)
-        {
-            Array<TileStack> currSectorRow = sector.get(z);
+        TileStack[][] stacks = sector.getStacks();
 
-            for (int x = 0; x < currSectorRow.size; x++)
+        for (int z = 0; z < TileSector.SIZE; z++)
+        {
+            for (int x = 0; x < TileSector.SIZE; x++)
             {
-                TileStack currTileStack = currSectorRow.get(x);
+                TileStack currTileStack = stacks[z][x];
 
                 for (int y = 0; y < currTileStack.size(); y++)
                 {

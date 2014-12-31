@@ -61,6 +61,8 @@ public class LevelService
 
     public static void write(Level level)
     {
+        level.shrink();
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonString = gson.toJson(level);
         FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);

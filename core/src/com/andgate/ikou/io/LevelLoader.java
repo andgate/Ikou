@@ -23,7 +23,6 @@ import com.badlogic.gdx.files.FileHandle;
 public class LevelLoader
 {
     public static Level load(LevelData levelData)
-        throws InvalidFileFormatException
     {
         Floor[] floors = new Floor[levelData.totalFloors];
 

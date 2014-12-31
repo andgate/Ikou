@@ -111,4 +111,12 @@ public class Level
             offset.sub(currentStart.x, currentStart.z);
         }
     }
+
+    public void shrink()
+    {
+        for(Floor floor : floors)
+        {
+            floor.shrink();
+        }
+    }
 }
