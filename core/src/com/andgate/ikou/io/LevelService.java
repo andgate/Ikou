@@ -17,10 +17,19 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Base64Coder;
-import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 public class LevelService
 {
@@ -42,6 +51,7 @@ public class LevelService
     {
         if(levelFile.exists() && levelFile.extension().equals(Constants.LEVEL_EXTENSION_NO_DOT))
         {
+            // TODO: use a buffered input to stream in the level data :)
             String jsonString = levelFile.readString();
             Gson gson = new Gson();
             Level level = gson.fromJson(jsonString, Level.class);
@@ -59,13 +69,29 @@ public class LevelService
         return new Level();
     }
 
+    // see http://stackoverflow.com/questions/10765831/out-of-memory-exception-in-gson-fromjson
     public static void write(Level level)
     {
-        level.shrink();
+        // Shrinking causes json to write output forever.
+        // FIXME: Compress the level :)
+        //level.shrink();
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonString = gson.toJson(level);
         FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);
-        levelFile.writeString(jsonString, false);
+        OutputStream os = levelFile.write(false);
+        Writer writer = new BufferedWriter(new OutputStreamWriter(os));
+
+        Gson gson = new Gson();
+        JsonWriter w = new JsonWriter(writer);
+        gson.toJson(level, w);
+
+        try
+        {
+            w.close();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
