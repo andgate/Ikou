@@ -76,9 +76,14 @@ public class Constants
             = ".txt";
 
     public static final String LEVEL_EXTENSION_NO_DOT
-            = "json";
+            = "lvl";
     public static final String LEVEL_EXTENSION
             = "." + LEVEL_EXTENSION_NO_DOT;
+
+    public static final String TEMP_EXTENSION_NO_DOT
+            = "tmp";
+    public static final String TEMP_EXTENSION
+            = "." + TEMP_EXTENSION_NO_DOT;
 
     public static final String PROGRESS_DATABASE_EXTERNAL_PATH
             = "Ikou/progress.data";

@@ -43,8 +43,6 @@ public class LevelService
 {
     private static final String TAG = "LevelService";
 
-    private static final String TMP_FILENAME = "level.tmp";
-
     public static Level readInternal(String filename)
     {
         FileHandle levelFile = Gdx.files.internal(filename);
@@ -63,7 +61,9 @@ public class LevelService
 
         if(levelFile.exists() && levelFile.extension().equals(Constants.LEVEL_EXTENSION_NO_DOT))
         {
-            FileHandle tmpFile = Gdx.files.local(TMP_FILENAME);
+            String tempFilename = levelFile.name() + Constants.TEMP_EXTENSION;
+
+            FileHandle tmpFile = Gdx.files.local(tempFilename);
 
             InputStream levelIn = levelFile.read();
             OutputStream tmpOut = tmpFile.write(false);
@@ -130,11 +130,13 @@ public class LevelService
     // see http://stackoverflow.com/questions/10765831/out-of-memory-exception-in-gson-fromjson
     public static void write(final Level level)
     {
+        String levelFileName = level.getName() + Constants.LEVEL_EXTENSION;
+        String tempFileName = levelFileName + Constants.TEMP_EXTENSION;
         // Shrinking causes json to write output forever.
         // FIXME: Compress the level :)
         //level.shrink();
 
-        FileHandle tmpFile = Gdx.files.local(TMP_FILENAME);
+        FileHandle tmpFile = Gdx.files.local(tempFileName);
 
         OutputStream tmpOut = tmpFile.write(false);
         Writer tmpWriter = new BufferedWriter(new OutputStreamWriter(tmpOut));
@@ -158,7 +160,7 @@ public class LevelService
             }
         }
 
-        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);
+        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + levelFileName);
 
         InputStream tmpIn = tmpFile.read();
         OutputStream levelOut = levelFile.write(false);
