@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.io;
 
+import com.andgate.ikou.Constants;
 import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
@@ -20,9 +21,26 @@ import com.andgate.ikou.model.LevelData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
+import java.io.IOException;
+
 public class LevelLoader
 {
     public static Level load(LevelData levelData)
+            throws IOException
+    {
+        String levelFileName = levelData.name + Constants.LEVEL_EXTENSION;
+
+        FileHandle levelFileInternal = Gdx.files.external(Constants.LEVELS_INTERNAL_PATH + levelFileName);
+        if(levelFileInternal.exists())
+        {
+            return LevelService.read(levelFileInternal);
+        }
+
+        FileHandle levelFileExternal = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + levelFileName);
+        return LevelService.read(levelFileExternal);
+    }
+
+    public static Level loadOld(LevelData levelData)
     {
         Floor[] floors = new Floor[levelData.totalFloors];
 

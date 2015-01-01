@@ -14,7 +14,6 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.io.LevelDatabaseService;
 import com.andgate.ikou.io.LevelLoader;
 import com.andgate.ikou.io.LevelService;
@@ -26,8 +25,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.io.IOException;
+
 public class LevelBuilderScreen implements Screen
 {
+    private static final String TAG = "LevelBuilderScreen";
+
     private final Ikou game;
     private Stage stage;
     private Level level;
@@ -47,13 +50,22 @@ public class LevelBuilderScreen implements Screen
 
         buildStage();
 
-        LevelData[] levelDatas = LevelDatabaseService.getOldLevels();
+        LevelData[] levelDatas = LevelDatabaseService.getOldLevelDatas();
         Level[] levels = new Level[levelDatas.length];
 
         for(int i = 0; i < levelDatas.length; i++)
         {
-            levels[i] = LevelLoader.load(levelDatas[i]);
-            LevelService.write(levels[i]);
+            levels[i] = LevelLoader.loadOld(levelDatas[i]);
+
+            try
+            {
+                LevelService.write(levels[i]);
+            }
+            catch(final IOException e)
+            {
+                final String errorMessage = "Failed to write level file.";
+                Gdx.app.error(TAG, errorMessage, e);
+            }
         }
     }
 

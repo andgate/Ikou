@@ -38,156 +38,69 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class LevelService
 {
     private static final String TAG = "LevelService";
 
-    public static Level readInternal(String filename)
-    {
-        FileHandle levelFile = Gdx.files.internal(filename);
-        return read(levelFile);
-    }
-
-    public static Level readExternal(String filename)
-    {
-        FileHandle levelFile = Gdx.files.external(filename);
-        return read(levelFile);
-    }
-
     public static Level read(final FileHandle levelFile)
+            throws IOException
     {
         Level level = null;
 
         if(levelFile.exists() && levelFile.extension().equals(Constants.LEVEL_EXTENSION_NO_DOT))
         {
-            String tempFilename = levelFile.name() + Constants.TEMP_EXTENSION;
-
-            FileHandle tmpFile = Gdx.files.local(tempFilename);
-
-            InputStream levelIn = levelFile.read();
-            OutputStream tmpOut = tmpFile.write(false);
-
-            try
-            {
-                Lzma.decompress(levelIn, tmpOut);
-            }
-            catch(IOException e)
-            {
-                final String errorMessage = "Error decompressing level.";
-                Gdx.app.error(TAG, errorMessage, e);
-            }
-            finally
-            {
-                try
-                {
-                    levelIn.close();
-                    tmpOut.close();
-                }
-                catch(IOException e)
-                {
-                    final String errorMessage = "Error closing level compression files.";
-                    Gdx.app.error(TAG, errorMessage, e);
-                }
-            }
-
-            InputStream tmpIn = tmpFile.read();
-            Reader reader = new BufferedReader(new InputStreamReader(tmpIn));
+            InputStream levelIn = new GZIPInputStream(levelFile.read());
+            Reader reader = new BufferedReader(new InputStreamReader(levelIn));
             JsonReader jsonReader = new JsonReader(reader);
 
             try
             {
+                // Skip the first int, it's just the floor numbers.
+                levelIn.read();
                 Gson gson = new Gson();
                 level = gson.fromJson(jsonReader, Level.class);
             }
             finally
             {
-                try
-                {
-                    tmpIn.close();
-                    jsonReader.close();
-
-                    tmpFile.delete();
-                }
-                catch(final Exception e)
-                {
-                    final String errorMessage = "Error closing temporary level file.";
-                    Gdx.app.error(TAG, errorMessage, e);
-                }
+                jsonReader.close();
             }
         }
 
-        // Return the loaded level,
-        // otherwise, return a new level.
-        if(level != null)
+        if(level == null)
         {
-            return level;
+            final String errorMessage = "Failed to load level \"" + levelFile.path() + levelFile.name() + "\"";
+            throw new IOException(errorMessage);
         }
 
-        return new Level();
+        return level;
     }
 
-    // see http://stackoverflow.com/questions/10765831/out-of-memory-exception-in-gson-fromjson
     public static void write(final Level level)
+        throws IOException
     {
-        String levelFileName = level.getName() + Constants.LEVEL_EXTENSION;
-        String tempFileName = levelFileName + Constants.TEMP_EXTENSION;
         // Shrinking causes json to write output forever.
         // FIXME: Compress the level :)
         //level.shrink();
 
-        FileHandle tmpFile = Gdx.files.local(tempFileName);
+        String levelFileName = level.getName() + Constants.LEVEL_EXTENSION;
+        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + levelFileName);
 
-        OutputStream tmpOut = tmpFile.write(false);
-        Writer tmpWriter = new BufferedWriter(new OutputStreamWriter(tmpOut));
+        OutputStream levelOut = new GZIPOutputStream(levelFile.write(false));
+        Writer tmpWriter = new BufferedWriter(new OutputStreamWriter(levelOut));
         JsonWriter jsonWriter = new JsonWriter(tmpWriter);
 
         try
         {
+            levelOut.write(level.getFloors().length);
             Gson gson = new Gson();
             gson.toJson(level, jsonWriter);
         }
         finally
         {
-            try
-            {
-                jsonWriter.close();
-            }
-            catch(final IOException e)
-            {
-                final String errorMessage = "Error cleaning up intermediate files.";
-                Gdx.app.error(TAG, errorMessage, e);
-            }
-        }
-
-        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + levelFileName);
-
-        InputStream tmpIn = tmpFile.read();
-        OutputStream levelOut = levelFile.write(false);
-
-        try
-        {
-            Lzma.compress(tmpIn, levelOut);
-        }
-        catch(final IOException e)
-        {
-            final String errorMessage = "Error compressing level file.";
-            Gdx.app.error(TAG, errorMessage, e);
-        }
-        finally
-        {
-            try
-            {
-                tmpIn.close();
-                levelOut.close();
-
-                tmpFile.delete();
-            }
-            catch(Exception e)
-            {
-                final String errorMessage = "Error writing level files.";
-                Gdx.app.error(TAG, errorMessage, e);
-            }
+            jsonWriter.close();
         }
     }
 }

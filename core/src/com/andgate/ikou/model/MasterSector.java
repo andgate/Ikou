@@ -171,7 +171,7 @@ public class MasterSector
 
     public void shrink()
     {
-        sectors.shrink();
+        //sectors.shrink();
 
         for(Array<TileSector> sectorsRow : sectors)
         {

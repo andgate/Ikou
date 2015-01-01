@@ -33,6 +33,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.io.IOException;
+
 public class FloorSelectScreen extends ScreenAdapter
 {
     private static final String TAG = "FloorSelectScreen";
@@ -40,22 +42,20 @@ public class FloorSelectScreen extends ScreenAdapter
     private final Ikou game;
     private Stage stage;
 
-    private final Level level;
-    private final ProgressDatabase progressDB;
+    private final LevelData levelData;
 
     private static final String SELECT_FLOOR_TEXT = "Select a Floor";
 
     private static final int COLUMNS = 7;
 
-    public FloorSelectScreen(final Ikou newGame, Level level)
+    public FloorSelectScreen(final Ikou newGame, final LevelData levelData)
     {
         game = newGame;
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        this.level = level;
-        progressDB = ProgressDatabaseService.read();
+        this.levelData = levelData;
 
         buildStage();
     }
@@ -77,14 +77,13 @@ public class FloorSelectScreen extends ScreenAdapter
         float padding = 0.5f * game.ppm;
         float actorLength = (float)Gdx.graphics.getWidth() / COLUMNS - padding * 2.0f;
 
-        for(int floorNumber = 1; floorNumber <= level.getFloors().length; floorNumber++)
+        for(int floorNumber = 1; floorNumber <= levelData.totalFloors; floorNumber++)
         {
             ShaderLabel floorLabel = null;
-            int completedFloors = progressDB.getFloorsCompleted(level.getName());
-            if(floorNumber <= completedFloors+1)
+            if(floorNumber <= levelData.completedFloors+1)
             {
                 floorLabel = new ShaderLabel("" + floorNumber, floorOptionLabelStyle, game.fontShader);
-                floorLabel.addListener(new FloorOptionClickListener(game, this, level, floorNumber));
+                floorLabel.addListener(new FloorOptionClickListener(game, this, levelData, floorNumber));
             }
             else
             {
@@ -167,16 +166,16 @@ public class FloorSelectScreen extends ScreenAdapter
 
         private final Ikou game;
         private final FloorSelectScreen screen;
-        private final Level level;
+        private final LevelData levelData;
         private final int floor;
 
-        public FloorOptionClickListener(Ikou game, FloorSelectScreen screen, Level level, int floor)
+        public FloorOptionClickListener(Ikou game, FloorSelectScreen screen, LevelData levelData, int floor)
         {
             super();
 
             this.game = game;
             this.screen = screen;
-            this.level = level;
+            this.levelData = levelData;
             this.floor = floor;
         }
 
@@ -184,8 +183,18 @@ public class FloorSelectScreen extends ScreenAdapter
         public void clicked(InputEvent event, float x, float y)
         {
             //game.buttonPressedSound.play();
-            game.setScreen(new GameScreen(game, level, floor));
-            screen.dispose();
+            // Load level
+            try
+            {
+                Level level = LevelLoader.load(levelData);
+                game.setScreen(new GameScreen(game, level, floor));
+                screen.dispose();
+            }
+            catch(final IOException e)
+            {
+                final String errorMessage = "Failed to load level " + levelData.name;
+                Gdx.app.error(TAG, errorMessage, e);
+            }
         }
     }
 }

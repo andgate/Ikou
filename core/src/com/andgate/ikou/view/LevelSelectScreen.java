@@ -32,14 +32,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.io.IOException;
+
 public class LevelSelectScreen implements Screen
 {
     private static final String TAG = "LevelSelectScreen";
 
     private final Ikou game;
     private Stage stage;
-    private Level[] levels;
-    ProgressDatabase progressDB;
+    private LevelData[] levelDatas;
 
     private static final String SELECT_LEVEL_TEXT = "Select Level";
 
@@ -48,8 +49,7 @@ public class LevelSelectScreen implements Screen
         this.game = game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        progressDB = ProgressDatabaseService.read();
-        levels = LevelDatabaseService.getLevels();
+        levelDatas = LevelDatabaseService.getLevelDatas();
 
         buildStage();
     }
@@ -66,19 +66,18 @@ public class LevelSelectScreen implements Screen
         final Label.LabelStyle levelOptionLabelStyle = new Label.LabelStyle(game.menuOptionFont, Color.BLACK);
         Table levelOptionsTable = new Table();
 
-        for(int i = 0; i < levels.length; i++)
+        for(int i = 0; i < levelDatas.length; i++)
         {
             final Table levelInfoTable = new Table();
 
-            Level level = levels[i];
+            LevelData levelData = levelDatas[i];
 
-            final ShaderLabel levelNameLabel = new ShaderLabel(level.getName(), levelOptionLabelStyle, game.fontShader);
+            final ShaderLabel levelNameLabel = new ShaderLabel(levelData.name, levelOptionLabelStyle, game.fontShader);
 
-            int completedFloors = progressDB.getFloorsCompleted(level.getName());
-            final String levelCompletion = completedFloors + " out of " + level.floors.size;
+            final String levelCompletion = levelData.completedFloors + " out of " + levelData.totalFloors;
             final ShaderLabel levelProgressLabel = new ShaderLabel(levelCompletion, levelOptionLabelStyle, game.fontShader);
 
-            levelInfoTable.addListener(new LevelOptionClickListener(game, this, level));
+            levelInfoTable.addListener(new LevelOptionClickListener(game, this, levelData));
 
             levelInfoTable.add(levelNameLabel).row();
             levelInfoTable.add(levelProgressLabel);
@@ -156,22 +155,22 @@ public class LevelSelectScreen implements Screen
 
         private final Ikou game;
         private final LevelSelectScreen screen;
-        private final Level level;
+        private final LevelData levelData;
 
-        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, Level level)
+        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, LevelData levelData)
         {
             super();
 
             this.game = game;
             this.screen = screen;
-            this.level = level;
+            this.levelData = levelData;
         }
 
         @Override
         public void clicked(InputEvent event, float x, float y)
         {
             //game.buttonPressedSound.play();
-            game.setScreen(new FloorSelectScreen(game, level));
+            game.setScreen(new FloorSelectScreen(game, levelData));
             screen.dispose();
         }
     }
