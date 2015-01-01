@@ -23,7 +23,6 @@ import com.badlogic.gdx.utils.Array;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.zip.GZIPInputStream;
 
 public class LevelDatabaseService

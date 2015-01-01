@@ -14,7 +14,6 @@
 package com.andgate.ikou.io;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;

@@ -18,14 +18,8 @@ import com.andgate.ikou.model.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonWriter;
-import com.badlogic.gdx.utils.compression.Lzma;
-import com.gc.iotools.stream.is.InputStreamFromOutputStream;
-import com.gc.iotools.stream.os.OutputStreamToInputStream;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-
-import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,8 +28,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.zip.GZIPInputStream;

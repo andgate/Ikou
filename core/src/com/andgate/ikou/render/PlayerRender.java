@@ -29,19 +29,19 @@ import com.badlogic.gdx.utils.Pool;
 
 public class PlayerRender implements RenderableProvider, Disposable
 {
-    private Mesh mesh;
     public final Matrix4 transform = new Matrix4();
     public final Material material;
+
+    TileMeshBuilder tileMeshBuilder;
 
     public PlayerRender()
     {
         // TODO make customizable
         TilePalette palette = new TilePalette();
-        TileData playerTileData = new TileData(TileStack.Tile.Player);
 
-        TileMeshBuilder tileMeshBuilder = new TileMeshBuilder();
+        tileMeshBuilder = new TileMeshBuilder();
         tileMeshBuilder.addTile(palette.getColor(TileStack.Tile.Player), 0, 0, 0);
-        mesh = tileMeshBuilder.build();
+        tileMeshBuilder.setNeedsRebuild();
 
         material = new Material(TileStack.TILE_MATERIAL);
     }
@@ -56,9 +56,9 @@ public class PlayerRender implements RenderableProvider, Disposable
         Renderable renderable = pool.obtain();
         renderable.material = material;
         renderable.meshPartOffset = 0;
-        renderable.meshPartSize = mesh.getNumIndices();
+        renderable.meshPartSize = tileMeshBuilder.getMesh().getNumIndices();
         renderable.primitiveType = GL20.GL_TRIANGLES;
-        renderable.mesh = mesh;
+        renderable.mesh = tileMeshBuilder.getMesh();
         renderables.add(renderable);
 
         renderable.worldTransform.set(transform);
@@ -67,6 +67,7 @@ public class PlayerRender implements RenderableProvider, Disposable
     @Override
     public void dispose()
     {
-        mesh.dispose();
+        if(tileMeshBuilder != null)
+            tileMeshBuilder.dispose();
     }
 }

@@ -14,7 +14,6 @@
 package com.andgate.ikou.render;
 
 import com.andgate.ikou.model.Floor;
-import com.andgate.ikou.model.MasterSector;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
@@ -33,7 +32,7 @@ import com.badlogic.gdx.utils.Pool;
 public class FloorRender implements RenderableProvider, Disposable
 {
     private static final int SUBSECTOR_SIZE = TileSector.SIZE;
-    private Mesh[][] meshes;
+    private SectorMeshBuilder[][] meshBuilders;
     public final Matrix4 transform = new Matrix4();
     private final PerspectiveCamera camera;
 
@@ -49,11 +48,11 @@ public class FloorRender implements RenderableProvider, Disposable
         TilePalette palette = floor.getPalette();
 
         int rows = sectors.size;
-        meshes = new Mesh[rows][];
+        meshBuilders = new SectorMeshBuilder[rows][];
         for(int currRow = 0; currRow < rows; currRow++)
         {
             int columns = sectors.get(currRow).size;
-            meshes[currRow] = new Mesh[columns];
+            meshBuilders[currRow] = new SectorMeshBuilder[columns];
             for(int currColumn = 0; currColumn < columns; currColumn++)
             {
                 int offsetX = currColumn * TileSector.SIZE;
@@ -65,11 +64,12 @@ public class FloorRender implements RenderableProvider, Disposable
                     SectorMeshBuilder worldMeshBuilder
                             = new SectorMeshBuilder(sector, palette, offsetX, offsetZ);
 
-                    meshes[currRow][currColumn] = worldMeshBuilder.build();
+                    worldMeshBuilder.setNeedsRebuild();
+                    meshBuilders[currRow][currColumn] = worldMeshBuilder;
                 }
                 else
                 {
-                    meshes[currRow][currColumn] = null;
+                    meshBuilders[currRow][currColumn] = null;
                 }
             }
         }
@@ -86,9 +86,9 @@ public class FloorRender implements RenderableProvider, Disposable
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool)
     {
-        for(int i = 0; i < meshes.length; i++)
+        for(int i = 0; i < meshBuilders.length; i++)
         {
-            for(int j = 0; j < meshes[i].length; j++)
+            for(int j = 0; j < meshBuilders[i].length; j++)
             {
                 transform.getTranslation(subsectorPosition);
                 subsectorPosition.x += j*SUBSECTOR_SIZE;
@@ -97,7 +97,7 @@ public class FloorRender implements RenderableProvider, Disposable
                 boolean inFrustum = camera.frustum.sphereInFrustum(subsectorPosition, SUBSECTOR_SIZE * 1.5f);
 
 
-                Mesh mesh = meshes[i][j];
+                Mesh mesh = meshBuilders[i][j].getMesh();
 
                 if(inFrustum && (mesh != null))
                 {
@@ -123,13 +123,13 @@ public class FloorRender implements RenderableProvider, Disposable
 
     public void disposeMeshes()
     {
-        for(int i = 0; i < meshes.length; i++)
+        for(int i = 0; i < meshBuilders.length; i++)
         {
-            for(int j = 0; j < meshes.length; j++)
+            for(int j = 0; j < meshBuilders.length; j++)
             {
-                Mesh mesh = meshes[i][j];
-                if(mesh != null)
-                    mesh.dispose();
+                SectorMeshBuilder meshBuilder = meshBuilders[i][j];
+                if(meshBuilder != null)
+                    meshBuilder.dispose();
             }
         }
     }

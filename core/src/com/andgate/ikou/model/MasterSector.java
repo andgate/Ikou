@@ -13,8 +13,8 @@
 
 package com.andgate.ikou.model;
 
-import com.andgate.ikou.utility.Array2d;
 import com.andgate.ikou.model.TileStack.Tile;
+import com.andgate.ikou.utility.Array2d;
 import com.badlogic.gdx.utils.Array;
 
 public class MasterSector

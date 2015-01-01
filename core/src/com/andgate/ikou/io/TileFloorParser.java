@@ -13,7 +13,6 @@
 
 package com.andgate.ikou.io;
 
-import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.MasterSector;
 import com.andgate.ikou.model.TilePalette;
@@ -24,7 +23,6 @@ import com.andgate.ikou.utility.Array2d;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TileFloorParser

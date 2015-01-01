@@ -15,17 +15,24 @@ package com.andgate.ikou.render;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.model.tile.TileData;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ShortArray;
 
-public class TileMeshBuilder
+public class TileMeshBuilder implements Disposable
 {
+    private static final String TAG = "TileMeshBuilder";
+
+    private final static Object rebuilding = new Object();
+    private boolean needsRebuild = false;
+    private boolean rebuildingInProcess = false;
+
     private static final float WIDTH = Constants.TILE_LENGTH;
     private static final float HEIGHT = Constants.TILE_THICKNESS;
     private static final float DEPTH = Constants.TILE_LENGTH;
@@ -79,6 +86,31 @@ public class TileMeshBuilder
     {
         vertices = new FloatArray();
         indicies = new ShortArray();
+    }
+
+    public Mesh getMesh()
+    {
+        synchronized (rebuilding)
+        {
+            if(rebuildingInProcess)
+            {
+                return null;
+            }
+            if(needsRebuild)
+            {
+                rebuild();
+            }
+            return mesh;
+        }
+    }
+
+    public void setNeedsRebuild()
+    {
+        synchronized (rebuilding) {
+            v = vertices.toArray();
+            i = indicies.toArray();
+            needsRebuild = true;
+        }
     }
 
     public void addTile(Color color, float x, float y, float z)
@@ -219,27 +251,43 @@ public class TileMeshBuilder
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public Mesh build()
+    public void rebuild()
     {
-        v = vertices.toArray();
-        i = indicies.toArray();
+        try
+        {
+            synchronized (rebuilding)
+            {
+                rebuildingInProcess = true;
+                mesh = new Mesh(
+                        true, VERTICES_PER_FACE * (vertices.size / NUM_COMPONENTS), INDICES_PER_FACE * indicies.size,
+                        new VertexAttribute(Usage.Position, POSITION_COMPONENTS, POSITION_ATTRIBUTE),
+                        new VertexAttribute(Usage.ColorPacked, COLOR_COMPONENTS_EXPECTED, COLOR_ATTRIBUTE),
+                        new VertexAttribute(Usage.Normal, NORMAL_COMPONENTS, NORMAL_ATTRIBUTE));
+                mesh.setVertices(v);
+                mesh.setIndices(i);
 
-        mesh = null;
-        mesh = new Mesh(true, VERTICES_PER_FACE * (vertices.size / NUM_COMPONENTS), INDICES_PER_FACE * indicies.size,
-                new VertexAttribute(Usage.Position, POSITION_COMPONENTS, POSITION_ATTRIBUTE),
-                new VertexAttribute(Usage.ColorPacked, COLOR_COMPONENTS_EXPECTED, COLOR_ATTRIBUTE),
-                new VertexAttribute(Usage.Normal, NORMAL_COMPONENTS, NORMAL_ATTRIBUTE));
-        mesh.setVertices(v);
-        mesh.setIndices(i);
+                // Clear everything so it can be garbage collected
+                vertices.clear();
+                indicies.clear();
+                vertices = null;
+                indicies = null;
+                v = null;
+                i = null;
 
-        // Clear everything so it can be garbage collected
-        vertices.clear();
-        indicies.clear();
-        vertices = null;
-        indicies = null;
-        v = null;
-        i = null;
+                rebuildingInProcess = false;
+                needsRebuild = false;
+            }
+        }
+        catch(final Throwable e)
+        {
+            final String errorMessage = "Rebuilding mesh failed!";
+            Gdx.app.error(TAG, errorMessage, e);
+        }
+    }
 
-        return mesh;
+    @Override
+    public void dispose()
+    {
+        mesh.dispose();
     }
 }

@@ -17,10 +17,8 @@ import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.TileStack.Tile;
-import com.andgate.ikou.model.tile.TileData;
 import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
 
 public class SectorMeshBuilder extends TileMeshBuilder
 {

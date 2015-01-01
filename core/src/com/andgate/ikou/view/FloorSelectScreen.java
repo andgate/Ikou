@@ -14,12 +14,9 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.exception.InvalidFileFormatException;
 import com.andgate.ikou.io.LevelLoader;
-import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
-import com.andgate.ikou.model.ProgressDatabase;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
