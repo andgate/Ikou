@@ -63,6 +63,6 @@ public class Floor
 
     public void shrink()
     {
-        masterSector.getSectors().shrink();
+        masterSector.shrink();
     }
 }

@@ -18,22 +18,32 @@ import com.andgate.ikou.model.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.compression.Lzma;
+import com.gc.iotools.stream.is.InputStreamFromOutputStream;
+import com.gc.iotools.stream.os.OutputStreamToInputStream;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
 public class LevelService
 {
     private static final String TAG = "LevelService";
+
+    private static final String TMP_FILENAME = "level.tmp";
 
     public static Level readInternal(String filename)
     {
@@ -47,51 +57,135 @@ public class LevelService
         return read(levelFile);
     }
 
-    public static Level read(FileHandle levelFile)
+    public static Level read(final FileHandle levelFile)
     {
+        Level level = null;
+
         if(levelFile.exists() && levelFile.extension().equals(Constants.LEVEL_EXTENSION_NO_DOT))
         {
-            // TODO: use a buffered input to stream in the level data :)
-            String jsonString = levelFile.readString();
-            Gson gson = new Gson();
-            Level level = gson.fromJson(jsonString, Level.class);
+            FileHandle tmpFile = Gdx.files.local(TMP_FILENAME);
 
-            if(level != null)
+            InputStream levelIn = levelFile.read();
+            OutputStream tmpOut = tmpFile.write(false);
+
+            try
             {
-                return level;
+                Lzma.decompress(levelIn, tmpOut);
+            }
+            catch(IOException e)
+            {
+                final String errorMessage = "Error decompressing level.";
+                Gdx.app.error(TAG, errorMessage, e);
+            }
+            finally
+            {
+                try
+                {
+                    levelIn.close();
+                    tmpOut.close();
+                }
+                catch(IOException e)
+                {
+                    final String errorMessage = "Error closing level compression files.";
+                    Gdx.app.error(TAG, errorMessage, e);
+                }
+            }
+
+            InputStream tmpIn = tmpFile.read();
+            Reader reader = new BufferedReader(new InputStreamReader(tmpIn));
+            JsonReader jsonReader = new JsonReader(reader);
+
+            try
+            {
+                Gson gson = new Gson();
+                level = gson.fromJson(jsonReader, Level.class);
+            }
+            finally
+            {
+                try
+                {
+                    tmpIn.close();
+                    jsonReader.close();
+
+                    tmpFile.delete();
+                }
+                catch(final Exception e)
+                {
+                    final String errorMessage = "Error closing temporary level file.";
+                    Gdx.app.error(TAG, errorMessage, e);
+                }
             }
         }
 
-        // Always return a fresh db,
-        // if something is mucked up.
-        // Only executes if something is wrong
-        // with the json file
+        // Return the loaded level,
+        // otherwise, return a new level.
+        if(level != null)
+        {
+            return level;
+        }
+
         return new Level();
     }
 
     // see http://stackoverflow.com/questions/10765831/out-of-memory-exception-in-gson-fromjson
-    public static void write(Level level)
+    public static void write(final Level level)
     {
         // Shrinking causes json to write output forever.
         // FIXME: Compress the level :)
         //level.shrink();
 
-        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);
-        OutputStream os = levelFile.write(false);
-        Writer writer = new BufferedWriter(new OutputStreamWriter(os));
+        FileHandle tmpFile = Gdx.files.local(TMP_FILENAME);
 
-        Gson gson = new Gson();
-        JsonWriter w = new JsonWriter(writer);
-        gson.toJson(level, w);
+        OutputStream tmpOut = tmpFile.write(false);
+        Writer tmpWriter = new BufferedWriter(new OutputStreamWriter(tmpOut));
+        JsonWriter jsonWriter = new JsonWriter(tmpWriter);
 
         try
         {
-            w.close();
+            Gson gson = new Gson();
+            gson.toJson(level, jsonWriter);
         }
-        catch(Exception e)
+        finally
         {
-            System.out.println(e.getMessage());
+            try
+            {
+                jsonWriter.close();
+            }
+            catch(final IOException e)
+            {
+                final String errorMessage = "Error cleaning up intermediate files.";
+                Gdx.app.error(TAG, errorMessage, e);
+            }
         }
 
+        FileHandle levelFile = Gdx.files.external(Constants.LEVELS_EXTERNAL_PATH + level.getName() + Constants.LEVEL_EXTENSION);
+
+        InputStream tmpIn = tmpFile.read();
+        OutputStream levelOut = levelFile.write(false);
+
+        try
+        {
+            Lzma.compress(tmpIn, levelOut);
+        }
+        catch(final IOException e)
+        {
+            final String errorMessage = "Error compressing level file.";
+            Gdx.app.error(TAG, errorMessage, e);
+        }
+        finally
+        {
+            try
+            {
+                tmpIn.close();
+                levelOut.close();
+
+                tmpFile.delete();
+            }
+            catch(Exception e)
+            {
+                final String errorMessage = "Error writing level files.";
+                Gdx.app.error(TAG, errorMessage, e);
+            }
+        }
     }
 }

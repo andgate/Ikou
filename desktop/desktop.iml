@@ -31,11 +31,14 @@
     <orderEntry type="library" exported="" name="gdx-platform-1.4.1-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-tools-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
+    <orderEntry type="library" exported="" name="easystream-1.2.14" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="lwjgl_util-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="jlayer-1.0.1-gdx" level="project" />
     <orderEntry type="library" exported="" name="jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.9" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.1-natives-windows" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.1-natives-linux" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.1-natives-osx" level="project" />
