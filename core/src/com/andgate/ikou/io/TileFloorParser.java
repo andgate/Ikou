@@ -46,9 +46,9 @@ public class TileFloorParser
     {
         Scanner in = new Scanner(firstLine);
 
-        int startX = Integer.parseInt(in.next());
+        int startX = Integer.parseInt(in.next()) - 1;
         int startY = 0;
-        int startZ = Integer.parseInt(in.next());
+        int startZ = Integer.parseInt(in.next()) - 1;
 
         in.close();
 

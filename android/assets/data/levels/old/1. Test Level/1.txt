@@ -1,8 +1,0 @@
-5 5
-ooooooo
-ox....o
-o.....o
-o.....o
-o.....o
-o.....o
-ooooooo
