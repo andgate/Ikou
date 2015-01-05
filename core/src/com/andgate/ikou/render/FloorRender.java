@@ -32,8 +32,8 @@ import com.badlogic.gdx.utils.Pool;
 public class FloorRender implements RenderableProvider, Disposable
 {
     private static final int SUBSECTOR_SIZE = TileSector.SIZE;
-    private SectorMeshBuilder[][] meshBuilders;
-    public final Matrix4 transform = new Matrix4();
+    private SectorMesh[][] sectorMeshes;
+    public final Matrix4 floorTransform = new Matrix4();
     private final PerspectiveCamera camera;
 
     public FloorRender(Floor floor, PerspectiveCamera camera)
@@ -48,11 +48,11 @@ public class FloorRender implements RenderableProvider, Disposable
         TilePalette palette = floor.getPalette();
 
         int rows = sectors.size;
-        meshBuilders = new SectorMeshBuilder[rows][];
+        sectorMeshes = new SectorMesh[rows][];
         for(int currRow = 0; currRow < rows; currRow++)
         {
             int columns = sectors.get(currRow).size;
-            meshBuilders[currRow] = new SectorMeshBuilder[columns];
+            sectorMeshes[currRow] = new SectorMesh[columns];
             for(int currColumn = 0; currColumn < columns; currColumn++)
             {
                 int offsetX = currColumn * TileSector.SIZE;
@@ -61,15 +61,15 @@ public class FloorRender implements RenderableProvider, Disposable
                 TileSector sector = sectors.get(currRow, currColumn);
                 if(sector != null)
                 {
-                    SectorMeshBuilder worldMeshBuilder
-                            = new SectorMeshBuilder(sector, palette, offsetX, offsetZ);
+                    SectorMesh sectorMesh
+                            = new SectorMesh(sector, palette, offsetX, offsetZ);
 
-                    worldMeshBuilder.setNeedsRebuild();
-                    meshBuilders[currRow][currColumn] = worldMeshBuilder;
+                    sectorMesh.setNeedsRebuild();
+                    sectorMeshes[currRow][currColumn] = sectorMesh;
                 }
                 else
                 {
-                    meshBuilders[currRow][currColumn] = null;
+                    sectorMeshes[currRow][currColumn] = null;
                 }
             }
         }
@@ -77,7 +77,7 @@ public class FloorRender implements RenderableProvider, Disposable
 
     public void setPosition(Vector3 position)
     {
-        transform.idt().translate(position);
+        floorTransform.idt().translate(position);
     }
 
 
@@ -86,18 +86,18 @@ public class FloorRender implements RenderableProvider, Disposable
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool)
     {
-        for(int i = 0; i < meshBuilders.length; i++)
+        for(int i = 0; i < sectorMeshes.length; i++)
         {
-            for(int j = 0; j < meshBuilders[i].length; j++)
+            for(int j = 0; j < sectorMeshes[i].length; j++)
             {
-                transform.getTranslation(subsectorPosition);
+                floorTransform.getTranslation(subsectorPosition);
                 subsectorPosition.x += j*SUBSECTOR_SIZE;
                 subsectorPosition.z += i*SUBSECTOR_SIZE;
 
                 boolean inFrustum = camera.frustum.sphereInFrustum(subsectorPosition, SUBSECTOR_SIZE * 1.5f);
 
 
-                Mesh mesh = meshBuilders[i][j].getMesh();
+                Mesh mesh = sectorMeshes[i][j].getMesh();
 
                 if(inFrustum && (mesh != null))
                 {
@@ -109,7 +109,7 @@ public class FloorRender implements RenderableProvider, Disposable
                     renderable.mesh = mesh;
                     renderables.add(renderable);
 
-                    renderable.worldTransform.set(transform);
+                    renderable.worldTransform.set(floorTransform);
                 }
             }
         }
@@ -123,13 +123,13 @@ public class FloorRender implements RenderableProvider, Disposable
 
     public void disposeMeshes()
     {
-        for(int i = 0; i < meshBuilders.length; i++)
+        for(int i = 0; i < sectorMeshes.length; i++)
         {
-            for(int j = 0; j < meshBuilders.length; j++)
+            for(int j = 0; j < sectorMeshes.length; j++)
             {
-                SectorMeshBuilder meshBuilder = meshBuilders[i][j];
-                if(meshBuilder != null)
-                    meshBuilder.dispose();
+                SectorMesh sectorMesh = sectorMeshes[i][j];
+                if(sectorMesh != null)
+                    sectorMesh.dispose();
             }
         }
     }

@@ -20,12 +20,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ShortArray;
 
-public class TileMeshBuilder implements Disposable
+public class TileMesh implements Disposable
 {
     private static final String TAG = "TileMeshBuilder";
 
@@ -81,11 +82,17 @@ public class TileMeshBuilder implements Disposable
     private FloatArray vertices;
     private ShortArray indicies;
     private Mesh mesh;
+    private final Matrix4 transform = new Matrix4();
 
-    public TileMeshBuilder()
+    public TileMesh()
     {
         vertices = new FloatArray();
         indicies = new ShortArray();
+    }
+
+    public Matrix4 getTransform()
+    {
+        return transform;
     }
 
     public Mesh getMesh()

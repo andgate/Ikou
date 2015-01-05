@@ -20,48 +20,64 @@
     <bookmark url="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" line="88" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_1_4_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_1_4_1_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_backend_android_1_4_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_backend_gwt_1_4_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_backend_gwt_1_4_1_sources.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_backend_lwjgl_1_4_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_backend_robovm_1_4_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_freetype_1_4_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gdx_platform_1_4_1_natives_desktop.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gwt_servlet_2_6_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\gwt_user_2_6_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jinput_2_0_5.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jinput_platform_2_0_5_natives_linux.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jinput_platform_2_0_5_natives_osx.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jinput_platform_2_0_5_natives_windows.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jlayer_1_0_1_gdx.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jorbis_0_0_17.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\json_20090211.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\jutils_1_0_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\lwjgl_2_9_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\lwjgl_platform_2_9_1_natives_linux.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\lwjgl_platform_2_9_1_natives_osx.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\lwjgl_platform_2_9_1_natives_windows.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\lwjgl_util_2_9_1.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\robovm_cocoatouch_1_0_0_alpha_04.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\robovm_objc_1_0_0_alpha_04.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\robovm_rt_1_0_0_alpha_04.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\validation_api_1_0_0_GA.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Gabe\Projects\Ikou\.idea\libraries\validation_api_1_0_0_GA_sources.xml" afterPath="" />
+    <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="Meshes are rebuildable, and should be safe for sharing among multiple threads, if that ever needs to happen.">
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\core\src\com\andgate\ikou\render\SectorMeshBuilder.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMesh.java" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\core\src\com\andgate\ikou\render\TileMeshBuilder.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMesh.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/10. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/10. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/2. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/2. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/4. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/4. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/5. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/5. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/6. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/6. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/7. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/7. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/8. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/8. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/9. Test Level/1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/9. Test Level/1.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/10.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/10.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/11.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/11.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/12.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/12.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/13.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/13.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/14.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/14.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/15.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/15.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/16.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/16.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/17.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/17.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/18.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/18.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/19.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/19.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/2.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/2.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/2.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/2.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/2.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/2.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/20.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/20.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/21.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/21.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/22.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/22.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/23.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/23.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/24.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/24.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/25.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/25.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/26.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/26.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/27.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/27.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/28.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/28.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/3.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/3.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/3.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/3.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/3.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/3.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/4.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/4.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/4.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/4.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/4.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/4.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/5.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/5.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/5.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/5.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/5.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/5.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/6.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/6.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/6.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/6.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/6.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/6.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/7.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/7.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/7.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/11. Test Level/7.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/7.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/3. Test Level/7.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/8.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/8.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/9.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/9.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/FloorRender.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/FloorRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/FloorSelectScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/FloorSelectScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelDatabaseService.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelDatabaseService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelLoader.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelLoader.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/LevelSelectScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/LevelSelectScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelService.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/MasterSector.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/MasterSector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerRender.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerRender.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMeshBuilder.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMeshBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/TileFloorParser.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/io/TileFloorParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMeshBuilder.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMeshBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/TileSector.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/TileSector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -90,97 +106,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="LevelService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1564">
-              <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LevelDatabaseService.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelDatabaseService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1299" max-vertical-offset="2210">
-              <caret line="122" column="5" selection-start-line="122" selection-start-column="5" selection-end-line="122" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TileMeshBuilder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMeshBuilder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4726">
-              <caret line="290" column="8" selection-start-line="290" selection-start-column="8" selection-end-line="290" selection-end-column="8" />
-              <folding>
-                <element signature="e#13095#13096#0" expanded="true" />
-                <element signature="e#13125#13126#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FloorRender.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/FloorRender.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1938">
-              <caret line="133" column="9" selection-start-line="133" selection-start-column="9" selection-end-line="133" selection-end-column="9" />
-              <folding>
-                <element signature="e#4298#4299#0" expanded="true" />
-                <element signature="e#4329#4330#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="LevelRender.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="129" max-vertical-offset="952">
-              <caret line="47" column="58" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlayerRender.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerRender.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.166065" vertical-offset="119" max-vertical-offset="952">
-              <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SectorMeshBuilder.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMeshBuilder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="782" max-vertical-offset="1598">
-              <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FloorSelectScreen.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/FloorSelectScreen.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1564" max-vertical-offset="3451">
-              <caret line="92" column="13" selection-start-line="92" selection-start-column="13" selection-end-line="92" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LevelLoader.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="1037">
-              <caret line="26" column="28" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="680" max-vertical-offset="1309">
+              <caret line="40" column="79" selection-start-line="40" selection-start-column="79" selection-end-line="40" selection-end-column="79" />
               <folding />
             </state>
           </provider>
@@ -189,8 +119,48 @@
       <file leaf-file-name="GameScreen.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="4386">
-              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2448" max-vertical-offset="4420">
+              <caret line="144" column="33" selection-start-line="144" selection-start-column="33" selection-end-line="144" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="motionblur.frag.glsl" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/assets/data/shader/motionblur.frag.glsl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="102">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TileCode.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.1875" vertical-offset="0" max-vertical-offset="816">
+              <caret line="20" column="49" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TileData.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
+              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="motionblur.vert.glsl" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/android/assets/data/shader/motionblur.vert.glsl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="102">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -1495,15 +1465,10 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/3.txt" />
-        <option value="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/5.txt" />
-        <option value="$PROJECT_DIR$/android/assets/data/levels/1. Test Level/4.txt" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/ExtraMath.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/io/TileMazeParser.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerModelRender.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/PlayerAnimator.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/Player.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/PlayerTransformer.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/MainMenuScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/Vector3i.java" />
@@ -1514,19 +1479,16 @@
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/Scene2d/ShaderLabel.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/graphics/ShaderFont.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/ProgressDatabase.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/io/ProgressDatabaseService.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/PlayerDirectionGestureDetector.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/GameControlsMenu.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/LevelData.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/TilePalette.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileFactory.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/graphics/ColorUtils.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileData.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/TileStack.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMeshBuilder.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/TileMazeSimulator.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/io/TileFloorParser.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/TileSector.java" />
@@ -1543,9 +1505,17 @@
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/FloorSelectScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelDatabaseService.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelService.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMeshBuilder.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMesh.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMeshBuilder.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMesh.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/FloorRender.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerRender.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" />
+        <option value="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/10.txt" />
+        <option value="$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/1.txt" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java" />
       </list>
     </option>
   </component>
@@ -1668,7 +1638,207 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="render" />
+              <option name="myItemId" value="view" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tile" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shader" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="levels" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="desktop">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="desktop">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="desktop">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="desktop">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="com/andgate/ikou/desktop">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Ikou" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1868,86 +2038,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="desktop" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="desktop">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="desktop">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="desktop">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="desktop">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="src">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="com/andgate/ikou/desktop">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Ikou" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -2484,7 +2574,11 @@
       <created>1420081406681</created>
       <updated>1420081406682</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Meshes are rebuildable, and should be safe for sharing among multiple threads, if that ever needs to happen.">
+      <created>1420155855340</created>
+      <updated>1420155855340</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2509,12 +2603,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32464454" sideWeight="0.48381877" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24433658" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.39967638" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2524,10 +2617,10 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.235782" sideWeight="0.47977346" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.47977346" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31042653" sideWeight="0.47977346" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31042653" sideWeight="0.47977346" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31042653" sideWeight="0.52022654" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24433658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24433658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32464454" sideWeight="0.51618123" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32819906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -2539,6 +2632,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32464454" sideWeight="0.48381877" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36374408" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -2561,7 +2655,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Levels render aligned properly." />
     <MESSAGE value="Reorganized code base." />
     <MESSAGE value="Player can navigate between levels. Saves level progress. Unvisited levels are now locked." />
     <MESSAGE value="Custom camera controller introduced. Player following and camera movement is works nicely. Objects can also now listen to changes in player position." />
@@ -2586,59 +2679,19 @@
     <MESSAGE value="Compresses files with LZMA (7zip) for storage now. Using a temporary file when loading." />
     <MESSAGE value="Uses different tmp files for reading/writing multiple level files." />
     <MESSAGE value="Loads internal levels and external levels! Also, uses IOException appropriately." />
-    <option name="LAST_COMMIT_MESSAGE" value="Loads internal levels and external levels! Also, uses IOException appropriately." />
+    <MESSAGE value="Meshes are rebuildable, and should be safe for sharing among multiple threads, if that ever needs to happen." />
+    <option name="LAST_COMMIT_MESSAGE" value="Meshes are rebuildable, and should be safe for sharing among multiple threads, if that ever needs to happen." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java</url>
-          <line>84</line>
-          <properties />
-          <option name="timeStamp" value="103" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="126" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/Level.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1173" max-vertical-offset="2176">
-          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="4386">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelDatabaseService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1292">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/LevelBuilderScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="406" max-vertical-offset="1615">
-          <caret line="57" column="35" selection-start-line="57" selection-start-column="35" selection-end-line="57" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/io/LevelLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="765">
           <caret line="36" column="49" selection-start-line="36" selection-start-column="49" selection-end-line="36" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2691,13 +2744,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/utility/graphics/ShaderFont.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
@@ -2712,31 +2758,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/TilePalette.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="952">
           <caret line="37" column="26" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/2.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -2772,7 +2797,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="4716" max-vertical-offset="9367">
           <caret line="320" column="17" selection-start-line="320" selection-start-column="15" selection-end-line="320" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2796,7 +2820,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="297" max-vertical-offset="2397">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2804,7 +2827,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="1530">
           <caret line="37" column="5" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2812,7 +2834,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="1088">
           <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2820,7 +2841,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2771">
           <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2843,7 +2863,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="823" max-vertical-offset="1717">
           <caret line="84" column="45" selection-start-line="84" selection-start-column="31" selection-end-line="84" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2851,7 +2870,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="602" max-vertical-offset="1768">
           <caret line="66" column="52" selection-start-line="66" selection-start-column="52" selection-end-line="66" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2859,10 +2877,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="197" max-vertical-offset="799">
           <caret line="65" column="20" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
-          <folding>
-            <element signature="e#1642#1643#0" expanded="false" />
-            <element signature="e#1679#1680#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2870,7 +2884,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2132" max-vertical-offset="2686">
           <caret line="173" column="10" selection-start-line="173" selection-start-column="10" selection-end-line="173" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2878,7 +2891,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="1003">
           <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2886,7 +2898,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="581" max-vertical-offset="1615">
           <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2894,15 +2905,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="782" max-vertical-offset="3026">
           <caret line="46" column="50" selection-start-line="46" selection-start-column="50" selection-end-line="46" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2383" max-vertical-offset="3740">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2910,7 +2912,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1564" max-vertical-offset="3451">
           <caret line="92" column="13" selection-start-line="92" selection-start-column="13" selection-end-line="92" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2918,7 +2919,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="442" max-vertical-offset="1037">
           <caret line="26" column="28" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2934,7 +2934,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="7466" max-vertical-offset="20689">
           <caret line="492" column="30" selection-start-line="492" selection-start-column="30" selection-end-line="492" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2954,48 +2953,114 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMeshBuilder.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/SectorMesh.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1598">
-          <caret line="85" column="27" selection-start-line="85" selection-start-column="27" selection-end-line="85" selection-end-column="27" />
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMeshBuilder.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/TileMesh.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4726">
-          <caret line="290" column="8" selection-start-line="290" selection-start-column="8" selection-end-line="290" selection-end-column="8" />
-          <folding>
-            <element signature="e#13095#13096#0" expanded="true" />
-            <element signature="e#13125#13126#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="4828">
+          <caret line="92" column="31" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="129" max-vertical-offset="952">
-          <caret line="47" column="58" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="58" max-vertical-offset="1020">
+          <caret line="47" column="39" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/FloorRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1071" max-vertical-offset="1938">
-          <caret line="133" column="9" selection-start-line="133" selection-start-column="9" selection-end-line="133" selection-end-column="9" />
-          <folding>
-            <element signature="e#4298#4299#0" expanded="true" />
-            <element signature="e#4329#4330#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1989">
+          <caret line="35" column="39" selection-start-line="35" selection-start-column="25" selection-end-line="35" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/PlayerRender.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/render/LevelRender.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.166065" vertical-offset="119" max-vertical-offset="952">
-          <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="952">
+          <caret line="40" column="79" selection-start-line="40" selection-start-column="79" selection-end-line="40" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="4233">
+          <caret line="144" column="33" selection-start-line="144" selection-start-column="33" selection-end-line="144" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/shader/motionblur.vert.glsl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="554">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/shader/motionblur.frag.glsl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="554">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.041666668" vertical-offset="0" max-vertical-offset="816">
+          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="153">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/8.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Test Level/10.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16666667" vertical-offset="0" max-vertical-offset="816">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/tile/TileCode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1875" vertical-offset="0" max-vertical-offset="816">
+          <caret line="20" column="49" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
           <folding />
         </state>
       </provider>

@@ -1,11 +1,11 @@
 2 1
- nnnnnnnnnnnn
-nnooo oooonnn
-nnooooooooonn
-neooooooooon
-nnooooooonnn
-nnoonnnoooon
-nooonnnoooon
-nxxoooooxxon
-nxxoooooxxon
-nnnnnnnnnnnn
+ oooooooooooo
+oo... ....ooo
+oo.........oo
+ox.........o
+oo.......ooo
+oo..ooo....o
+o...ooo....o
+o##.....##.o
+o##.....##.o
+oooooooooooo

@@ -20,19 +20,19 @@ import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
 
-public class SectorMeshBuilder extends TileMeshBuilder
+public class SectorMesh extends TileMesh
 {
-    public SectorMeshBuilder(TileSector sector, TilePalette palette)
+    public SectorMesh(TileSector sector, TilePalette palette)
     {
         this(sector, palette, 0, 0, true);
     }
 
-    public SectorMeshBuilder(TileSector sector, TilePalette palette, int offsetX, int offsetZ)
+    public SectorMesh(TileSector sector, TilePalette palette, int offsetX, int offsetZ)
     {
         this(sector, palette, offsetX, offsetZ, true);
     }
 
-    public SectorMeshBuilder(TileSector sector, TilePalette palette, int offsetX, int offsetZ, boolean cullFaces)
+    public SectorMesh(TileSector sector, TilePalette palette, int offsetX, int offsetZ, boolean cullFaces)
     {
         super();
 

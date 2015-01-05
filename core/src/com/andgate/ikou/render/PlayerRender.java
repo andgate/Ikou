@@ -15,10 +15,8 @@ package com.andgate.ikou.render;
 
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.model.tile.TileData;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
@@ -29,21 +27,25 @@ import com.badlogic.gdx.utils.Pool;
 
 public class PlayerRender implements RenderableProvider, Disposable
 {
-    public final Matrix4 transform = new Matrix4();
     public final Material material;
 
-    TileMeshBuilder tileMeshBuilder;
+    TileMesh tileMesh;
 
     public PlayerRender()
     {
         // TODO make customizable
         TilePalette palette = new TilePalette();
 
-        tileMeshBuilder = new TileMeshBuilder();
-        tileMeshBuilder.addTile(palette.getColor(TileStack.Tile.Player), 0, 0, 0);
-        tileMeshBuilder.setNeedsRebuild();
+        tileMesh = new TileMesh();
+        tileMesh.addTile(palette.getColor(TileStack.Tile.Player), 0, 0, 0);
+        tileMesh.setNeedsRebuild();
 
         material = new Material(TileStack.TILE_MATERIAL);
+    }
+
+    public Matrix4 getTransform()
+    {
+        return tileMesh.getTransform();
     }
 
     public void setColor(Color color)
@@ -56,18 +58,18 @@ public class PlayerRender implements RenderableProvider, Disposable
         Renderable renderable = pool.obtain();
         renderable.material = material;
         renderable.meshPartOffset = 0;
-        renderable.meshPartSize = tileMeshBuilder.getMesh().getNumIndices();
+        renderable.meshPartSize = tileMesh.getMesh().getNumIndices();
         renderable.primitiveType = GL20.GL_TRIANGLES;
-        renderable.mesh = tileMeshBuilder.getMesh();
+        renderable.mesh = tileMesh.getMesh();
         renderables.add(renderable);
 
-        renderable.worldTransform.set(transform);
+        renderable.worldTransform.set(tileMesh.getTransform());
     }
 
     @Override
     public void dispose()
     {
-        if(tileMeshBuilder != null)
-            tileMeshBuilder.dispose();
+        if(tileMesh != null)
+            tileMesh.dispose();
     }
 }

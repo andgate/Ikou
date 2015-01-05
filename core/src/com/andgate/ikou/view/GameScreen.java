@@ -85,7 +85,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         playerTransformer = new PlayerTransformer(level.getStartPosition(currentFloor - 1));
 
         playerRender = new PlayerRender();
-        playerRender.transform.set(playerTransformer.transform);
+        playerRender.getTransform().set(playerTransformer.transform);
 
         mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
 
@@ -128,6 +128,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     public void show()
     {}
 
+
+    int frameAccum = 0;
     @Override
     public void render(float delta)
     {
@@ -183,7 +185,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     private void update(float delta)
     {
         playerTransformer.update(delta);
-        playerRender.transform.idt().translate(playerTransformer.getPosition());
+        playerRender.getTransform().idt().translate(playerTransformer.getPosition());
     }
 
     private void renderSetup()
