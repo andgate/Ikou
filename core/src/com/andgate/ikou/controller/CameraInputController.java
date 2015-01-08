@@ -43,8 +43,8 @@ public class CameraInputController extends GestureDetector implements PlayerTran
     public static final float MAX_PLAYER_DISTANCE = Constants.FLOOR_SPACING;
     public static final float MIN_PLAYER_DISTANCE = 3.0f;
 
-    public static final float ANGLE_Y_MIN = -45.0f;
-    public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 5.0f;
+    public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
+    public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 10.0f;
 
     private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();

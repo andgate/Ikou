@@ -22,7 +22,6 @@
   <component name="ChangeListManager">
     <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -51,11 +50,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CameraInputController.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="CameraInputController.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1516" max-vertical-offset="3519">
-              <caret line="121" column="51" selection-start-line="121" selection-start-column="51" selection-end-line="121" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.78558224" vertical-offset="0" max-vertical-offset="3519">
+              <caret line="46" column="81" selection-start-line="46" selection-start-column="81" selection-end-line="46" selection-end-column="81" />
               <folding />
             </state>
           </provider>
@@ -71,10 +70,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Constants.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2698706" vertical-offset="1163" max-vertical-offset="1717">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1717">
               <caret line="88" column="35" selection-start-line="88" selection-start-column="35" selection-end-line="88" selection-end-column="35" />
               <folding />
             </state>
@@ -1429,8 +1428,8 @@
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/Scene2d/ShaderButton.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/utility/Scene2d/ShaderTextButton.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/view/MainMenuScreen.java" />
-        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" />
         <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java" />
+        <option value="$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java" />
       </list>
     </option>
   </component>
@@ -2487,7 +2486,11 @@
       <created>1420755307309</created>
       <updated>1420755307309</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="FIXED: Camera to player distance passed angle in degrees while sin/cos required radians.">
+      <created>1420760453354</created>
+      <updated>1420760453354</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2527,7 +2530,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.235782" sideWeight="0.47977346" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.47977346" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31042653" sideWeight="0.47977346" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31042653" sideWeight="0.47977346" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31042653" sideWeight="0.52022654" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24433658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -2564,7 +2567,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Camera can now be rotated properly, and is limited correctly." />
     <MESSAGE value="Movement orients to the camera's x angle." />
     <MESSAGE value="Uses shader fonts and shader labels. Needs shader buttons tho." />
     <MESSAGE value="Moved call to level database service in level select screen to once in the constructor. Loads much faster now." />
@@ -2589,7 +2591,8 @@
     <MESSAGE value="Tilecodes changed to a more readable list of characters." />
     <MESSAGE value="Level 1, baby steps, is written." />
     <MESSAGE value="Buttons use shaderlabels now. Also, final floor introduced is attached to every level parsed from the old format. Game needs a win message and screen now." />
-    <option name="LAST_COMMIT_MESSAGE" value="Buttons use shaderlabels now. Also, final floor introduced is attached to every level parsed from the old format. Game needs a win message and screen now." />
+    <MESSAGE value="FIXED: Camera to player distance passed angle in degrees while sin/cos required radians." />
+    <option name="LAST_COMMIT_MESSAGE" value="FIXED: Camera to player distance passed angle in degrees while sin/cos required radians." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2995,22 +2998,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/utility/MathExtra.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="177" max-vertical-offset="731">
-          <caret line="41" column="42" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1516" max-vertical-offset="3519">
-          <caret line="121" column="51" selection-start-line="121" selection-start-column="51" selection-end-line="121" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/lang/Math.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.608303" vertical-offset="6089" max-vertical-offset="39338">
@@ -3021,8 +3008,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2698706" vertical-offset="1163" max-vertical-offset="1717">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1717">
           <caret line="88" column="35" selection-start-line="88" selection-start-column="35" selection-end-line="88" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/utility/MathExtra.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="177" max-vertical-offset="731">
+          <caret line="41" column="42" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/controller/CameraInputController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.78558224" vertical-offset="0" max-vertical-offset="3519">
+          <caret line="46" column="81" selection-start-line="46" selection-start-column="81" selection-end-line="46" selection-end-column="81" />
           <folding />
         </state>
       </provider>
