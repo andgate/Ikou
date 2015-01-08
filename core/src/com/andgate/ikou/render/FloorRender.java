@@ -125,7 +125,7 @@ public class FloorRender implements RenderableProvider, Disposable
     {
         for(int i = 0; i < sectorMeshes.length; i++)
         {
-            for(int j = 0; j < sectorMeshes.length; j++)
+            for(int j = 0; j < sectorMeshes[i].length; j++)
             {
                 SectorMesh sectorMesh = sectorMeshes[i][j];
                 if(sectorMesh != null)

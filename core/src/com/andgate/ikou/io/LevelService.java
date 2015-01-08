@@ -86,7 +86,7 @@ public class LevelService
 
         try
         {
-            levelOut.write(level.getFloors().length);
+            levelOut.write(level.getFloors().length - 1);
             Gson gson = new Gson();
             gson.toJson(level, jsonWriter);
         }

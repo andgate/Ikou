@@ -17,6 +17,11 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.model.MasterSector;
+import com.andgate.ikou.model.TilePalette;
+import com.andgate.ikou.model.TileStack;
+import com.andgate.ikou.model.TileStack.Tile;
+import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
@@ -41,15 +46,34 @@ public class LevelLoader
 
     public static Level loadOld(LevelData levelData)
     {
-        Floor[] floors = new Floor[levelData.totalFloors];
+        Floor[] floors = new Floor[levelData.totalFloors+1];
 
-        for(int floorIndex = 0; floorIndex < floors.length; floorIndex++)
+        for(int floorIndex = 0; floorIndex < floors.length-1; floorIndex++)
         {
             String floorFilePath = levelData.getFloorPath(floorIndex + 1);
             FileHandle floorFile = Gdx.files.internal(floorFilePath);
             floors[floorIndex] = (TileFloorParser.parse(floorFile.readString()));
         }
 
+
+
+        int lastFloorIndex = floors.length - 1;
+        floors[lastFloorIndex] = buildVictoryFloor();
+
         return new Level(floors, levelData.name);
+    }
+
+    public static Floor buildVictoryFloor()
+    {
+        TileStack tileStack = new TileStack(Tile.Victory);
+        MasterSector masterSector = new MasterSector();
+        masterSector.fill(tileStack, 16, 16);
+
+        TilePalette palette = new TilePalette();
+
+        Vector3i startPosition = new Vector3i(7, 0, 7);
+        Vector3i endPosition = new Vector3i(0, 0, 0);
+
+        return new Floor(masterSector, palette, startPosition, endPosition);
     }
 }

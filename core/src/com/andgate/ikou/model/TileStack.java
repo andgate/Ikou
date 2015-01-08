@@ -36,7 +36,7 @@ public class TileStack
 
     public enum Tile
     {
-        Smooth, Obstacle, Rough, Player, End, Blank
+        Smooth, Obstacle, Rough, Player, End, Victory, Blank
     }
 
     Tile[] tiles;
@@ -93,6 +93,8 @@ public class TileStack
                 return new Tile[]{ Tile.Rough };
             case End:
                 return new Tile[]{ Tile.End };
+            case Victory:
+                return new Tile[]{ Tile.Victory };
             default:
                 return new Tile[]{ Tile.Blank };
         }

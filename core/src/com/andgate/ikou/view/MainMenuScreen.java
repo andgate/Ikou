@@ -23,10 +23,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MainMenuScreen implements Screen
@@ -56,13 +56,14 @@ public class MainMenuScreen implements Screen
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
 
-
-        final TextButtonStyle buttonStyle = new TextButtonStyle(game.skin.getDrawable("default-round"),
+        final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
+        final ButtonStyle buttonStyle = new ButtonStyle(game.skin.getDrawable("default-round"),
                                                                 game.skin.getDrawable("default-round-down"),
-                                                                game.skin.getDrawable("default-round"),
-                                                                game.menuOptionFont);
+                                                                game.skin.getDrawable("default-round"));
 
-        final TextButton playButton = new TextButton(PLAY_BUTTON_TEXT, buttonStyle);
+        final ShaderLabel playButtonLabel = new ShaderLabel(PLAY_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Button playButton = new Button(buttonStyle);
+        playButton.add(playButtonLabel);
 
         playButton.addListener(new ClickListener() {
             @Override
@@ -73,7 +74,10 @@ public class MainMenuScreen implements Screen
             }
         });
 
-        final TextButton buildButton = new TextButton(BUILD_BUTTON_TEXT, buttonStyle);
+
+        final ShaderLabel buildButtonLabel = new ShaderLabel(BUILD_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Button buildButton = new Button(buttonStyle);
+        buildButton.add(buildButtonLabel);
 
         buildButton.addListener(new ClickListener() {
                                    @Override

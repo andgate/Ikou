@@ -43,6 +43,8 @@ public class TilePalette {
                 return player;
             case End:
                 return end;
+            case Victory:
+                return background;
             default:
                 return blank;
         }

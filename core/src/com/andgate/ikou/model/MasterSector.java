@@ -178,4 +178,20 @@ public class MasterSector
             sectorsRow.shrink();
         }
     }
+
+    public void fill(TileStack tileStack, int fillWidth, int fillHeight)
+    {
+        fill(tileStack, 0, 0, fillWidth, fillHeight);
+    }
+
+    public void fill(TileStack tileStack, int fillX, int fillY, int fillWidth, int fillHeight)
+    {
+        for(int x = fillX; x < fillWidth; x++)
+        {
+            for(int y = fillY; y < fillHeight; y++)
+            {
+                setStack(tileStack, x, y);
+            }
+        }
+    }
 }

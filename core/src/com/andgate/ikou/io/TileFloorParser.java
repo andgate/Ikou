@@ -118,7 +118,7 @@ public class TileFloorParser
         return tiles;
     }
 
-    private static MasterSector buildMasterSector(char[][] tileCodes)
+    public static MasterSector buildMasterSector(char[][] tileCodes)
     {
         MasterSector masterSector = new MasterSector();
 

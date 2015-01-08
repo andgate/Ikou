@@ -21,7 +21,7 @@ public class TileSector
 {
     private static final String TAG = "TileSector";
 
-    public static final int SIZE = 4;
+    public static final int SIZE = 16;
 
     private TileStack[][] stacks;
 
