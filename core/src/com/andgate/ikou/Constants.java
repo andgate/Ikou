@@ -101,6 +101,6 @@ public class Constants
     public static final float CAMERA_FAR = 40.0f;
     public static final float CAMERA_DISTANCE = 5.0f;
     public static final float CAMERA_ANGLE_TO_PLAYER = 45.0f;
-    public static final float CAMERA_VERTICAL_DISTANCE = (float)Math.sin(CAMERA_ANGLE_TO_PLAYER) * CAMERA_DISTANCE;
-    public static final float CAMERA_HORIZONTAL_DISTANCE = (float)Math.cos(CAMERA_ANGLE_TO_PLAYER) * CAMERA_DISTANCE;
+    public static final float CAMERA_VERTICAL_DISTANCE = (float)Math.sin(Math.toRadians(CAMERA_ANGLE_TO_PLAYER)) * CAMERA_DISTANCE;
+    public static final float CAMERA_HORIZONTAL_DISTANCE = (float)Math.cos(Math.toRadians(CAMERA_ANGLE_TO_PLAYER)) * CAMERA_DISTANCE;
 }

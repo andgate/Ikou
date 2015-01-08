@@ -43,7 +43,7 @@ public class CameraInputController extends GestureDetector implements PlayerTran
     public static final float MAX_PLAYER_DISTANCE = Constants.FLOOR_SPACING;
     public static final float MIN_PLAYER_DISTANCE = 3.0f;
 
-    public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
+    public static final float ANGLE_Y_MIN = -45.0f;
     public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 5.0f;
 
     private float startX, startY;
@@ -124,16 +124,12 @@ public class CameraInputController extends GestureDetector implements PlayerTran
 
         float deltaAngleY = deltaY * ROTATE_ANGLE;
         float tmpAngleY = angleY + deltaAngleY;
-        if(MathExtra.inRangeInclusive(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
+        if(!MathExtra.inRangeInclusive(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
         {
-            angleY = tmpAngleY;
+            tmpAngleY = MathExtra.pickClosestBound(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX);
+            deltaAngleY = tmpAngleY - angleY;
         }
-        else
-        {
-            float bound = MathExtra.pickClosestBound(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX);
-            angleY = bound;
-            deltaAngleY = bound - angleY;
-        }
+        angleY = tmpAngleY;
 
         camera.rotateAround(target, tmpV1.nor(), deltaAngleY);
         camera.rotateAround(target, Vector3.Y, deltaAngleX);
