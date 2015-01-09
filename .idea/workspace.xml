@@ -21,10 +21,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/src/main/java/com/andgate/ikou/AndroidLauncher.java" afterPath="$PROJECT_DIR$/android/src/main/java/com/andgate/ikou/AndroidLauncher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/GameScreen.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/PlayerTransformer.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/view/PlayerTransformer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -96,8 +93,8 @@
       <file leaf-file-name="7.txt" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="554">
-              <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.33754513" vertical-offset="0" max-vertical-offset="554">
+              <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -2528,7 +2525,11 @@
       <created>1420760830291</created>
       <updated>1420760830291</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Added final floor for the intro level.">
+      <created>1420766768694</created>
+      <updated>1420766768694</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2605,7 +2606,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Uses shader fonts and shader labels. Needs shader buttons tho." />
     <MESSAGE value="Moved call to level database service in level select screen to once in the constructor. Loads much faster now." />
     <MESSAGE value="floor 1-4 is a reproduction of a pokemon ice maze. It's really hard and fun!" />
     <MESSAGE value="Fixed" />
@@ -2630,7 +2630,8 @@
     <MESSAGE value="Buttons use shaderlabels now. Also, final floor introduced is attached to every level parsed from the old format. Game needs a win message and screen now." />
     <MESSAGE value="FIXED: Camera to player distance passed angle in degrees while sin/cos required radians." />
     <MESSAGE value="Adjusted camera angles." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adjusted camera angles." />
+    <MESSAGE value="Added final floor for the intro level." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added final floor for the intro level." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -3064,8 +3065,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="554">
-          <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
+        <state vertical-scroll-proportion="0.33754513" vertical-offset="0" max-vertical-offset="554">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
           <folding />
         </state>
       </provider>
