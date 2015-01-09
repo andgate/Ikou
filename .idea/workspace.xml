@@ -20,10 +20,14 @@
     <bookmark url="file://$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" line="88" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="fixed floor 1.7">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/2. Burning Determination/1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/2. Burning Determination/2.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt" />
+    <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\1.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/1.txt" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\2.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/2.txt" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\3.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/3.txt" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\4.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/4.txt" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\5.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/5.txt" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\6.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/6.txt" />
+      <change type="MOVED" beforePath="C:\Users\Gabe\Projects\Ikou\android\assets\data\levels\old\1. Baby Steps\7.txt" afterPath="$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/7.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Ikou.iws" />
@@ -103,7 +107,7 @@
         </entry>
       </file>
       <file leaf-file-name="7.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt">
+        <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/7.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
               <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
@@ -1694,7 +1698,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="1. Baby Steps" />
+              <option name="myItemId" value="1. Innocence" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2574,7 +2578,11 @@
       <created>1420766884576</created>
       <updated>1420766884576</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="level 2 started">
+      <created>1420779359215</created>
+      <updated>1420779359215</updated>
+    </task>
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2599,7 +2607,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2614,7 +2622,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.235782" sideWeight="0.47977346" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.47977346" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31042653" sideWeight="0.47977346" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31042653" sideWeight="0.47977346" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31042653" sideWeight="0.52022654" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24433658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -2651,7 +2659,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="floor 1-4 is a reproduction of a pokemon ice maze. It's really hard and fun!" />
     <MESSAGE value="Fixed" />
     <MESSAGE value="Fixed bug where all the levels had the same number of floors (11)." />
     <MESSAGE value="Improved camera zoom. Translates instead of zooms, as it is more appropriate." />
@@ -2676,7 +2683,8 @@
     <MESSAGE value="Adjusted camera angles." />
     <MESSAGE value="Added final floor for the intro level." />
     <MESSAGE value="fixed floor 1.7" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed floor 1.7" />
+    <MESSAGE value="level 2 started" />
+    <option name="LAST_COMMIT_MESSAGE" value="level 2 started" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2700,7 +2708,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/1.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/1.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="554">
           <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
@@ -2722,7 +2730,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/2.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/2.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="816">
           <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
@@ -2730,7 +2738,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/3.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/3.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
           <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
@@ -2738,7 +2746,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/4.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/4.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
           <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
@@ -2746,7 +2754,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/5.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/5.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
           <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
@@ -2754,7 +2762,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/6.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/6.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
           <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
@@ -3102,7 +3110,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Baby Steps/7.txt">
+    <entry file="file://$PROJECT_DIR$/android/assets/data/levels/old/1. Innocence/7.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
           <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
