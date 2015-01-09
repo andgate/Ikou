@@ -14,6 +14,7 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
+import com.andgate.ikou.Ikou;
 import com.andgate.ikou.utility.LinearTween;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 
 public class PlayerTransformer
 {
+    private static final String TAG = "PlayerTransformer";
+    private final Ikou game;
+
     public Matrix4 transform = new Matrix4();
 
     private float currentFloor;
@@ -35,14 +39,10 @@ public class PlayerTransformer
     private boolean isFalling = false;
     private boolean isMoving = false;
 
-    public PlayerTransformer(final Vector3 initialPosition)
+    public PlayerTransformer(final Ikou game, final Vector3 initialPosition)
     {
+        this.game = game;
         position.set(initialPosition);
-    }
-
-    public PlayerTransformer(final float x, final float y, final float z)
-    {
-        position.set(x, y, z);
     }
 
     public boolean isMoving()

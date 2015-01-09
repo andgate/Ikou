@@ -46,6 +46,13 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 {
     private static final String TAG = "GameScreen";
 
+    private enum GameMode
+    {
+        Play, Pause, Victory
+    }
+
+    private GameMode gameMode = GameMode.Play;
+
     private final Ikou game;
     private CameraInputController camController;
 
@@ -82,7 +89,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
         levelRender = new LevelRender(level, camera);
 
-        playerTransformer = new PlayerTransformer(level.getStartPosition(currentFloor - 1));
+        playerTransformer = new PlayerTransformer(game, level.getStartPosition(currentFloor - 1));
 
         playerRender = new PlayerRender();
         playerRender.getTransform().set(playerTransformer.transform);
@@ -129,7 +136,6 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {}
 
 
-    int frameAccum = 0;
     @Override
     public void render(float delta)
     {
@@ -140,24 +146,62 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
             gotoNextFloor();
         }
 
-        renderSetup();
+        renderScene();
+        renderOverlay();
+        update(delta);
+    }
 
-        modelBatch.begin(camera);
-            modelBatch.render(levelRender, environment);
-            modelBatch.render(playerRender, environment);
-        modelBatch.end();
+    private void update(float delta)
+    {
+        switch(gameMode)
+        {
+            case Play:
+                updatePlay(delta);
+                break;
+            case Pause:
+                updatePause(delta);
+                break;
+            case Victory:
+                updateVictory(delta);
+                break;
+        }
+    }
 
-        controlsMenu.render();
-
+    private void updatePlay(float delta)
+    {
         doPhysicsStep(delta);
         controlsMenu.update();
-
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
         {
             game.setScreen(new MainMenuScreen(game));
             this.dispose();
         }
+    }
+
+    private void updatePause(float delta)
+    {
+
+    }
+
+    private void updateVictory(float delta)
+    {
+
+    }
+
+    private void renderScene()
+    {
+        renderSetup();
+
+        modelBatch.begin(camera);
+        modelBatch.render(levelRender, environment);
+        modelBatch.render(playerRender, environment);
+        modelBatch.end();
+    }
+
+    private void renderOverlay()
+    {
+        controlsMenu.render();
 
         batch.begin();
         batch.setShader(game.fontShader);
@@ -177,12 +221,12 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            update(deltaTime);
+            updatePlayer(deltaTime);
             accumulator -= Constants.TIME_STEP;
         }
     }
 
-    private void update(float delta)
+    private void updatePlayer(float delta)
     {
         playerTransformer.update(delta);
         playerRender.getTransform().idt().translate(playerTransformer.getPosition());
