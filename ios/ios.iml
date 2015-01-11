@@ -34,7 +34,7 @@
     <orderEntry type="library" exported="" name="easystream-1.2.14" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="robovm-objc-1.0.0-alpha-04" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.9" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.10" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
   </component>
 </module>

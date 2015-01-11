@@ -82,13 +82,13 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.9" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-1.4.1" level="project" />
     <orderEntry type="library" exported="" name="easystream-1.2.14" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-android-1.4.1" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.10" level="project" />
     <orderEntry type="module" module-name="core" exported="" />
   </component>
 </module>

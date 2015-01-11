@@ -26,6 +26,7 @@ import com.andgate.ikou.model.TileMazeSimulator;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.render.PlayerRender;
+import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -40,7 +41,10 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
+import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter implements DirectionListener
 {
@@ -66,6 +70,10 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     private final LevelRender levelRender;
     private final PlayerTransformer playerTransformer;
     private final PlayerRender playerRender;
+    private final Bloom bloom;
+
+    private ModelBatch shadowBatch;
+    private DirectionalShadowLight shadowLight;
 
     private int currentFloor;
 
@@ -80,6 +88,11 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         this.game = game;
         this.level = level;
         batch = new SpriteBatch();
+
+        bloom = new Bloom();
+        bloom.setClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        bloom.setTreshold(0.6f);
+        bloom.setBloomIntesity(1.5f);
 
         this.currentFloor = startingFloor;
 
@@ -129,6 +142,12 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        shadowLight = new DirectionalShadowLight(1024, 1024, 60f, 60f, .1f, 50f);
+        shadowLight.set(0.8f, 0.8f, 0.8f, -1f, -.8f, -.2f);
+        //environment.shadowMap = shadowLight;
+
+        shadowBatch = new ModelBatch(new DepthShaderProvider());
     }
 
     @Override
@@ -193,10 +212,20 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         renderSetup();
 
+        /*shadowLight.begin(Vector3.Zero, camera.direction);
+        shadowBatch.begin(shadowLight.getCamera());
+        shadowBatch.render(playerRender);
+        shadowBatch.end();
+        shadowLight.end();*/
+
+        bloom.capture();
+
         modelBatch.begin(camera);
         modelBatch.render(levelRender, environment);
         modelBatch.render(playerRender, environment);
         modelBatch.end();
+
+        bloom.render();
     }
 
     private void renderOverlay()
@@ -206,9 +235,10 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         batch.begin();
         batch.setShader(game.fontShader);
         String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond();
-        float fontHeight = game.menuOptionFont.getCapHeight() / game.ppm;
+        float font_height = game.menuOptionFont.getCapHeight() * game.menuOptionFont.getScale();
+        float font_y = Gdx.graphics.getHeight() - font_height;
         game.menuOptionFont.setColor(Color.BLACK);
-        game.menuOptionFont.draw(batch, fpsString, game.ppm, Gdx.graphics.getHeight() - fontHeight);
+        game.menuOptionFont.draw(batch, fpsString, game.ppm, font_y);
         batch.setShader(null);
         batch.end();
     }
@@ -254,11 +284,13 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     @Override
     public void resize(int width, int height)
     {
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+
         camera.viewportHeight = game.worldHeight;
         camera.viewportWidth = game.worldWidth;
         camera.update(true);
 
-        controlsMenu.build();
+        controlsMenu.resize(width, height);
     }
 
 

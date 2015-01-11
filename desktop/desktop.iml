@@ -37,7 +37,7 @@
     <orderEntry type="library" exported="" name="lwjgl_util-2.9.1" level="project" />
     <orderEntry type="library" exported="" name="jlayer-1.0.1-gdx" level="project" />
     <orderEntry type="library" exported="" name="jorbis-0.0.17" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.9" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.10" level="project" />
     <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.1-natives-windows" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.1-natives-linux" level="project" />

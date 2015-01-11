@@ -16,6 +16,7 @@ package com.andgate.ikou.controller;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.utility.Icon;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -166,4 +167,10 @@ public class GameControlsMenu implements Disposable
         batch.dispose();
     }
 
+    public void resize(int width, int height)
+    {
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+
+        build();
+    }
 }
