@@ -15,20 +15,29 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
+import com.andgate.ikou.io.ProgressDatabaseService;
+import com.andgate.ikou.model.Level;
+import com.andgate.ikou.model.ProgressDatabase;
+import com.andgate.ikou.model.TileMazeSimulator;
 import com.andgate.ikou.utility.LinearTween;
+import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-public class PlayerTransformer
+public class Player implements DirectionListener
 {
     private static final String TAG = "PlayerTransformer";
     private final Ikou game;
 
     public Matrix4 transform = new Matrix4();
 
-    private float currentFloor;
+    private int currentFloor;
+    private Level level;
+    private TileMazeSimulator mazeSim;
 
     private LinearTween movementTween = new LinearTween();
     private LinearTween fallingTween = new LinearTween();
@@ -39,10 +48,19 @@ public class PlayerTransformer
     private boolean isFalling = false;
     private boolean isMoving = false;
 
-    public PlayerTransformer(final Ikou game, final Vector3 initialPosition)
+    public Player(final Ikou game, final Level level, final int startingFloor)
     {
         this.game = game;
-        position.set(initialPosition);
+        this.level = level;
+
+        this.currentFloor = startingFloor;
+        mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
+        position.set(level.getStartPosition(currentFloor - 1));
+    }
+
+    public boolean hasWon()
+    {
+        return (isFalling == false && mazeSim.hasWon());
     }
 
     public boolean isMoving()
@@ -74,6 +92,11 @@ public class PlayerTransformer
     private Vector3 distance = new Vector3();
     public void update(float delta)
     {
+        if(hasWon())
+        {
+            startNextFloor();
+        }
+
         if(isMoving || isFalling)
         {
             distance.set(getPosition());
@@ -103,6 +126,9 @@ public class PlayerTransformer
         if(movementTween.update(delta))
         {
             isMoving = false;
+            game.fallSound.stop();
+            if(!isFalling)
+                game.hitSound.play();
         }
 
         setPosition(movementTween.get());
@@ -117,19 +143,23 @@ public class PlayerTransformer
             destination.y -= Constants.FLOOR_SPACING;
             fallingTween.setup(getPosition(), destination, FALL_SPEED);
             isFallingStarted = true;
+            //playing falling sound
+            game.fallSound.play();
         }
         else
         {
             if (fallingTween.update(delta)) {
                 isFalling = false;
                 isFallingStarted = false;
+                game.fallSound.stop();
+                game.hitSound.play();
             }
 
             setPosition(fallingTween.get());
         }
     }
 
-    public void gotoNextLevel()
+    public void fall()
     {
         if(!isFalling)
         {
@@ -146,6 +176,9 @@ public class PlayerTransformer
             destination.add(x, 0.0f, z);
 
             movementTween.setup(position, destination, MOVE_SPEED);
+
+            game.fallSound.stop();
+            game.fallSound.play();
         }
     }
 
@@ -171,6 +204,39 @@ public class PlayerTransformer
         for(PlayerTransformListener playerTransformListener : playerTransformListeners)
         {
             playerTransformListener.playerTransformModified(x, y, z);
+        }
+    }
+
+    public void startNextFloor()
+    {
+        saveProgress();
+        currentFloor++;
+        fall();
+
+        mazeSim.setFloor(level.getFloor(currentFloor));
+    }
+
+    private void saveProgress()
+    {
+        ProgressDatabase progressDB = ProgressDatabaseService.read();
+        int completedFloors = progressDB.getFloorsCompleted(level.getName());
+        if(currentFloor > completedFloors)
+        {
+            progressDB.setFloorsCompleted(level.getName(), currentFloor);
+            ProgressDatabaseService.write(progressDB);
+        }
+    }
+
+    Vector3i tmpDirection = new Vector3i();
+    @Override
+    public void moveInDirection(Vector2 direction)
+    {
+        if(!(isMoving() || isFalling()))
+        {
+            tmpDirection.set(direction.x, 0.0f, direction.y);
+            Vector3i displacement = mazeSim.move(tmpDirection);
+
+            moveBy(displacement.x, displacement.z);
         }
     }
 }

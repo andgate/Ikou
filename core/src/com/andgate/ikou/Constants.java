@@ -25,6 +25,9 @@ public class Constants
     public static final String SKIN_LOCATION
             = "data/ui/uiskin.json";
 
+    public static final String SOUND_FOLDER
+            = "data/sound/";
+
     public static final String SHADER_FOLDER
             = "data/shader/";
     public static final String FONT_VERT_SHADER

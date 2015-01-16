@@ -44,9 +44,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
-public class GameScreen extends ScreenAdapter implements DirectionListener
+public class GameScreen extends ScreenAdapter
 {
     private static final String TAG = "GameScreen";
 
@@ -68,20 +67,20 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
     private final Level level;
     private final LevelRender levelRender;
-    private final PlayerTransformer playerTransformer;
+    private final Player player;
     private final PlayerRender playerRender;
     private final Bloom bloom;
 
     private ModelBatch shadowBatch;
     private DirectionalShadowLight shadowLight;
 
-    private int currentFloor;
+    //private int currentFloor;
 
     private InputMultiplexer im;
 
     private SpriteBatch batch;
 
-    private TileMazeSimulator mazeSim;
+    //private TileMazeSimulator mazeSim;
 
     public GameScreen(Ikou game, Level level, int startingFloor)
     {
@@ -94,7 +93,7 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         bloom.setTreshold(0.6f);
         bloom.setBloomIntesity(1.5f);
 
-        this.currentFloor = startingFloor;
+        //this.currentFloor = startingFloor;
 
         Gdx.graphics.setVSync(false);
 
@@ -102,17 +101,17 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
         levelRender = new LevelRender(level, camera);
 
-        playerTransformer = new PlayerTransformer(game, level.getStartPosition(currentFloor - 1));
+        player = new Player(game, level, startingFloor);
 
         playerRender = new PlayerRender();
-        playerRender.getTransform().set(playerTransformer.transform);
+        playerRender.getTransform().set(player.transform);
 
-        mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
+        //mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
 
         createEnvironment();
 
         setupCamera();
-        InputProcessor moveController = new PlayerDirectionGestureDetector(this, camController);
+        InputProcessor moveController = new PlayerDirectionGestureDetector(player, camController);
 
 
         im = new InputMultiplexer();
@@ -123,17 +122,17 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
     private void setupCamera()
     {
-        float playerCenterX = playerTransformer.getPosition().x + TileStack.HALF_WIDTH;
-        float playerCenterZ = playerTransformer.getPosition().z + TileStack.HALF_DEPTH;
+        float playerCenterX = player.getPosition().x + TileStack.HALF_WIDTH;
+        float playerCenterZ = player.getPosition().z + TileStack.HALF_DEPTH;
         camera.position.set(playerCenterX,
-                            playerTransformer.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
+                            player.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
                             playerCenterZ - Constants.CAMERA_HORIZONTAL_DISTANCE);
-        camera.lookAt(playerCenterX, playerTransformer.getPosition().y, playerCenterZ);
+        camera.lookAt(playerCenterX, player.getPosition().y, playerCenterZ);
         camera.near = 1f;
         camera.far = Constants.CAMERA_FAR;
         camera.update();
 
-        camController = new CameraInputController(camera, playerTransformer);
+        camController = new CameraInputController(camera, player);
     }
 
     private void createEnvironment()
@@ -159,11 +158,6 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     public void render(float delta)
     {
         camController.update(delta);
-
-        if(mazeSim.hasWon())
-        {
-            gotoNextFloor();
-        }
 
         renderScene();
         renderOverlay();
@@ -232,11 +226,12 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
     {
         controlsMenu.render();
 
-        batch.begin();
-        batch.setShader(game.fontShader);
         String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond();
         float font_height = game.menuOptionFont.getCapHeight() * game.menuOptionFont.getScale();
         float font_y = Gdx.graphics.getHeight() - font_height;
+
+        batch.begin();
+        batch.setShader(game.fontShader);
         game.menuOptionFont.setColor(Color.BLACK);
         game.menuOptionFont.draw(batch, fpsString, game.ppm, font_y);
         batch.setShader(null);
@@ -258,8 +253,8 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
 
     private void updatePlayer(float delta)
     {
-        playerTransformer.update(delta);
-        playerRender.getTransform().idt().translate(playerTransformer.getPosition());
+        player.update(delta);
+        playerRender.getTransform().idt().translate(player.getPosition());
     }
 
     private void renderSetup()
@@ -291,40 +286,5 @@ public class GameScreen extends ScreenAdapter implements DirectionListener
         camera.update(true);
 
         controlsMenu.resize(width, height);
-    }
-
-
-    Vector3i tmpDirection = new Vector3i();
-    Vector3i displacement = new Vector3i();
-    @Override
-    public void moveInDirection(Vector2 direction)
-    {
-        if(!playerTransformer.isMoving() && !playerTransformer.isFalling())
-        {
-            tmpDirection.set(direction.x, 0.0f, direction.y);
-            Vector3i displacement = mazeSim.move(tmpDirection);
-
-            playerTransformer.moveBy(displacement.x, displacement.z);
-        }
-    }
-
-    public void gotoNextFloor()
-    {
-        saveProgress();
-        currentFloor++;
-        playerTransformer.gotoNextLevel();
-
-        mazeSim.setFloor(level.getFloor(currentFloor));
-    }
-
-    private void saveProgress()
-    {
-        ProgressDatabase progressDB = ProgressDatabaseService.read();
-        int completedFloors = progressDB.getFloorsCompleted(level.getName());
-        if(currentFloor > completedFloors)
-        {
-            progressDB.setFloorsCompleted(level.getName(), currentFloor);
-            ProgressDatabaseService.write(progressDB);
-        }
     }
 }

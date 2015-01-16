@@ -18,6 +18,7 @@ import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -36,6 +37,9 @@ public class Ikou extends Game
     public ShaderFont menuOptionFont;
 
     public ShaderProgram fontShader;
+
+    public Sound fallSound;
+    public Sound hitSound;
 
     public Ikou()
     {
@@ -56,6 +60,8 @@ public class Ikou extends Game
         skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
         loadFonts();
         loadShader();
+        fallSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "fall.wav"));
+        hitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hit.wav"));
 
         setScreen(new MainMenuScreen(this));
 	}
