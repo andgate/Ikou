@@ -74,13 +74,9 @@ public class GameScreen extends ScreenAdapter
     private ModelBatch shadowBatch;
     private DirectionalShadowLight shadowLight;
 
-    //private int currentFloor;
-
     private InputMultiplexer im;
 
     private SpriteBatch batch;
-
-    //private TileMazeSimulator mazeSim;
 
     public GameScreen(Ikou game, Level level, int startingFloor)
     {
@@ -93,8 +89,6 @@ public class GameScreen extends ScreenAdapter
         bloom.setTreshold(0.6f);
         bloom.setBloomIntesity(1.5f);
 
-        //this.currentFloor = startingFloor;
-
         Gdx.graphics.setVSync(false);
 
         modelBatch = new ModelBatch();
@@ -105,8 +99,6 @@ public class GameScreen extends ScreenAdapter
 
         playerRender = new PlayerRender();
         playerRender.getTransform().set(player.transform);
-
-        //mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
 
         createEnvironment();
 

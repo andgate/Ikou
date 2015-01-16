@@ -20,6 +20,8 @@ import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.ProgressDatabase;
 import com.andgate.ikou.model.TileMazeSimulator;
+import com.andgate.ikou.model.TileMazeSimulator.MazeWonListener;
+import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.math.Matrix4;
@@ -28,7 +30,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-public class Player implements DirectionListener
+public class Player implements DirectionListener, MazeWonListener
 {
     private static final String TAG = "PlayerTransformer";
     private final Ikou game;
@@ -40,10 +42,11 @@ public class Player implements DirectionListener
     private TileMazeSimulator mazeSim;
 
     private LinearTween movementTween = new LinearTween();
-    private LinearTween fallingTween = new LinearTween();
+    private AcceleratedTween fallingTween = new AcceleratedTween();
 
     private static final float MOVE_SPEED = 15.0f; // units per second
-    private static final float FALL_SPEED = Constants.FLOOR_SPACING / 0.4f; // units per second
+    private static final float FALL_SPEED = (Constants.FLOOR_SPACING) / 1.0f; // units per second
+    private static final float FALL_ACCELERATION = 100.0f; // units per second
 
     private boolean isFalling = false;
     private boolean isMoving = false;
@@ -55,12 +58,8 @@ public class Player implements DirectionListener
 
         this.currentFloor = startingFloor;
         mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
+        mazeSim.setMazeWonListener(this);
         position.set(level.getStartPosition(currentFloor - 1));
-    }
-
-    public boolean hasWon()
-    {
-        return (isFalling == false && mazeSim.hasWon());
     }
 
     public boolean isMoving()
@@ -92,11 +91,15 @@ public class Player implements DirectionListener
     private Vector3 distance = new Vector3();
     public void update(float delta)
     {
-        if(hasWon())
-        {
-            startNextFloor();
-        }
+        updateTransform(delta);
+    }
 
+    private Vector3 position = new Vector3();
+    private Vector3 destination = new Vector3();
+    private Vector3 ground = new Vector3();
+
+    private void updateTransform(float delta)
+    {
         if(isMoving || isFalling)
         {
             distance.set(getPosition());
@@ -116,10 +119,6 @@ public class Player implements DirectionListener
             notifyPlayerTransformListeners(distance.x, distance.y, distance.z);
         }
     }
-
-    private Vector3 position = new Vector3();
-    private Vector3 destination = new Vector3();
-    private Vector3 ground = new Vector3();
 
     private void updateMove(float delta)
     {
@@ -141,7 +140,7 @@ public class Player implements DirectionListener
         {
             destination.set(position);
             destination.y -= Constants.FLOOR_SPACING;
-            fallingTween.setup(getPosition(), destination, FALL_SPEED);
+            fallingTween.setup(getPosition(), destination, FALL_SPEED, FALL_ACCELERATION);
             isFallingStarted = true;
             //playing falling sound
             game.fallSound.play();
@@ -153,23 +152,19 @@ public class Player implements DirectionListener
                 isFallingStarted = false;
                 game.fallSound.stop();
                 game.hitSound.play();
+                // Since the falling is complete, begin the next floor!
+                startNextFloor();
             }
 
             setPosition(fallingTween.get());
         }
     }
 
-    public void fall()
-    {
-        if(!isFalling)
-        {
-            isFalling = true;
-        }
-    }
-
     public void moveBy(int x, int z)
     {
-        if(!isMoving && !isFalling)
+        // Check isFallingStarted to prevent mid-air movement,
+        // because isFalling can be triggered by the maze sim
+        if(!(isMoving || isFallingStarted))
         {
             isMoving = true;
             destination.set(position);
@@ -211,7 +206,6 @@ public class Player implements DirectionListener
     {
         saveProgress();
         currentFloor++;
-        fall();
 
         mazeSim.setFloor(level.getFloor(currentFloor));
     }
@@ -227,13 +221,21 @@ public class Player implements DirectionListener
         }
     }
 
+
+    @Override
+    public void floorEndTrigger()
+    {
+        isFalling = true;
+    }
+
     Vector3i tmpDirection = new Vector3i();
     @Override
     public void moveInDirection(Vector2 direction)
     {
-        if(!(isMoving() || isFalling()))
+        if(!(isMoving || isFalling))
         {
             tmpDirection.set(direction.x, 0.0f, direction.y);
+            // Keep in mind that this can set isFalling to true
             Vector3i displacement = mazeSim.move(tmpDirection);
 
             moveBy(displacement.x, displacement.z);

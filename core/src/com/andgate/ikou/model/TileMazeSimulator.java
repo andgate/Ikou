@@ -23,8 +23,6 @@ public class TileMazeSimulator
     private Floor floor;
     private Vector3i playerPosition = new Vector3i();
 
-    private boolean mazeWon = false;
-
     public TileMazeSimulator(Floor floor)
     {
         this.floor = floor;
@@ -35,12 +33,6 @@ public class TileMazeSimulator
     {
         this.floor = floor;
         this.playerPosition.set(floor.getStart());
-        mazeWon = false;
-    }
-
-    public boolean hasWon()
-    {
-        return mazeWon;
     }
 
     public Vector3i getPlayerPosition()
@@ -109,7 +101,7 @@ public class TileMazeSimulator
                     case End:
                         moveDelta.set(velocity);
                         playerPosition.add(moveDelta);
-                        mazeWon = true;
+                        mazeWonListener.floorEndTrigger();
                         break;
                     default:
                         break;
@@ -118,5 +110,22 @@ public class TileMazeSimulator
         }
 
         return moveDelta;
+    }
+
+    private MazeWonListener mazeWonListener;
+
+    public void setMazeWonListener(MazeWonListener mazeWonListener)
+    {
+        this.mazeWonListener = mazeWonListener;
+    }
+
+    public MazeWonListener getMazeWonListener()
+    {
+        return mazeWonListener;
+    }
+
+    public static interface MazeWonListener
+    {
+        void floorEndTrigger();
     }
 }
