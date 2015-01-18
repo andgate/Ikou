@@ -39,10 +39,22 @@ public class Player implements DirectionListener
 
     private AcceleratedTween fallingTween = new AcceleratedTween();
 
-    private static final float SLIDE_SPEED = 15.0f; // units per second
-    private static final float SLIDE_ROUGH_DECCELERATION = -10.0f; // units per second
-    private static final float FALL_SPEED = (Constants.FLOOR_SPACING) / 1.0f; // units per second
-    private static final float FALL_ACCELERATION = 100.0f; // units per second
+    private static final float SLIDE_SPEED = Constants.TILE_LENGTH * 15.0f / 1.0f; // units per second
+
+    private static final float ROUGH_SLIDE_DISTANCE = Constants.TILE_LENGTH; // units
+    private static final float ROUGH_SLIDE_INITIAL_SPEED = SLIDE_SPEED;
+    private static final float ROUGH_SLIDE_FINAL_SPEED = 0;
+    private static final float ROUGH_SLIDE_AVERAGE_SPEED = (ROUGH_SLIDE_FINAL_SPEED + ROUGH_SLIDE_INITIAL_SPEED) / 2.0f;
+    private static final float ROUGH_SLIDE_TIME = ROUGH_SLIDE_DISTANCE / ROUGH_SLIDE_AVERAGE_SPEED;
+    private static final float ROUGH_SLIDE_DECCELERATION = (ROUGH_SLIDE_FINAL_SPEED - ROUGH_SLIDE_INITIAL_SPEED) / ROUGH_SLIDE_TIME; // units per second per second
+
+    private static final float FALL_DISTANCE = Constants.FLOOR_SPACING;
+    private static final float FALL_SPEED_INITIAL = FALL_DISTANCE / 1.0f; // units per second
+    private static final float FALL_SPEEDUP_FACTOR = 4.0f;
+    private static final float FALL_SPEED_FINAL = FALL_SPEED_INITIAL * FALL_SPEEDUP_FACTOR; // units per second
+    private static final float FALL_SPEED_AVERAGE = (FALL_SPEED_INITIAL + FALL_SPEED_FINAL) / 2.0f; // units per second
+    private static final float FALL_TIME = FALL_DISTANCE / FALL_SPEED_AVERAGE; // seconds
+    private static final float FALL_ACCELERATION = (FALL_SPEED_FINAL - FALL_SPEED_INITIAL) / FALL_TIME; // units per second per second
 
     private Vector3 position = new Vector3();
     private Vector3i direction = new Vector3i();
@@ -163,7 +175,7 @@ public class Player implements DirectionListener
     {
         if(!slideStarted)
         {
-            slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, SLIDE_ROUGH_DECCELERATION);
+            slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
 
             game.fallSound.stop();
             game.fallSound.play();
@@ -208,7 +220,7 @@ public class Player implements DirectionListener
             initialPosition.set(position);
             finalPosition.set(position);
             finalPosition.y -= Constants.FLOOR_SPACING;
-            fallingTween.setup(initialPosition, finalPosition, FALL_SPEED, FALL_ACCELERATION);
+            fallingTween.setup(initialPosition, finalPosition, FALL_SPEED_INITIAL, FALL_ACCELERATION);
 
             isFalling = true;
             game.fallSound.play();
@@ -228,31 +240,6 @@ public class Player implements DirectionListener
         }
 
         return isFallingOver;
-    }
-
-    private ArrayList<PlayerTransformListener> playerTransformListeners = new ArrayList<>();
-
-    public interface PlayerTransformListener
-    {
-        public void playerTransformModified(float dx, float dy, float dz);
-    }
-
-    public void addPlayerTransformListener(PlayerTransformListener playerTransformListener)
-    {
-        playerTransformListeners.add(playerTransformListener);
-    }
-
-    public void removePlayerTransformListener(PlayerTransformListener playerTransformListener)
-    {
-        playerTransformListeners.remove(playerTransformListener);
-    }
-
-    public void notifyPlayerTransformListeners(float x, float y, float z)
-    {
-        for(PlayerTransformListener playerTransformListener : playerTransformListeners)
-        {
-            playerTransformListener.playerTransformModified(x, y, z);
-        }
     }
 
     public void startNextFloor()
@@ -287,7 +274,7 @@ public class Player implements DirectionListener
 
     public void moveInDirection(int x, int z, boolean forceMove)
     {
-        if(direction.isZero() || forceMove)
+        if((direction.isZero() && !isFalling) || forceMove)
         {
             direction.set(x, 0, z);
 
@@ -316,5 +303,30 @@ public class Player implements DirectionListener
         Tile tile = tileStack.getTop();
 
         return tile;
+    }
+
+    private ArrayList<PlayerTransformListener> playerTransformListeners = new ArrayList<>();
+
+    public interface PlayerTransformListener
+    {
+        public void playerTransformModified(float dx, float dy, float dz);
+    }
+
+    public void addPlayerTransformListener(PlayerTransformListener playerTransformListener)
+    {
+        playerTransformListeners.add(playerTransformListener);
+    }
+
+    public void removePlayerTransformListener(PlayerTransformListener playerTransformListener)
+    {
+        playerTransformListeners.remove(playerTransformListener);
+    }
+
+    public void notifyPlayerTransformListeners(float x, float y, float z)
+    {
+        for(PlayerTransformListener playerTransformListener : playerTransformListeners)
+        {
+            playerTransformListener.playerTransformModified(x, y, z);
+        }
     }
 }
