@@ -48,9 +48,9 @@ public class Player implements DirectionListener
     private static final float ROUGH_SLIDE_TIME = ROUGH_SLIDE_DISTANCE / ROUGH_SLIDE_AVERAGE_SPEED;
     private static final float ROUGH_SLIDE_DECCELERATION = (ROUGH_SLIDE_FINAL_SPEED - ROUGH_SLIDE_INITIAL_SPEED) / ROUGH_SLIDE_TIME; // units per second per second
 
+    private static final float FALL_SPEEDUP_FACTOR = 4.0f;
     private static final float FALL_DISTANCE = Constants.FLOOR_SPACING;
     private static final float FALL_SPEED_INITIAL = FALL_DISTANCE / 1.0f; // units per second
-    private static final float FALL_SPEEDUP_FACTOR = 4.0f;
     private static final float FALL_SPEED_FINAL = FALL_SPEED_INITIAL * FALL_SPEEDUP_FACTOR; // units per second
     private static final float FALL_SPEED_AVERAGE = (FALL_SPEED_INITIAL + FALL_SPEED_FINAL) / 2.0f; // units per second
     private static final float FALL_TIME = FALL_DISTANCE / FALL_SPEED_AVERAGE; // seconds
@@ -142,11 +142,7 @@ public class Player implements DirectionListener
     {
         if(!slideStarted)
         {
-            slideSmoothTween.setup(initialPosition, finalPosition, SLIDE_SPEED, true);
-
-            //game.fallSound.stop();
-            //game.fallSound.play();
-
+            slideSmoothTween.setup(initialPosition, finalPosition, SLIDE_SPEED);
             slideStarted = true;
         }
 
@@ -158,11 +154,27 @@ public class Player implements DirectionListener
             slideStarted = false;
             moveInDirection(direction.x, direction.z, true);
 
-            // Move completely is the next tile is smooth
-            Tile nextTile = getNextTile();
-            if(nextTile == Tile.Smooth)
+            float leftOverDelta = slideSmoothTween.getLeftOverTime();
+
+            if(leftOverDelta > 0.0f)
             {
-                slideSmooth(0.0f);
+                // Move completely is the next tile is smooth
+                Tile nextTile = getNextTile();
+
+                switch(nextTile)
+                {
+                    case Smooth:
+                        slideSmooth(leftOverDelta);
+                        break;
+                    case Rough:
+                        slideRough(leftOverDelta);
+                        break;
+                    case End:
+                        slideEnd(leftOverDelta);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 

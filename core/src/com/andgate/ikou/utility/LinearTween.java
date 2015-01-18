@@ -32,16 +32,11 @@ public class LinearTween
 
     public void setup(Vector3 start, Vector3 end, float speed)
     {
-        setup(start, end, speed, false);
-    }
-
-    public void setup(Vector3 start, Vector3 end, float speed, boolean keepOverflow)
-    {
         this.start.set(start);
         this.end.set(end);
         this.duration = calculateTweenTime(start, end, speed);
 
-        reset(keepOverflow);
+        reset();
     }
 
     /**
@@ -75,19 +70,7 @@ public class LinearTween
 
     public void reset()
     {
-        reset(false);
-    }
-
-    public void reset(boolean overflowLast)
-    {
-        if(overflowLast && (accumulator > ACCUMULATOR_MAX))
-        {
-            accumulator = accumulator - ACCUMULATOR_MAX;
-        }
-        else
-        {
-            accumulator = 0.0f;
-        }
+        accumulator = 0.0f;
     }
 
     private static Vector3 distance = new Vector3();
@@ -99,5 +82,17 @@ public class LinearTween
         float time = distance.len() / speed;
 
         return time;
+    }
+
+    public float getLeftOverTime()
+    {
+        float deltaAccum = accumulator - ACCUMULATOR_MAX;
+        if(deltaAccum > 0.0f)
+        {
+            float deltaTime = deltaAccum * duration;
+            return deltaTime;
+        }
+
+        return 0.0f;
     }
 }
