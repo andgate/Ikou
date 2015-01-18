@@ -17,7 +17,6 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
 import com.andgate.ikou.io.ProgressDatabaseService;
-import com.andgate.ikou.model.TileMazeSimulator.MazeWonListener;
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
@@ -45,6 +44,7 @@ public class Player implements DirectionListener
     private static final float FALL_SPEED = (Constants.FLOOR_SPACING) / 1.0f; // units per second
     private static final float FALL_ACCELERATION = 100.0f; // units per second
 
+    private Vector3 position = new Vector3();
     private Vector3i direction = new Vector3i();
 
     public Player(final Ikou game, final Level level, final int startingFloor)
@@ -75,38 +75,19 @@ public class Player implements DirectionListener
     private Vector3 distance = new Vector3();
     public void update(float delta)
     {
-        updateTransform(delta);
-    }
+        Tile currentTile = getCurrentTile();
 
-    private Vector3 position = new Vector3();
-
-    private void updateTransform(float delta)
-    {
-        if(!direction.isZero())
+        if(!direction.isZero() || currentTile == Tile.End)
         {
             distance.set(getPosition());
 
-            Tile nextTile = getNextTile();
-
-            switch(nextTile)
+            if(currentTile == Tile.End)
             {
-                case Smooth:
-                    slideSmooth(delta);
-                    break;
-                case Obstacle:
-                    hitObstacle();
-                    break;
-                case Blank:
-                    hitObstacle();
-                    break;
-                case Rough:
-                    slideRough(delta);
-                    break;
-                case End:
-                    slideEnd(delta);
-                    break;
-                default:
-                    break;
+                fallToNextFloor(delta);
+            }
+            else
+            {
+                updateNextTile(delta);
             }
 
             distance.sub(getPosition());
@@ -116,6 +97,31 @@ public class Player implements DirectionListener
         }
     }
 
+    public void updateNextTile(float delta)
+    {
+        Tile nextTile = getNextTile();
+
+        switch(nextTile)
+        {
+            case Smooth:
+                slideSmooth(delta);
+                break;
+            case Obstacle:
+                hitObstacle();
+                break;
+            case Blank:
+                hitObstacle();
+                break;
+            case Rough:
+                slideRough(delta);
+                break;
+            case End:
+                slideEnd(delta);
+                break;
+            default:
+                break;
+        }
+    }
 
     boolean slideStarted = false;
 
@@ -194,45 +200,35 @@ public class Player implements DirectionListener
         slideRoughTween.reset();
     }
 
-    /*private void updateMove(float delta)
+    private boolean isFalling = false;
+    private boolean fallToNextFloor(float delta)
     {
-        if(movementTween.update(delta))
+        if(!isFalling)
         {
-            isMoving = false;
-            game.fallSound.stop();
-            if(!isFalling)
-                game.hitSound.play();
-        }
+            initialPosition.set(position);
+            finalPosition.set(position);
+            finalPosition.y -= Constants.FLOOR_SPACING;
+            fallingTween.setup(initialPosition, finalPosition, FALL_SPEED, FALL_ACCELERATION);
 
-        setPosition(movementTween.get());
-    }
-
-    private boolean isFallingStarted = false;
-    private void updateFall(float delta)
-    {
-        if(!isFallingStarted)
-        {
-            dest.set(position);
-            dest.y -= Constants.FLOOR_SPACING;
-            fallingTween.setup(getPosition(), dest, FALL_SPEED, FALL_ACCELERATION);
-            isFallingStarted = true;
-            //playing falling sound
+            isFalling = true;
             game.fallSound.play();
         }
-        else
-        {
-            if (fallingTween.update(delta)) {
-                isFalling = false;
-                isFallingStarted = false;
-                game.fallSound.stop();
-                game.hitSound.play();
-                // Since the falling is complete, begin the next floor!
-                startNextFloor();
-            }
 
-            setPosition(fallingTween.get());
+        boolean isFallingOver = fallingTween.update(delta);
+        position.set(fallingTween.get());
+
+        if(isFallingOver)
+        {
+            isFalling = false;
+            direction.set(0,0,0);
+
+            initialPosition.set(position);
+
+            startNextFloor();
         }
-    }*/
+
+        return isFallingOver;
+    }
 
     private ArrayList<PlayerTransformListener> playerTransformListeners = new ArrayList<>();
 
