@@ -28,7 +28,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-public class Player implements DirectionListener, MazeWonListener
+public class Player implements DirectionListener
 {
     private static final String TAG = "PlayerTransformer";
     private final Ikou game;
@@ -37,7 +37,6 @@ public class Player implements DirectionListener, MazeWonListener
 
     private int currentFloor;
     private Level level;
-    private TileMazeSimulator mazeSim;
 
     private AcceleratedTween fallingTween = new AcceleratedTween();
 
@@ -45,9 +44,6 @@ public class Player implements DirectionListener, MazeWonListener
     private static final float SLIDE_ROUGH_DECCELERATION = -10.0f; // units per second
     private static final float FALL_SPEED = (Constants.FLOOR_SPACING) / 1.0f; // units per second
     private static final float FALL_ACCELERATION = 100.0f; // units per second
-
-    private boolean isFalling = false;
-    private boolean isMoving = false;
 
     private Vector3i direction = new Vector3i();
 
@@ -57,19 +53,7 @@ public class Player implements DirectionListener, MazeWonListener
         this.level = level;
 
         this.currentFloor = startingFloor;
-        mazeSim = new TileMazeSimulator(level.getFloor(currentFloor));
-        mazeSim.setMazeWonListener(this);
         position.set(level.getStartPosition(currentFloor - 1));
-    }
-
-    public boolean isMoving()
-    {
-        return isMoving;
-    }
-
-    public boolean isFalling()
-    {
-        return isFalling;
     }
 
     public void setPosition(float x, float y, float z)
@@ -95,30 +79,9 @@ public class Player implements DirectionListener, MazeWonListener
     }
 
     private Vector3 position = new Vector3();
-    private Vector3 dest = new Vector3();
-    private Vector3 ground = new Vector3();
 
     private void updateTransform(float delta)
     {
-        /*if(isMoving || isFalling)
-        {
-            distance.set(getPosition());
-
-            if (isMoving)
-            {
-                updateMove(delta);
-            }
-            else if (isFalling)
-            {
-                updateFall(delta);
-            }
-
-            distance.sub(getPosition());
-            distance.scl(-1);
-
-            notifyPlayerTransformListeners(distance.x, distance.y, distance.z);
-        }*/
-
         if(!direction.isZero())
         {
             distance.set(getPosition());
@@ -157,7 +120,7 @@ public class Player implements DirectionListener, MazeWonListener
     boolean slideStarted = false;
 
     private LinearTween slideSmoothTween = new LinearTween();
-    private void slideSmooth(float delta)
+    private boolean slideSmooth(float delta)
     {
         if(!slideStarted)
         {
@@ -184,11 +147,13 @@ public class Player implements DirectionListener, MazeWonListener
                 slideSmooth(0.0f);
             }
         }
+
+        return isSlidingOver;
     }
 
 
     private AcceleratedTween slideRoughTween = new AcceleratedTween();
-    private void slideRough(float delta)
+    private boolean slideRough(float delta)
     {
         if(!slideStarted)
         {
@@ -210,6 +175,8 @@ public class Player implements DirectionListener, MazeWonListener
 
             initialPosition.set(position);
         }
+
+        return isSlidingOver;
     }
 
     private void slideEnd(float delta)
@@ -265,30 +232,6 @@ public class Player implements DirectionListener, MazeWonListener
 
             setPosition(fallingTween.get());
         }
-    }
-
-    public void moveBy(int x, int z)
-    {
-        // Check isFallingStarted to prevent mid-air movement,
-        // because isFalling can be triggered by the maze sim
-        if(!(isMoving || isFallingStarted))
-        {
-            isMoving = true;
-            dest.set(position);
-            dest.add(x, 0.0f, z);
-
-            Tile destTile = level.getTile(currentFloor, (int)dest.x, 0, (int)dest.z);
-
-            if(destTile == Tile.Rough)
-            {
-                // do some thing?
-            }
-
-            movementTween.setup(position, dest, SLIDE_SPEED);
-
-            game.fallSound.stop();
-            game.fallSound.play();
-        }
     }*/
 
     private ArrayList<PlayerTransformListener> playerTransformListeners = new ArrayList<>();
@@ -320,8 +263,6 @@ public class Player implements DirectionListener, MazeWonListener
     {
         saveProgress();
         currentFloor++;
-
-        mazeSim.setFloor(level.getFloor(currentFloor));
     }
 
     private void saveProgress()
@@ -335,27 +276,12 @@ public class Player implements DirectionListener, MazeWonListener
         }
     }
 
-
-    @Override
-    public void floorEndTrigger()
-    {
-        isFalling = true;
-    }
-
     Vector3 initialPosition = new Vector3();
     Vector3 finalPosition = new Vector3();
 
     @Override
     public void moveInDirection(Vector2 direction)
     {
-        /*if(!(isMoving || isFalling))
-        {
-            this.direction.set(direction.x, 0, direction.y);
-            // Keep in mind that this can set isFalling to true
-            Vector3i displacement = mazeSim.move(tmpDirection);
-
-            moveBy(displacement.x, displacement.z);
-        }*/
         assert(direction.isUnit());
 
         moveInDirection((int)direction.x, (int)direction.y, false);
