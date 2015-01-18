@@ -207,6 +207,8 @@ public class Player implements DirectionListener, MazeWonListener
         {
             slideStarted = false;
             direction.set(0,0,0);
+
+            initialPosition.set(position);
         }
     }
 
@@ -221,6 +223,7 @@ public class Player implements DirectionListener, MazeWonListener
         game.fallSound.stop();
         game.hitSound.play();
 
+        initialPosition.set(position);
         slideRoughTween.reset();
     }
 
