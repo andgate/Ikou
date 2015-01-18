@@ -25,10 +25,10 @@ public class Array2d<T> extends Array<Array<T>>
 
     public T get(int rowIndex, int columnIndex)
     {
-        if(rowIndex < size)
+        if(0 <= rowIndex && rowIndex < size)
         {
             Array<T> row = get(rowIndex);
-            if(columnIndex < row.size)
+            if(0 <= columnIndex && columnIndex < row.size)
             {
                 return row.get(columnIndex);
             }

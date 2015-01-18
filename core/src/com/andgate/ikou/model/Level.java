@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.model;
 
+import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
@@ -62,6 +63,16 @@ public class Level
     {
         int floorIndex = floorNumber - 1;
         return floors.get(floorIndex);
+    }
+
+    public Tile getTile(int floorNumber, int x, int y, int z)
+    {
+        return getFloor(floorNumber).getTile(x, y, z);
+    }
+
+    public TileStack getTileStack(int floorNumber, int x,  int z)
+    {
+        return getFloor(floorNumber).getTileStack(x, z);
     }
 
     private Vector3 startPosition = new Vector3();

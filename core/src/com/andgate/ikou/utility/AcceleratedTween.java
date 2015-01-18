@@ -73,7 +73,19 @@ public class AcceleratedTween
 
     public void reset()
     {
-        t = 0.0f;
+        reset(false);
+    }
+
+    public void reset(boolean overflowLast)
+    {
+        if(overflowLast && t > duration)
+        {
+            t = t - duration;
+        }
+        else
+        {
+            t = 0.0f;
+        }
     }
 
     private static float calculateTweenTime(float dist, float vel, float accel)

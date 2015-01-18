@@ -15,6 +15,7 @@ package com.andgate.ikou.model;
 
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
+import com.andgate.ikou.model.TileStack.Tile;
 
 public class Floor
 {
@@ -49,6 +50,16 @@ public class Floor
     public Vector3i getEnd()
     {
         return end;
+    }
+
+    public TileStack getTileStack(int x, int z)
+    {
+        return masterSector.getTileStack(z - offset.y, x - offset.x);
+    }
+
+    public Tile getTile(int x, int y, int z)
+    {
+        return masterSector.get(x - offset.x, y, z - offset.y);
     }
 
     public Vector2i getOffset()

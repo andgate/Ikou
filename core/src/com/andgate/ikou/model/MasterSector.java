@@ -22,6 +22,8 @@ public class MasterSector
     private static final String TAG = "MasterSector";
     private Array2d<TileSector> sectors;
 
+    private static final TileStack emptyStack = new TileStack();
+
     public MasterSector()
     {
         sectors = new Array2d<>();
@@ -77,7 +79,7 @@ public class MasterSector
             }
         }
 
-        return null;
+        return emptyStack;
     }
 
     public Array2d<TileSector> getSectors()
@@ -100,11 +102,19 @@ public class MasterSector
 
     public int getWidth(int sectorsRowIndex)
     {
-        return sectors.get(sectorsRowIndex).size * TileSector.SIZE;
+        return sectors.get(sectorsRowIndex / TileSector.SIZE).size * TileSector.SIZE;
+    }
+
+    public boolean isInMasterSector(int tileRow, int tileColumn)
+    {
+        return (tileRow < 0 || tileColumn < 0 || tileRow >= getHeight() || tileColumn >= getWidth(tileRow - 1));
     }
 
     public int toSectorIndex(int tileCoord)
     {
+        if(0 > tileCoord)
+            return -1;
+
         return tileCoord / TileSector.SIZE;
     }
 

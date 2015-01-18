@@ -28,13 +28,20 @@ public class LinearTween
     private float duration = 0.0f;
     private float accumulator = 0.0f;
 
+    private static final float ACCUMULATOR_MAX = 1.0f;
+
     public void setup(Vector3 start, Vector3 end, float speed)
+    {
+        setup(start, end, speed, false);
+    }
+
+    public void setup(Vector3 start, Vector3 end, float speed, boolean keepOverflow)
     {
         this.start.set(start);
         this.end.set(end);
         this.duration = calculateTweenTime(start, end, speed);
 
-        reset();
+        reset(keepOverflow);
     }
 
     /**
@@ -47,7 +54,7 @@ public class LinearTween
         float percentTween = delta / duration;
         accumulator += percentTween;
 
-        if(accumulator >= 1.0f)
+        if(accumulator >= ACCUMULATOR_MAX)
         {
             curr.set(end);
             return FINISHED;
@@ -68,7 +75,19 @@ public class LinearTween
 
     public void reset()
     {
-        accumulator = 0.0f;
+        reset(false);
+    }
+
+    public void reset(boolean overflowLast)
+    {
+        if(overflowLast && (accumulator > ACCUMULATOR_MAX))
+        {
+            accumulator = accumulator - ACCUMULATOR_MAX;
+        }
+        else
+        {
+            accumulator = 0.0f;
+        }
     }
 
     private static Vector3 distance = new Vector3();

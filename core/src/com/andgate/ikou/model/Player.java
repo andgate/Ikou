@@ -11,16 +11,14 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.view;
+package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
 import com.andgate.ikou.io.ProgressDatabaseService;
-import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.ProgressDatabase;
-import com.andgate.ikou.model.TileMazeSimulator;
 import com.andgate.ikou.model.TileMazeSimulator.MazeWonListener;
+import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
 import com.andgate.ikou.utility.Vector3i;
@@ -41,15 +39,17 @@ public class Player implements DirectionListener, MazeWonListener
     private Level level;
     private TileMazeSimulator mazeSim;
 
-    private LinearTween movementTween = new LinearTween();
     private AcceleratedTween fallingTween = new AcceleratedTween();
 
-    private static final float MOVE_SPEED = 15.0f; // units per second
+    private static final float SLIDE_SPEED = 15.0f; // units per second
+    private static final float SLIDE_ROUGH_DECCELERATION = -10.0f; // units per second
     private static final float FALL_SPEED = (Constants.FLOOR_SPACING) / 1.0f; // units per second
     private static final float FALL_ACCELERATION = 100.0f; // units per second
 
     private boolean isFalling = false;
     private boolean isMoving = false;
+
+    private Vector3i direction = new Vector3i();
 
     public Player(final Ikou game, final Level level, final int startingFloor)
     {
@@ -95,12 +95,12 @@ public class Player implements DirectionListener, MazeWonListener
     }
 
     private Vector3 position = new Vector3();
-    private Vector3 destination = new Vector3();
+    private Vector3 dest = new Vector3();
     private Vector3 ground = new Vector3();
 
     private void updateTransform(float delta)
     {
-        if(isMoving || isFalling)
+        /*if(isMoving || isFalling)
         {
             distance.set(getPosition());
 
@@ -117,10 +117,114 @@ public class Player implements DirectionListener, MazeWonListener
             distance.scl(-1);
 
             notifyPlayerTransformListeners(distance.x, distance.y, distance.z);
+        }*/
+
+        if(!direction.isZero())
+        {
+            distance.set(getPosition());
+
+            Tile nextTile = getNextTile();
+
+            switch(nextTile)
+            {
+                case Smooth:
+                    slideSmooth(delta);
+                    break;
+                case Obstacle:
+                    hitObstacle();
+                    break;
+                case Blank:
+                    hitObstacle();
+                    break;
+                case Rough:
+                    slideRough(delta);
+                    break;
+                case End:
+                    slideEnd(delta);
+                    break;
+                default:
+                    break;
+            }
+
+            distance.sub(getPosition());
+            distance.scl(-1);
+
+            notifyPlayerTransformListeners(distance.x, distance.y, distance.z);
         }
     }
 
-    private void updateMove(float delta)
+
+    boolean slideStarted = false;
+
+    private LinearTween slideSmoothTween = new LinearTween();
+    private void slideSmooth(float delta)
+    {
+        if(!slideStarted)
+        {
+            slideSmoothTween.setup(initialPosition, finalPosition, SLIDE_SPEED, true);
+
+            //game.fallSound.stop();
+            //game.fallSound.play();
+
+            slideStarted = true;
+        }
+
+        boolean isSlidingOver = slideSmoothTween.update(delta);
+        position.set(slideSmoothTween.get());
+
+        if(isSlidingOver)
+        {
+            slideStarted = false;
+            moveInDirection(direction.x, direction.z, true);
+
+            // Move completely is the next tile is smooth
+            Tile nextTile = getNextTile();
+            if(nextTile == Tile.Smooth)
+            {
+                slideSmooth(0.0f);
+            }
+        }
+    }
+
+
+    private AcceleratedTween slideRoughTween = new AcceleratedTween();
+    private void slideRough(float delta)
+    {
+        if(!slideStarted)
+        {
+            slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, SLIDE_ROUGH_DECCELERATION);
+
+            game.fallSound.stop();
+            game.fallSound.play();
+
+            slideStarted = true;
+        }
+
+        boolean isSlidingOver = slideRoughTween.update(delta);
+        position.set(slideRoughTween.get());
+
+        if(isSlidingOver)
+        {
+            slideStarted = false;
+            direction.set(0,0,0);
+        }
+    }
+
+    private void slideEnd(float delta)
+    {
+        slideRough(delta);
+    }
+
+    private void hitObstacle()
+    {
+        direction.set(0,0,0);
+        game.fallSound.stop();
+        game.hitSound.play();
+
+        slideRoughTween.reset();
+    }
+
+    /*private void updateMove(float delta)
     {
         if(movementTween.update(delta))
         {
@@ -138,9 +242,9 @@ public class Player implements DirectionListener, MazeWonListener
     {
         if(!isFallingStarted)
         {
-            destination.set(position);
-            destination.y -= Constants.FLOOR_SPACING;
-            fallingTween.setup(getPosition(), destination, FALL_SPEED, FALL_ACCELERATION);
+            dest.set(position);
+            dest.y -= Constants.FLOOR_SPACING;
+            fallingTween.setup(getPosition(), dest, FALL_SPEED, FALL_ACCELERATION);
             isFallingStarted = true;
             //playing falling sound
             game.fallSound.play();
@@ -167,15 +271,22 @@ public class Player implements DirectionListener, MazeWonListener
         if(!(isMoving || isFallingStarted))
         {
             isMoving = true;
-            destination.set(position);
-            destination.add(x, 0.0f, z);
+            dest.set(position);
+            dest.add(x, 0.0f, z);
 
-            movementTween.setup(position, destination, MOVE_SPEED);
+            Tile destTile = level.getTile(currentFloor, (int)dest.x, 0, (int)dest.z);
+
+            if(destTile == Tile.Rough)
+            {
+                // do some thing?
+            }
+
+            movementTween.setup(position, dest, SLIDE_SPEED);
 
             game.fallSound.stop();
             game.fallSound.play();
         }
-    }
+    }*/
 
     private ArrayList<PlayerTransformListener> playerTransformListeners = new ArrayList<>();
 
@@ -228,17 +339,57 @@ public class Player implements DirectionListener, MazeWonListener
         isFalling = true;
     }
 
-    Vector3i tmpDirection = new Vector3i();
+    Vector3 initialPosition = new Vector3();
+    Vector3 finalPosition = new Vector3();
+
     @Override
     public void moveInDirection(Vector2 direction)
     {
-        if(!(isMoving || isFalling))
+        /*if(!(isMoving || isFalling))
         {
-            tmpDirection.set(direction.x, 0.0f, direction.y);
+            this.direction.set(direction.x, 0, direction.y);
             // Keep in mind that this can set isFalling to true
             Vector3i displacement = mazeSim.move(tmpDirection);
 
             moveBy(displacement.x, displacement.z);
+        }*/
+        assert(direction.isUnit());
+
+        moveInDirection((int)direction.x, (int)direction.y, false);
+
+        game.fallSound.play();
+    }
+
+    public void moveInDirection(int x, int z, boolean forceMove)
+    {
+        if(direction.isZero() || forceMove)
+        {
+            direction.set(x, 0, z);
+
+            initialPosition.set(position);
+
+            finalPosition.set(position);
+            finalPosition.add(direction.x, direction.y, direction.z);
         }
+    }
+
+    public Tile getNextTile()
+    {
+        return getTile(finalPosition);
+    }
+
+    public Tile getCurrentTile()
+    {
+        return getTile(initialPosition);
+    }
+
+    public Tile getTile(Vector3 tileLocation)
+    {
+        int x = (int)tileLocation.x;
+        int z = (int)tileLocation.z;
+        TileStack tileStack = level.getTileStack(currentFloor, x, z);
+        Tile tile = tileStack.getTop();
+
+        return tile;
     }
 }

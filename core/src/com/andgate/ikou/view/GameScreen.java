@@ -18,16 +18,12 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.CameraInputController;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
-import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
-import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.ProgressDatabase;
-import com.andgate.ikou.model.TileMazeSimulator;
+import com.andgate.ikou.model.Player;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.render.PlayerRender;
 import com.andgate.ikou.shader.bloom.Bloom;
-import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -43,7 +39,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
-import com.badlogic.gdx.math.Vector2;
 
 public class GameScreen extends ScreenAdapter
 {

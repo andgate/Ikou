@@ -98,4 +98,8 @@ public class Vector3i
         vector3f.set(x, y, z);
         return vector3f;
     }
+
+    public boolean isZero () {
+        return x == 0 && y == 0 && z == 0;
+    }
 }

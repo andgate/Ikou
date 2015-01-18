@@ -66,6 +66,11 @@ public class TileStack
         this.tiles = tiles;
     }
 
+    public Tile getTop()
+    {
+        return tiles[tiles.length - 1];
+    }
+
     public Tile get(int index)
     {
         if(index < tiles.length)
