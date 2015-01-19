@@ -38,9 +38,11 @@ public class Ikou extends Game
 
     public ShaderProgram fontShader;
 
-    public Sound travelSound;
+    public Sound moveSound;
+    public Sound roughSound;
     public Sound fallSound;
-    public Sound hitSound;
+    public Sound softHitSound;
+    public Sound hardHitSound;
 
     public Ikou()
     {
@@ -68,9 +70,11 @@ public class Ikou extends Game
 
     private void loadSounds()
     {
-        travelSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "travel.wav"));
+        moveSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "move.mp3"));
+        roughSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "rough.wav"));
         fallSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "fall.wav"));
-        hitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hit.wav"));
+        hardHitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hard_hit.wav"));
+        softHitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "soft_hit.wav"));
     }
 
     private void loadFonts()

@@ -186,7 +186,7 @@ public class Player implements DirectionListener
     private AcceleratedTween slideRoughTween = new AcceleratedTween();
     private boolean slideRough(float delta)
     {
-        return slideStopGradually(delta, game.fallSound);
+        return slideStopGradually(delta, game.roughSound);
     }
 
     private boolean slideEnd(float delta)
@@ -200,7 +200,6 @@ public class Player implements DirectionListener
         {
             slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
 
-            game.travelSound.stop();
             if(soundEffect != null)
             {
                 soundEffect.play();
@@ -219,10 +218,10 @@ public class Player implements DirectionListener
 
             initialPosition.set(position);
 
-            if(soundEffect != null)
+            /*if(soundEffect != null)
             {
                 soundEffect.stop();
-            }
+            }*/
         }
 
         return isSlidingOver;
@@ -230,9 +229,9 @@ public class Player implements DirectionListener
 
     private void hitObstacle()
     {
-        direction.set(0,0,0);
-        game.travelSound.stop();
-        long id = game.hitSound.play();
+        direction.set(0, 0, 0);
+        long id = game.hardHitSound.play();
+        game.hardHitSound.setVolume(id, 0.5f);
 
         initialPosition.set(position);
         slideRoughTween.reset();
@@ -261,6 +260,7 @@ public class Player implements DirectionListener
             direction.set(0,0,0);
 
             initialPosition.set(position);
+            game.hardHitSound.play();
 
             startNextFloor();
         }
@@ -293,9 +293,16 @@ public class Player implements DirectionListener
     {
         assert(direction.isUnit());
 
-        moveInDirection((int)direction.x, (int)direction.y, false);
+        if(this.direction.isZero())
+        {
+            Tile nextTile = getTile((int) (position.x + direction.x), (int) (position.z + direction.y));
 
-        game.travelSound.play();
+            if(nextTile != Tile.Obstacle && nextTile != Tile.Blank)
+            {
+                moveInDirection((int)direction.x, (int)direction.y, false);
+                game.moveSound.play();
+            }
+        }
     }
 
     public void moveInDirection(int x, int z, boolean forceMove)
@@ -321,14 +328,20 @@ public class Player implements DirectionListener
         return getTile(initialPosition);
     }
 
-    public Tile getTile(Vector3 tileLocation)
+    public Tile getTile(int x, int z)
     {
-        int x = (int)tileLocation.x;
-        int z = (int)tileLocation.z;
         TileStack tileStack = level.getTileStack(currentFloor, x, z);
         Tile tile = tileStack.getTop();
 
         return tile;
+    }
+
+    public Tile getTile(Vector3 tileLocation)
+    {
+        int x = (int)tileLocation.x;
+        int z = (int)tileLocation.z;
+
+        return getTile(x, z);
     }
 
     private ArrayList<PlayerTransformListener> playerTransformListeners = new ArrayList<>();
