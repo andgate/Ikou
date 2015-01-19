@@ -41,8 +41,7 @@ public class Ikou extends Game
     public Sound moveSound;
     public Sound roughSound;
     public Sound fallSound;
-    public Sound softHitSound;
-    public Sound hardHitSound;
+    public Sound hitSound;
 
     public Ikou()
     {
@@ -70,11 +69,10 @@ public class Ikou extends Game
 
     private void loadSounds()
     {
-        moveSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "move.mp3"));
+        moveSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "move.wav"));
         roughSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "rough.wav"));
         fallSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "fall.wav"));
-        hardHitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hard_hit.wav"));
-        softHitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "soft_hit.wav"));
+        hitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hit.wav"));
     }
 
     private void loadFonts()

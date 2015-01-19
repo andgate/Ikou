@@ -198,18 +198,20 @@ public class Player implements DirectionListener
     {
         if(!slideStarted)
         {
-            slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
-
             if(soundEffect != null)
             {
-                soundEffect.play();
+                long id = soundEffect.play();
+                soundEffect.setVolume(id, 0.2f);
+
             }
 
+            slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
             slideStarted = true;
         }
 
         boolean isSlidingOver = slideRoughTween.update(delta);
         position.set(slideRoughTween.get());
+
 
         if(isSlidingOver)
         {
@@ -229,12 +231,11 @@ public class Player implements DirectionListener
 
     private void hitObstacle()
     {
-        direction.set(0, 0, 0);
-        long id = game.hardHitSound.play();
-        game.hardHitSound.setVolume(id, 0.5f);
+        long id = game.hitSound.play();
+        game.hitSound.setVolume(id, 0.5f);
 
+        direction.set(0, 0, 0);
         initialPosition.set(position);
-        slideRoughTween.reset();
     }
 
     private boolean isFalling = false;
@@ -242,13 +243,14 @@ public class Player implements DirectionListener
     {
         if(!isFalling)
         {
+            game.fallSound.play();
+
             initialPosition.set(position);
             finalPosition.set(position);
             finalPosition.y -= Constants.FLOOR_SPACING;
             fallingTween.setup(initialPosition, finalPosition, FALL_SPEED_INITIAL, FALL_ACCELERATION);
 
             isFalling = true;
-            game.fallSound.play();
         }
 
         boolean isFallingOver = fallingTween.update(delta);
@@ -260,7 +262,7 @@ public class Player implements DirectionListener
             direction.set(0,0,0);
 
             initialPosition.set(position);
-            game.hardHitSound.play();
+            game.hitSound.play();
 
             startNextFloor();
         }
@@ -297,10 +299,9 @@ public class Player implements DirectionListener
         {
             Tile nextTile = getTile((int) (position.x + direction.x), (int) (position.z + direction.y));
 
-            if(nextTile != Tile.Obstacle && nextTile != Tile.Blank)
+            if(!(nextTile == Tile.Obstacle || nextTile == Tile.Blank))
             {
                 moveInDirection((int)direction.x, (int)direction.y, false);
-                game.moveSound.play();
             }
         }
     }

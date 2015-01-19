@@ -42,6 +42,11 @@ public class AcceleratedTween
 
     private float t = 0.0f;
 
+    public float getPercentComplete()
+    {
+        return t / duration;
+    }
+
     /**
      * Update the tween. New value can be retrieved with LinearTween.get()
      * @param delta Time to elapse.
