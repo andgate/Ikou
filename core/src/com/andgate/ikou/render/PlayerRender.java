@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -33,11 +34,8 @@ public class PlayerRender implements RenderableProvider, Disposable
 
     public PlayerRender()
     {
-        // TODO make customizable
-        TilePalette palette = new TilePalette();
-
         tileMesh = new TileMesh();
-        tileMesh.addTile(palette.getColor(TileStack.Tile.Player), 0, 0, 0);
+        tileMesh.addTile(Color.WHITE, 0, 0, 0);
         tileMesh.setNeedsRebuild();
 
         material = new Material(TileStack.TILE_MATERIAL);
@@ -50,6 +48,7 @@ public class PlayerRender implements RenderableProvider, Disposable
 
     public void setColor(Color color)
     {
+        material.set(ColorAttribute.createDiffuse(color));
     }
 
     @Override

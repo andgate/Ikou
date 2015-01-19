@@ -52,6 +52,8 @@ public class FloorSelectScreen extends ScreenAdapter
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
         this.levelData = levelData;
 
         buildStage();

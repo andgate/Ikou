@@ -37,6 +37,7 @@ public class TileFloorParser
         Vector3i endPosition = getEndPosition(masterSector);
 
         TilePalette palette = new TilePalette();
+        palette.randomize();
 
         Floor floor = new Floor(masterSector, palette, startPosition, endPosition);
         return floor;

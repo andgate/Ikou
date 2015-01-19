@@ -44,6 +44,9 @@ public class LevelSelectScreen implements Screen
         this.game = game;
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+
+        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
         levelDatas = LevelDatabaseService.getLevelDatas();
 
         buildStage();

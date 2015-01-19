@@ -15,6 +15,9 @@ package com.andgate.ikou.utility.graphics;
 
 import com.andgate.ikou.utility.MathExtra;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
+
+import java.util.Random;
 
 public class ColorUtils
 {
@@ -31,5 +34,29 @@ public class ColorUtils
     public static boolean isVisible(Color color)
     {
         return (color.a > 0.0f);
+    }
+
+    private static HSL tmpHSL1 = new HSL();
+    private static HSL tmpHSL2 = new HSL();
+
+    public static void generateRandomColor(float s, float l, Color out)
+    {
+        tmpHSL1.h = MathUtils.random(1.0f);
+        tmpHSL1.s = s;
+        tmpHSL1.l = l;
+
+        tmpHSL1.toRGBA(out);
+    }
+
+    public static void tween(Color start, Color end, float percent, Color out)
+    {
+        tmpHSL1.fromRGBA(start);
+        tmpHSL2.fromRGBA(end);
+
+        tmpHSL1.h = tmpHSL1.h * (1.0f - percent) + tmpHSL2.h * percent;
+        tmpHSL1.s = tmpHSL1.s * (1.0f - percent) + tmpHSL2.s * percent;
+        tmpHSL1.l = tmpHSL1.l * (1.0f - percent) + tmpHSL2.l * percent;
+
+        tmpHSL1.toRGBA(out);
     }
 }

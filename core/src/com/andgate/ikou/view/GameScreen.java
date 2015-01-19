@@ -18,8 +18,10 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.CameraInputController;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
+import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
+import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.render.PlayerRender;
@@ -63,8 +65,6 @@ public class GameScreen extends ScreenAdapter
     private final Level level;
     private final LevelRender levelRender;
     private final Player player;
-    private final PlayerRender playerRender;
-    private final Bloom bloom;
 
     private ModelBatch shadowBatch;
     private DirectionalShadowLight shadowLight;
@@ -73,16 +73,16 @@ public class GameScreen extends ScreenAdapter
 
     private SpriteBatch batch;
 
-    public GameScreen(Ikou game, Level level, int startingFloor)
+    public GameScreen(Ikou game, Level level, int currentFloorNumber)
     {
         this.game = game;
         this.level = level;
         batch = new SpriteBatch();
 
-        bloom = new Bloom();
-        bloom.setClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        bloom.setTreshold(0.6f);
-        bloom.setBloomIntesity(1.5f);
+        TilePalette palette = level.getFloor(currentFloorNumber).getPalette();
+        Color bg = palette.background;
+
+        game.bloom.setClearColor(bg.r, bg.g, bg.b, bg.a);
 
         Gdx.graphics.setVSync(false);
 
@@ -90,11 +90,7 @@ public class GameScreen extends ScreenAdapter
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
         levelRender = new LevelRender(level, camera);
 
-        player = new Player(game, level, startingFloor);
-
-        playerRender = new PlayerRender();
-        playerRender.getTransform().set(player.transform);
-
+        player = new Player(game, level, currentFloorNumber);
         createEnvironment();
 
         setupCamera();
@@ -199,14 +195,14 @@ public class GameScreen extends ScreenAdapter
         shadowBatch.end();
         shadowLight.end();*/
 
-        bloom.capture();
+        game.bloom.capture();
 
         modelBatch.begin(camera);
         modelBatch.render(levelRender, environment);
-        modelBatch.render(playerRender, environment);
+        modelBatch.render(player.getRender(), environment);
         modelBatch.end();
 
-        bloom.render();
+        game.bloom.render();
     }
 
     private void renderOverlay()
@@ -233,15 +229,9 @@ public class GameScreen extends ScreenAdapter
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            updatePlayer(deltaTime);
+            player.update(deltaTime);
             accumulator -= Constants.TIME_STEP;
         }
-    }
-
-    private void updatePlayer(float delta)
-    {
-        player.update(delta);
-        playerRender.getTransform().idt().translate(player.getPosition());
     }
 
     private void renderSetup()
@@ -258,7 +248,6 @@ public class GameScreen extends ScreenAdapter
     public void dispose()
     {
         levelRender.dispose();
-        playerRender.dispose();
         modelBatch.dispose();
         controlsMenu.dispose();
     }

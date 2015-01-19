@@ -13,6 +13,7 @@
 
 package com.andgate.ikou;
 
+import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.graphics.ShaderFont;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
@@ -38,7 +39,8 @@ public class Ikou extends Game
 
     public ShaderProgram fontShader;
 
-    public Sound moveSound;
+    public Bloom bloom;
+
     public Sound roughSound;
     public Sound fallSound;
     public Sound hitSound;
@@ -56,7 +58,6 @@ public class Ikou extends Game
         screenAdjustments(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        //Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
         skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
@@ -69,10 +70,12 @@ public class Ikou extends Game
 
     private void loadSounds()
     {
-        moveSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "move.wav"));
         roughSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "rough.wav"));
+        roughSound.play(0.0f);
         fallSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "fall.wav"));
+        fallSound.play(0.0f);
         hitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hit.wav"));
+        hitSound.play(0.0f);
     }
 
     private void loadFonts()
@@ -88,6 +91,11 @@ public class Ikou extends Game
         if (!fontShader.isCompiled()) {
             Gdx.app.error(TAG + " fontShader", "compilation failed:\n" + fontShader.getLog());
         }
+
+        bloom = new Bloom();
+        bloom.setClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        bloom.setTreshold(0.6f);
+        bloom.setBloomIntesity(1.5f);
     }
 
     @Override

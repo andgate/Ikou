@@ -150,12 +150,13 @@ public class TileMesh implements Disposable
     public void addFront(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+        float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[0].x, points[0].y, points[0].z, color.toFloatBits(), frontNormal[0], frontNormal[1], frontNormal[2],
-                points[1].x, points[1].y, points[1].z, color.toFloatBits(), frontNormal[0], frontNormal[1], frontNormal[2],
-                points[2].x, points[2].y, points[2].z, color.toFloatBits(), frontNormal[0], frontNormal[1], frontNormal[2],
-                points[3].x, points[3].y, points[3].z, color.toFloatBits(), frontNormal[0], frontNormal[1], frontNormal[2]);
+                points[0].x, points[0].y, points[0].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2],
+                points[1].x, points[1].y, points[1].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2],
+                points[2].x, points[2].y, points[2].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2],
+                points[3].x, points[3].y, points[3].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2]);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
@@ -163,12 +164,13 @@ public class TileMesh implements Disposable
     public void addBack(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+        float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[4].x, points[4].y, points[4].z, color.toFloatBits(), backNormal[0], backNormal[1], backNormal[2],
-                points[5].x, points[5].y, points[5].z, color.toFloatBits(), backNormal[0], backNormal[1], backNormal[2],
-                points[6].x, points[6].y, points[6].z, color.toFloatBits(), backNormal[0], backNormal[1], backNormal[2],
-                points[7].x, points[7].y, points[7].z, color.toFloatBits(), backNormal[0], backNormal[1], backNormal[2]);
+                points[4].x, points[4].y, points[4].z, colorBits, backNormal[0], backNormal[1], backNormal[2],
+                points[5].x, points[5].y, points[5].z, colorBits, backNormal[0], backNormal[1], backNormal[2],
+                points[6].x, points[6].y, points[6].z, colorBits, backNormal[0], backNormal[1], backNormal[2],
+                points[7].x, points[7].y, points[7].z, colorBits, backNormal[0], backNormal[1], backNormal[2]);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
@@ -176,24 +178,26 @@ public class TileMesh implements Disposable
     public void addRight(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+        float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[1].x, points[1].y, points[1].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2],
-                points[4].x, points[4].y, points[4].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2],
-                points[7].x, points[7].y, points[7].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2],
-                points[2].x, points[2].y, points[2].z, color.toFloatBits(), rightNormal[0], rightNormal[1], rightNormal[2]);
+                points[1].x, points[1].y, points[1].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2],
+                points[4].x, points[4].y, points[4].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2],
+                points[7].x, points[7].y, points[7].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2],
+                points[2].x, points[2].y, points[2].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2]);
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
     public void addLeft(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+        float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[5].x, points[5].y, points[5].z, color.toFloatBits(), leftNormal[0], leftNormal[1], leftNormal[2],
-                points[0].x, points[0].y, points[0].z, color.toFloatBits(), leftNormal[0], leftNormal[1], leftNormal[2],
-                points[3].x, points[3].y, points[3].z, color.toFloatBits(), leftNormal[0], leftNormal[1], leftNormal[2],
-                points[6].x, points[6].y, points[6].z, color.toFloatBits(), leftNormal[0], leftNormal[1], leftNormal[2]);
+                points[5].x, points[5].y, points[5].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2],
+                points[0].x, points[0].y, points[0].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2],
+                points[3].x, points[3].y, points[3].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2],
+                points[6].x, points[6].y, points[6].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2]);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
@@ -201,12 +205,13 @@ public class TileMesh implements Disposable
     public void addTop(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+        float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[3].x, points[3].y, points[3].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
-                points[2].x, points[2].y, points[2].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
-                points[7].x, points[7].y, points[7].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2],
-                points[6].x, points[6].y, points[6].z, color.toFloatBits(), topNormal[0], topNormal[1], topNormal[2]);
+                points[3].x, points[3].y, points[3].z, colorBits, topNormal[0], topNormal[1], topNormal[2],
+                points[2].x, points[2].y, points[2].z, colorBits, topNormal[0], topNormal[1], topNormal[2],
+                points[7].x, points[7].y, points[7].z, colorBits, topNormal[0], topNormal[1], topNormal[2],
+                points[6].x, points[6].y, points[6].z, colorBits, topNormal[0], topNormal[1], topNormal[2]);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
@@ -248,12 +253,13 @@ public class TileMesh implements Disposable
     void addBottom(Color color)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
+        float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[5].x, points[5].y, points[5].z, color.toFloatBits(), bottomNormal[0], bottomNormal[1], bottomNormal[2],
-                points[4].x, points[4].y, points[4].z, color.toFloatBits(), bottomNormal[0], bottomNormal[1], bottomNormal[2],
-                points[1].x, points[1].y, points[1].z, color.toFloatBits(), bottomNormal[0], bottomNormal[1], bottomNormal[2],
-                points[0].x, points[0].y, points[0].z, color.toFloatBits(), bottomNormal[0], bottomNormal[1], bottomNormal[2]);
+                points[5].x, points[5].y, points[5].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2],
+                points[4].x, points[4].y, points[4].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2],
+                points[1].x, points[1].y, points[1].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2],
+                points[0].x, points[0].y, points[0].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2]);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }

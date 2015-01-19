@@ -18,17 +18,21 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
 import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.TileStack.Tile;
+import com.andgate.ikou.render.PlayerRender;
 import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
 import com.andgate.ikou.utility.Vector3i;
+import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
 
-public class Player implements DirectionListener
+public class Player implements DirectionListener, Disposable
 {
     private static final String TAG = "PlayerTransformer";
     private final Ikou game;
@@ -37,6 +41,7 @@ public class Player implements DirectionListener
 
     private int currentFloor;
     private Level level;
+    private final PlayerRender playerRender;
 
     private AcceleratedTween fallingTween = new AcceleratedTween();
 
@@ -67,6 +72,15 @@ public class Player implements DirectionListener
 
         this.currentFloor = startingFloor;
         position.set(level.getStartPosition(currentFloor - 1));
+
+        playerRender = new PlayerRender();
+        playerRender.setColor(level.getFloor(currentFloor).getPalette().player);
+        playerRender.getTransform().set(transform);
+    }
+
+    public PlayerRender getRender()
+    {
+        return playerRender;
     }
 
     public void setPosition(float x, float y, float z)
@@ -107,6 +121,8 @@ public class Player implements DirectionListener
             distance.scl(-1);
 
             notifyPlayerTransformListeners(distance.x, distance.y, distance.z);
+
+            playerRender.getTransform().idt().translate(position);
         }
     }
 
@@ -200,9 +216,7 @@ public class Player implements DirectionListener
         {
             if(soundEffect != null)
             {
-                long id = soundEffect.play();
-                soundEffect.setVolume(id, 0.2f);
-
+                soundEffect.play(0.2f);
             }
 
             slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
@@ -231,8 +245,7 @@ public class Player implements DirectionListener
 
     private void hitObstacle()
     {
-        long id = game.hitSound.play();
-        game.hitSound.setVolume(id, 0.5f);
+        game.hitSound.play(0.5f);
 
         direction.set(0, 0, 0);
         initialPosition.set(position);
@@ -243,7 +256,7 @@ public class Player implements DirectionListener
     {
         if(!isFalling)
         {
-            game.fallSound.play();
+            game.fallSound.play(0.5f);
 
             initialPosition.set(position);
             finalPosition.set(position);
@@ -255,6 +268,9 @@ public class Player implements DirectionListener
 
         boolean isFallingOver = fallingTween.update(delta);
         position.set(fallingTween.get());
+
+        tweenBackground(fallingTween.getPercentComplete());
+        tweenPlayerColor(fallingTween.getPercentComplete());
 
         if(isFallingOver)
         {
@@ -268,6 +284,26 @@ public class Player implements DirectionListener
         }
 
         return isFallingOver;
+    }
+
+    private Color tmpBg = new Color();
+    public void tweenBackground(float percent)
+    {
+        Color lastFloorColor = level.getFloor(currentFloor).getPalette().background;
+        Color nextFloorColor = level.getFloor(currentFloor + 1).getPalette().background;
+
+        ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpBg);
+        game.bloom.setClearColor(tmpBg.r, tmpBg.g, tmpBg.b, tmpBg.a);
+    }
+
+    private Color tmpColor = new Color();
+    public void tweenPlayerColor(float percent)
+    {
+        Color lastFloorColor = level.getFloor(currentFloor).getPalette().player;
+        Color nextFloorColor = level.getFloor(currentFloor + 1).getPalette().player;
+
+        ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpColor);
+        playerRender.setColor(tmpColor);
     }
 
     public void startNextFloor()
@@ -368,5 +404,11 @@ public class Player implements DirectionListener
         {
             playerTransformListener.playerTransformModified(x, y, z);
         }
+    }
+
+    @Override
+    public void dispose()
+    {
+        playerRender.dispose();
     }
 }
