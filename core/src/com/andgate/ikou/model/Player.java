@@ -21,6 +21,7 @@ import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
 import com.andgate.ikou.utility.Vector3i;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -185,12 +186,25 @@ public class Player implements DirectionListener
     private AcceleratedTween slideRoughTween = new AcceleratedTween();
     private boolean slideRough(float delta)
     {
+        return slideStopGradually(delta, game.fallSound);
+    }
+
+    private boolean slideEnd(float delta)
+    {
+        return slideStopGradually(delta, null);
+    }
+
+    private boolean slideStopGradually(float delta, Sound soundEffect)
+    {
         if(!slideStarted)
         {
             slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
 
             game.travelSound.stop();
-            game.fallSound.play();
+            if(soundEffect != null)
+            {
+                soundEffect.play();
+            }
 
             slideStarted = true;
         }
@@ -204,14 +218,14 @@ public class Player implements DirectionListener
             direction.set(0,0,0);
 
             initialPosition.set(position);
+
+            if(soundEffect != null)
+            {
+                soundEffect.stop();
+            }
         }
 
         return isSlidingOver;
-    }
-
-    private void slideEnd(float delta)
-    {
-        slideRough(delta);
     }
 
     private void hitObstacle()
@@ -219,7 +233,6 @@ public class Player implements DirectionListener
         direction.set(0,0,0);
         game.travelSound.stop();
         long id = game.hitSound.play();
-        game.hitSound.setPitch(id, 0.5f);
 
         initialPosition.set(position);
         slideRoughTween.reset();

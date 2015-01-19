@@ -18,10 +18,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25051af2-d4fa-423d-8aa5-e41b64863173" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/sound/fall.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/sound/hit.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/android/assets/data/sound/travel.wav" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/Ikou.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/sound/hit.wav" afterPath="$PROJECT_DIR$/android/assets/data/sound/hit.wav" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/assets/data/sound/travel.wav" afterPath="$PROJECT_DIR$/android/assets/data/sound/travel.wav" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/Player.java" afterPath="$PROJECT_DIR$/core/src/com/andgate/ikou/model/Player.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -54,12 +52,26 @@
       <file leaf-file-name="Player.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81146026" vertical-offset="3573" max-vertical-offset="5712">
-              <caret line="245" column="9" selection-start-line="245" selection-start-column="9" selection-end-line="245" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.24584104" vertical-offset="3743" max-vertical-offset="5984">
+              <caret line="234" column="35" selection-start-line="234" selection-start-column="35" selection-end-line="234" selection-end-column="35" />
               <folding>
-                <element signature="e#0#10291#0" expanded="true" />
+                <element signature="e#0#10618#0" expanded="true" />
                 <element signature="imports" expanded="true" />
+                <element signature="e#6241#6242#0" expanded="true" />
+                <element signature="e#6305#6306#0" expanded="true" />
+                <element signature="e#6354#6355#0" expanded="true" />
+                <element signature="e#6408#6409#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sound.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.4.1/a36f5d3e6a3b0fa3c625f8ce88216daf99435bce/gdx-1.4.1-sources.jar!/com/badlogic/gdx/audio/Sound.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1550" max-vertical-offset="2091">
+              <caret line="118" column="16" selection-start-line="118" selection-start-column="16" selection-end-line="118" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -2556,7 +2568,11 @@
       <created>1421611582614</created>
       <updated>1421611582614</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="Some sound effects in. Still need to find the perfect sound effects though.">
+      <created>1421680831184</created>
+      <updated>1421680831184</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -2586,6 +2602,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32938388" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32464454" sideWeight="0.48381877" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24433658" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.39967638" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2610,7 +2627,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="LuaJ" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32464454" sideWeight="0.48381877" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36374408" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32819906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2666,7 +2682,6 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
-    <MESSAGE value="Tile data is now deprecated. Tile type is kept in tilestack. The tilestack is now just a holder for whatever array it needs to hold. Uses less space in the level json :)" />
     <MESSAGE value="MasterSector object is now in. Has issues with generating new sub sectors though." />
     <MESSAGE value="MasterSector seems to build correctly, and has the right structure. Gson causes android to run out of memory now though. The nightmare bugs from hell continue! Stay tuned for the next episode!" />
     <MESSAGE value="Disabled shrinking on level writes to fix the issue. Very strange behavior." />
@@ -2691,7 +2706,8 @@
     <MESSAGE value="Falling between floors is in again. Yay!" />
     <MESSAGE value="Sliding into a rough tile causes the player to gradually slowdown! Win!" />
     <MESSAGE value="The end of a smooth slide now accounts for leftover time directly, and applies that leftover time into the movement for the next tile, if any," />
-    <option name="LAST_COMMIT_MESSAGE" value="The end of a smooth slide now accounts for leftover time directly, and applies that leftover time into the movement for the next tile, if any," />
+    <MESSAGE value="Some sound effects in. Still need to find the perfect sound effects though." />
+    <option name="LAST_COMMIT_MESSAGE" value="Some sound effects in. Still need to find the perfect sound effects though." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -2844,13 +2860,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="965" max-vertical-offset="17884">
           <caret line="98" column="25" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="95" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.4.1/a36f5d3e6a3b0fa3c625f8ce88216daf99435bce/gdx-1.4.1-sources.jar!/com/badlogic/gdx/audio/Sound.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="481" max-vertical-offset="2091">
-          <caret line="60" column="16" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -3038,6 +3047,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.099278" vertical-offset="0" max-vertical-offset="1870">
           <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+          <folding>
+            <element signature="e#1903#1904#0" expanded="true" />
+            <element signature="e#1931#1932#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3065,13 +3078,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.4.1/a36f5d3e6a3b0fa3c625f8ce88216daf99435bce/gdx-1.4.1-sources.jar!/com/badlogic/gdx/audio/Sound.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1550" max-vertical-offset="2091">
+          <caret line="118" column="16" selection-start-line="118" selection-start-column="16" selection-end-line="118" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/andgate/ikou/model/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81146026" vertical-offset="3573" max-vertical-offset="5712">
-          <caret line="245" column="9" selection-start-line="245" selection-start-column="9" selection-end-line="245" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.24584104" vertical-offset="3743" max-vertical-offset="5984">
+          <caret line="234" column="35" selection-start-line="234" selection-start-column="35" selection-end-line="234" selection-end-column="35" />
           <folding>
-            <element signature="e#0#10291#0" expanded="true" />
+            <element signature="e#0#10618#0" expanded="true" />
             <element signature="imports" expanded="true" />
+            <element signature="e#6241#6242#0" expanded="true" />
+            <element signature="e#6305#6306#0" expanded="true" />
+            <element signature="e#6354#6355#0" expanded="true" />
+            <element signature="e#6408#6409#0" expanded="true" />
           </folding>
         </state>
       </provider>
