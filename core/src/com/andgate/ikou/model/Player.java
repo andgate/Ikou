@@ -189,7 +189,7 @@ public class Player implements DirectionListener
         {
             slideRoughTween.setup(initialPosition, finalPosition, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION);
 
-            game.fallSound.stop();
+            game.travelSound.stop();
             game.fallSound.play();
 
             slideStarted = true;
@@ -217,8 +217,9 @@ public class Player implements DirectionListener
     private void hitObstacle()
     {
         direction.set(0,0,0);
-        game.fallSound.stop();
-        game.hitSound.play();
+        game.travelSound.stop();
+        long id = game.hitSound.play();
+        game.hitSound.setPitch(id, 0.5f);
 
         initialPosition.set(position);
         slideRoughTween.reset();
@@ -281,7 +282,7 @@ public class Player implements DirectionListener
 
         moveInDirection((int)direction.x, (int)direction.y, false);
 
-        game.fallSound.play();
+        game.travelSound.play();
     }
 
     public void moveInDirection(int x, int z, boolean forceMove)

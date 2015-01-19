@@ -38,6 +38,7 @@ public class Ikou extends Game
 
     public ShaderProgram fontShader;
 
+    public Sound travelSound;
     public Sound fallSound;
     public Sound hitSound;
 
@@ -60,11 +61,17 @@ public class Ikou extends Game
         skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
         loadFonts();
         loadShader();
-        fallSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "fall.wav"));
-        hitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hit.wav"));
+        loadSounds();
 
         setScreen(new MainMenuScreen(this));
 	}
+
+    private void loadSounds()
+    {
+        travelSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "travel.wav"));
+        fallSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "fall.wav"));
+        hitSound = Gdx.audio.newSound(Gdx.files.internal(Constants.SOUND_FOLDER + "hit.wav"));
+    }
 
     private void loadFonts()
     {
