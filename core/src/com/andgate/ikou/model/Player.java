@@ -71,7 +71,7 @@ public class Player implements DirectionListener, Disposable
         this.level = level;
 
         this.currentFloor = startingFloor;
-        position.set(level.getStartPosition(currentFloor - 1));
+        setPosition(level.getStartPosition(currentFloor));
 
         playerRender = new PlayerRender();
         playerRender.setColor(level.getFloor(currentFloor).getPalette().player);
@@ -85,7 +85,9 @@ public class Player implements DirectionListener, Disposable
 
     public void setPosition(float x, float y, float z)
     {
-        this.position.set(x, y, z);
+        position.set(x, y, z);
+        initialPosition.set(x, y, z);
+        finalPosition.set(x, y, z);
         transform.idt().translate(position);
     }
 

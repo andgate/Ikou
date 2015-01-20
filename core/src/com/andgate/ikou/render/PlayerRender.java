@@ -39,6 +39,7 @@ public class PlayerRender implements RenderableProvider, Disposable
         tileMesh.setNeedsRebuild();
 
         material = new Material(TileStack.TILE_MATERIAL);
+        setColor(new Color(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
     public Matrix4 getTransform()

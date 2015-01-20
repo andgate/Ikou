@@ -76,8 +76,9 @@ public class Level
     }
 
     private Vector3 startPosition = new Vector3();
-    public Vector3 getStartPosition(int floorIndex)
+    public Vector3 getStartPosition(int floorNumber)
     {
+        int floorIndex = floorNumber - 1;
         Vector3i floorStart = floors.get(floorIndex).getStart();
         startPosition.set(floorStart.x, 0.0f, floorStart.z);
 
