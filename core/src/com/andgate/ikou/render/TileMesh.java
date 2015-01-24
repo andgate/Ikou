@@ -59,14 +59,14 @@ public class TileMesh implements Disposable
 
 
     // Normal pointers for all the six sides. They never changes.
-    private static final float[] frontNormal = new float[]{0.0f, 0.0f, 1.0f};
-    private static final float[] backNormal = new float[]{0.0f, 0.0f, -1.0f};
-    private static final float[] rightNormal = new float[]{1.0f, 0.0f, 0.0f};
-    private static final float[] leftNormal = new float[]{-1.0f, 0.0f, 0.0f};
-    private static final float[] topNormal = new float[]{0.0f, 1.0f, 0.0f};
-    private static final float[] bottomNormal = new float[]{0.0f, -1.0f, 0.0f};
+    protected static final Vector3 frontNormal = new Vector3(0.0f, 0.0f, 1.0f);
+    protected static final Vector3 backNormal = new Vector3(0.0f, 0.0f, -1.0f);
+    protected static final Vector3 rightNormal = new Vector3(1.0f, 0.0f, 0.0f);
+    protected static final Vector3 leftNormal = new Vector3(-1.0f, 0.0f, 0.0f);
+    protected static final Vector3 topNormal = new Vector3(0.0f, 1.0f, 0.0f);
+    protected static final Vector3 bottomNormal = new Vector3(0.0f, -1.0f, 0.0f);
 
-    final Vector3[] points = new Vector3[8];
+    protected final Vector3[] points = new Vector3[8];
     // To keep memory (and CPU) usage down we will reuse the same Vector3 instances.
     private static final Vector3 pointVector0 = new Vector3();
     private static final Vector3 pointVector1 = new Vector3();
@@ -147,78 +147,25 @@ public class TileMesh implements Disposable
         points[7] = pointVector7.set(x + width, y + height, z);
     }
 
-    public void addFront(Color color)
+    public void addFace(Color color, Vector3 point0, Vector3 point1, Vector3 point2, Vector3 point3, Vector3 normal)
     {
         int vertexOffset = vertices.size / NUM_COMPONENTS;
         float colorBits = color.toFloatBits();
 
         vertices.addAll(
-                points[0].x, points[0].y, points[0].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2],
-                points[1].x, points[1].y, points[1].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2],
-                points[2].x, points[2].y, points[2].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2],
-                points[3].x, points[3].y, points[3].z, colorBits, frontNormal[0], frontNormal[1], frontNormal[2]);
+                point0.x, point0.y, point0.z, colorBits, normal.x, normal.y, normal.z,
+                point1.x, point1.y, point1.z, colorBits, normal.x, normal.y, normal.z,
+                point2.x, point2.y, point2.z, colorBits, normal.x, normal.y, normal.z,
+                point3.x, point3.y, point3.z, colorBits, normal.x, normal.y, normal.z);
 
         indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
     }
 
-    public void addBack(Color color)
-    {
-        int vertexOffset = vertices.size / NUM_COMPONENTS;
-        float colorBits = color.toFloatBits();
-
-        vertices.addAll(
-                points[4].x, points[4].y, points[4].z, colorBits, backNormal[0], backNormal[1], backNormal[2],
-                points[5].x, points[5].y, points[5].z, colorBits, backNormal[0], backNormal[1], backNormal[2],
-                points[6].x, points[6].y, points[6].z, colorBits, backNormal[0], backNormal[1], backNormal[2],
-                points[7].x, points[7].y, points[7].z, colorBits, backNormal[0], backNormal[1], backNormal[2]);
-
-        indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
-    }
-
-    public void addRight(Color color)
-    {
-        int vertexOffset = vertices.size / NUM_COMPONENTS;
-        float colorBits = color.toFloatBits();
-
-        vertices.addAll(
-                points[1].x, points[1].y, points[1].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2],
-                points[4].x, points[4].y, points[4].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2],
-                points[7].x, points[7].y, points[7].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2],
-                points[2].x, points[2].y, points[2].z, colorBits, rightNormal[0], rightNormal[1], rightNormal[2]);
-        indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
-    }
-
-    public void addLeft(Color color)
-    {
-        int vertexOffset = vertices.size / NUM_COMPONENTS;
-        float colorBits = color.toFloatBits();
-
-        vertices.addAll(
-                points[5].x, points[5].y, points[5].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2],
-                points[0].x, points[0].y, points[0].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2],
-                points[3].x, points[3].y, points[3].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2],
-                points[6].x, points[6].y, points[6].z, colorBits, leftNormal[0], leftNormal[1], leftNormal[2]);
-
-        indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
-    }
-
-    public void addTop(Color color)
-    {
-        int vertexOffset = vertices.size / NUM_COMPONENTS;
-        float colorBits = color.toFloatBits();
-
-        vertices.addAll(
-                points[3].x, points[3].y, points[3].z, colorBits, topNormal[0], topNormal[1], topNormal[2],
-                points[2].x, points[2].y, points[2].z, colorBits, topNormal[0], topNormal[1], topNormal[2],
-                points[7].x, points[7].y, points[7].z, colorBits, topNormal[0], topNormal[1], topNormal[2],
-                points[6].x, points[6].y, points[6].z, colorBits, topNormal[0], topNormal[1], topNormal[2]);
-
-        indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
-    }
-
-    // Code to subdivide the top.
-    // Causes the map to have trouble rendering
+    // Code to subdivide the top face.
+    // Causes the map to have trouble rendering, cause too many polys,
     // when SUBQUADS is around 5.
+    // Disabled for now, may renable for smooth lighting.
+    // Or a shader may be used instead!
     /*void addTop(TileData tile, Color color, float x, float y, float z)
     {
         for (int hDiv = 0; hDiv < SUBQUADS; hDiv++)
@@ -249,19 +196,34 @@ public class TileMesh implements Disposable
         calculateVerts(x, y, z, WIDTH, HEIGHT, DEPTH);
     }*/
 
+    public void addFront(Color color)
+    {
+        addFace(color, points[0], points[1], points[2], points[3], frontNormal);
+    }
+
+    public void addBack(Color color)
+    {
+        addFace(color, points[4], points[5], points[6], points[7], backNormal);
+    }
+
+    public void addRight(Color color)
+    {
+        addFace(color, points[1], points[4], points[7], points[2], rightNormal);
+    }
+
+    public void addLeft(Color color)
+    {
+        addFace(color, points[5], points[0], points[3], points[6], leftNormal);
+    }
+
+    public void addTop(Color color)
+    {
+        addFace(color, points[3], points[2], points[7], points[6], topNormal);
+    }
 
     void addBottom(Color color)
     {
-        int vertexOffset = vertices.size / NUM_COMPONENTS;
-        float colorBits = color.toFloatBits();
-
-        vertices.addAll(
-                points[5].x, points[5].y, points[5].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2],
-                points[4].x, points[4].y, points[4].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2],
-                points[1].x, points[1].y, points[1].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2],
-                points[0].x, points[0].y, points[0].z, colorBits, bottomNormal[0], bottomNormal[1], bottomNormal[2]);
-
-        indicies.addAll((short) (vertexOffset), (short) (1 + vertexOffset), (short) (2 + vertexOffset), (short) (2 + vertexOffset), (short) (3 + vertexOffset), (short) (vertexOffset));
+        addFace(color, points[5], points[4], points[1], points[0], topNormal);
     }
 
     public void rebuild()

@@ -26,11 +26,6 @@ public class SectorMesh extends TileMesh
 {
     public SectorMesh(MasterSector masterSector, int sectorRow, int sectorColumn, TilePalette palette, int offsetX, int offsetZ)
     {
-        this(masterSector, sectorRow, sectorColumn, palette, offsetX, offsetZ, true);
-    }
-
-    public SectorMesh(MasterSector masterSector, int sectorRow, int sectorColumn, TilePalette palette, int offsetX, int offsetZ, boolean cullFaces)
-    {
         super();
 
         Array2d<TileSector> sectors = masterSector.getSectors();
@@ -45,28 +40,15 @@ public class SectorMesh extends TileMesh
 
                 for (int y = 0; y < currTileStack.size(); y++)
                 {
-                    Tile currTile = currTileStack.get(y);
-                    Color currTileColor = palette.getColor(currTile);
-
                     int masterX = sectorColumn * TileSector.SIZE + x;
                     int masterY = y;
                     int masterZ = sectorRow * TileSector.SIZE + z;
 
-                    if (ColorUtils.isVisible(currTileColor))
-                    {
-                        float xPos = (float) x * TileStack.WIDTH + offsetX;
-                        float yPos = (float) y * TileStack.HEIGHT;
-                        float zPos = (float) z * TileStack.DEPTH + offsetZ;
+                    float xPos = (float) x * TileStack.WIDTH + offsetX;
+                    float yPos = (float) y * TileStack.HEIGHT;
+                    float zPos = (float) z * TileStack.DEPTH + offsetZ;
 
-                        if(cullFaces && ColorUtils.isOpaque(currTileColor))
-                        {
-                            addCulledTile(masterSector, currTileColor, masterX, masterY, masterZ, xPos, yPos, zPos);
-                        }
-                        else
-                        {
-                            addTile(currTileColor, xPos, yPos, zPos);
-                        }
-                    }
+                    addCulledTile(masterSector, palette, masterX, masterY, masterZ, xPos, yPos, zPos);
                 }
             }
         }
@@ -82,26 +64,68 @@ public class SectorMesh extends TileMesh
      * @param yPos Used to designate tile location
      * @param zPos Used to designate tile location
      */
-    public void addCulledTile(MasterSector masterSector, Color tileColor, int x, int y, int z, float xPos, float yPos, float zPos)
+    public void addCulledTile(MasterSector masterSector, TilePalette palette, int x, int y, int z, float xPos, float yPos, float zPos)
     {
         Tile tile = masterSector.get(x, y, z);
+        Color tileColor = palette.getColor(tile);
 
         if(tile == null || !ColorUtils.isVisible(tileColor))
             return;
 
         calculateVerts(xPos, yPos, zPos);
 
+        boolean isDualLayer = masterSector.isTileVisible(tileColor, x, y + 1, z)
+                || masterSector.isTileVisible(tileColor, x, y - 1, z);
+
         if (!masterSector.isTileVisible(tileColor, x, y, z + 1))
-            addFront(tileColor);
+        {
+            //addFront(tileColor);
+            addFrontWall(isDualLayer);
+        }
         if (!masterSector.isTileVisible(tileColor, x, y, z - 1))
-            addBack(tileColor);
+        {
+            //addBack(tileColor);
+            addBackWall(isDualLayer);
+        }
         if (!masterSector.isTileVisible(tileColor, x - 1, y, z))
-            addLeft(tileColor);
+        {
+            //addLeft(tileColor);
+            addLeftWall(isDualLayer);
+        }
         if (!masterSector.isTileVisible(tileColor, x + 1, y, z))
-            addRight(tileColor);
+        {
+            //addRight(tileColor);
+            addRightWall(isDualLayer);
+        }
         if (!masterSector.isTileVisible(tileColor, x, y + 1, z))
+        {
             addTop(tileColor);
+        }
         if (!masterSector.isTileVisible(tileColor, x, y - 1, z))
+        {
+            // Could say palette.Smooth, but
+            // this is only gonna come up for smooth tiles,
+            // or maybe even end tiles.
             addBottom(tileColor);
+        }
+    }
+
+    private void addFrontWall(boolean isDualLayer)
+    {
+    }
+
+    private void addBackWall(boolean isDualLayer)
+    {
+
+    }
+
+    private void addLeftWall(boolean isDualLayer)
+    {
+
+    }
+
+    private void addRightWall(boolean isDualLayer)
+    {
+
     }
 }

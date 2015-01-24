@@ -82,16 +82,9 @@ public class FloorRender implements RenderableProvider, Disposable
         {
             for(int j = 0; j < sectorMeshes[i].length; j++)
             {
-                floorTransform.getTranslation(subsectorPosition);
-                subsectorPosition.x += j*SUBSECTOR_SIZE;
-                subsectorPosition.z += i*SUBSECTOR_SIZE;
-
-                boolean inFrustum = camera.frustum.sphereInFrustum(subsectorPosition, SUBSECTOR_SIZE * 1.5f);
-
-
                 Mesh mesh = sectorMeshes[i][j].getMesh();
 
-                if(inFrustum && (mesh != null))
+                if(inFrustum(i, j) && (mesh != null))
                 {
                     Renderable renderable = pool.obtain();
                     renderable.material = TileStack.TILE_MATERIAL;
@@ -105,6 +98,15 @@ public class FloorRender implements RenderableProvider, Disposable
                 }
             }
         }
+    }
+
+    private boolean inFrustum(int sectorRow, int sectorColumn)
+    {
+        floorTransform.getTranslation(subsectorPosition);
+        subsectorPosition.x += sectorColumn * SUBSECTOR_SIZE;
+        subsectorPosition.z += sectorRow * SUBSECTOR_SIZE;
+
+        return camera.frustum.sphereInFrustum(subsectorPosition, SUBSECTOR_SIZE * 1.5f);
     }
 
     @Override

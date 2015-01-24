@@ -100,7 +100,7 @@ public class Constants
 
     public static final float FLOOR_SPACING = 10.0f;
 
-    public static final float DEFAULT_FIELD_OF_VIEW =  67f;
+    public static final float DEFAULT_FIELD_OF_VIEW = 67f;
     public static final float CAMERA_FAR = 40.0f;
     public static final float CAMERA_DISTANCE = 5.0f;
     public static final float CAMERA_ANGLE_TO_PLAYER = 45.0f;
