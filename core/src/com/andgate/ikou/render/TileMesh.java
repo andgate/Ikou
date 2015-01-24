@@ -35,7 +35,7 @@ public class TileMesh implements Disposable
     private boolean rebuildingInProcess = false;
 
     private static final float WIDTH = Constants.TILE_LENGTH;
-    private static final float HEIGHT = Constants.TILE_THICKNESS;
+    private static final float HEIGHT = Constants.TILE_HEIGHT;
     private static final float DEPTH = Constants.TILE_LENGTH;
 
     // Position attribute - (x, y, z)
@@ -136,6 +136,12 @@ public class TileMesh implements Disposable
         final float width = TileStack.WIDTH;
         final float height = TileStack.HEIGHT;
         final float depth = TileStack.DEPTH;
+
+        calculateVerts(x, y, z, width, height, depth);
+    }
+
+    public void calculateVerts(float x, float y, float z, float width, float height, float depth)
+    {
         // Creates the 8 vector points that exists on a box. Those will be used to create the vertex.
         points[0] = pointVector0.set(x,         y,          z + depth);
         points[1] = pointVector1.set(x + width, y,          z + depth);

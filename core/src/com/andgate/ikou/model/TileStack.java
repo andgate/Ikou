@@ -23,7 +23,7 @@ public class TileStack
 {
     public static final float WIDTH = Constants.TILE_LENGTH;
     public static final float HALF_WIDTH = WIDTH / 2.0f;
-    public static final float HEIGHT = Constants.TILE_THICKNESS;
+    public static final float HEIGHT = Constants.TILE_HEIGHT;
     public static final float HALF_HEIGHT = HEIGHT / 2.0f;
     public static final float DEPTH = Constants.TILE_LENGTH;
     public static final float HALF_DEPTH = DEPTH / 2.0f;

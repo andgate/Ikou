@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.render;
 
+import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.MasterSector;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileSector;
@@ -21,6 +22,7 @@ import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Array2d;
 import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
 
 public class SectorMesh extends TileMesh
 {
@@ -69,63 +71,170 @@ public class SectorMesh extends TileMesh
         Tile tile = masterSector.get(x, y, z);
         Color tileColor = palette.getColor(tile);
 
-        if(tile == null || !ColorUtils.isVisible(tileColor))
+        if(!ColorUtils.isVisible(tileColor))
             return;
+
+        Color wallColor = palette.obstacle;
+
+        if(y == 0 && tile != Tile.Blank)
+        {
+            addWalls(masterSector, wallColor, x, z, xPos, zPos);
+        }
 
         calculateVerts(xPos, yPos, zPos);
 
-        boolean isDualLayer = masterSector.isTileVisible(tileColor, x, y + 1, z)
-                || masterSector.isTileVisible(tileColor, x, y - 1, z);
+        switch(tile)
+        {
+            case Smooth:
+                addTop(palette.obstacle);
+                addBottom(palette.obstacle);
+                break;
+            case Obstacle:
+                break;
+            case End:
+                break;
+            default:
+                break;
+        }
 
-        if (!masterSector.isTileVisible(tileColor, x, y, z + 1))
-        {
-            //addFront(tileColor);
-            addFrontWall(isDualLayer);
-        }
-        if (!masterSector.isTileVisible(tileColor, x, y, z - 1))
-        {
-            //addBack(tileColor);
-            addBackWall(isDualLayer);
-        }
-        if (!masterSector.isTileVisible(tileColor, x - 1, y, z))
-        {
-            //addLeft(tileColor);
-            addLeftWall(isDualLayer);
-        }
-        if (!masterSector.isTileVisible(tileColor, x + 1, y, z))
-        {
-            //addRight(tileColor);
-            addRightWall(isDualLayer);
-        }
-        if (!masterSector.isTileVisible(tileColor, x, y + 1, z))
+        if (!masterSector.doesTileExist(x, y + 1, z))
         {
             addTop(tileColor);
         }
-        if (!masterSector.isTileVisible(tileColor, x, y - 1, z))
+
+        if (!masterSector.doesTileExist(x, y - 1, z))
         {
-            // Could say palette.Smooth, but
-            // this is only gonna come up for smooth tiles,
-            // or maybe even end tiles.
-            addBottom(tileColor);
+            if(tile == Tile.Smooth)
+            {
+                addBottom(palette.obstacle);
+            }
+            else
+            {
+                addBottom(tileColor);
+            }
+        }
+
+        if(tile == Tile.Obstacle)
+        {
+            if (masterSector.doesTileExist(x, 0, z + 1)
+                    && !masterSector.doesTileExist(x, 1, z + 1))
+                addFront(tileColor);
+            if (masterSector.doesTileExist(x, 0, z - 1)
+                    && !masterSector.doesTileExist(x, 1, z - 1))
+                addBack(tileColor);
+            if (masterSector.doesTileExist(x - 1, 0, z)
+                    && !masterSector.doesTileExist(x - 1, 1, z))
+                addLeft(tileColor);
+            if (masterSector.doesTileExist(x + 1, 0, z)
+                    && !masterSector.doesTileExist(x + 1, 1, z))
+                addRight(tileColor);
         }
     }
 
-    private void addFrontWall(boolean isDualLayer)
+    private void addWalls(MasterSector masterSector, Color wallColor, int x, int z, float xPos, float zPos)
     {
+
+        boolean isDualLayer = masterSector.doesTileExist(x, 1, z);
+
+        if (!masterSector.doesTileExist(x, 0, z + 1))
+        {
+            addFrontWall(wallColor, isDualLayer, xPos, zPos);
+        }
+        if (!masterSector.doesTileExist(x, 0, z - 1))
+        {
+            addBackWall(wallColor, isDualLayer, xPos, zPos);
+        }
+        if (!masterSector.doesTileExist(x - 1, 0, z))
+        {
+            addLeftWall(wallColor, isDualLayer, xPos, zPos);
+        }
+        if (!masterSector.doesTileExist(x + 1, 0, z))
+        {
+            addRightWall(wallColor, isDualLayer, xPos, zPos);
+        }
     }
 
-    private void addBackWall(boolean isDualLayer)
+    private void addFrontWall(Color color, boolean isDualLayer, float x, float z)
     {
+        float width = Constants.TILE_LENGTH;
+        float height = Constants.WALL_HEIGHT;
+        float depth = Constants.WALL_THICKNESS;
 
+        calculateVerts(x, 0, z + Constants.TILE_LENGTH, width, height, depth);
+
+        addTop(color);
+        addBottom(color);
+
+        addFront(color);
+
+        if(!isDualLayer)
+        {
+            height /= 2.0f;
+            calculateVerts(x, height, z + Constants.TILE_LENGTH, width, height, depth);
+            addBack(color);
+        }
     }
 
-    private void addLeftWall(boolean isDualLayer)
+    private void addBackWall(Color color, boolean isDualLayer, float x, float z)
     {
+        float width = Constants.TILE_LENGTH;
+        float height = Constants.WALL_HEIGHT;
+        float depth = Constants.WALL_THICKNESS;
 
+        calculateVerts(x, 0, z - depth, width, height, depth);
+
+        addTop(color);
+        addBottom(color);
+
+        addBack(color);
+
+        if(!isDualLayer)
+        {
+            height /= 2.0f;
+            calculateVerts(x, height, z - depth, width, height, depth);
+            addFront(color);
+        }
     }
 
-    private void addRightWall(boolean isDualLayer)
+    private void addLeftWall(Color color, boolean isDualLayer, float x, float z)
     {
+        float depth = Constants.TILE_LENGTH;
+        float width = Constants.WALL_THICKNESS;
+        float height = Constants.WALL_HEIGHT;
 
+        calculateVerts(x - width, 0, z, width, height, depth);
+
+        addTop(color);
+        addBottom(color);
+
+        addLeft(color);
+
+        if(!isDualLayer)
+        {
+            height /= 2.0f;
+            calculateVerts(x - width, height, z, width, height, depth);
+            addRight(color);
+        }
+    }
+
+    private void addRightWall(Color color, boolean isDualLayer, float x, float z)
+    {
+        float width = Constants.WALL_THICKNESS;
+        float depth = Constants.TILE_LENGTH;
+        float height = Constants.WALL_HEIGHT;
+
+        calculateVerts(x + Constants.TILE_LENGTH, 0, z, width, height, depth);
+
+        addTop(color);
+        addBottom(color);
+
+        addRight(color);
+
+        if(!isDualLayer)
+        {
+            height /= 2.0f;
+            calculateVerts(x + Constants.TILE_LENGTH, height, z, width, height, depth);
+            addLeft(color);
+        }
     }
 }

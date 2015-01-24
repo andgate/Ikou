@@ -218,4 +218,11 @@ public class MasterSector
 
         return false;
     }
+
+    public boolean doesTileExist(int x, int y, int z)
+    {
+        Tile tile = get(x, y, z);
+
+        return (tile != Tile.Blank);
+    }
 }
