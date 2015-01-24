@@ -15,6 +15,8 @@ package com.andgate.ikou.model;
 
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Array2d;
+import com.andgate.ikou.utility.graphics.ColorUtils;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 
 public class MasterSector
@@ -203,5 +205,17 @@ public class MasterSector
                 setStack(tileStack, x, y);
             }
         }
+    }
+
+    public boolean isTileVisible(Color color, int x, int y, int z)
+    {
+        Tile tile = get(x, y, z);
+
+        if(tile != Tile.Blank)
+        {
+            return ColorUtils.isVisible(color);
+        }
+
+        return false;
     }
 }

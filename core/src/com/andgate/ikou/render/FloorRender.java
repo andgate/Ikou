@@ -58,19 +58,11 @@ public class FloorRender implements RenderableProvider, Disposable
                 int offsetX = currColumn * TileSector.SIZE;
                 int offsetZ = currRow * TileSector.SIZE;
 
-                TileSector sector = sectors.get(currRow, currColumn);
-                if(sector != null)
-                {
-                    SectorMesh sectorMesh
-                            = new SectorMesh(sector, palette, offsetX, offsetZ);
+                SectorMesh sectorMesh
+                        = new SectorMesh(floor.getMasterSector(), currRow, currColumn, palette, offsetX, offsetZ);
 
-                    sectorMesh.setNeedsRebuild();
-                    sectorMeshes[currRow][currColumn] = sectorMesh;
-                }
-                else
-                {
-                    sectorMeshes[currRow][currColumn] = null;
-                }
+                sectorMesh.setNeedsRebuild();
+                sectorMeshes[currRow][currColumn] = sectorMesh;
             }
         }
     }

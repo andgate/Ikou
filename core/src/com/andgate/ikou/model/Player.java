@@ -235,11 +235,6 @@ public class Player implements DirectionListener, Disposable
             direction.set(0,0,0);
 
             initialPosition.set(position);
-
-            /*if(soundEffect != null)
-            {
-                soundEffect.stop();
-            }*/
         }
 
         return isSlidingOver;
