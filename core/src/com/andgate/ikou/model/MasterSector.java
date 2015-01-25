@@ -62,7 +62,7 @@ public class MasterSector
             }
         }
 
-        return Tile.Blank;
+        return Tile.None;
     }
 
     public TileStack getTileStack(int tileRow, int tileColumn)
@@ -223,6 +223,6 @@ public class MasterSector
     {
         Tile tile = get(x, y, z);
 
-        return (tile != Tile.Blank);
+        return (tile != Tile.Blank) && (tile != Tile.None);
     }
 }

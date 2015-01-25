@@ -22,7 +22,6 @@ import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Array2d;
 import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
 
 public class SectorMesh extends TileMesh
 {
@@ -138,102 +137,290 @@ public class SectorMesh extends TileMesh
 
         if (!masterSector.doesTileExist(x, 0, z + 1))
         {
-            addFrontWall(wallColor, isDualLayer, xPos, zPos);
+            WallCorner leftCorner = getFrontLeftCorner(masterSector, x, z);
+            WallCorner rightCorner = getFrontRightCorner(masterSector, x, z);
+            addFrontWall(leftCorner, rightCorner, wallColor, isDualLayer, xPos, zPos);
         }
         if (!masterSector.doesTileExist(x, 0, z - 1))
         {
-            addBackWall(wallColor, isDualLayer, xPos, zPos);
+            WallCorner leftCorner = getBackLeftCorner(masterSector, x, z);
+            WallCorner rightCorner = getBackRightCorner(masterSector, x, z);
+            addBackWall(leftCorner, rightCorner, wallColor, isDualLayer, xPos, zPos);
         }
         if (!masterSector.doesTileExist(x - 1, 0, z))
         {
-            addLeftWall(wallColor, isDualLayer, xPos, zPos);
+            WallCorner frontCorner = getFrontLeftCorner(masterSector, x, z);
+            WallCorner backCorner = getBackLeftCorner(masterSector, x, z);
+            addLeftWall(frontCorner, backCorner, wallColor, isDualLayer, xPos, zPos);
         }
         if (!masterSector.doesTileExist(x + 1, 0, z))
         {
-            addRightWall(wallColor, isDualLayer, xPos, zPos);
+            WallCorner frontCorner = getFrontRightCorner(masterSector, x, z);
+            WallCorner backCorner = getBackRightCorner(masterSector, x, z);
+            addRightWall(frontCorner, backCorner, wallColor, isDualLayer, xPos, zPos);
         }
     }
 
-    private void addFrontWall(Color color, boolean isDualLayer, float x, float z)
+    private enum WallCorner {None, Inside, Outside }
+
+    private WallCorner getFrontLeftCorner(MasterSector masterSector, int x, int z)
+    {
+        WallCorner corner = WallCorner.Outside;
+
+        if(masterSector.doesTileExist(x-1, 0, z+1))
+        {
+            corner = WallCorner.Inside;
+        }
+        else if(masterSector.doesTileExist(x-1, 0, z))
+        {
+            corner = WallCorner.None;
+        }
+
+        return corner;
+    }
+
+    private WallCorner getFrontRightCorner(MasterSector masterSector, int x, int z)
+    {
+        WallCorner corner = WallCorner.Outside;
+
+        if(masterSector.doesTileExist(x+1, 0, z+1))
+        {
+            corner = WallCorner.Inside;
+        }
+        else if(masterSector.doesTileExist(x+1, 0, z))
+        {
+            corner = WallCorner.None;
+        }
+
+        return corner;
+    }
+
+    private WallCorner getBackLeftCorner(MasterSector masterSector, int x, int z)
+    {
+        WallCorner corner = WallCorner.Outside;
+
+        if(masterSector.doesTileExist(x-1, 0, z-1))
+        {
+            corner = WallCorner.Inside;
+        }
+        else if(masterSector.doesTileExist(x-1, 0, z))
+        {
+            corner = WallCorner.None;
+        }
+
+        return corner;
+    }
+
+    private WallCorner getBackRightCorner(MasterSector masterSector, int x, int z)
+    {
+        WallCorner corner = WallCorner.Outside;
+
+        if(masterSector.doesTileExist(x+1, 0, z-1))
+        {
+            corner = WallCorner.Inside;
+        }
+        else if(masterSector.doesTileExist(x+1, 0, z))
+        {
+            corner = WallCorner.None;
+        }
+
+        return corner;
+    }
+
+    private void addFrontWall(WallCorner leftCorner, WallCorner rightCorner, Color color, boolean isDualLayer, final float x, final float z)
     {
         float width = Constants.TILE_LENGTH;
         float height = Constants.WALL_HEIGHT;
         float depth = Constants.WALL_THICKNESS;
+        float xPos = x;
+        float yPos = 0;
+        float zPos = z + Constants.TILE_LENGTH;
 
-        calculateVerts(x, 0, z + Constants.TILE_LENGTH, width, height, depth);
+        switch(leftCorner)
+        {
+            case Inside:
+                width -= Constants.WALL_THICKNESS;
+                xPos += Constants.WALL_THICKNESS;
+                break;
+            case Outside:
+                width += Constants.WALL_THICKNESS;
+                xPos -= Constants.WALL_THICKNESS;
+                break;
+            default:
+                break;
+        }
+
+        switch(rightCorner)
+        {
+            case Inside:
+                width -= Constants.WALL_THICKNESS;
+                break;
+            case Outside:
+                width += Constants.WALL_THICKNESS;
+                break;
+            default:
+                break;
+        }
+
+        calculateVerts(xPos, yPos, zPos, width, height, depth);
 
         addTop(color);
         addBottom(color);
-
         addFront(color);
+
+        if(rightCorner == WallCorner.Outside)
+            addRight(color);
+
+        if(leftCorner == WallCorner.Outside)
+            addLeft(color);
 
         if(!isDualLayer)
         {
+            xPos = x;
+            width = Constants.TILE_LENGTH;
             height /= 2.0f;
-            calculateVerts(x, height, z + Constants.TILE_LENGTH, width, height, depth);
+            yPos = height;
+            calculateVerts(xPos, yPos, zPos, width, height, depth);
             addBack(color);
         }
     }
 
-    private void addBackWall(Color color, boolean isDualLayer, float x, float z)
+    private void addBackWall(WallCorner leftCorner, WallCorner rightCorner, Color color, boolean isDualLayer, float x, float z)
     {
         float width = Constants.TILE_LENGTH;
         float height = Constants.WALL_HEIGHT;
         float depth = Constants.WALL_THICKNESS;
+        float xPos = x;
+        float yPos = 0;
+        float zPos = z - depth;
 
-        calculateVerts(x, 0, z - depth, width, height, depth);
+        switch(leftCorner)
+        {
+            case Inside:
+                width -= Constants.WALL_THICKNESS;
+                xPos += Constants.WALL_THICKNESS;
+                break;
+            case Outside:
+                width += Constants.WALL_THICKNESS;
+                xPos -= Constants.WALL_THICKNESS;
+                break;
+            default:
+                break;
+        }
+
+        switch(rightCorner)
+        {
+            case Inside:
+                width -= Constants.WALL_THICKNESS;
+                break;
+            case Outside:
+                width += Constants.WALL_THICKNESS;
+                break;
+            default:
+                break;
+        }
+
+        calculateVerts(xPos, yPos, zPos, width, height, depth);
 
         addTop(color);
         addBottom(color);
-
         addBack(color);
+
+        if(rightCorner == WallCorner.Outside)
+            addRight(color);
+
+        if(leftCorner == WallCorner.Outside)
+            addLeft(color);
 
         if(!isDualLayer)
         {
+            xPos = x;
+            width = Constants.TILE_LENGTH;
             height /= 2.0f;
-            calculateVerts(x, height, z - depth, width, height, depth);
+            yPos = height;
+            calculateVerts(xPos, yPos, zPos, width, height, depth);
             addFront(color);
         }
     }
 
-    private void addLeftWall(Color color, boolean isDualLayer, float x, float z)
+    private void addLeftWall(WallCorner frontCorner, WallCorner backCorner, Color color, boolean isDualLayer, float x, float z)
     {
         float depth = Constants.TILE_LENGTH;
         float width = Constants.WALL_THICKNESS;
         float height = Constants.WALL_HEIGHT;
+        float xPos = x - width;
+        float yPos = 0;
+        float zPos = z;
 
-        calculateVerts(x - width, 0, z, width, height, depth);
+        calculateVerts(xPos, yPos, zPos, width, height, depth);
 
         addTop(color);
         addBottom(color);
 
+        if(frontCorner == WallCorner.Inside)
+        {
+            addFront(color);
+            depth -= Constants.WALL_THICKNESS;
+        }
+
+        if(backCorner == WallCorner.Inside)
+        {
+            addBack(color);
+            depth -= Constants.WALL_THICKNESS;
+            zPos += Constants.WALL_THICKNESS;
+        }
+
+        calculateVerts(xPos, yPos, zPos, width, height, depth);
         addLeft(color);
 
         if(!isDualLayer)
         {
             height /= 2.0f;
-            calculateVerts(x - width, height, z, width, height, depth);
+            depth = Constants.TILE_LENGTH;
+            yPos = height;
+            zPos = z;
+            calculateVerts(xPos, yPos, zPos, width, height, depth);
             addRight(color);
         }
     }
 
-    private void addRightWall(Color color, boolean isDualLayer, float x, float z)
+    private void addRightWall(WallCorner frontCorner, WallCorner backCorner, Color color, boolean isDualLayer, float x, float z)
     {
         float width = Constants.WALL_THICKNESS;
         float depth = Constants.TILE_LENGTH;
         float height = Constants.WALL_HEIGHT;
+        float xPos = x + Constants.TILE_LENGTH;
+        float yPos = 0;
+        float zPos = z;
 
-        calculateVerts(x + Constants.TILE_LENGTH, 0, z, width, height, depth);
+        calculateVerts(xPos, yPos, zPos, width, height, depth);
 
         addTop(color);
         addBottom(color);
 
+        if(frontCorner == WallCorner.Inside)
+        {
+            addFront(color);
+            depth -= Constants.WALL_THICKNESS;
+        }
+
+        if(backCorner == WallCorner.Inside)
+        {
+            addBack(color);
+            depth -= Constants.WALL_THICKNESS;
+            zPos += Constants.WALL_THICKNESS;
+        }
+
+        calculateVerts(xPos, yPos, zPos, width, height, depth);
         addRight(color);
 
         if(!isDualLayer)
         {
             height /= 2.0f;
-            calculateVerts(x + Constants.TILE_LENGTH, height, z, width, height, depth);
+            depth = Constants.TILE_LENGTH;
+            yPos = height;
+            zPos = z;
+            calculateVerts(xPos, yPos, zPos, width, height, depth);
             addLeft(color);
         }
     }

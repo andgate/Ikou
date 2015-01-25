@@ -36,7 +36,7 @@ public class TileStack
 
     public enum Tile
     {
-        Smooth, Obstacle, Rough, Player, End, Victory, Blank
+        Smooth, Obstacle, Rough, Player, End, Victory, Blank, None
     }
 
     Tile[] tiles;
