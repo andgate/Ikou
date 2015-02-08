@@ -6,10 +6,12 @@ import com.andgate.ikou.render.LevelRender;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.FillViewport;
@@ -24,9 +26,9 @@ public class LevelPreview
     private final PerspectiveCamera camera;
 
     private final Rectangle viewRect = new Rectangle();
-    Environment environment;
+    private final Environment environment;
 
-    public LevelPreview(Ikou game, PerspectiveCamera camera)
+    public LevelPreview(PerspectiveCamera camera)
     {
         this.camera = camera;
         levelRender = null;
@@ -41,6 +43,10 @@ public class LevelPreview
     public void setSize(int x, int y, int w, int h)
     {
         viewRect.set(x, y, w, h);
+
+        camera.viewportWidth = w;
+        camera.viewportHeight = h;
+        camera.update(true);
     }
 
     public void setLevelRender(LevelRender levelRender)
@@ -57,14 +63,13 @@ public class LevelPreview
     {
         if(levelRender != null)
         {
-            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            //Gdx.gl.glViewport((int)viewRect.x, (int)viewRect.y, (int)viewRect.width, (int)viewRect.height);
+            Gdx.gl.glViewport((int)viewRect.x, (int)viewRect.x, (int)viewRect.width, (int)viewRect.height);
 
             modelBatch.begin(camera);
             modelBatch.render(levelRender, environment);
             modelBatch.end();
 
-            //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
 }

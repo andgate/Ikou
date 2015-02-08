@@ -149,10 +149,6 @@ public class Ikou extends Game
         {
             getScreen().resize(width, height);
         }
-
-        camera.viewportHeight = worldHeight;
-        camera.viewportWidth = worldWidth;
-        camera.update(true);
     }
 
     public void screenAdjustments(int width, int height)

@@ -25,9 +25,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -56,13 +59,8 @@ public class LevelSelectScreen implements Screen
     private static final String SELECT_LEVEL_MESSAGE = "Select a level";
 
     private List levelNameList;
-
     private ShaderLabel floorProgressLabel;
-    private ShaderLabel floorSelectLabel;
-    private ShaderLabel noLevelSelected;
-
-    private Table floorSelectTable;
-
+    private Container previewContainer;
     private LevelPreview levelPreview;
 
     private String floorProgressString = " ";
@@ -70,7 +68,7 @@ public class LevelSelectScreen implements Screen
     public LevelSelectScreen(final Ikou game)
     {
         this.game = game;
-        levelPreview = new LevelPreview(game, game.camera);
+        levelPreview = new LevelPreview(game.camera);
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -91,7 +89,7 @@ public class LevelSelectScreen implements Screen
 
         // get the level and floor select tables ready
         final Table levelSelectorTable = buildLevelSelectorTable();
-        floorSelectTable = buildFloorSelectTable();
+        final Table floorSelectTable = buildFloorSelectTable();
 
         final Table table = new Table();
         table.add(levelSelectorTable).expand().fill();
@@ -106,12 +104,14 @@ public class LevelSelectScreen implements Screen
         stage.addActor(table);
         stage.setDebugAll(true);
 
-        int x = (int)noLevelSelected.getX();
-        int y = Gdx.graphics.getHeight() - (int)noLevelSelected.getY();
-        int w = (int)noLevelSelected.getWidth();
-        int h = (int)noLevelSelected.getHeight();
+        Vector2 previewCoords = new Vector2(previewContainer.getX(), previewContainer.getY());
+        previewContainer.localToStageCoordinates(/*in/out*/previewCoords);
+        previewContainer.getStage().stageToScreenCoordinates(/*in/out*/previewCoords);
 
-        levelPreview.setSize(x, y, w, h);
+        int w = (int)previewContainer.getMaxWidth();
+        int h = (int)previewContainer.getMaxHeight();
+
+        levelPreview.setSize((int)previewCoords.x, (int)previewCoords.y, w, h);
     }
 
     private Table buildLevelSelectorTable()
@@ -161,18 +161,29 @@ public class LevelSelectScreen implements Screen
 
     private Table buildFloorSelectTable()
     {
-        Table floorSelectTable = new Table();
+        final Table floorSelectTable = new Table();
 
         final LabelStyle floorProgressStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
         floorProgressLabel = new ShaderLabel(floorProgressString, floorProgressStyle, game.fontShader);
 
         final LabelStyle floorsSelectLabelStyle = new LabelStyle(game.menuTitleFont, Color.CYAN);
-        floorSelectLabel = new ShaderLabel(SELECT_FLOOR_HEADER, floorsSelectLabelStyle, game.fontShader);
-        noLevelSelected = new ShaderLabel(SELECT_LEVEL_MESSAGE, floorsSelectLabelStyle, game.fontShader);
+        final ShaderLabel floorSelectLabel = new ShaderLabel(SELECT_FLOOR_HEADER, floorsSelectLabelStyle, game.fontShader);
+        final ShaderLabel noLevelSelected = new ShaderLabel(SELECT_LEVEL_MESSAGE, floorProgressStyle, game.fontShader);
+
+        previewContainer = new Container();
+
+        if(levelNameList.getSelectedIndex() == -1)
+            previewContainer.setActor(noLevelSelected);
+
+        float length = (Gdx.graphics.getWidth() < Gdx.graphics.getHeight())
+                ? Gdx.graphics.getWidth() : Gdx.graphics.getHeight();
+
+        length *= 0.75f;
+        previewContainer.size(length);
 
         floorSelectTable.add(floorSelectLabel).row();
         floorSelectTable.add(floorProgressLabel).row();
-        floorSelectTable.add(noLevelSelected);
+        floorSelectTable.add(previewContainer);
 
         // Add the level floor previewer
         //floorSelectorTable.add(scrollPane).fill().expand().top().left();
@@ -195,6 +206,8 @@ public class LevelSelectScreen implements Screen
             }
         }
 
+        previewContainer.clear();
+
         floorProgressString = levelData.completedFloors + " / " + levelData.totalFloors;
         floorProgressLabel.setText(floorProgressString);
 
@@ -203,10 +216,7 @@ public class LevelSelectScreen implements Screen
 
         levelPreview.setLevelRender(null);
 
-        while(levelLoader.isAlive())
-        {
-            // wait for the levelLoader to finish
-        }
+        while(levelLoader.isAlive()) {}
 
         levelPreview.setLevelRender(levelLoader.getLevelRender());
 
@@ -218,9 +228,13 @@ public class LevelSelectScreen implements Screen
     @Override
     public void render(float delta)
     {
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
 
         stage.draw();
+
+        Gdx.gl.glFlush();
+        levelPreview.render(delta);
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK))
         {
@@ -228,8 +242,6 @@ public class LevelSelectScreen implements Screen
         }
 
         stage.act();
-
-        levelPreview.render(delta);
     }
 
     public void gotoMainMenu()
