@@ -26,6 +26,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -33,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class LevelSelectScreen implements Screen
@@ -50,6 +52,8 @@ public class LevelSelectScreen implements Screen
     private static final String SELECT_LEVEL_HEADER = "Levels";
     private static final String SELECT_FLOOR_HEADER = "Floors";
     private static final String SELECT_LEVEL_MESSAGE = "Select a level";
+
+    private List levelNameList;
 
     private ShaderLabel floorProgressLabel;
     private ShaderLabel floorSelectLabel;
@@ -115,7 +119,6 @@ public class LevelSelectScreen implements Screen
 
     private Table buildLevelsTable()
     {
-
         String[] levelNames = new String[levelDatas.length];
 
         for(int i = 0; i < levelDatas.length; i++)
@@ -125,8 +128,18 @@ public class LevelSelectScreen implements Screen
 
         final List.ListStyle levelNameListStyle = new List.ListStyle(game.skin.get(ListStyle.class));
         levelNameListStyle.font = game.menuOptionFont;
-        List levelNameList = new List(levelNameListStyle);
+
+        int currentSelectedIndex = -1;
+        if(levelNameList != null)
+        {
+            currentSelectedIndex = levelNameList.getSelectedIndex();
+        }
+
+
+        levelNameList = new List(levelNameListStyle);
         levelNameList.setItems(levelNames);
+        levelNameList.setSelectedIndex(currentSelectedIndex);
+        levelNameList.addListener(new LevelSelectInputListener(levelNameList, this, levelDatas));
 
 
         float sidePadding = 1.0f * game.ppm;
@@ -140,7 +153,7 @@ public class LevelSelectScreen implements Screen
     {
         Table floorSelectTable = new Table();
 
-        final LabelStyle floorProgressStyle = new LabelStyle(game.menuOptionFont, Color.BLACK);
+        final LabelStyle floorProgressStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
         floorProgressLabel = new ShaderLabel(floorProgressString, floorProgressStyle, game.fontShader);
 
         final LabelStyle floorsSelectLabelStyle = new LabelStyle(game.menuTitleFont, Color.CYAN);
@@ -239,30 +252,43 @@ public class LevelSelectScreen implements Screen
             stage.dispose();
     }
 
-    private class LevelOptionClickListener extends ClickListener
+    private class LevelSelectInputListener extends InputListener
     {
-        private static final String TAG = "LevelOptionClickListener";
+        private static final String TAG = "LevelSelectInputListener";
 
-        private final Ikou game;
+        private final List levelList;
         private final LevelSelectScreen screen;
-        private final LevelData levelData;
+        private final LevelData[] levelDatas;
 
-        public LevelOptionClickListener(Ikou game, LevelSelectScreen screen, LevelData levelData)
+        private int selectedIndex = 0;
+
+        public LevelSelectInputListener(List levelList, LevelSelectScreen screen, LevelData[] levelDatas)
         {
             super();
 
-            this.game = game;
+            this.levelList = levelList;
             this.screen = screen;
-            this.levelData = levelData;
+            this.levelDatas = levelDatas;
+
+            selectedIndex = levelList.getSelectedIndex();
         }
 
         @Override
-        public void clicked(InputEvent event, float x, float y)
+        public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
         {
             //game.buttonPressedSound.play();
             //game.setScreen(new FloorSelectScreen(game, levelData));
             //screen.dispose();
-            screen.setSelectedLevel(levelData);
+
+            int currentSelectedIndex = levelList.getSelectedIndex();
+
+            if(currentSelectedIndex != selectedIndex)
+            {
+                selectedIndex = currentSelectedIndex;
+                screen.setSelectedLevel(levelDatas[selectedIndex]);
+            }
+
+            return true;
         }
     }
 }
