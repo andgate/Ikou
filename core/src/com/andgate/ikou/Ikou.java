@@ -77,7 +77,7 @@ public class Ikou extends Game
     private void createCamera()
     {
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, worldWidth, worldHeight);
-        camera.position.set(0.0f, 10.0f, 0.0f);
+        camera.position.set(0.0f, 2.0f, 0.0f);
         camera.lookAt(0.0f, -1.0f, 0.0f);
         camera.near = 1f;
         camera.far = Constants.CAMERA_FAR;

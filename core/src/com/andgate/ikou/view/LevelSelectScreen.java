@@ -97,21 +97,25 @@ public class LevelSelectScreen implements Screen
         if(game.worldWidth < game.worldHeight)
             table.row();
 
-        table.add(floorSelectTable).fill();
+        table.add(floorSelectTable).fill().expand();
 
         table.setFillParent(true);
 
         stage.addActor(table);
         stage.setDebugAll(true);
 
-        Vector2 previewCoords = new Vector2(previewContainer.getX(), previewContainer.getY());
+        // Build the layout's dimensional information.
+        table.pack();
+        table.layout();
+
+        int w = (int)previewContainer.getWidth();
+        int h = (int)previewContainer.getHeight();
+
+        Vector2 previewCoords = new Vector2(0.0f, 0.0f);
         previewContainer.localToStageCoordinates(/*in/out*/previewCoords);
-        previewContainer.getStage().stageToScreenCoordinates(/*in/out*/previewCoords);
+        //previewContainer.getStage().stageToScreenCoordinates(/*in/out*/previewCoords);
 
-        int w = (int)previewContainer.getMaxWidth();
-        int h = (int)previewContainer.getMaxHeight();
-
-        levelPreview.setSize((int)previewCoords.x, (int)previewCoords.y, w, h);
+        levelPreview.setSize((int)previewCoords.x, 0, w, h);
     }
 
     private Table buildLevelSelectorTable()
@@ -178,15 +182,12 @@ public class LevelSelectScreen implements Screen
         float length = (Gdx.graphics.getWidth() < Gdx.graphics.getHeight())
                 ? Gdx.graphics.getWidth() : Gdx.graphics.getHeight();
 
-        length *= 0.75f;
+        length *= 0.60f;
         previewContainer.size(length);
 
         floorSelectTable.add(floorSelectLabel).row();
         floorSelectTable.add(floorProgressLabel).row();
         floorSelectTable.add(previewContainer);
-
-        // Add the level floor previewer
-        //floorSelectorTable.add(scrollPane).fill().expand().top().left();
 
         //floorSelectTable.setFillParent(true);
 
@@ -206,7 +207,7 @@ public class LevelSelectScreen implements Screen
             }
         }
 
-        previewContainer.clear();
+        //previewContainer.clear();
 
         floorProgressString = levelData.completedFloors + " / " + levelData.totalFloors;
         floorProgressLabel.setText(floorProgressString);
