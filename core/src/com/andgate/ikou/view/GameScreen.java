@@ -76,6 +76,7 @@ public class GameScreen extends ScreenAdapter
     public GameScreen(Ikou game, Level level, int currentFloorNumber)
     {
         this.game = game;
+        camera = game.camera;
         this.level = level;
         batch = new SpriteBatch();
 
@@ -87,7 +88,6 @@ public class GameScreen extends ScreenAdapter
         Gdx.graphics.setVSync(false);
 
         modelBatch = new ModelBatch();
-        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, game.worldWidth, game.worldHeight);
         levelRender = new LevelRender(level, camera);
 
         player = new Player(game, level, currentFloorNumber);

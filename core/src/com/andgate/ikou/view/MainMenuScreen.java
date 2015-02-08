@@ -44,7 +44,8 @@ public class MainMenuScreen implements Screen
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        Color bg = Constants.BACKGROUND_COLOR;
+        Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
 
         buildStage();
     }

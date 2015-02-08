@@ -15,17 +15,21 @@ package com.andgate.ikou.utility.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class ShaderFont extends BitmapFont
 {
     float scale = 1.0f;
+    private ShaderProgram shader;
 
-    public ShaderFont(String fntFilename, String pngFilename)
+    public ShaderFont(String fntFilename, String pngFilename, ShaderProgram shader)
     {
         super(Gdx.files.internal(fntFilename), loadTextureRegion(pngFilename));
         super.setOwnsTexture(true);
+        this.shader = shader;
     }
 
     @Override
@@ -49,5 +53,15 @@ public class ShaderFont extends BitmapFont
         Texture texture = new Texture(Gdx.files.internal(pngFilename), true);
         texture.setFilter(Texture.TextureFilter.MipMapLinearLinear, Texture.TextureFilter.Linear);
         return new TextureRegion(texture);
+    }
+
+    @Override
+    public TextBounds draw (Batch batch, CharSequence str, float x, float y)
+    {
+        batch.setShader(shader);
+        TextBounds bounds = super.draw(batch, str, x, y);
+        batch.setShader(null);
+
+        return bounds;
     }
 }

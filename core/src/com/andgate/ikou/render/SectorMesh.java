@@ -161,6 +161,11 @@ public class SectorMesh extends TileMesh
         }
     }
 
+    // This gets REALLY ugly. I'm not proud of it.
+    // Unfortunantly, there are just too many little differences for
+    // each wall they each one needed it's own, special routine.
+    // The worst part about it, is the routines are very similar.
+
     private enum WallCorner {None, Inside, Outside }
 
     private WallCorner getFrontLeftCorner(MasterSector masterSector, int x, int z)

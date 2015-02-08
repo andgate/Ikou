@@ -20,7 +20,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -45,6 +47,8 @@ public class Ikou extends Game
     public Sound fallSound;
     public Sound hitSound;
 
+    public PerspectiveCamera camera;
+
     public Ikou()
     {
     }
@@ -61,9 +65,12 @@ public class Ikou extends Game
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
         skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
-        loadFonts();
+
         loadShader();
+        loadFonts();
         loadSounds();
+
+        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, worldWidth, worldHeight);
 
         setScreen(new MainMenuScreen(this));
 	}
@@ -80,9 +87,9 @@ public class Ikou extends Game
 
     private void loadFonts()
     {
-        logoFont = new ShaderFont(Constants.LOGO_FONT_FNT, Constants.LOGO_FONT_PNG);
-        menuTitleFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG);
-        menuOptionFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG);
+        logoFont = new ShaderFont(Constants.LOGO_FONT_FNT, Constants.LOGO_FONT_PNG, fontShader);
+        menuTitleFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
+        menuOptionFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
     }
 
     private void loadShader()
