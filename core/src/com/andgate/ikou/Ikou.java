@@ -60,6 +60,7 @@ public class Ikou extends Game
         Gdx.input.setCatchBackKey(true);
         Gdx.graphics.setVSync(true);
         screenAdjustments(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        createCamera();
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
@@ -70,10 +71,18 @@ public class Ikou extends Game
         loadFonts();
         loadSounds();
 
-        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, worldWidth, worldHeight);
-
         setScreen(new MainMenuScreen(this));
 	}
+
+    private void createCamera()
+    {
+        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, worldWidth, worldHeight);
+        camera.position.set(0.0f, 10.0f, 0.0f);
+        camera.lookAt(0.0f, -1.0f, 0.0f);
+        camera.near = 1f;
+        camera.far = Constants.CAMERA_FAR;
+        camera.update();
+    }
 
     private void loadSounds()
     {
@@ -140,6 +149,10 @@ public class Ikou extends Game
         {
             getScreen().resize(width, height);
         }
+
+        camera.viewportHeight = worldHeight;
+        camera.viewportWidth = worldWidth;
+        camera.update(true);
     }
 
     public void screenAdjustments(int width, int height)

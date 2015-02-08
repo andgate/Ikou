@@ -36,6 +36,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class LevelSelectScreen implements Screen
 {
@@ -61,11 +63,15 @@ public class LevelSelectScreen implements Screen
 
     private Table floorSelectTable;
 
+    private LevelPreview levelPreview;
+
     private String floorProgressString = " ";
 
     public LevelSelectScreen(final Ikou game)
     {
         this.game = game;
+        levelPreview = new LevelPreview(game, game.camera);
+
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
@@ -99,6 +105,13 @@ public class LevelSelectScreen implements Screen
 
         stage.addActor(table);
         stage.setDebugAll(true);
+
+        int x = (int)noLevelSelected.getX();
+        int y = Gdx.graphics.getHeight() - (int)noLevelSelected.getY();
+        int w = (int)noLevelSelected.getWidth();
+        int h = (int)noLevelSelected.getHeight();
+
+        levelPreview.setSize(x, y, w, h);
     }
 
     private Table buildLevelSelectorTable()
@@ -131,10 +144,7 @@ public class LevelSelectScreen implements Screen
 
         int currentSelectedIndex = -1;
         if(levelNameList != null)
-        {
             currentSelectedIndex = levelNameList.getSelectedIndex();
-        }
-
 
         levelNameList = new List(levelNameListStyle);
         levelNameList.setItems(levelNames);
@@ -172,13 +182,6 @@ public class LevelSelectScreen implements Screen
         return floorSelectTable;
     }
 
-    private Table buildFloorsTable()
-    {
-        Table floorsTable = new Table();
-
-        return floorsTable;
-    }
-
     public void setSelectedLevel(LevelData levelData)
     {
         if(levelLoader != null)
@@ -198,6 +201,15 @@ public class LevelSelectScreen implements Screen
         levelLoader = new LevelLoaderThread(game, levelData);
         levelLoader.start();
 
+        levelPreview.setLevelRender(null);
+
+        while(levelLoader.isAlive())
+        {
+            // wait for the levelLoader to finish
+        }
+
+        levelPreview.setLevelRender(levelLoader.getLevelRender());
+
         // remove the old floor selector
         // build a floor selector with the loaded level
         // add it to the floor selector table
@@ -216,6 +228,8 @@ public class LevelSelectScreen implements Screen
         }
 
         stage.act();
+
+        levelPreview.render(delta);
     }
 
     public void gotoMainMenu()
