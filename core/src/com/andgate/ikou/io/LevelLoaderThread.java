@@ -31,7 +31,7 @@ public class LevelLoaderThread extends Thread
         try
         {
             level = LevelLoader.load(levelData);
-            levelRender = new LevelRender(level, game.camera);
+            levelRender = new LevelRender(level);
         }
         catch(IOException e)
         {

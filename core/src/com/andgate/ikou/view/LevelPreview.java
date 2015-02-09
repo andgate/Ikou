@@ -1,36 +1,36 @@
 package com.andgate.ikou.view;
 
-import com.andgate.ikou.Ikou;
-import com.andgate.ikou.model.Level;
+import com.andgate.ikou.Constants;
 import com.andgate.ikou.render.LevelRender;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class LevelPreview
 {
     private LevelRender levelRender;
 
-    private final ModelBatch modelBatch;
     private final PerspectiveCamera camera;
-
-    private final Rectangle viewRect = new Rectangle();
+    private final ModelBatch modelBatch;
     private final Environment environment;
 
-    public LevelPreview(PerspectiveCamera camera)
+    private FrameBuffer frameBuffer;
+    private TextureRegionDrawable drawable;
+
+    public LevelPreview()
     {
-        this.camera = camera;
+        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        setupCamera();
+
         levelRender = null;
         modelBatch = new ModelBatch();
 
@@ -39,9 +39,21 @@ public class LevelPreview
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
     }
 
-    public void setSize(int x, int y, int w, int h)
+    private void setupCamera()
     {
-        viewRect.set(x, y, w, h);
+        camera.position.set(0.0f, 1.0f, -2.0f);
+        camera.lookAt(0.0f, 0.0f, 0.0f);
+        camera.near = 1f;
+        camera.far = Constants.CAMERA_FAR;
+        camera.update();
+    }
+
+    public void setSize(int w, int h)
+    {
+        frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, w, h, false);
+        TextureRegion textureRegion = new TextureRegion(frameBuffer.getColorBufferTexture(), w, h);
+        textureRegion.flip(false, true);
+        drawable = new TextureRegionDrawable(textureRegion);
 
         camera.viewportWidth = w;
         camera.viewportHeight = h;
@@ -51,6 +63,13 @@ public class LevelPreview
     public void setLevelRender(LevelRender levelRender)
     {
         this.levelRender = levelRender;
+        if(levelRender != null)
+        {
+            levelRender.setCamera(camera);
+            levelRender.scaleFloorsToBoxSize(3.0f);
+            levelRender.centerOnOrigin();
+            levelRender.spaceFloors(1.0f);
+        }
     }
 
     public void render(float delta)
@@ -62,13 +81,21 @@ public class LevelPreview
     {
         if(levelRender != null)
         {
-            Gdx.gl.glViewport((int)viewRect.x, (int)viewRect.x, (int)viewRect.width, (int)viewRect.height);
+            frameBuffer.begin();
+
+            Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             modelBatch.begin(camera);
             modelBatch.render(levelRender, environment);
             modelBatch.end();
 
-            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            frameBuffer.end(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
+    }
+
+    public Drawable getDrawable()
+    {
+        return drawable;
     }
 }

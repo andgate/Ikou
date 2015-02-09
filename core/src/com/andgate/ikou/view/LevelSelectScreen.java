@@ -68,13 +68,10 @@ public class LevelSelectScreen implements Screen
     public LevelSelectScreen(final Ikou game)
     {
         this.game = game;
-        levelPreview = new LevelPreview(game.camera);
+        levelPreview = new LevelPreview();
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-
-        Color bg = Constants.BACKGROUND_COLOR;
-        Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
 
         levelDatas = LevelDatabaseService.getLevelDatas();
 
@@ -108,14 +105,12 @@ public class LevelSelectScreen implements Screen
         table.pack();
         table.layout();
 
+        // Then get the width/height of the container
         int w = (int)previewContainer.getWidth();
         int h = (int)previewContainer.getHeight();
 
-        Vector2 previewCoords = new Vector2(0.0f, 0.0f);
-        previewContainer.localToStageCoordinates(/*in/out*/previewCoords);
-        //previewContainer.getStage().stageToScreenCoordinates(/*in/out*/previewCoords);
-
-        levelPreview.setSize((int)previewCoords.x, 0, w, h);
+        levelPreview.setSize(w, h);
+        previewContainer.setBackground(levelPreview.getDrawable());
     }
 
     private Table buildLevelSelectorTable()
@@ -189,8 +184,6 @@ public class LevelSelectScreen implements Screen
         floorSelectTable.add(floorProgressLabel).row();
         floorSelectTable.add(previewContainer);
 
-        //floorSelectTable.setFillParent(true);
-
         return floorSelectTable;
     }
 
@@ -207,7 +200,7 @@ public class LevelSelectScreen implements Screen
             }
         }
 
-        //previewContainer.clear();
+        previewContainer.clear();
 
         floorProgressString = levelData.completedFloors + " / " + levelData.totalFloors;
         floorProgressLabel.setText(floorProgressString);
@@ -215,10 +208,7 @@ public class LevelSelectScreen implements Screen
         levelLoader = new LevelLoaderThread(game, levelData);
         levelLoader.start();
 
-        levelPreview.setLevelRender(null);
-
         while(levelLoader.isAlive()) {}
-
         levelPreview.setLevelRender(levelLoader.getLevelRender());
 
         // remove the old floor selector
@@ -229,13 +219,15 @@ public class LevelSelectScreen implements Screen
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        levelPreview.render(delta);
 
+        Color bg = Constants.BACKGROUND_COLOR;
+        Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         stage.draw();
 
-        Gdx.gl.glFlush();
-        levelPreview.render(delta);
+        Gdx.gl.glFinish();
 
         if(Gdx.input.isKeyPressed(Input.Keys.BACK))
         {

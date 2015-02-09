@@ -27,45 +27,98 @@ import com.badlogic.gdx.utils.Pool;
 
 public class LevelRender implements RenderableProvider, Disposable
 {
-    FloorRender[] renders;
+    private final Level level;
+    private final FloorRender[] floorRenders;
 
-    public LevelRender(Level level, PerspectiveCamera camera)
+    public LevelRender(Level level)
     {
+        this.level = level;
         Floor[] floors = level.getFloors();
-        renders = new FloorRender[floors.length];
+        floorRenders = new FloorRender[floors.length];
 
-        for(int i = 0; i < renders.length; i++)
+        for(int i = 0; i < floorRenders.length; i++)
         {
-            renders[i] = new FloorRender(floors[i], camera);
+            floorRenders[i] = new FloorRender(floors[i]);
+        }
+    }
 
-            // x and z calculated from start and goal positions of maze and next maze, yea?
-            Vector3 position = new Vector3();
-            position.y -= i * Constants.FLOOR_SPACING;
-            renders[i].setPosition(position);
+    public void offsetFloors()
+    {
+        for(int i = 1; i < floorRenders.length; i++)
+        {
+            Vector2i offset = level.getFloorOffset(i);
+            floorRenders[i].translate(offset.x, 0.0f, offset.y);
+        }
+    }
 
-            if(i > 0)
-            {
-                Vector2i offset = level.getFloorOffset(i);
-                renders[i].floorTransform.translate(offset.x, 0.0f, offset.y);
-            }
+    public void spaceFloors(float spacing)
+    {
+        for(int i = 1; i < floorRenders.length; i++)
+        {
+            floorRenders[i].translate(0.0f, -spacing * i, 0.0f);
+        }
+    }
+
+    public void resetTransform()
+    {
+        for(FloorRender floorRender : floorRenders)
+        {
+            floorRender.resetTransform();
+        }
+    }
+
+    public void scaleFloorsToBoxSize(float length)
+    {
+        for(FloorRender floorRender : floorRenders)
+        {
+            floorRender.scaleToBoxSize(length);
+        }
+    }
+
+    public FloorRender[] getFloorRenders()
+    {
+        return floorRenders;
+    }
+
+    public PerspectiveCamera getCamera()
+    {
+        if(floorRenders.length >= 1)
+            return floorRenders[1].getCamera();
+
+        return null;
+    }
+
+    public void setCamera(PerspectiveCamera camera)
+    {
+        for(FloorRender floorRender : floorRenders)
+        {
+            floorRender.setCamera(camera);
+        }
+    }
+
+    public void centerOnOrigin()
+    {
+        for(FloorRender floorRender : floorRenders)
+        {
+            floorRender.centerOnOrigin();
         }
     }
 
     @Override
     public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool)
     {
-        for(FloorRender render : renders)
+        for(FloorRender floorRender : floorRenders)
         {
-            render.getRenderables(renderables, pool);
+            floorRender.getRenderables(renderables, pool);
         }
     }
 
     @Override
     public void dispose()
     {
-        for(FloorRender render : renders)
+        for(FloorRender floorRender : floorRenders)
         {
-            render.dispose();
+            floorRender.dispose();
         }
     }
 }

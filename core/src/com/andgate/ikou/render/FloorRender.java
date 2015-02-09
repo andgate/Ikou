@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
@@ -34,12 +35,26 @@ public class FloorRender implements RenderableProvider, Disposable
     private static final int SUBSECTOR_SIZE = TileSector.SIZE;
     private SectorMesh[][] sectorMeshes;
     public final Matrix4 floorTransform = new Matrix4();
-    private final PerspectiveCamera camera;
+    private PerspectiveCamera camera;
+    private Vector3 position = new Vector3();
+    private Vector3 size = new Vector3();
+    private float scale = 1.0f;
 
-    public FloorRender(Floor floor, PerspectiveCamera camera)
+    public FloorRender(Floor floor)
+    {
+        this.camera = null;
+        buildMeshes(floor);
+        calculateSize();
+    }
+
+    public PerspectiveCamera getCamera()
+    {
+        return camera;
+    }
+
+    public void setCamera(PerspectiveCamera camera)
     {
         this.camera = camera;
-        buildMeshes(floor);
     }
 
     private void buildMeshes(Floor floor)
@@ -67,11 +82,82 @@ public class FloorRender implements RenderableProvider, Disposable
         }
     }
 
-    public void setPosition(Vector3 position)
+    private void calculateSize()
     {
-        floorTransform.idt().translate(position);
+        size.x = 0;
+        size.y = 0;
+        size.z = 0;
+
+        for (SectorMesh[] sectorMeshRow : sectorMeshes)
+        {
+            for (SectorMesh sectorMesh : sectorMeshRow)
+            {
+                Mesh mesh = sectorMesh.getMesh();
+
+                if (mesh != null)
+                {
+                    BoundingBox bbox = mesh.calculateBoundingBox();
+
+                    size.x += bbox.getWidth();
+                    size.y = Math.max(size.y, bbox.getHeight());
+                    size.z += bbox.getDepth();
+                }
+            }
+        }
     }
 
+    public float getWidth()
+    {
+        return size.x * scale;
+    }
+
+    public float getHeight()
+    {
+        return size.y * scale;
+    }
+
+    public float getDepth()
+    {
+        return size.z * scale;
+    }
+
+    public void setPosition(Vector3 position)
+    {
+        this.position.set(position);
+        applyTransforms();
+    }
+
+    public void translate(float x, float y, float z)
+    {
+        this.position.add(x, y, z);
+        applyTransforms();
+    }
+
+    public void centerOnOrigin()
+    {
+        translate(-getWidth() / 2.0f, 0.0f, -getDepth() / 2.0f);
+    }
+
+    public void scaleToBoxSize(float length)
+    {
+        float floorLength = size.x > size.z ? size.x : size.z;
+        scale = length / floorLength;
+
+        applyTransforms();
+    }
+
+    private void applyTransforms()
+    {
+        floorTransform.idt().translate(position).scl(scale);
+    }
+
+    public void resetTransform()
+    {
+        floorTransform.idt();
+
+        position.setZero();
+        scale = 1.0f;
+    }
 
     private final Vector3 subsectorPosition = new Vector3();
 
@@ -102,6 +188,9 @@ public class FloorRender implements RenderableProvider, Disposable
 
     private boolean inFrustum(int sectorRow, int sectorColumn)
     {
+        if(camera == null)
+            return true;
+
         floorTransform.getTranslation(subsectorPosition);
         subsectorPosition.x += sectorColumn * SUBSECTOR_SIZE;
         subsectorPosition.z += sectorRow * SUBSECTOR_SIZE;
@@ -117,11 +206,10 @@ public class FloorRender implements RenderableProvider, Disposable
 
     public void disposeMeshes()
     {
-        for(int i = 0; i < sectorMeshes.length; i++)
+        for (SectorMesh[] sectorMeshRow : sectorMeshes)
         {
-            for(int j = 0; j < sectorMeshes[i].length; j++)
+            for (SectorMesh sectorMesh : sectorMeshRow)
             {
-                SectorMesh sectorMesh = sectorMeshes[i][j];
                 if(sectorMesh != null)
                     sectorMesh.dispose();
             }
