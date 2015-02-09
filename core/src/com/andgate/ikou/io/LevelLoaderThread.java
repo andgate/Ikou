@@ -5,10 +5,11 @@ import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
 import com.andgate.ikou.render.LevelRender;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.io.IOException;
 
-public class LevelLoaderThread extends Thread
+public class LevelLoaderThread extends Thread implements Disposable
 {
     private static final String TAG = "LevelLoaderThread";
 
@@ -62,5 +63,11 @@ public class LevelLoaderThread extends Thread
         }
 
         return levelRender;
+    }
+
+    @Override
+    public void dispose()
+    {
+        levelRender.dispose();
     }
 }

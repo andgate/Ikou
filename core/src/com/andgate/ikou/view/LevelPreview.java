@@ -41,7 +41,7 @@ public class LevelPreview
 
     private void setupCamera()
     {
-        camera.position.set(0.0f, 1.0f, -2.0f);
+        camera.position.set(0.0f, 1.0f, -3.0f);
         camera.lookAt(0.0f, 0.0f, 0.0f);
         camera.near = 1f;
         camera.far = Constants.CAMERA_FAR;
@@ -50,8 +50,11 @@ public class LevelPreview
 
     public void setSize(int w, int h)
     {
-        frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, w, h, false);
-        TextureRegion textureRegion = new TextureRegion(frameBuffer.getColorBufferTexture(), w, h);
+        if(frameBuffer != null)
+            frameBuffer.dispose();
+
+        frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, w, h, true);
+        TextureRegion textureRegion = new TextureRegion(frameBuffer.getColorBufferTexture());
         textureRegion.flip(false, true);
         drawable = new TextureRegionDrawable(textureRegion);
 
@@ -84,13 +87,13 @@ public class LevelPreview
             frameBuffer.begin();
 
             Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
             modelBatch.begin(camera);
             modelBatch.render(levelRender, environment);
             modelBatch.end();
 
-            frameBuffer.end(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            frameBuffer.end();
         }
     }
 

@@ -16,9 +16,11 @@ package com.andgate.ikou.view;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.io.LevelDatabaseService;
+import com.andgate.ikou.io.LevelLoader;
 import com.andgate.ikou.io.LevelLoaderThread;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.LevelData;
+import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -42,17 +44,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.io.IOException;
+
 public class LevelSelectScreen implements Screen
 {
     private static final String TAG = "LevelSelectScreen";
 
     private final Ikou game;
     private Stage stage;
-    private LevelLoaderThread levelLoader;
 
     private LevelData[] levelDatas;
-
-    private LevelData selectedLevelData = null;
 
     private static final String SELECT_LEVEL_HEADER = "Levels";
     private static final String SELECT_FLOOR_HEADER = "Floors";
@@ -62,6 +63,9 @@ public class LevelSelectScreen implements Screen
     private ShaderLabel floorProgressLabel;
     private Container previewContainer;
     private LevelPreview levelPreview;
+
+    private Level level = null;
+    private LevelRender levelRender = null;
 
     private String floorProgressString = " ";
 
@@ -177,7 +181,7 @@ public class LevelSelectScreen implements Screen
         float length = (Gdx.graphics.getWidth() < Gdx.graphics.getHeight())
                 ? Gdx.graphics.getWidth() : Gdx.graphics.getHeight();
 
-        length *= 0.60f;
+        length *= 0.70f;
         previewContainer.size(length);
 
         floorSelectTable.add(floorSelectLabel).row();
@@ -189,41 +193,34 @@ public class LevelSelectScreen implements Screen
 
     public void setSelectedLevel(LevelData levelData)
     {
-        if(levelLoader != null)
-        {
-            // Last loader really
-            // just needs to go away.
-            // This will do for now...
-            while(levelLoader.isAlive())
-            {
-                // wait for the levelLoader to die
-            }
-        }
-
         previewContainer.clear();
 
         floorProgressString = levelData.completedFloors + " / " + levelData.totalFloors;
         floorProgressLabel.setText(floorProgressString);
 
-        levelLoader = new LevelLoaderThread(game, levelData);
-        levelLoader.start();
+        try
+        {
+            level = LevelLoader.load(levelData);
+            levelRender = new LevelRender(level);
+        }
+        catch(IOException e)
+        {
+            // make a dialog box?
+        }
 
-        while(levelLoader.isAlive()) {}
-        levelPreview.setLevelRender(levelLoader.getLevelRender());
-
-        // remove the old floor selector
-        // build a floor selector with the loaded level
-        // add it to the floor selector table
+        levelPreview.setLevelRender(levelRender);
     }
 
     @Override
     public void render(float delta)
     {
-        levelPreview.render(delta);
 
         Color bg = Constants.BACKGROUND_COLOR;
         Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        levelPreview.render(delta);
+        previewContainer.setBackground(levelPreview.getDrawable());
 
         stage.draw();
 
