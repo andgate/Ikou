@@ -135,7 +135,7 @@ public class FloorRender implements RenderableProvider, Disposable
 
     public void centerOnOrigin()
     {
-        translate(-getWidth() / 2.0f, 0.0f, -getDepth() / 2.0f);
+        translate(getWidth() / -2.0f, 0.0f, getDepth() / -2.0f);
     }
 
     public void scaleToBoxSize(float length)

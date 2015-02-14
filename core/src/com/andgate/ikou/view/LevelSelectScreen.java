@@ -208,7 +208,7 @@ public class LevelSelectScreen implements Screen
             // make a dialog box?
         }
 
-        levelPreview.setLevelRender(levelRender);
+        levelPreview.setLevelRender(levelRender, levelData.completedFloors);
     }
 
     @Override

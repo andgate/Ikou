@@ -1,6 +1,7 @@
 package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
+import com.andgate.ikou.render.FloorRender;
 import com.andgate.ikou.render.LevelRender;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class LevelPreview
 {
     private LevelRender levelRender;
+    private int floorsCompleted;
 
     private final PerspectiveCamera camera;
     private final ModelBatch modelBatch;
@@ -63,15 +65,16 @@ public class LevelPreview
         camera.update(true);
     }
 
-    public void setLevelRender(LevelRender levelRender)
+    public void setLevelRender(LevelRender levelRender, int floorsCompleted)
     {
         this.levelRender = levelRender;
+        this.floorsCompleted = floorsCompleted;
         if(levelRender != null)
         {
             levelRender.setCamera(camera);
-            levelRender.scaleFloorsToBoxSize(3.0f);
+            levelRender.scaleFloorsToBoxSize(2.0f);
             levelRender.centerOnOrigin();
-            levelRender.spaceFloors(1.0f);
+            levelRender.spaceFloors(2.0f);
         }
     }
 
@@ -89,8 +92,16 @@ public class LevelPreview
             Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+            FloorRender[] floorRenders = levelRender.getFloorRenders();
+
             modelBatch.begin(camera);
-            modelBatch.render(levelRender, environment);
+
+            // The last floor needs to be excluded,
+            // as it's the victory floor and should never be shown in the preview.
+            for(int i = 0; i <= floorsCompleted && i < floorRenders.length - 1; i++)
+            {
+                modelBatch.render(floorRenders[i], environment);
+            }
             modelBatch.end();
 
             frameBuffer.end();
