@@ -15,6 +15,8 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.controller.LevelPreviewGestureListener;
+import com.andgate.ikou.controller.LevelSelectInputListener;
 import com.andgate.ikou.io.LevelDatabaseService;
 import com.andgate.ikou.io.LevelLoader;
 import com.andgate.ikou.io.LevelLoaderThread;
@@ -24,6 +26,7 @@ import com.andgate.ikou.render.LevelRender;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,6 +34,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -72,9 +76,10 @@ public class LevelSelectScreen implements Screen
     public LevelSelectScreen(final Ikou game)
     {
         this.game = game;
-        levelPreview = new LevelPreview();
 
+        levelPreview = new LevelPreview(0);
         stage = new Stage();
+
         Gdx.input.setInputProcessor(stage);
 
         levelDatas = LevelDatabaseService.getLevelDatas();
@@ -183,6 +188,10 @@ public class LevelSelectScreen implements Screen
 
         length *= 0.70f;
         previewContainer.size(length);
+        previewContainer.setHeight(length);
+        previewContainer.setWidth(length);
+        previewContainer.setTouchable(Touchable.enabled);
+        previewContainer.addListener(new LevelPreviewGestureListener(levelPreview));
 
         floorSelectTable.add(floorSelectLabel).row();
         floorSelectTable.add(floorProgressLabel).row();
@@ -193,7 +202,7 @@ public class LevelSelectScreen implements Screen
 
     public void setSelectedLevel(LevelData levelData)
     {
-        previewContainer.clear();
+        previewContainer.clearChildren();
 
         floorProgressString = levelData.completedFloors + " / " + levelData.totalFloors;
         floorProgressLabel.setText(floorProgressString);
@@ -220,7 +229,6 @@ public class LevelSelectScreen implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         levelPreview.render(delta);
-        previewContainer.setBackground(levelPreview.getDrawable());
 
         stage.draw();
 
@@ -266,45 +274,5 @@ public class LevelSelectScreen implements Screen
     public void dispose() {
         if(stage != null)
             stage.dispose();
-    }
-
-    private class LevelSelectInputListener extends InputListener
-    {
-        private static final String TAG = "LevelSelectInputListener";
-
-        private final List levelList;
-        private final LevelSelectScreen screen;
-        private final LevelData[] levelDatas;
-
-        private int selectedIndex = 0;
-
-        public LevelSelectInputListener(List levelList, LevelSelectScreen screen, LevelData[] levelDatas)
-        {
-            super();
-
-            this.levelList = levelList;
-            this.screen = screen;
-            this.levelDatas = levelDatas;
-
-            selectedIndex = levelList.getSelectedIndex();
-        }
-
-        @Override
-        public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
-        {
-            //game.buttonPressedSound.play();
-            //game.setScreen(new FloorSelectScreen(game, levelData));
-            //screen.dispose();
-
-            int currentSelectedIndex = levelList.getSelectedIndex();
-
-            if(currentSelectedIndex != selectedIndex)
-            {
-                selectedIndex = currentSelectedIndex;
-                screen.setSelectedLevel(levelDatas[selectedIndex]);
-            }
-
-            return true;
-        }
     }
 }

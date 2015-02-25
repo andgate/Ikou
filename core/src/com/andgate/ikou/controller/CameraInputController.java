@@ -49,6 +49,11 @@ public class CameraInputController extends GestureDetector implements PlayerTran
     private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();
 
+    public CameraInputController(final PerspectiveCamera camera, final Player player)
+    {
+        this(new CameraGestureListener(), camera, player);
+    }
+
     public CameraInputController(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final Player player)
     {
         super(gestureListener);
@@ -65,11 +70,6 @@ public class CameraInputController extends GestureDetector implements PlayerTran
         target.set(player.getPosition());
         target.x += TileStack.HALF_WIDTH;
         target.z += TileStack.HALF_DEPTH;
-    }
-
-    public CameraInputController(final PerspectiveCamera camera, final Player player)
-    {
-        this(new CameraGestureListener(), camera, player);
     }
 
     public void update (final float delta)

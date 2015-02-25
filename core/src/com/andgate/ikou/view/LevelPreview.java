@@ -13,11 +13,20 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class LevelPreview
 {
+    private static final String TAG = "LevelPreview";
+
+    public static final float FLOOR_SPACING = 2.0f;
+
     private LevelRender levelRender;
     private int floorsCompleted;
 
@@ -28,7 +37,7 @@ public class LevelPreview
     private FrameBuffer frameBuffer;
     private TextureRegionDrawable drawable;
 
-    public LevelPreview()
+    public LevelPreview(int currentFloorNumber)
     {
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         setupCamera();
@@ -72,9 +81,9 @@ public class LevelPreview
         if(levelRender != null)
         {
             levelRender.setCamera(camera);
-            levelRender.scaleFloorsToBoxSize(2.0f);
+            levelRender.scaleFloorsToBoxSize(FLOOR_SPACING);
             levelRender.centerOnOrigin();
-            levelRender.spaceFloors(2.0f);
+            levelRender.spaceFloors(FLOOR_SPACING);
         }
     }
 
@@ -112,4 +121,17 @@ public class LevelPreview
     {
         return drawable;
     }
+
+    private final Vector3 tmpV1 = new Vector3();
+    public static final float ROTATE_ANGLE = 360f;
+    private Vector3 target = new Vector3(0, 0, 0);
+
+    public void rotateCurrentFloor(final float deltaAngleX)
+    {
+        tmpV1.set(camera.direction).crs(camera.up).y = 0f;
+        camera.rotateAround(target, Vector3.Y, deltaAngleX);
+        camera.update();
+    }
+
+
 }
