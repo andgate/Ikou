@@ -111,6 +111,12 @@ public class FloorTransformer
         return this;
     }
 
+    /**
+     * Centers the floor on the origin at (0, 0, 0).
+     * Make sure to call this before spacing the floors,
+     * as it will reset all transformations.
+     * @return This FloorTransformer for chaining
+     */
     public FloorTransformer centerOnOrigin()
     {
         setPosition(getWidth() / -2.0f, 0.0f, getDepth() / -2.0f);
@@ -122,10 +128,8 @@ public class FloorTransformer
 
     public void update()
     {
-        transform.idt().scl(scale);
-
         tmpVec.set(position).rotate(rotationAxis, rotationAngle);
-        transform.rotate(rotationAxis, rotationAngle).trn(tmpVec);
+        transform.idt().scl(scale).rotate(rotationAxis, rotationAngle).trn(tmpVec);
     }
 
     public void reset()

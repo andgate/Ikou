@@ -26,7 +26,8 @@ public class LevelPreview
 {
     private static final String TAG = "LevelPreview";
 
-    public static final float FLOOR_SPACING = 2.0f;
+    public static final float FLOOR_PREVIEW_SIZE = 2.7f;
+    public static final float FLOOR_SPACING = 1.5f;
 
     private LevelRender levelRender;
     private int floorsCompleted;
@@ -86,7 +87,7 @@ public class LevelPreview
         if(levelRender != null)
         {
             levelRender.setCamera(camera);
-            levelRender.scaleFloorsToBoxSize(FLOOR_SPACING);
+            levelRender.scaleFloorsToBoxSize(FLOOR_PREVIEW_SIZE);
             levelRender.centerOnOrigin();
             levelRender.spaceFloors(FLOOR_SPACING);
             levelRender.updateFloorTransformers();
