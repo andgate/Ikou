@@ -47,7 +47,7 @@ public class LevelRender implements RenderableProvider, Disposable
         for(int i = 1; i < floorRenders.length; i++)
         {
             Vector2i offset = level.getFloorOffset(i);
-            floorRenders[i].translate(offset.x, 0.0f, offset.y);
+            floorRenders[i].getTransformer().translate(offset.x, 0.0f, offset.y);
         }
     }
 
@@ -55,7 +55,7 @@ public class LevelRender implements RenderableProvider, Disposable
     {
         for(int i = 1; i < floorRenders.length; i++)
         {
-            floorRenders[i].translate(0.0f, -spacing * i, 0.0f);
+            floorRenders[i].getTransformer().translate(0.0f, -spacing * i, 0.0f);
         }
     }
 
@@ -63,7 +63,7 @@ public class LevelRender implements RenderableProvider, Disposable
     {
         for(FloorRender floorRender : floorRenders)
         {
-            floorRender.resetTransform();
+            floorRender.getTransformer().reset();
         }
     }
 
@@ -71,7 +71,15 @@ public class LevelRender implements RenderableProvider, Disposable
     {
         for(FloorRender floorRender : floorRenders)
         {
-            floorRender.scaleToBoxSize(length);
+            floorRender.getTransformer().scaleToBoxSize(length);
+        }
+    }
+
+    public void updateFloorTransformers()
+    {
+        for(FloorRender floorRender : floorRenders)
+        {
+            floorRender.getTransformer().update();
         }
     }
 
@@ -100,7 +108,7 @@ public class LevelRender implements RenderableProvider, Disposable
     {
         for(FloorRender floorRender : floorRenders)
         {
-            floorRender.centerOnOrigin();
+            floorRender.getTransformer().centerOnOrigin();
         }
     }
 

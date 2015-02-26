@@ -94,6 +94,7 @@ public class GameScreen extends ScreenAdapter
         levelRender.resetTransform();
         levelRender.offsetFloors();
         levelRender.spaceFloors(Constants.FLOOR_SPACING);
+        levelRender.updateFloorTransformers();
 
         player = new Player(game, level, currentFloorNumber);
         createEnvironment();

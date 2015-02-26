@@ -2,6 +2,7 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.render.FloorRender;
+import com.andgate.ikou.render.FloorTransformer;
 import com.andgate.ikou.render.LevelRender;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,6 +38,8 @@ public class LevelPreview
     private FrameBuffer frameBuffer;
     private TextureRegionDrawable drawable;
 
+    private int currentFloorNumber = 0;
+
     public LevelPreview(int currentFloorNumber)
     {
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -48,6 +51,8 @@ public class LevelPreview
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        this.currentFloorNumber = currentFloorNumber;
     }
 
     private void setupCamera()
@@ -84,6 +89,7 @@ public class LevelPreview
             levelRender.scaleFloorsToBoxSize(FLOOR_SPACING);
             levelRender.centerOnOrigin();
             levelRender.spaceFloors(FLOOR_SPACING);
+            levelRender.updateFloorTransformers();
         }
     }
 
@@ -123,15 +129,19 @@ public class LevelPreview
     }
 
     private final Vector3 tmpV1 = new Vector3();
-    public static final float ROTATE_ANGLE = 360f;
     private Vector3 target = new Vector3(0, 0, 0);
+
+    private Vector3 yAxis = new Vector3(0.0f, 1.0f, 0.0f);
 
     public void rotateCurrentFloor(final float deltaAngleX)
     {
-        tmpV1.set(camera.direction).crs(camera.up).y = 0f;
+        FloorTransformer floorTransformer = levelRender.getFloorRenders()[currentFloorNumber].getTransformer();
+
+        floorTransformer.rotateDeg(deltaAngleX);
+        floorTransformer.update();
+
+        /*tmpV1.set(camera.direction).crs(camera.up).y = 0f;
         camera.rotateAround(target, Vector3.Y, deltaAngleX);
-        camera.update();
+        camera.update();*/
     }
-
-
 }

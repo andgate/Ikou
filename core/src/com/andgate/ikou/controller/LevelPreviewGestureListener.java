@@ -14,7 +14,6 @@
 package com.andgate.ikou.controller;
 
 import com.andgate.ikou.view.LevelPreview;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 
@@ -31,7 +30,7 @@ public class LevelPreviewGestureListener extends ActorGestureListener
     }
 
 
-    private static final float ROTATE_ANGLE = -360f;
+    private static final float ROTATE_ANGLE = 360f;
 
     @Override
     public void pan(InputEvent event, float x, float y, float deltaX, float deltaY)
