@@ -117,24 +117,15 @@ public class FloorTransformer
         return this;
     }
 
+    private Vector3 xAxis = new Vector3(1, 0, 0);
+    Vector3 tmpVec = new Vector3();
+
     public void update()
     {
         transform.idt().scl(scale);
-        rotateAroundOrigin();
 
-        transform.trn(position);
-    }
-
-
-    Vector3 tmpVec = new Vector3();
-    private void rotateAroundOrigin()
-    {
-        tmpVec.set(0, 0, 0);
-        tmpVec.sub(position);
-        transform.translate(tmpVec);
-        transform.rotate(rotationAxis, rotationAngle);
-        //tmpVec.rotate(rotationAxis, rotationAngle);
-        transform.translate(-tmpVec.x, -tmpVec.y, -tmpVec.z);
+        tmpVec.set(position).rotate(rotationAxis, rotationAngle);
+        transform.rotate(rotationAxis, rotationAngle).trn(tmpVec);
     }
 
     public void reset()
