@@ -47,7 +47,7 @@ public class FloorRender implements RenderableProvider, Disposable
     {
         this.camera = null;
         buildMeshes(floor);
-        transformer.setSize(calculateSize());
+        calculateSize();
     }
 
     public PerspectiveCamera getCamera()
@@ -85,12 +85,15 @@ public class FloorRender implements RenderableProvider, Disposable
         }
     }
 
-    private Vector3 calculateSize()
+    private void calculateSize()
     {
-        Vector3 size = new Vector3();
+        float width = 0.0f, height = 0.0f, depth = 0.0f;
 
         for (SectorMesh[] sectorMeshRow : sectorMeshes)
         {
+            float maxDepth = 0.0f;
+            float rowWidth = 0.0f;
+
             for (SectorMesh sectorMesh : sectorMeshRow)
             {
                 Mesh mesh = sectorMesh.getMesh();
@@ -99,14 +102,17 @@ public class FloorRender implements RenderableProvider, Disposable
                 {
                     BoundingBox bbox = mesh.calculateBoundingBox();
 
-                    size.x += bbox.getWidth();
-                    size.y = Math.max(size.y, bbox.getHeight());
-                    size.z += bbox.getDepth();
+                    rowWidth += bbox.getWidth();
+                    height = Math.max(height, bbox.getHeight());
+                    maxDepth = Math.max(maxDepth, bbox.getDepth());
                 }
             }
+
+            width = Math.max(width, rowWidth);
+            depth += maxDepth;
         }
 
-        return size;
+        transformer.setSize(width, height, depth);
     }
 
     private final Vector3 subsectorPosition = new Vector3();

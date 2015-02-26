@@ -54,9 +54,9 @@ public class FloorTransformer
         return position;
     }
 
-    public void setSize(Vector3 size)
+    public void setSize(float width, float height, float depth)
     {
-        this.size = size;
+        size.set(width, height, depth);
     }
 
     public Vector3 getSize()
@@ -113,30 +113,29 @@ public class FloorTransformer
 
     public FloorTransformer centerOnOrigin()
     {
-        return translate(getWidth() / -2.0f, 0.0f, getDepth() / -2.0f);
+        setPosition(getWidth() / -2.0f, 0.0f, getDepth() / -2.0f);
+        return this;
     }
-
-
-    Vector3 tmpV1 = new Vector3();
 
     public void update()
     {
         transform.idt().scl(scale);
+        rotateAroundOrigin();
 
-        float halfWidth = getWidth() / 2.0f;
-        float halfDepth = getDepth() / 2.0f;
-
-        tmpV1.set(halfWidth, 0.0f, halfDepth);
-        tmpV1.sub(position);
-
-        transform.translate(tmpV1);
-        transform.rotate(rotationAxis, rotationAngle);
-        //tmpV1.scl(-1);
-        transform.translate(tmpV1.scl(-1));
-
-        transform.translate(position);
+        transform.trn(position);
     }
 
+
+    Vector3 tmpVec = new Vector3();
+    private void rotateAroundOrigin()
+    {
+        tmpVec.set(0, 0, 0);
+        tmpVec.sub(position);
+        transform.translate(tmpVec);
+        transform.rotate(rotationAxis, rotationAngle);
+        //tmpVec.rotate(rotationAxis, rotationAngle);
+        transform.translate(-tmpVec.x, -tmpVec.y, -tmpVec.z);
+    }
 
     public void reset()
     {
