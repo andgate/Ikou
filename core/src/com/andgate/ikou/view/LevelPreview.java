@@ -14,11 +14,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -26,7 +21,13 @@ public class LevelPreview
 {
     private static final String TAG = "LevelPreview";
 
-    public static final float FLOOR_PREVIEW_SIZE = 2.7f;
+    private enum PreviewMode
+    {
+        Empty, Rotate, Scroll, Select
+    }
+    private PreviewMode mode = PreviewMode.Empty;
+
+    public static final float FLOOR_PREVIEW_SIZE = 3.0f;
     public static final float FLOOR_SPACING = 1.5f;
 
     private LevelRender levelRender;
@@ -80,10 +81,11 @@ public class LevelPreview
         camera.update(true);
     }
 
-    public void setLevelRender(LevelRender levelRender, int floorsCompleted)
+    public void setLevelRender(LevelRender levelRender, int floorsCompleted, int totalFloors)
     {
         this.levelRender = levelRender;
         this.floorsCompleted = floorsCompleted;
+        this.currentFloorNumber = floorsCompleted == totalFloors ? 0 : floorsCompleted;
         if(levelRender != null)
         {
             levelRender.setCamera(camera);
@@ -94,9 +96,17 @@ public class LevelPreview
         }
     }
 
-    public void render(float delta)
+    public void render()
     {
         renderLevel();
+    }
+
+    public void update(float delta)
+    {
+        if(levelRender != null)
+        {
+            levelRender.updateFloors(delta);
+        }
     }
 
     public void renderLevel()
@@ -129,20 +139,21 @@ public class LevelPreview
         return drawable;
     }
 
-    private final Vector3 tmpV1 = new Vector3();
-    private Vector3 target = new Vector3(0, 0, 0);
-
-    private Vector3 yAxis = new Vector3(0.0f, 1.0f, 0.0f);
-
     public void rotateCurrentFloor(final float deltaAngleX)
     {
+        if(levelRender == null) return;
+
         FloorTransformer floorTransformer = levelRender.getFloorRenders()[currentFloorNumber].getTransformer();
 
-        floorTransformer.rotateDeg(deltaAngleX);
-        floorTransformer.update();
+        //floorTransformer.rotateDeg(deltaAngleX);
+        //floorTransformer.apply();
+        float velocity = deltaAngleX;
 
-        /*tmpV1.set(camera.direction).crs(camera.up).y = 0f;
-        camera.rotateAround(target, Vector3.Y, deltaAngleX);
-        camera.update();*/
+        floorTransformer.spin(deltaAngleX, -1/2);
+    }
+
+    public void scroll(float deltaY)
+    {
+
     }
 }

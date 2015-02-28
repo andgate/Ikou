@@ -217,7 +217,7 @@ public class LevelSelectScreen implements Screen
             // make a dialog box?
         }
 
-        levelPreview.setLevelRender(levelRender, levelData.completedFloors);
+        levelPreview.setLevelRender(levelRender, levelData.completedFloors, levelData.totalFloors);
     }
 
     @Override
@@ -228,7 +228,7 @@ public class LevelSelectScreen implements Screen
         Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        levelPreview.render(delta);
+        levelPreview.render();
 
         stage.draw();
 
@@ -240,6 +240,7 @@ public class LevelSelectScreen implements Screen
         }
 
         stage.act();
+        levelPreview.update(delta);
     }
 
     public void gotoMainMenu()

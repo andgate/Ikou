@@ -13,6 +13,8 @@
 
 package com.andgate.ikou.render;
 
+import com.andgate.ikou.Constants;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
@@ -21,8 +23,13 @@ public class FloorTransformer
     private final Matrix4 transform = new Matrix4();
 
     private Vector3 position = new Vector3();
+    private Vector3 velocity = new Vector3();
+
     private static final Vector3 rotationAxis = new Vector3(0.0f, 1.0f, 0.0f);
     private float rotationAngle = 0.0f;
+    private float rotationVelocity = 0.0f;
+    private float rotationAcceleration = 0.0f;
+
     private Vector3 size = new Vector3();
     private float scale = 1.0f;
 
@@ -111,6 +118,14 @@ public class FloorTransformer
         return this;
     }
 
+    public FloorTransformer spin(float angularVelocity, float angularAcceleration)
+    {
+        rotationVelocity = angularVelocity;
+        rotationAcceleration = angularAcceleration;
+
+        return this;
+    }
+
     /**
      * Centers the floor on the origin at (0, 0, 0).
      * Make sure to call this before spacing the floors,
@@ -123,13 +138,38 @@ public class FloorTransformer
         return this;
     }
 
-    private Vector3 xAxis = new Vector3(1, 0, 0);
     Vector3 tmpVec = new Vector3();
-
-    public void update()
+    public void apply()
     {
         tmpVec.set(position).rotate(rotationAxis, rotationAngle);
         transform.idt().scl(scale).rotate(rotationAxis, rotationAngle).trn(tmpVec);
+    }
+
+    public void update(float delta)
+    {
+        if(!(MathUtils.isEqual(rotationVelocity, 0.0f, Constants.EPSILON) && MathUtils.isEqual(velocity.len2(), 0.0f, Constants.EPSILON)))
+        {
+            rotationAngle += rotationVelocity;
+
+            if(rotationAcceleration == 0.0f) {
+                rotationVelocity = 0.0f;
+            }
+            else
+            {
+                float previousRotationDirection = rotationVelocity / Math.abs(rotationVelocity);
+                rotationVelocity += rotationAcceleration;
+                float currentRotationDirection = rotationVelocity / Math.abs(rotationVelocity);
+
+                if (currentRotationDirection != previousRotationDirection) {
+                    rotationAcceleration = 0.0f;
+                }
+            }
+
+            tmpVec.set(velocity);
+            position.add(tmpVec);
+
+            apply();
+        }
     }
 
     public void reset()

@@ -13,14 +13,12 @@
 
 package com.andgate.ikou.render;
 
-import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.utility.Vector2i;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
@@ -39,6 +37,14 @@ public class LevelRender implements RenderableProvider, Disposable
         for(int i = 0; i < floorRenders.length; i++)
         {
             floorRenders[i] = new FloorRender(floors[i]);
+        }
+    }
+
+    public void updateFloors(float delta)
+    {
+        for(FloorRender floorRender : floorRenders)
+        {
+            floorRender.getTransformer().update(delta);
         }
     }
 
@@ -79,7 +85,7 @@ public class LevelRender implements RenderableProvider, Disposable
     {
         for(FloorRender floorRender : floorRenders)
         {
-            floorRender.getTransformer().update();
+            floorRender.getTransformer().apply();
         }
     }
 

@@ -30,12 +30,29 @@ public class LevelPreviewGestureListener extends ActorGestureListener
     }
 
 
-    private static final float ROTATE_ANGLE = 360f;
+    private static final float ROTATE_ANGLE = 180f;
 
     @Override
     public void pan(InputEvent event, float x, float y, float deltaX, float deltaY)
     {
+        if(Math.abs(deltaX) > Math.abs(deltaY)) {
+            panHorizontal(deltaX);
+        }
+        else
+        {
+            panVertical(deltaY);
+        }
+
+    }
+
+    public void panHorizontal(float deltaX)
+    {
         float deltaAngleX = ROTATE_ANGLE * deltaX / getTouchDownTarget().getWidth();
         preview.rotateCurrentFloor(deltaAngleX);
+    }
+
+    public void panVertical(float deltaY)
+    {
+        preview.scroll(deltaY);
     }
 }
