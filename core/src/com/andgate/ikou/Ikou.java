@@ -13,6 +13,8 @@
 
 package com.andgate.ikou;
 
+import com.andgate.ikou.maze.MazeGenerator;
+import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
 import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.graphics.ShaderFont;
 import com.andgate.ikou.view.MainMenuScreen;
@@ -67,6 +69,10 @@ public class Ikou extends Game
         loadShader();
         loadFonts();
         loadSounds();
+
+        MazeGenerator maze = new RecursiveBacktrackerMazeGenerator(10, 10);
+        maze.generate();
+        maze.print(System.out);
 
         setScreen(new MainMenuScreen(this));
 	}
