@@ -72,30 +72,15 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.buttonPressedSound.play();
-                game.setScreen(new LevelSelectScreen(game));
+                game.setScreen(new GameScreen(game));
                 MainMenuScreen.this.dispose();
             }
         });
-
-
-        final ShaderLabel buildButtonLabel = new ShaderLabel(BUILD_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        final Button buildButton = new Button(buttonStyle);
-        buildButton.add(buildButtonLabel);
-
-        buildButton.addListener(new ClickListener() {
-                                   @Override
-                                   public void clicked(InputEvent event, float x, float y) {
-                                       //game.buttonPressedSound.play();
-                                       game.setScreen(new LevelBuilderScreen(game));
-                                       MainMenuScreen.this.dispose();
-                                   }
-                               });
 
         Table table = new Table();
 
         table.add(titleLabel).center().top().spaceBottom(25.0f).row();
         table.add(playButton).fill().spaceBottom(20.0f).center().bottom().row();
-        table.add(buildButton).fill().spaceBottom(20.0f).center().bottom().row();
 
         table.setFillParent(true);
 

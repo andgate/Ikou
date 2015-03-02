@@ -36,18 +36,12 @@ public class FloorRender implements RenderableProvider, Disposable
     private SectorMesh[][] sectorMeshes;
     private PerspectiveCamera camera;
 
-    private FloorTransformer transformer = new FloorTransformer();
-
-    public FloorTransformer getTransformer()
-    {
-        return transformer;
-    }
+    public Matrix4 transform = new Matrix4();
 
     public FloorRender(Floor floor)
     {
         this.camera = null;
         buildMeshes(floor);
-        calculateSize();
     }
 
     public PerspectiveCamera getCamera()
@@ -85,36 +79,6 @@ public class FloorRender implements RenderableProvider, Disposable
         }
     }
 
-    private void calculateSize()
-    {
-        float width = 0.0f, height = 0.0f, depth = 0.0f;
-
-        for (SectorMesh[] sectorMeshRow : sectorMeshes)
-        {
-            float maxDepth = 0.0f;
-            float rowWidth = 0.0f;
-
-            for (SectorMesh sectorMesh : sectorMeshRow)
-            {
-                Mesh mesh = sectorMesh.getMesh();
-
-                if (mesh != null)
-                {
-                    BoundingBox bbox = mesh.calculateBoundingBox();
-
-                    rowWidth += bbox.getWidth();
-                    height = Math.max(height, bbox.getHeight());
-                    maxDepth = Math.max(maxDepth, bbox.getDepth());
-                }
-            }
-
-            width = Math.max(width, rowWidth);
-            depth += maxDepth;
-        }
-
-        transformer.setSize(width, height, depth);
-    }
-
     private final Vector3 subsectorPosition = new Vector3();
 
     @Override
@@ -135,7 +99,7 @@ public class FloorRender implements RenderableProvider, Disposable
                     renderable.mesh = mesh;
                     renderables.add(renderable);
 
-                    renderable.worldTransform.set(transformer.getTransform());
+                    renderable.worldTransform.set(transform);
                 }
             }
         }
@@ -146,7 +110,7 @@ public class FloorRender implements RenderableProvider, Disposable
         if(camera == null)
             return true;
 
-        transformer.getTransform().getTranslation(subsectorPosition);
+        transform.getTranslation(subsectorPosition);
         subsectorPosition.x += sectorColumn * SUBSECTOR_SIZE;
         subsectorPosition.z += sectorRow * SUBSECTOR_SIZE;
 

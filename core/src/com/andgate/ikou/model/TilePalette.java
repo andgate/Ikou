@@ -22,13 +22,14 @@ public class TilePalette {
     public Color obstacle = new Color(Color.GRAY);
     public Color smooth = new Color(Color.LIGHT_GRAY);
     public Color rough = new Color(Color.DARK_GRAY);
-    public Color player = new Color(Color.CYAN);
+    public Color player = new Color(Color.ORANGE);
     public Color end = new Color(Color.RED);
     public Color blank = new Color(Color.CLEAR);
     public Color background = new Color(Color.WHITE);
 
     public TilePalette()
     {
+        defaultScheme();
     }
 
     public Color getColor(TileStack.Tile type)
@@ -54,6 +55,21 @@ public class TilePalette {
 
     private static HSL tmpHsl1 = new HSL();
     private static HSL tmpHsl2 = new HSL();
+
+    public void defaultScheme()
+    {
+        tmpHsl1.h = 2.0f / 3.6f;
+        tmpHsl1.s = 0.7f;
+        tmpHsl1.l = 0.7f;
+        tmpHsl1.toRGBA(smooth);
+
+        tmpHsl1.l = 0.5f;
+        tmpHsl1.toRGBA(rough);
+
+        tmpHsl1.h = 2.0f / 3.0f;
+        tmpHsl1.toRGBA(obstacle);
+
+    }
 
     public void randomize()
     {

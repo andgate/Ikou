@@ -18,14 +18,10 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.CameraInputController;
 import com.andgate.ikou.controller.GameControlsMenu;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
-import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.render.LevelRender;
-import com.andgate.ikou.render.PlayerRender;
-import com.andgate.ikou.shader.bloom.Bloom;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -41,6 +37,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
+
+import java.util.Random;
 
 public class GameScreen extends ScreenAdapter
 {
@@ -63,7 +61,6 @@ public class GameScreen extends ScreenAdapter
     private Environment environment;
 
     private final Level level;
-    private final LevelRender levelRender;
     private final Player player;
 
     private ModelBatch shadowBatch;
@@ -73,13 +70,20 @@ public class GameScreen extends ScreenAdapter
 
     private SpriteBatch batch;
 
-    public GameScreen(Ikou game, Level level, int currentFloorNumber)
+    public GameScreen(Ikou game)
+    {
+        this(game, -1);
+    }
+
+    public GameScreen(Ikou game, long seed)
     {
         this.game = game;
-        this.level = level;
         batch = new SpriteBatch();
 
-        TilePalette palette = level.getFloor(currentFloorNumber).getPalette();
+        if(seed != -1) level = new Level(seed); // use a seed
+        else level = new Level(); // be completely random
+
+        TilePalette palette = level.getFloor(1).getPalette();
         Color bg = palette.background;
 
         game.bloom.setClearColor(bg.r, bg.g, bg.b, bg.a);
@@ -89,14 +93,10 @@ public class GameScreen extends ScreenAdapter
         camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         modelBatch = new ModelBatch();
-        levelRender = new LevelRender(level);
-        levelRender.setCamera(camera);
-        levelRender.resetTransform();
-        levelRender.offsetFloors();
-        levelRender.spaceFloors(Constants.FLOOR_SPACING);
-        levelRender.updateFloorTransformers();
 
-        player = new Player(game, level, currentFloorNumber);
+        // Start player on the first floor for now.
+        // TODO: Start player at a depth reached before.
+        player = new Player(game, level, 0);
         createEnvironment();
 
         setupCamera();
@@ -204,7 +204,7 @@ public class GameScreen extends ScreenAdapter
         game.bloom.capture();
 
         modelBatch.begin(camera);
-        modelBatch.render(levelRender, environment);
+        level.render(modelBatch, environment);
         modelBatch.render(player.getRender(), environment);
         modelBatch.end();
 
@@ -253,7 +253,7 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
-        levelRender.dispose();
+        level.dispose();
         modelBatch.dispose();
         controlsMenu.dispose();
     }

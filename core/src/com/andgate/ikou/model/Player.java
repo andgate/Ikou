@@ -39,7 +39,7 @@ public class Player implements DirectionListener, Disposable
 
     public Matrix4 transform = new Matrix4();
 
-    private int currentFloor;
+    private int depth;
     private Level level;
     private final PlayerRender playerRender;
 
@@ -65,16 +65,16 @@ public class Player implements DirectionListener, Disposable
     private Vector3 position = new Vector3();
     private Vector3i direction = new Vector3i();
 
-    public Player(final Ikou game, final Level level, final int startingFloor)
+    public Player(final Ikou game, final Level level, final int depth)
     {
         this.game = game;
         this.level = level;
 
-        this.currentFloor = startingFloor;
-        setPosition(level.getStartPosition(currentFloor));
+        this.depth = depth;
+        setPosition(level.getStartPosition(depth));
 
         playerRender = new PlayerRender();
-        playerRender.setColor(level.getFloor(currentFloor).getPalette().player);
+        playerRender.setColor(level.getFloor(depth).getPalette().player);
         playerRender.getTransform().set(transform);
     }
 
@@ -286,8 +286,8 @@ public class Player implements DirectionListener, Disposable
     private Color tmpBg = new Color();
     public void tweenBackground(float percent)
     {
-        Color lastFloorColor = level.getFloor(currentFloor).getPalette().background;
-        Color nextFloorColor = level.getFloor(currentFloor + 1).getPalette().background;
+        Color lastFloorColor = level.getFloor(depth).getPalette().background;
+        Color nextFloorColor = level.getFloor(depth + 1).getPalette().background;
 
         ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpBg);
         game.bloom.setClearColor(tmpBg.r, tmpBg.g, tmpBg.b, tmpBg.a);
@@ -296,8 +296,8 @@ public class Player implements DirectionListener, Disposable
     private Color tmpColor = new Color();
     public void tweenPlayerColor(float percent)
     {
-        Color lastFloorColor = level.getFloor(currentFloor).getPalette().player;
-        Color nextFloorColor = level.getFloor(currentFloor + 1).getPalette().player;
+        Color lastFloorColor = level.getFloor(depth).getPalette().player;
+        Color nextFloorColor = level.getFloor(depth + 1).getPalette().player;
 
         ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpColor);
         playerRender.setColor(tmpColor);
@@ -306,18 +306,19 @@ public class Player implements DirectionListener, Disposable
     public void startNextFloor()
     {
         saveProgress();
-        currentFloor++;
+        depth++;
     }
 
     private void saveProgress()
     {
-        ProgressDatabase progressDB = ProgressDatabaseService.read();
-        int completedFloors = progressDB.getFloorsCompleted(level.getName());
+        /*ProgressDatabase progressDB = ProgressDatabaseService.read();
         if(currentFloor > completedFloors)
         {
-            progressDB.setFloorsCompleted(level.getName(), currentFloor);
+            // TODO: Progress should just save current depth
+            // may store as a preference or something.
+            progressDB.setFloorsCompleted("remove", currentFloor);
             ProgressDatabaseService.write(progressDB);
-        }
+        }*/
     }
 
     Vector3 initialPosition = new Vector3();
@@ -364,7 +365,7 @@ public class Player implements DirectionListener, Disposable
 
     public Tile getTile(int x, int z)
     {
-        TileStack tileStack = level.getTileStack(currentFloor, x, z);
+        TileStack tileStack = level.getTileStack(depth, x, z);
         Tile tile = tileStack.getTop();
 
         return tile;

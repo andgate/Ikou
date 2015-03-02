@@ -13,9 +13,13 @@
 
 package com.andgate.ikou.model;
 
+import com.andgate.ikou.render.FloorRender;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
 import com.andgate.ikou.model.TileStack.Tile;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class Floor
 {
@@ -25,9 +29,7 @@ public class Floor
     private Vector2i offset = new Vector2i();
     private TilePalette palette = new TilePalette();
 
-    public Floor()
-    {
-    }
+    FloorRender floorRender;
 
     public Floor(MasterSector masterSector, TilePalette palette, Vector3i start, Vector3i end)
     {
@@ -35,6 +37,8 @@ public class Floor
         this.palette = palette;
         this.start.set(start);
         this.end.set(end);
+
+        floorRender = new FloorRender(this);
     }
 
     public MasterSector getMasterSector()
@@ -62,9 +66,24 @@ public class Floor
         return masterSector.get(x - offset.x, y, z - offset.y);
     }
 
-    public Vector2i getOffset()
+    public Vector3 getPosition(Vector3 position)
     {
-        return offset;
+        return floorRender.transform.getTranslation(position);
+    }
+
+    public void setOffset(int x, int z)
+    {
+        offset.set(x, z);
+    }
+
+    public void setPosition(float x, float y, float z)
+    {
+        floorRender.transform.setTranslation(x, y, z);
+    }
+
+    public void render(ModelBatch modelBatch, Environment environment)
+    {
+        modelBatch.render(floorRender, environment);
     }
 
     public TilePalette getPalette()
@@ -75,5 +94,10 @@ public class Floor
     public void shrink()
     {
         masterSector.shrink();
+    }
+
+    public void dispose()
+    {
+        floorRender.dispose();
     }
 }

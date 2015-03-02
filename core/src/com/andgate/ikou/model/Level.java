@@ -13,56 +13,115 @@
 
 package com.andgate.ikou.model;
 
+import com.andgate.ikou.maze.MazeGenerator;
+import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.LinkedList;
+import java.util.Random;
+
 public class Level
 {
-    public Array<Floor> floors = new Array<>();
-    private String name;
+    public LinkedList<Floor> floors = new LinkedList<>();
+    private Random random = new Random();
+
+    public static final int BASE_SIZE = 3;
+
+    MazeGenerator mazegen;
 
     public Level()
     {
-        name = "";
+        this(-1);
     }
 
-    public Level(String name)
+    public Level(long seed)
     {
-        this.name = name;
+        if(seed != -1) random.setSeed(seed);
+
+        for(int i = 0; i < 10; i++)
+        {
+            addRandomFloor();
+        }
     }
 
-    public Level(Floor[] floors)
+    public void render(ModelBatch modelBatch, Environment environment)
     {
-        this();
-        this.floors.addAll(floors, 0, floors.length);
-        calculateFloorOffsets();
+        for(Floor floor : floors)
+        {
+            floor.render(modelBatch, environment);
+        }
     }
 
-    public Level(Floor[] floors, String name)
+    public void addRandomFloor()
     {
-        this(floors);
-        setName(name);
+        addFloor(buildRandomFloor(random.nextLong()));
     }
 
-    public Floor[] getFloors()
+    Vector2i tmpVec2i_1 = new Vector2i();
+    Vector2i tmpVec2i_2 = new Vector2i();
+    Vector2i tmpVec2i_3 = new Vector2i();
+
+    public Floor buildRandomFloor(long mazeSeed)
     {
-        // This... took a lot of tries... yea
-        return floors.toArray(new Floor[floors.size].getClass().getComponentType());
+        int depth = floors.size() + 1;
+        int width = BASE_SIZE * depth;
+        int height = BASE_SIZE * depth;
+
+        do
+        {
+            tmpVec2i_1.x = random.nextInt(width+1);
+            tmpVec2i_1.y = random.nextInt(height+1);
+
+            tmpVec2i_2.x = random.nextInt(width+1);
+            tmpVec2i_2.y = random.nextInt(height+1);
+
+            tmpVec2i_3.set(tmpVec2i_1);
+            tmpVec2i_3.sub(tmpVec2i_2);
+        } while(tmpVec2i_3.len() > (width + height) / 4);
+
+        mazegen = new RecursiveBacktrackerMazeGenerator(width, height, tmpVec2i_1.x, tmpVec2i_1.y, tmpVec2i_1.x, tmpVec2i_1.y, mazeSeed);
+        mazegen.generate();
+
+        return mazegen.computeFloor();
     }
 
     public void addFloor(Floor floor)
     {
         floors.add(floor);
+        offsetLastFloor();
     }
 
-    public Floor getFloor(int floorNumber)
+    private Vector2i offset = new Vector2i();
+
+    private void offsetLastFloor()
     {
-        int floorIndex = floorNumber - 1;
-        return floors.get(floorIndex);
+        if(floors.size() <= 1) return;
+
+        Floor penult = floors.get(floors.size() - 2);
+        Floor last = floors.getLast();
+
+        Vector3i penultEnd = penult.getEnd();
+        Vector3i lastStart = last.getStart();
+
+        offset.add(penultEnd.x, penultEnd.z);
+        offset.sub(lastStart.x, lastStart.z);
+
+        float yOffset = (1-floors.size()) * Constants.FLOOR_SPACING;
+
+        last.setOffset(offset.x, offset.y);
+        last.setPosition(offset.x, yOffset, offset.y);
+    }
+
+    public Floor getFloor(int depth)
+    {
+        return floors.get(depth);
     }
 
     public Tile getTile(int floorNumber, int x, int y, int z)
@@ -70,58 +129,24 @@ public class Level
         return getFloor(floorNumber).getTile(x, y, z);
     }
 
-    public TileStack getTileStack(int floorNumber, int x,  int z)
+    public TileStack getTileStack(int depth, int x,  int z)
     {
-        return getFloor(floorNumber).getTileStack(x, z);
+        return floors.get(depth).getTileStack(x, z);
     }
 
     private Vector3 startPosition = new Vector3();
-    public Vector3 getStartPosition(int floorNumber)
+    public Vector3 getStartPosition(int depth)
     {
-        int floorIndex = floorNumber - 1;
-        Vector3i floorStart = floors.get(floorIndex).getStart();
-        startPosition.set(floorStart.x, 0.0f, floorStart.z);
+        Floor floor = floors.get(depth);
 
-        Vector2i offset = getFloorOffset(floorIndex);
-        startPosition.add(offset.x, 0.0f, offset.y);
+        floor.getPosition(startPosition);
 
-        startPosition.y = TileStack.HEIGHT - floorIndex * Constants.FLOOR_SPACING;
+        Vector3i floorStart = floor.getStart();
+        startPosition.add(floorStart.x, 0.0f, floorStart.z);
+
+        startPosition.y = TileStack.HEIGHT - depth * Constants.FLOOR_SPACING;
 
         return startPosition;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public Vector2i getFloorOffset(int floorIndex)
-    {
-        return floors.get(floorIndex).getOffset();
-    }
-
-    public void calculateFloorOffsets()
-    {
-        // for this to work, the first floor
-        // must have no offset.
-        floors.get(0).getOffset().set(0, 0);
-
-        for(int floorIndex = 1; floorIndex < floors.size; floorIndex++)
-        {
-            Vector3i currentStart = floors.get(floorIndex).getStart();
-            Vector3i lastEnd = floors.get(floorIndex-1).getEnd();
-
-            Vector2i offset = floors.get(floorIndex).getOffset();
-            offset.set(floors.get(floorIndex - 1).getOffset());
-
-            offset.add(lastEnd.x, lastEnd.z);
-            offset.sub(currentStart.x, currentStart.z);
-        }
     }
 
     public void shrink()
@@ -129,6 +154,14 @@ public class Level
         for(Floor floor : floors)
         {
             floor.shrink();
+        }
+    }
+
+    public void dispose()
+    {
+        for(Floor floor : floors)
+        {
+            floor.dispose();
         }
     }
 }

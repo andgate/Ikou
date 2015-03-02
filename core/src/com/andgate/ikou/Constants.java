@@ -24,7 +24,7 @@ public class Constants
     public static final int WORLD_LENGTH = 30;
     public static final float BUTTON_LENGTH = 3.0f;
 
-    public static final Color BACKGROUND_COLOR = new Color(Color.DARK_GRAY);
+    public static final Color BACKGROUND_COLOR = new Color(Color.WHITE);
 
     public static final String SKIN_LOCATION
             = "data/ui/uiskin.json";

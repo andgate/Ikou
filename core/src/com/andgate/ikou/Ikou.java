@@ -75,22 +75,7 @@ public class Ikou extends Game
 
         Floor[] floors = new Floor[3];
 
-        MazeGenerator maze = new RecursiveBacktrackerMazeGenerator(10, 10, 2, 2, 10, 10);
-        maze.generate();
-        maze.print(System.out);
-        floors[0] = maze.computeFloor();
-
-        maze = new RecursiveBacktrackerMazeGenerator(15, 15, 2, 2, 10, 10);
-        maze.generate();
-        floors[1] = maze.computeFloor();
-
-        maze = new RecursiveBacktrackerMazeGenerator(20, 20, 2, 2, 10, 10);
-        maze.generate();
-        floors[2] = maze.computeFloor();
-
-        Level level = new Level(floors);
-
-        setScreen(new GameScreen(this, level, 1));
+        setScreen(new MainMenuScreen(this));
 	}
 
     private void loadSounds()

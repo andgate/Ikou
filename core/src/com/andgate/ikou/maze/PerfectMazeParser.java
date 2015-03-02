@@ -17,7 +17,6 @@ public class PerfectMazeParser extends MazeParser
     public Floor parse(MazeGenerator maze)
     {
         TilePalette palette = new TilePalette();
-        palette.randomize();
         MasterSector master = buildMasterSector(maze);
 
         start.x = maze.getStart().x;
