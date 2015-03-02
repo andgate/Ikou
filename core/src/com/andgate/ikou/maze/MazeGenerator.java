@@ -1,5 +1,6 @@
 package com.andgate.ikou.maze;
 
+import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.utility.Vector2i;
 
 import java.io.PrintStream;
@@ -8,47 +9,38 @@ import java.util.Random;
 
 public abstract class MazeGenerator
 {
-    private int width, height;
+    protected final Vector2i start = new Vector2i();
+    protected final Vector2i end = new Vector2i();
+    protected final Vector2i size = new Vector2i();
+
     protected Random random = new Random();
 
     public enum Direction {Up, Down, Left, Right }
     protected final static Direction[] directions = Direction.values();
 
+    MazeParser parser;
+
     // Walls are turned on and off,
     // stored as walls[y][x]
     private boolean[][] walls;
 
-    protected static class Cell
+    protected MazeGenerator(MazeParser parser, int width, int height, int startX, int startY, int endX, int endY, long seed)
     {
-        protected int x, y;
-
-        protected Cell(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-
-        public String toString()
-        {
-            return "(" + x + ", " + y + ")";
-        }
-    }
-
-    protected MazeGenerator(int width, int height, long seed)
-    {
-        this(width, height);
+        this(parser, width, height, startX, startY, endX, endY);
         random.setSeed(seed);
     }
 
-    protected MazeGenerator(int width, int height)
+    protected MazeGenerator(MazeParser parser, int width, int height, int startX, int startY, int endX, int endY)
     {
-        if(width <= 0 || height <= 0)
-        {
-            throw new IllegalArgumentException("Size must be positive.");
-        }
+        this.parser = parser;
 
-        this.width = width;
-        this.height = height;
+        checkSize(width, height);
+        size.set(width, height);
+
+        checkLocation(startX, startY);
+        checkLocation(endX, endY);
+        start.set(startX, startY);
+        end.set(endX, endY);
 
         walls = new boolean[height+1][width+1];
 
@@ -61,6 +53,8 @@ public abstract class MazeGenerator
         {
             Arrays.fill(walls[i], true);
         }
+
+        walls[start.y][start.x] = false;
     }
 
     public final void generate()
@@ -77,14 +71,27 @@ public abstract class MazeGenerator
         return directions[pick];
     }
 
+    protected void checkSize(int width, int height)
+    {
+        if(width <= 0 || height <= 0)
+        {
+            throw new IllegalArgumentException("Size must be positive.");
+        }
+    }
+
+    protected boolean isInBounds(int x, int y)
+    {
+        return (0 <= x && x <= size.x) && (0 <= y && y <= size.y);
+    }
+
     protected void checkLocation(int x, int y)
     {
-        if(x < 0 || width < x)
+        if(x < 0 || size.x < x)
         {
             throw new IndexOutOfBoundsException("X out of range: " + x);
         }
 
-        if(y < 0 || height < y)
+        if(y < 0 || size.y < y)
         {
             throw new IndexOutOfBoundsException("Y out of range: " + y);
         }
@@ -101,16 +108,84 @@ public abstract class MazeGenerator
         return beforeCarve;
     }
 
-    protected boolean isWallPresent(int x, int y, Direction direction)
+    public boolean isWallPresent(int x, int y)
     {
-        checkLocation(x, y);
+        boolean wallExists = isInBounds(x, y);
 
-        Vector2i location = getNextCoordInDirection(x, y, direction);
+        if(wallExists)
+        {
+            return walls[y][x];
+        }
 
-        if(location.x >= width || location.y >= height)
-            return false; // outside the bounds is nothing but wall
+        // If there is no wall, it is the edge of the maze,
+        // and there is a wall there.
+        // The carving algorithm has to detect the edge.
+        return true;
+    }
 
-        return walls[location.y][location.x];
+    public boolean isWallSideFull(int x, int y, Direction direction)
+    {
+        boolean isFull = true;
+
+        switch(direction)
+        {
+            case Up:
+                isFull = isFull && isWallPresent(x-1, y-1);
+                isFull = isFull && isWallPresent(x, y-1);
+                isFull = isFull && isWallPresent(x+1, y-1);
+                break;
+            case Down:
+                isFull = isFull && isWallPresent(x-1, y+1);
+                isFull = isFull && isWallPresent(x, y+1);
+                isFull = isFull && isWallPresent(x+1, y+1);
+                break;
+            case Left:
+                isFull = isFull && isWallPresent(x-1, y-1);
+                isFull = isFull && isWallPresent(x-1, y);
+                isFull = isFull && isWallPresent(x-1, y+1);
+                break;
+            case Right:
+                isFull = isFull && isWallPresent(x+1, y-1);
+                isFull = isFull && isWallPresent(x+1, y);
+                isFull = isFull && isWallPresent(x+1, y+1);
+                break;
+            default:
+                break;
+        }
+
+        return isFull;
+    }
+
+    boolean[][] getNeighborhood(int x, int y)
+    {
+        boolean[][] neighborhood = new boolean[3][3];
+
+        int currY = y - 1;
+        for(int i = 0; i < 3; i++)
+        {
+            int currX = x - 1;
+            for(int j = 0; j < 3; j++)
+            {
+                neighborhood[i][j] = walls[currY][currX];
+                ++currX;
+            }
+
+            ++currY;
+        }
+
+        return neighborhood;
+    }
+
+    public int countWalls(int x, int y)
+    {
+        int count = 0;
+
+        if(isWallPresent(x-1, y)) ++count;
+        if(isWallPresent(x+1, y)) ++count;
+        if(isWallPresent(x, y-1)) ++count;
+        if(isWallPresent(x, y+1)) ++count;
+
+        return count;
     }
 
     Vector2i tmpVec = new Vector2i();
@@ -147,10 +222,9 @@ public abstract class MazeGenerator
         return tmpVec;
     }
 
-    public int getWidth() { return width; }
-
-    public int getHeight() { return height; }
-
+    public Vector2i getSize() { return size; }
+    public Vector2i getStart() { return start; }
+    public Vector2i getEnd() { return end; }
     public boolean[][] getWalls()
     {
         return walls;
@@ -173,5 +247,10 @@ public abstract class MazeGenerator
 
             out.println();
         }
+    }
+
+    public Floor computeFloor()
+    {
+        return parser.parse(this);
     }
 }

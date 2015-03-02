@@ -9,35 +9,23 @@ import java.util.LinkedList;
  */
 public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
 {
-    private int startX, startY;
-
-    public RecursiveBacktrackerMazeGenerator(int width, int height)
+    public RecursiveBacktrackerMazeGenerator(int width, int height, int startX, int startY, int endX, int endY, long seed)
     {
-        super(width, height);
-
-        this.startX = random.nextInt(width);
-        this.startY = random.nextInt(height);
+        super(new PerfectMazeParser(), width, height, startX, startY, endX, endY, seed);
     }
 
-    public RecursiveBacktrackerMazeGenerator(int width, int height, int startX, int startY)
+    public RecursiveBacktrackerMazeGenerator(int width, int height, int startX, int startY, int endX, int endY)
     {
-        super(width, height);
-
-        checkLocation(startX, startY);
-
-        this.startX = startX;
-        this.startY = startY;
+        super(new PerfectMazeParser(), width, height, startX, startY, endX, endY);
     }
 
     protected void generateMaze()
     {
-        int height = getHeight();
-        int width = getWidth();
+        boolean[][] cells = new boolean[size.y+1][size.x+1];
+        LinkedList<Vector2i> stack = new LinkedList<>();
 
-        boolean[][] cells = new boolean[height+1][width+1];
-        LinkedList<Cell> stack = new LinkedList<Cell>();
-
-        Cell cell = new Cell(startX, startY);
+        // A cell is a location in the maze.
+        Vector2i cell = new Vector2i(start);
         stack.addFirst(cell);
         LinkedList<Direction> neighborhood = new LinkedList<>();
 
@@ -52,7 +40,7 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
             if(neighborhood.size() > 0)
             {
                 stack.addFirst(cell);
-                cell = new Cell(cell.x, cell.y);
+                cell = new Vector2i(cell.x, cell.y);
 
                 int index = random.nextInt(neighborhood.size());
                 Direction carveDirection = neighborhood.get(index);
@@ -77,7 +65,7 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
 
     /**
      *
-     * @param cells The population of cells
+     * @param cells The walls in the maze
      * @param x The current cell's x-coord
      * @param y The current cell's y-coord
      * @param neighborhood The place to store the neighborhood
@@ -87,22 +75,22 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
         // clear the given neighborhood, as it needs to be overwritten
         neighborhood.clear();
 
-        if( (y-1) > 0 && !cells[y-1][x] && !cells[y-2][x])
+        if( (y-1) >= 0 && !cells[y-1][x] && isWallSideFull(x, y, Direction.Up) && isWallPresent(x, y-2))
         {
             neighborhood.add(Direction.Up);
         }
 
-        if( (y+1) < cells.length-1 && !cells[y+1][x] && !cells[y+2][x] )
+        if( (y+1) < cells.length && !cells[y+1][x] && isWallSideFull(x, y, Direction.Down) && isWallPresent(x, y+2))
         {
             neighborhood.add(Direction.Down);
         }
 
-        if( (x-1) > 0 && !cells[y][x-1] && !cells[y][x-2])
+        if( (x-1) >= 0 && !cells[y][x-1] && isWallSideFull(x, y, Direction.Left) && isWallPresent(x-2, y))
         {
             neighborhood.add(Direction.Left);
         }
 
-        if( (x+1) < cells[y].length-1 && !cells[y][x+1] && !cells[y][x+2] )
+        if( (x+1) < cells[y].length && !cells[y][x+1] && isWallSideFull(x, y, Direction.Right) && isWallPresent(x+2, y))
         {
             neighborhood.add(Direction.Right);
         }

@@ -15,8 +15,11 @@ package com.andgate.ikou;
 
 import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
+import com.andgate.ikou.model.Floor;
+import com.andgate.ikou.model.Level;
 import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.graphics.ShaderFont;
+import com.andgate.ikou.view.GameScreen;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -70,11 +73,24 @@ public class Ikou extends Game
         loadFonts();
         loadSounds();
 
-        MazeGenerator maze = new RecursiveBacktrackerMazeGenerator(10, 10);
+        Floor[] floors = new Floor[3];
+
+        MazeGenerator maze = new RecursiveBacktrackerMazeGenerator(10, 10, 2, 2, 10, 10);
         maze.generate();
         maze.print(System.out);
+        floors[0] = maze.computeFloor();
 
-        setScreen(new MainMenuScreen(this));
+        maze = new RecursiveBacktrackerMazeGenerator(15, 15, 2, 2, 10, 10);
+        maze.generate();
+        floors[1] = maze.computeFloor();
+
+        maze = new RecursiveBacktrackerMazeGenerator(20, 20, 2, 2, 10, 10);
+        maze.generate();
+        floors[2] = maze.computeFloor();
+
+        Level level = new Level(floors);
+
+        setScreen(new GameScreen(this, level, 1));
 	}
 
     private void loadSounds()
