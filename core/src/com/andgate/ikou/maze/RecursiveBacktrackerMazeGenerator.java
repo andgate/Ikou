@@ -58,6 +58,9 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
 
         } while(!stack.isEmpty());
 
+        getWalls()[start.y][start.x] = false;
+        getWalls()[end.y][end.x] = false;
+
     }
 
     /**

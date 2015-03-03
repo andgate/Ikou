@@ -84,7 +84,7 @@ public class GameScreen extends ScreenAdapter
         else
             level = new Level(seed); // be completely random
 
-        TilePalette palette = level.getFloor(1).getPalette();
+        TilePalette palette = level.getFloor(0).getPalette();
         Color bg = palette.background;
 
         game.bloom.setClearColor(bg.r, bg.g, bg.b, bg.a);

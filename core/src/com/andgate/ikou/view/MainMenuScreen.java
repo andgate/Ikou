@@ -85,7 +85,7 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.buttonPressedSound.play();
-                game.setScreen(new GameScreen(game, 4));
+                game.setScreen(new GameScreen(game, 2803376470345212314L));
                 MainMenuScreen.this.dispose();
             }
         });

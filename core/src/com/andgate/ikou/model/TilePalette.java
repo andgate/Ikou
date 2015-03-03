@@ -63,9 +63,10 @@ public class TilePalette {
         tmpHsl1.l = 0.7f;
         tmpHsl1.toRGBA(smooth);
 
-        tmpHsl1.l = 0.5f;
+        tmpHsl1.l = 0.9f;
         tmpHsl1.toRGBA(rough);
 
+        tmpHsl1.l = 0.5f;
         tmpHsl1.h = 2.0f / 3.0f;
         tmpHsl1.toRGBA(obstacle);
 

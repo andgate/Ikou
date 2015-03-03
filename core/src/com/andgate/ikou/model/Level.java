@@ -67,8 +67,7 @@ public class Level
         else
         {
             this.seed = seed;
-            // TODO: change to given seed value
-            random.setSeed(-1);
+            random.setSeed(seed);
         }
     }
 

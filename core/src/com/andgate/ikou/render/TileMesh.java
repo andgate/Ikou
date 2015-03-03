@@ -26,6 +26,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ShortArray;
 
+import java.util.LinkedList;
+
 public class TileMesh implements Disposable
 {
     private static final String TAG = "TileMeshBuilder";
