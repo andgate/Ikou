@@ -103,7 +103,6 @@ public class GameScreen extends ScreenAdapter
         setupCamera();
         InputProcessor moveController = new PlayerDirectionGestureDetector(player, camController);
 
-
         im = new InputMultiplexer();
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
@@ -150,24 +149,14 @@ public class GameScreen extends ScreenAdapter
         camController.update(delta);
 
         renderScene();
-        renderOverlay();
+        if(game.debug) renderOverlay();
+
         update(delta);
     }
 
     private void update(float delta)
     {
-        switch(gameMode)
-        {
-            case Play:
-                updatePlay(delta);
-                break;
-            case Pause:
-                updatePause(delta);
-                break;
-            case Victory:
-                updateVictory(delta);
-                break;
-        }
+        updatePlay(delta);
     }
 
     private void updatePlay(float delta)
@@ -180,16 +169,6 @@ public class GameScreen extends ScreenAdapter
             game.setScreen(new MainMenuScreen(game));
             this.dispose();
         }
-    }
-
-    private void updatePause(float delta)
-    {
-
-    }
-
-    private void updateVictory(float delta)
-    {
-
     }
 
     private void renderScene()

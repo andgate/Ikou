@@ -52,8 +52,18 @@ public class Ikou extends Game
     public Sound fallSound;
     public Sound hitSound;
 
+    final public boolean free;
+    final public boolean debug;
+
     public Ikou()
     {
+        this(false, false);
+    }
+
+    public Ikou(boolean free, boolean debug)
+    {
+        this.free = free;
+        this.debug = debug;
     }
 	
 	@Override
@@ -97,11 +107,13 @@ public class Ikou extends Game
 
     private void loadShader()
     {
+        if(fontShader != null) fontShader.dispose();
         fontShader = new ShaderProgram(Gdx.files.internal(Constants.FONT_VERT_SHADER), Gdx.files.internal(Constants.FONT_FRAG_SHADER));
         if (!fontShader.isCompiled()) {
             Gdx.app.error(TAG + " fontShader", "compilation failed:\n" + fontShader.getLog());
         }
 
+        if(bloom != null) bloom.dispose();
         bloom = new Bloom();
         bloom.setClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         bloom.setTreshold(0.6f);
@@ -112,6 +124,9 @@ public class Ikou extends Game
     public void dispose()
     {
         disposeFonts();
+
+        fontShader.dispose();
+        bloom.dispose();
 
         if(getScreen() != null)
             getScreen().dispose();
@@ -137,6 +152,7 @@ public class Ikou extends Game
     public void resize(int width, int height)
     {
         screenAdjustments(width, height);
+        loadShader();
         scaleFonts();
 
         if(getScreen() != null)

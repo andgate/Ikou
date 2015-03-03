@@ -36,8 +36,7 @@ public class MainMenuScreen implements Screen
     private final Ikou game;
     private Stage stage;
 
-    private static final String PLAY_BUTTON_TEXT = "Play";
-    private static final String TEST_BUTTON_TEXT = "Test";
+    private static final String PLAY_BUTTON_TEXT = "Tap to play";
 
     public MainMenuScreen(final Ikou game) {
         this.game = game;
@@ -59,7 +58,7 @@ public class MainMenuScreen implements Screen
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
 
-        final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
+        final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.DARK_GRAY);
         final ButtonStyle buttonStyle = new ButtonStyle(game.skin.getDrawable("default-round"),
                                                                 game.skin.getDrawable("default-round-down"),
                                                                 game.skin.getDrawable("default-round"));
@@ -72,29 +71,15 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.buttonPressedSound.play();
-                game.setScreen(new GameScreen(game));
-                MainMenuScreen.this.dispose();
             }
         });
 
-        final ShaderLabel testButtonLabel = new ShaderLabel(TEST_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        final Button testButton = new Button(buttonStyle);
-        testButton.add(testButtonLabel);
 
-        testButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //game.buttonPressedSound.play();
-                game.setScreen(new GameScreen(game, 2803376470345212314L));
-                MainMenuScreen.this.dispose();
-            }
-        });
 
         Table table = new Table();
 
         table.add(titleLabel).center().top().spaceBottom(25.0f).row();
-        table.add(playButton).fill().spaceBottom(20.0f).center().bottom().row();
-        table.add(testButton).fill();
+        table.add(playButtonLabel).spaceBottom(20.0f).center();
 
         table.setFillParent(true);
 
@@ -113,6 +98,11 @@ public class MainMenuScreen implements Screen
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
         {
             Gdx.app.exit();
+        }
+
+        if(Gdx.input.isTouched())
+        {
+            playGame();
         }
 
         stage.act();
@@ -144,4 +134,11 @@ public class MainMenuScreen implements Screen
     public void dispose() {
         if(stage != null) stage.dispose();
     }
+
+    private void playGame()
+    {
+        game.setScreen(new GameScreen(game));
+        this.dispose();
+    }
+
 }

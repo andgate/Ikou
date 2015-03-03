@@ -1,12 +1,17 @@
 android {
+    signingConfigs {
+    }
     buildToolsVersion "21.1.1"
     compileSdkVersion 21
-
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 9
         targetSdkVersion 21
-    }
 
+        applicationVariants.all { variant ->
+            appendVersionNameVersionCode(variant, defaultConfig)
+        }
+
+    }
     sourceSets {
         main {
             //manifest.srcFile 'AndroidManifest.xml'
@@ -16,15 +21,38 @@ android {
             //res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
-
-        instrumentTest.setRoot('tests')
+        //instrumentTest.setRoot('tests')
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+    productFlavors {
+        paid {
+            applicationId 'com.andgate.ikou'
+            buildConfigField 'boolean', 'FREE', 'false'
+        }
+        free {
+            applicationId 'com.andgate.ikoufree'
+            buildConfigField 'boolean', 'FREE', 'true'
+        }
+    }
 }
+
+def appendVersionNameVersionCode(variant, defaultConfig) {
+    variant.outputs.each { output ->
+        if (output.zipAlign) {
+            def file = output.outputFile
+            def fileName = file.name.replace("android", "ikou-android")
+            output.outputFile = new File(file.parent, fileName)
+        }
+
+        def file = output.packageApplication.outputFile
+        def fileName = file.name.replace("android", "ikou-android")
+        output.packageApplication.outputFile = new File(file.parent, fileName)
+    }
+}
+
 // needed to add JNI shared libraries to APK when compiling on CLI
 tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
     pkgTask.jniFolders = new HashSet<File>()
