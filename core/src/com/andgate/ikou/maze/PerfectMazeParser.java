@@ -25,7 +25,7 @@ public class PerfectMazeParser extends MazeParser
         end.x = maze.getEnd().x;
         end.z = maze.getEnd().y;
 
-        master.setStack(new TileStack(Tile.End), end.x, end.z);
+        master.setStack(new TileStack(Tile.End), end.z, end.x);
 
         return new Floor(master, palette, start, end);
     }
@@ -42,17 +42,17 @@ public class PerfectMazeParser extends MazeParser
                 if(maze.isWallPresent(x,y))
                 {
                     if(maze.random.nextInt(2) == 0)
-                        masterSector.setStack(new TileStack(Tile.Obstacle), x, y);
+                        masterSector.setStack(new TileStack(Tile.Obstacle), y, x);
                     else
-                        masterSector.setStack(new TileStack(Tile.Blank), x, y);
+                        masterSector.setStack(new TileStack(Tile.Blank), y, x);
                 }
                 else if(maze.countWalls(x,y) < 2)
                 {
-                    masterSector.setStack(new TileStack(Tile.Rough), x, y);
+                    masterSector.setStack(new TileStack(Tile.Rough), y, x);
                 }
                 else
                 {
-                    masterSector.setStack(new TileStack(Tile.Smooth), x, y);
+                    masterSector.setStack(new TileStack(Tile.Smooth), y, x);
                 }
             }
         }

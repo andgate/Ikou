@@ -81,7 +81,8 @@ public class GameScreen extends ScreenAdapter
         batch = new SpriteBatch();
 
         if(seed != -1) level = new Level(seed); // use a seed
-        else level = new Level(); // be completely random
+        else
+            level = new Level(seed); // be completely random
 
         TilePalette palette = level.getFloor(1).getPalette();
         Color bg = palette.background;
@@ -215,7 +216,7 @@ public class GameScreen extends ScreenAdapter
     {
         controlsMenu.render();
 
-        String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond();
+        String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond() + ",  Seed: " + level.getSeed();
         float font_height = game.menuOptionFont.getCapHeight() * game.menuOptionFont.getScale();
         float font_y = Gdx.graphics.getHeight() - font_height;
 

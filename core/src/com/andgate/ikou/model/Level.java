@@ -29,12 +29,13 @@ import java.util.Random;
 
 public class Level
 {
-    public LinkedList<Floor> floors = new LinkedList<>();
-    private Random random = new Random();
-
     public static final int BASE_SIZE = 3;
 
     MazeGenerator mazegen;
+    public LinkedList<Floor> floors = new LinkedList<>();
+
+    private Random random = new Random();
+    private long seed;
 
     public Level()
     {
@@ -43,11 +44,31 @@ public class Level
 
     public Level(long seed)
     {
-        if(seed != -1) random.setSeed(seed);
+        setSeed(seed);
 
         for(int i = 0; i < 10; i++)
         {
             addRandomFloor();
+        }
+    }
+
+    public long getSeed()
+    {
+        return seed;
+    }
+
+    public void setSeed(long seed)
+    {
+        if(seed == -1)
+        {
+            this.seed = random.nextLong();
+            random.setSeed(this.seed);
+        }
+        else
+        {
+            this.seed = seed;
+            // TODO: change to given seed value
+            random.setSeed(-1);
         }
     }
 
@@ -71,22 +92,21 @@ public class Level
     public Floor buildRandomFloor(long mazeSeed)
     {
         int depth = floors.size() + 1;
-        int width = BASE_SIZE * depth;
-        int height = BASE_SIZE * depth;
+        int length = BASE_SIZE * depth;
 
         do
         {
-            tmpVec2i_1.x = random.nextInt(width+1);
-            tmpVec2i_1.y = random.nextInt(height+1);
+            tmpVec2i_1.x = random.nextInt(length);
+            tmpVec2i_1.y = random.nextInt(length);
 
-            tmpVec2i_2.x = random.nextInt(width+1);
-            tmpVec2i_2.y = random.nextInt(height+1);
+            tmpVec2i_2.x = random.nextInt(length);
+            tmpVec2i_2.y = random.nextInt(length);
 
             tmpVec2i_3.set(tmpVec2i_1);
             tmpVec2i_3.sub(tmpVec2i_2);
-        } while(tmpVec2i_3.len() > (width + height) / 4);
+        } while(tmpVec2i_3.len() <= (length / 2));
 
-        mazegen = new RecursiveBacktrackerMazeGenerator(width, height, tmpVec2i_1.x, tmpVec2i_1.y, tmpVec2i_1.x, tmpVec2i_1.y, mazeSeed);
+        mazegen = new RecursiveBacktrackerMazeGenerator(length - 1, length - 1, tmpVec2i_1.x, tmpVec2i_1.y, tmpVec2i_2.x, tmpVec2i_2.y, mazeSeed);
         mazegen.generate();
 
         return mazegen.computeFloor();
@@ -110,8 +130,9 @@ public class Level
         Vector3i penultEnd = penult.getEnd();
         Vector3i lastStart = last.getStart();
 
-        offset.add(penultEnd.x, penultEnd.z);
-        offset.sub(lastStart.x, lastStart.z);
+        tmpVec2i_1.set(penultEnd.x, penultEnd.z);
+        tmpVec2i_1.sub(lastStart.x, lastStart.z);
+        offset.add(tmpVec2i_1);
 
         float yOffset = (1-floors.size()) * Constants.FLOOR_SPACING;
 

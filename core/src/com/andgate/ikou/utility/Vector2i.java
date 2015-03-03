@@ -85,6 +85,6 @@ public class Vector2i
 
     public float len()
     {
-        return (float)Math.sqrt(x * x + y * y);
+        return (float)Math.sqrt((float)x * x + (float)y * y);
     }
 }

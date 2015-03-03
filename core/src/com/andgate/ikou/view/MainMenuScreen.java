@@ -37,7 +37,7 @@ public class MainMenuScreen implements Screen
     private Stage stage;
 
     private static final String PLAY_BUTTON_TEXT = "Play";
-    private static final String BUILD_BUTTON_TEXT = "Build";
+    private static final String TEST_BUTTON_TEXT = "Test";
 
     public MainMenuScreen(final Ikou game) {
         this.game = game;
@@ -77,10 +77,24 @@ public class MainMenuScreen implements Screen
             }
         });
 
+        final ShaderLabel testButtonLabel = new ShaderLabel(TEST_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Button testButton = new Button(buttonStyle);
+        testButton.add(testButtonLabel);
+
+        testButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //game.buttonPressedSound.play();
+                game.setScreen(new GameScreen(game, 4));
+                MainMenuScreen.this.dispose();
+            }
+        });
+
         Table table = new Table();
 
         table.add(titleLabel).center().top().spaceBottom(25.0f).row();
         table.add(playButton).fill().spaceBottom(20.0f).center().bottom().row();
+        table.add(testButton).fill();
 
         table.setFillParent(true);
 

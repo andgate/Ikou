@@ -92,8 +92,7 @@ public class Vector3i
         return equals(other.x, other.y, other.z);
     }
 
-    Vector3 vector3f = new Vector3();
-    public Vector3 toFloat()
+    public Vector3 toFloat(Vector3 vector3f)
     {
         vector3f.set(x, y, z);
         return vector3f;
