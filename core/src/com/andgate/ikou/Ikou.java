@@ -83,8 +83,6 @@ public class Ikou extends Game
         loadFonts();
         loadSounds();
 
-        Floor[] floors = new Floor[3];
-
         setScreen(new MainMenuScreen(this));
 	}
 
@@ -152,7 +150,6 @@ public class Ikou extends Game
     public void resize(int width, int height)
     {
         screenAdjustments(width, height);
-        loadShader();
         scaleFonts();
 
         if(getScreen() != null)

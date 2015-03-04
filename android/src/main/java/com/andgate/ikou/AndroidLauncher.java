@@ -42,7 +42,8 @@ public class AndroidLauncher extends AndroidApplication {
         layout.setLayoutParams(params);
 
         AdView admobView = createAdView();
-        layout.addView(admobView);
+        if(BuildConfig.FREE)
+            layout.addView(admobView);
 
         View gameView = createGameView(cfg);
         layout.addView(gameView);

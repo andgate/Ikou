@@ -18,6 +18,7 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,7 +37,11 @@ public class MainMenuScreen implements Screen
     private final Ikou game;
     private Stage stage;
 
-    private static final String PLAY_BUTTON_TEXT = "Tap to play";
+    private static final String TAP_TO_PLAY_TEXT = "Tap to play";
+    private static final String NEW_GAME_BUTTON_TEXT = "New";
+    private static final String CONTINUE_BUTTON_TEXT = "Continue";
+
+    private final boolean isNewGame;
 
     public MainMenuScreen(final Ikou game) {
         this.game = game;
@@ -45,6 +50,9 @@ public class MainMenuScreen implements Screen
 
         Color bg = Constants.BACKGROUND_COLOR;
         Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
+
+        Preferences playerPrefs = Gdx.app.getPreferences(Constants.PLAYER_PREFS);
+        isNewGame = !playerPrefs.contains(Constants.PLAYER_PREF_LEVEL_SEED);
 
         buildStage();
     }
@@ -58,32 +66,69 @@ public class MainMenuScreen implements Screen
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
 
-        final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.DARK_GRAY);
-        final ButtonStyle buttonStyle = new ButtonStyle(game.skin.getDrawable("default-round"),
-                                                                game.skin.getDrawable("default-round-down"),
-                                                                game.skin.getDrawable("default-round"));
-
-        final ShaderLabel playButtonLabel = new ShaderLabel(PLAY_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        final Button playButton = new Button(buttonStyle);
-        playButton.add(playButtonLabel);
-
-        playButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //game.buttonPressedSound.play();
-            }
-        });
-
-
-
         Table table = new Table();
 
         table.add(titleLabel).center().top().spaceBottom(25.0f).row();
-        table.add(playButtonLabel).spaceBottom(20.0f).center();
+
+        if(isNewGame)
+        {
+            ShaderLabel tapToPlayLabel = buildTapToPlay();
+            table.add(tapToPlayLabel).spaceBottom(20.0f).center();
+        }
+        else
+        {
+            Table menuButtonTable = buildMenuButtonTable();
+            table.add(menuButtonTable).center();
+        }
 
         table.setFillParent(true);
 
         stage.addActor(table);
+    }
+
+    private Table buildMenuButtonTable()
+    {
+        final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
+        final ButtonStyle buttonStyle = new ButtonStyle(game.skin.getDrawable("default-round"),
+                game.skin.getDrawable("default-round-down"),
+                game.skin.getDrawable("default-round"));
+
+        final ShaderLabel newGameButtonLabel = new ShaderLabel(NEW_GAME_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Button newGameButton = new Button(buttonStyle);
+        newGameButton.add(newGameButtonLabel);
+
+        newGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //game.buttonPressedSound.play();
+                MainMenuScreen.this.startNewGame();
+            }
+        });
+
+        final ShaderLabel continueButtonLabel = new ShaderLabel(CONTINUE_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Button continueButton = new Button(buttonStyle);
+        continueButton.add(continueButtonLabel);
+
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //game.buttonPressedSound.play();
+                MainMenuScreen.this.continueLastGame();
+            }
+        });
+
+        Table menuButtonsTable = new Table();
+        menuButtonsTable.add(newGameButton).spaceBottom(20.0f).padLeft(10.0f).padRight(10.0f).row();
+        menuButtonsTable.add(continueButton).fill();
+
+        return menuButtonsTable;
+    }
+
+    private ShaderLabel buildTapToPlay()
+    {
+        final LabelStyle tapToPlayLabelStyle = new LabelStyle(game.menuOptionFont, Color.DARK_GRAY);
+        final ShaderLabel tapToPlayLabel = new ShaderLabel(TAP_TO_PLAY_TEXT, tapToPlayLabelStyle, game.fontShader);
+        return tapToPlayLabel;
     }
 
     @Override
@@ -100,9 +145,9 @@ public class MainMenuScreen implements Screen
             Gdx.app.exit();
         }
 
-        if(Gdx.input.isTouched())
+        if(isNewGame && Gdx.input.isTouched())
         {
-            playGame();
+            startNewGame();
         }
 
         stage.act();
@@ -135,10 +180,15 @@ public class MainMenuScreen implements Screen
         if(stage != null) stage.dispose();
     }
 
-    private void playGame()
+    private void startNewGame()
     {
-        game.setScreen(new GameScreen(game));
+        game.setScreen(new GameScreen(game, true));
         this.dispose();
     }
 
+    private void continueLastGame()
+    {
+        game.setScreen(new GameScreen(game, false));
+        this.dispose();
+    }
 }

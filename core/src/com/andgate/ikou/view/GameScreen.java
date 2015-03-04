@@ -26,6 +26,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,8 +38,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
-
-import java.util.Random;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter
 {
@@ -60,8 +60,8 @@ public class GameScreen extends ScreenAdapter
     private ModelBatch modelBatch;
     private Environment environment;
 
-    private final Level level;
-    private final Player player;
+    private Level level;
+    private Player player;
 
     private ModelBatch shadowBatch;
     private DirectionalShadowLight shadowLight;
@@ -70,47 +70,71 @@ public class GameScreen extends ScreenAdapter
 
     private SpriteBatch batch;
 
-    public GameScreen(Ikou game)
-    {
-        this(game, -1);
-    }
-
-    public GameScreen(Ikou game, long seed)
+    public GameScreen(Ikou game, boolean isNewGame)
     {
         this.game = game;
         batch = new SpriteBatch();
 
-        if(seed != -1) level = new Level(seed); // use a seed
+        if(isNewGame)
+        {
+            startNewGame();
+        }
         else
-            level = new Level(seed); // be completely random
+        {
+            loadLastGame();
+        }
 
-        TilePalette palette = level.getFloor(0).getPalette();
+        TilePalette palette = level.getFloor(Constants.DEFAULT_DEPTH).getPalette();
         Color bg = palette.background;
-
         game.bloom.setClearColor(bg.r, bg.g, bg.b, bg.a);
 
-        Gdx.graphics.setVSync(false);
-
-        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         modelBatch = new ModelBatch();
-
-        // Start player on the first floor for now.
-        // TODO: Start player at a depth reached before.
-        player = new Player(game, level, 0);
         createEnvironment();
-
         setupCamera();
-        InputProcessor moveController = new PlayerDirectionGestureDetector(player, camController);
 
+        InputProcessor moveController = new PlayerDirectionGestureDetector(player, camController);
         im = new InputMultiplexer();
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
         controlsMenu = new GameControlsMenu(game, im, moveController, camController);
     }
 
+    private void startNewGame()
+    {
+        level = new Level(); // be completely random
+        player = new Player(game, level, Constants.DEFAULT_DEPTH);
+        player.saveProgress();
+    }
+
+    private void loadLastGame()
+    {
+        Preferences prefs = Gdx.app.getPreferences(Constants.PLAYER_PREFS);
+
+        long seed = prefs.getLong(Constants.PLAYER_PREF_LEVEL_SEED, Constants.RESERVED_SEED);
+        if(seed == Constants.RESERVED_SEED)
+        {
+            startNewGame();
+            return;
+        }
+        level = new Level(seed);
+
+        int depth = prefs.getInteger(Constants.PLAYER_PREF_DEPTH, Constants.DEFAULT_DEPTH);
+        //int depth = 0;
+        level.initializePlayerDepth(depth);
+        player = new Player(game, level, depth);
+
+        final Vector3 defaultStart = level.getStartPosition(depth);
+        float playerX = prefs.getFloat(Constants.PLAYER_PREF_X, defaultStart.x);
+        float playerY = prefs.getFloat(Constants.PLAYER_PREF_Y, defaultStart.y);
+        float playerZ = prefs.getFloat(Constants.PLAYER_PREF_Z, defaultStart.z);
+
+        player.setPosition(playerX, playerY, playerZ);
+    }
+
     private void setupCamera()
     {
+        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         float playerCenterX = player.getPosition().x + TileStack.HALF_WIDTH;
         float playerCenterZ = player.getPosition().z + TileStack.HALF_DEPTH;
         camera.position.set(playerCenterX,
@@ -149,6 +173,7 @@ public class GameScreen extends ScreenAdapter
         camController.update(delta);
 
         renderScene();
+        controlsMenu.render();
         if(game.debug) renderOverlay();
 
         update(delta);
@@ -175,26 +200,16 @@ public class GameScreen extends ScreenAdapter
     {
         renderSetup();
 
-        /*shadowLight.begin(Vector3.Zero, camera.direction);
-        shadowBatch.begin(shadowLight.getCamera());
-        shadowBatch.render(playerRender);
-        shadowBatch.end();
-        shadowLight.end();*/
-
         game.bloom.capture();
-
-        modelBatch.begin(camera);
-        level.render(modelBatch, environment);
-        modelBatch.render(player.getRender(), environment);
-        modelBatch.end();
-
+            modelBatch.begin(camera);
+                level.render(modelBatch, environment);
+                modelBatch.render(player.getRender(), environment);
+            modelBatch.end();
         game.bloom.render();
     }
 
     private void renderOverlay()
     {
-        controlsMenu.render();
-
         String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond() + ",  Seed: " + level.getSeed();
         float font_height = game.menuOptionFont.getCapHeight() * game.menuOptionFont.getScale();
         float font_y = Gdx.graphics.getHeight() - font_height;

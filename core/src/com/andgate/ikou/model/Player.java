@@ -16,13 +16,14 @@ package com.andgate.ikou.model;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
-import com.andgate.ikou.io.ProgressDatabaseService;
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.render.PlayerRender;
 import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
 import com.andgate.ikou.utility.Vector3i;
 import com.andgate.ikou.utility.graphics.ColorUtils;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Matrix4;
@@ -70,12 +71,12 @@ public class Player implements DirectionListener, Disposable
         this.game = game;
         this.level = level;
 
-        this.depth = depth;
-        setPosition(level.getStartPosition(depth));
-
         playerRender = new PlayerRender();
         playerRender.setColor(level.getFloor(depth).getPalette().player);
         playerRender.getTransform().set(transform);
+
+        this.depth = depth;
+        setPosition(level.getStartPosition(depth));
     }
 
     public PlayerRender getRender()
@@ -88,7 +89,8 @@ public class Player implements DirectionListener, Disposable
         position.set(x, y, z);
         initialPosition.set(x, y, z);
         finalPosition.set(x, y, z);
-        transform.idt().translate(position);
+        transform.idt().translate(x,y,z);
+        playerRender.getTransform().idt().set(transform);
     }
 
     public void setPosition(Vector3 position)
@@ -177,7 +179,7 @@ public class Player implements DirectionListener, Disposable
 
             if(leftOverDelta > 0.0f)
             {
-                // Move completely is the next tile is smooth
+                // Move completely if the next tile is smooth
                 Tile nextTile = getNextTile();
 
                 switch(nextTile)
@@ -235,6 +237,7 @@ public class Player implements DirectionListener, Disposable
             direction.set(0,0,0);
 
             initialPosition.set(position);
+            saveProgress();
         }
 
         return isSlidingOver;
@@ -246,6 +249,7 @@ public class Player implements DirectionListener, Disposable
 
         direction.set(0, 0, 0);
         initialPosition.set(position);
+        saveProgress();
     }
 
     private boolean isFalling = false;
@@ -305,20 +309,22 @@ public class Player implements DirectionListener, Disposable
 
     public void startNextFloor()
     {
-        saveProgress();
         depth++;
+        level.startNextFloor(depth);
+        saveProgress();
     }
 
-    private void saveProgress()
+    public void saveProgress()
     {
-        /*ProgressDatabase progressDB = ProgressDatabaseService.read();
-        if(currentFloor > completedFloors)
-        {
-            // TODO: Progress should just save current depth
-            // may store as a preference or something.
-            progressDB.setFloorsCompleted("remove", currentFloor);
-            ProgressDatabaseService.write(progressDB);
-        }*/
+        Preferences prefs = Gdx.app.getPreferences(Constants.PLAYER_PREFS);
+
+        prefs.putInteger(Constants.PLAYER_PREF_DEPTH, depth);
+        prefs.putLong(Constants.PLAYER_PREF_LEVEL_SEED, level.getSeed());
+        prefs.putFloat(Constants.PLAYER_PREF_X, position.x);
+        prefs.putFloat(Constants.PLAYER_PREF_Y, position.y);
+        prefs.putFloat(Constants.PLAYER_PREF_Z, position.z);
+
+        prefs.flush();
     }
 
     Vector3 initialPosition = new Vector3();

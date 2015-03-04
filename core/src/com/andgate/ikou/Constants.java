@@ -113,4 +113,15 @@ public class Constants
     public static final float CAMERA_ANGLE_TO_PLAYER = 45.0f;
     public static final float CAMERA_VERTICAL_DISTANCE = (float)Math.sin(Math.toRadians(CAMERA_ANGLE_TO_PLAYER)) * CAMERA_DISTANCE;
     public static final float CAMERA_HORIZONTAL_DISTANCE = (float)Math.cos(Math.toRadians(CAMERA_ANGLE_TO_PLAYER)) * CAMERA_DISTANCE;
+
+    public static final String PLAYER_PREFS = "Player Preferences";
+    public static final String PLAYER_PREF_X = "x coord";
+    public static final String PLAYER_PREF_Y = "y coord";
+    public static final String PLAYER_PREF_Z = "z coord";
+    public static final String PLAYER_PREF_DEPTH = "depth";
+    public static final String PLAYER_PREF_LEVEL_SEED = "level seed";
+
+    public static final long RESERVED_SEED = -1;
+
+    public static final int DEFAULT_DEPTH = 0;
 }

@@ -30,6 +30,8 @@ import java.util.Random;
 public class Level
 {
     public static final int BASE_SIZE = 3;
+    public static final int VIEWABLE_FLOORS = 10;
+    public static final int VIEWABLE_FLOORS_ADJECENT = VIEWABLE_FLOORS / 2 - 1;
 
     MazeGenerator mazegen;
     public LinkedList<Floor> floors = new LinkedList<>();
@@ -39,14 +41,14 @@ public class Level
 
     public Level()
     {
-        this(-1);
+        this(Constants.RESERVED_SEED);
     }
 
     public Level(long seed)
     {
         setSeed(seed);
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < VIEWABLE_FLOORS; i++)
         {
             addRandomFloor();
         }
@@ -59,10 +61,10 @@ public class Level
 
     public void setSeed(long seed)
     {
-        if(seed == -1)
+        if(seed == Constants.RESERVED_SEED)
         {
             this.seed = random.nextLong();
-            random.setSeed(this.seed);
+            this.setSeed(this.seed);
         }
         else
         {
@@ -117,6 +119,25 @@ public class Level
         offsetLastFloor();
     }
 
+    private int depthOffset = 0;
+    public void startNextFloor(int playerDepth)
+    {
+        if(playerDepth >= VIEWABLE_FLOORS_ADJECENT)
+        {
+            floors.removeFirst().dispose();
+            addRandomFloor();
+            depthOffset++;
+        }
+    }
+
+    public void initializePlayerDepth(int playerDepth)
+    {
+        for(int i = 0; i < playerDepth; i++)
+        {
+            startNextFloor(i);
+        }
+    }
+
     private Vector2i offset = new Vector2i();
 
     private void offsetLastFloor()
@@ -141,23 +162,22 @@ public class Level
 
     public Floor getFloor(int depth)
     {
-        return floors.get(depth);
+        int index = getIndex(depth);
+        return floors.get(index);
     }
 
-    public Tile getTile(int floorNumber, int x, int y, int z)
-    {
-        return getFloor(floorNumber).getTile(x, y, z);
-    }
 
     public TileStack getTileStack(int depth, int x,  int z)
     {
-        return floors.get(depth).getTileStack(x, z);
+        int index = getIndex(depth);
+        return floors.get(index).getTileStack(x, z);
     }
 
     private Vector3 startPosition = new Vector3();
     public Vector3 getStartPosition(int depth)
     {
-        Floor floor = floors.get(depth);
+        int index = getIndex(depth);
+        Floor floor = floors.get(index);
 
         floor.getPosition(startPosition);
 
@@ -185,5 +205,9 @@ public class Level
         }
     }
 
+    private int getIndex(int depth)
+    {
 
+        return depth - depthOffset;
+    }
 }
