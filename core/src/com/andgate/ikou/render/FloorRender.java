@@ -73,7 +73,6 @@ public class FloorRender implements RenderableProvider, Disposable
                 SectorMesh sectorMesh
                         = new SectorMesh(floor.getMasterSector(), currRow, currColumn, palette, offsetX, offsetZ);
 
-                sectorMesh.setNeedsRebuild();
                 sectorMeshes[currRow][currColumn] = sectorMesh;
             }
         }
@@ -133,5 +132,24 @@ public class FloorRender implements RenderableProvider, Disposable
                     sectorMesh.dispose();
             }
         }
+    }
+
+    private boolean isBuilt = false;
+    public void build()
+    {
+        assert(isBuilt == false);
+
+        int rows = sectorMeshes.length;
+        for(int currRow = 0; currRow < rows; currRow++)
+        {
+            int columns = sectorMeshes[currRow].length;
+            for(int currColumn = 0; currColumn < columns; currColumn++)
+            {
+                SectorMesh sectorMesh = sectorMeshes[currRow][currColumn];
+                sectorMesh.build();
+            }
+        }
+
+        isBuilt = true;
     }
 }

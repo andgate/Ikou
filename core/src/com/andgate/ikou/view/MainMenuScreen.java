@@ -118,7 +118,7 @@ public class MainMenuScreen implements Screen
         });
 
         Table menuButtonsTable = new Table();
-        menuButtonsTable.add(newGameButton).spaceBottom(20.0f).padLeft(10.0f).padRight(10.0f).row();
+        menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).padLeft(10.0f).padRight(10.0f).row();
         menuButtonsTable.add(continueButton).fill();
 
         return menuButtonsTable;

@@ -310,7 +310,7 @@ public class Player implements DirectionListener, Disposable
     public void startNextFloor()
     {
         depth++;
-        level.startNextFloor(depth);
+        level.startNextFloorThreaded(depth);
         saveProgress();
     }
 

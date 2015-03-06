@@ -36,7 +36,7 @@ public class PlayerRender implements RenderableProvider, Disposable
     {
         tileMesh = new TileMesh();
         tileMesh.addTile(Color.WHITE, 0, 0, 0);
-        tileMesh.setNeedsRebuild();
+        tileMesh.build();
 
         material = new Material(TileStack.TILE_MATERIAL);
         setColor(new Color(1.0f, 1.0f, 1.0f, 1.0f));

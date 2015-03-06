@@ -91,6 +91,8 @@ public class Floor
         return palette;
     }
 
+    public FloorRender getRender() { return floorRender; }
+
     public void shrink()
     {
         masterSector.shrink();
@@ -98,6 +100,7 @@ public class Floor
 
     public void dispose()
     {
-        floorRender.dispose();
+        if(floorRender != null)
+            floorRender.dispose();
     }
 }

@@ -15,6 +15,7 @@ package com.andgate.ikou.render;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.TileStack;
+import com.andgate.ikou.utility.FloatStack;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
@@ -31,14 +32,6 @@ import java.util.LinkedList;
 public class TileMesh implements Disposable
 {
     private static final String TAG = "TileMeshBuilder";
-
-    private final static Object rebuilding = new Object();
-    private boolean needsRebuild = false;
-    private boolean rebuildingInProcess = false;
-
-    private static final float WIDTH = Constants.TILE_LENGTH;
-    private static final float HEIGHT = Constants.TILE_HEIGHT;
-    private static final float DEPTH = Constants.TILE_LENGTH;
 
     // Position attribute - (x, y, z)
     public static final String POSITION_ATTRIBUTE = "a_position";
@@ -79,8 +72,6 @@ public class TileMesh implements Disposable
     private static final Vector3 pointVector6 = new Vector3();
     private static final Vector3 pointVector7 = new Vector3();
 
-    private float[] v;
-    private short[] i;
     private FloatArray vertices;
     private ShortArray indicies;
     private Mesh mesh;
@@ -99,27 +90,7 @@ public class TileMesh implements Disposable
 
     public Mesh getMesh()
     {
-        synchronized (rebuilding)
-        {
-            if(rebuildingInProcess)
-            {
-                return null;
-            }
-            if(needsRebuild)
-            {
-                rebuild();
-            }
-            return mesh;
-        }
-    }
-
-    public void setNeedsRebuild()
-    {
-        synchronized (rebuilding) {
-            v = vertices.toArray();
-            i = indicies.toArray();
-            needsRebuild = true;
-        }
+        return mesh;
     }
 
     public void addTile(Color color, float x, float y, float z)
@@ -234,43 +205,28 @@ public class TileMesh implements Disposable
         addFace(color, points[5], points[4], points[1], points[0], topNormal);
     }
 
-    public void rebuild()
+    public void build()
     {
-        try
-        {
-            synchronized (rebuilding)
-            {
-                rebuildingInProcess = true;
-                mesh = new Mesh(
-                        true, VERTICES_PER_FACE * (vertices.size / NUM_COMPONENTS), INDICES_PER_FACE * indicies.size,
-                        new VertexAttribute(Usage.Position, POSITION_COMPONENTS, POSITION_ATTRIBUTE),
-                        new VertexAttribute(Usage.ColorPacked, COLOR_COMPONENTS_EXPECTED, COLOR_ATTRIBUTE),
-                        new VertexAttribute(Usage.Normal, NORMAL_COMPONENTS, NORMAL_ATTRIBUTE));
-                mesh.setVertices(v);
-                mesh.setIndices(i);
+        float[] v = vertices.toArray();
+        short[] i = indicies.toArray();
 
-                // Clear everything so it can be garbage collected
-                vertices.clear();
-                indicies.clear();
-                vertices = null;
-                indicies = null;
-                v = null;
-                i = null;
+        mesh = new Mesh(
+                true, VERTICES_PER_FACE * (vertices.size / NUM_COMPONENTS), INDICES_PER_FACE * indicies.size,
+                new VertexAttribute(Usage.Position, POSITION_COMPONENTS, POSITION_ATTRIBUTE),
+                new VertexAttribute(Usage.ColorPacked, COLOR_COMPONENTS_EXPECTED, COLOR_ATTRIBUTE),
+                new VertexAttribute(Usage.Normal, NORMAL_COMPONENTS, NORMAL_ATTRIBUTE));
+        mesh.setVertices(v);
+        mesh.setIndices(i);
 
-                rebuildingInProcess = false;
-                needsRebuild = false;
-            }
-        }
-        catch(final Throwable e)
-        {
-            final String errorMessage = "Rebuilding mesh failed!";
-            Gdx.app.error(TAG, errorMessage, e);
-        }
+        // Clear everything so it can be garbage collected
+        //vertices = null;
+        //indicies = null;
     }
 
     @Override
     public void dispose()
     {
-        mesh.dispose();
+        if(mesh != null)
+            mesh.dispose();
     }
 }

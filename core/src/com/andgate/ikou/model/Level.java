@@ -17,8 +17,11 @@ import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.Constants;
+import com.andgate.ikou.render.FloorRender;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -39,6 +42,8 @@ public class Level
     private Random random = new Random();
     private long seed;
 
+    private PerspectiveCamera camera = null;
+
     public Level()
     {
         this(Constants.RESERVED_SEED);
@@ -51,6 +56,7 @@ public class Level
         for(int i = 0; i < VIEWABLE_FLOORS; i++)
         {
             addRandomFloor();
+            floors.getLast().getRender().build();
         }
     }
 
@@ -113,26 +119,79 @@ public class Level
         return mazegen.computeFloor();
     }
 
+    private int depthOffset = 0;
+
     public void addFloor(Floor floor)
     {
+        floor.getRender().setCamera(camera);
         floors.add(floor);
         offsetLastFloor();
     }
 
-    private int depthOffset = 0;
     public void startNextFloor(int playerDepth)
+    {
+        startNextFloor(buildRandomFloor(random.nextLong()), playerDepth);
+    }
+
+    public void startNextFloor(Floor newFloor, int playerDepth)
     {
         if(playerDepth >= VIEWABLE_FLOORS_ADJECENT)
         {
             floors.removeFirst().dispose();
-            addRandomFloor();
+            addFloor(newFloor);
             depthOffset++;
+        }
+    }
+
+
+    public void startNextFloorThreaded(final int playerDepth)
+    {
+        if(playerDepth >= VIEWABLE_FLOORS_ADJECENT)
+        {
+            new FloorBuilderThread(seed, playerDepth).start();
+        }
+    }
+
+    private class FloorBuilderThread extends Thread
+    {
+        private long seed;
+        private int playerDepth;
+        public FloorBuilderThread(long seed, int playerDepth)
+        {
+            this.seed = seed;
+            this.playerDepth = playerDepth;
+        }
+
+        @Override
+        public void run()
+        {
+            Floor floor = buildRandomFloor(playerDepth);
+
+            Gdx.app.postRunnable(new FloorPoster(floor));
+        }
+
+        private class FloorPoster implements Runnable
+        {
+            Floor floor;
+
+            public FloorPoster(Floor floor)
+            {
+                this.floor = floor;
+            }
+
+            @Override
+            public void run()
+            {
+                // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
+                Level.this.startNextFloor(floor, playerDepth);
+                floor.getRender().build();
+            }
         }
     }
 
     public void initializePlayerDepth(int playerDepth)
     {
-        for(int i = 0; i < playerDepth; i++)
+        for(int i = 0; i <= playerDepth; i++)
         {
             startNextFloor(i);
         }
@@ -187,6 +246,17 @@ public class Level
         startPosition.y = TileStack.HEIGHT - depth * Constants.FLOOR_SPACING;
 
         return startPosition;
+    }
+
+    public void setCamera(PerspectiveCamera camera)
+    {
+        this.camera = camera;
+
+        for(Floor floor : floors)
+        {
+            FloorRender floorRender = floor.getRender();
+            floorRender.setCamera(camera);
+        }
     }
 
     public void shrink()

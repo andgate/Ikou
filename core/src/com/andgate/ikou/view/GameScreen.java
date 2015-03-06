@@ -84,13 +84,14 @@ public class GameScreen extends ScreenAdapter
             loadLastGame();
         }
 
-        TilePalette palette = level.getFloor(Constants.DEFAULT_DEPTH).getPalette();
-        Color bg = palette.background;
+        Color bg = Constants.BACKGROUND_COLOR;
         game.bloom.setClearColor(bg.r, bg.g, bg.b, bg.a);
 
         modelBatch = new ModelBatch();
         createEnvironment();
         setupCamera();
+
+        level.setCamera(camera);
 
         InputProcessor moveController = new PlayerDirectionGestureDetector(player, camController);
         im = new InputMultiplexer();
@@ -111,15 +112,9 @@ public class GameScreen extends ScreenAdapter
         Preferences prefs = Gdx.app.getPreferences(Constants.PLAYER_PREFS);
 
         long seed = prefs.getLong(Constants.PLAYER_PREF_LEVEL_SEED, Constants.RESERVED_SEED);
-        if(seed == Constants.RESERVED_SEED)
-        {
-            startNewGame();
-            return;
-        }
         level = new Level(seed);
 
         int depth = prefs.getInteger(Constants.PLAYER_PREF_DEPTH, Constants.DEFAULT_DEPTH);
-        //int depth = 0;
         level.initializePlayerDepth(depth);
         player = new Player(game, level, depth);
 

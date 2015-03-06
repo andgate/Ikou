@@ -13,6 +13,8 @@
 
 package com.andgate.ikou;
 
+//import android.os.Debug;
+
 import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
 import com.andgate.ikou.model.Floor;
@@ -82,6 +84,12 @@ public class Ikou extends Game
         loadShader();
         loadFonts();
         loadSounds();
+
+        //Debug.startMethodTracing();
+        MazeGenerator mazegen = new RecursiveBacktrackerMazeGenerator(100, 100, 0, 0, 50, 50);
+        mazegen.generate();
+        mazegen.computeFloor();
+        //Debug.stopMethodTracing();
 
         setScreen(new MainMenuScreen(this));
 	}
