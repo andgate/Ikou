@@ -15,7 +15,7 @@ package com.andgate.ikou.model;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.controller.PlayerDirectionGestureDetector.DirectionListener;
+import com.andgate.ikou.controller.PlayerController.DirectionListener;
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.render.PlayerRender;
 import com.andgate.ikou.utility.AcceleratedTween;

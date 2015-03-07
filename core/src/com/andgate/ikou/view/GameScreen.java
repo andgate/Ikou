@@ -31,25 +31,22 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter
 {
     private static final String TAG = "GameScreen";
-
-    private enum GameMode
-    {
-        Play, Pause, Victory
-    }
-
-    private GameMode gameMode = GameMode.Play;
 
     private final Ikou game;
     private CameraInputController camController;
@@ -69,6 +66,9 @@ public class GameScreen extends ScreenAdapter
     private InputMultiplexer im;
 
     private SpriteBatch batch;
+
+    private FrameBuffer textFBO;
+    private Sprite textSprite;
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
@@ -98,6 +98,17 @@ public class GameScreen extends ScreenAdapter
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
         controlsMenu = new GameControlsMenu(game, im, moveController, camController);
+
+        buildTextLayer();
+    }
+
+    private void buildTextLayer()
+    {
+        textFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        TextureRegion textTextureRegion = new TextureRegion(textFBO.getColorBufferTexture());
+        textTextureRegion.flip(false, true);
+        textSprite = new Sprite(textTextureRegion);
+
     }
 
     private void startNewGame()
@@ -209,12 +220,21 @@ public class GameScreen extends ScreenAdapter
         float font_height = game.menuOptionFont.getCapHeight() * game.menuOptionFont.getScale();
         float font_y = Gdx.graphics.getHeight() - font_height;
 
+        textFBO.begin();
+            Gdx.gl.glClearColor(0, 0, 0, 0);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+            batch.begin();
+            batch.setShader(game.fontShader);
+                game.menuOptionFont.setColor(Color.BLACK);
+                game.menuOptionFont.draw(batch, fpsString, game.ppm, font_y);
+            batch.setShader(null);
+            batch.end();
+        textFBO.end();
+
         batch.begin();
-        batch.setShader(game.fontShader);
-        game.menuOptionFont.setColor(Color.BLACK);
-        game.menuOptionFont.draw(batch, fpsString, game.ppm, font_y);
-        batch.setShader(null);
+        textSprite.draw(batch);
         batch.end();
+
     }
 
     private float accumulator = 0.0f;
@@ -258,5 +278,7 @@ public class GameScreen extends ScreenAdapter
         camera.update(true);
 
         controlsMenu.resize(width, height);
+
+        buildTextLayer();
     }
 }

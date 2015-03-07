@@ -13,8 +13,9 @@
 
 package com.andgate.ikou.controller;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
+import com.andgate.ikou.controller.PlayerController.DirectionListener;
 
 public class PlayerDirectionGestureDetector extends GestureDetector
 {
@@ -32,60 +33,55 @@ public class PlayerDirectionGestureDetector extends GestureDetector
         this.directionGestureListener = directionGestureListener;
     }
 
-    public void setDirectionListener(DirectionListener directionListener)
+    @Override
+    public boolean keyDown(int keyCode)
     {
-        directionGestureListener.setDirectionListener(directionListener);
+        PlayerController playerControls = directionGestureListener.getPlayerControls();
+
+        switch(keyCode)
+        {
+            case Input.Keys.W:
+            case Input.Keys.UP:
+                playerControls.move(0.0f, -1.0f);
+                break;
+            case Input.Keys.S:
+            case Input.Keys.DOWN:
+                playerControls.move(0.0f, 1.0f);
+                break;
+            case Input.Keys.A:
+            case Input.Keys.LEFT:
+                playerControls.move(-1.0f, 0.0f);
+                break;
+            case Input.Keys.D:
+            case Input.Keys.RIGHT:
+                playerControls.move(1.0f, 0.0f);
+                break;
+            default:
+                break;
+        }
+
+        return super.keyDown(keyCode);
     }
 
     private static class DirectionGestureListener extends GestureAdapter
     {
-        DirectionListener directionListener;
-        private final CameraInputController cameraController;
+        PlayerController playerControls;
 
-        public DirectionGestureListener(DirectionListener directionListener, CameraInputController cameraController){
-            this.directionListener = directionListener;
-            this.cameraController = cameraController;
-        }
-
-        public void setDirectionListener(DirectionListener directionListener)
+        public DirectionGestureListener(PlayerController.DirectionListener directionListener, CameraInputController cameraController)
         {
-            this.directionListener = directionListener;
+            playerControls = new PlayerController(directionListener, cameraController);
         }
 
-
-        Vector2 velocity = new Vector2();
-        Vector2 direction = new Vector2();
+        public PlayerController getPlayerControls()
+        {
+            return playerControls;
+        }
 
         @Override
         public boolean fling(float x, float y, int button)
         {
-            float directionX = 0.0f;
-            float directionY = 0.0f;
-
-            velocity.set(x, y);
-            // negate the cameraController angleX (it's clockwise, rotate needs counter clockwise)
-            velocity.rotate(-cameraController.getAngleX());
-
-            float absVelocityX = Math.abs(velocity.x);
-            float absVelocityY = Math.abs(velocity.y);
-            if(absVelocityX > absVelocityY)
-            {
-                directionX = -1 * velocity.x / absVelocityX;
-            }
-            else if (absVelocityX < absVelocityY)
-            {
-                directionY = -1 * velocity.y / absVelocityY;
-            }
-
-            direction.set(directionX, directionY);
-            directionListener.moveInDirection(direction);
-
+            playerControls.move(x, y);
             return super.fling(x, y, button);
         }
-    }
-
-    public static interface DirectionListener
-    {
-        public void moveInDirection(Vector2 direction);
     }
 }

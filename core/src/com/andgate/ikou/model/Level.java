@@ -33,8 +33,8 @@ import java.util.Random;
 public class Level
 {
     public static final int BASE_SIZE = 3;
-    public static final int VIEWABLE_FLOORS = 10;
-    public static final int VIEWABLE_FLOORS_ADJECENT = VIEWABLE_FLOORS / 2 - 1;
+    public static final int VIEWABLE_FLOORS = 5;
+    public static final int VIEWABLE_FLOORS_ADJECENT = 2;
 
     MazeGenerator mazegen;
     public LinkedList<Floor> floors = new LinkedList<>();
@@ -98,7 +98,7 @@ public class Level
 
     public Floor buildRandomFloor(long mazeSeed)
     {
-        int depth = floors.size() + 1;
+        int depth = floors.size() + depthOffset + 1;
         int length = BASE_SIZE * depth;
 
         do
@@ -138,8 +138,8 @@ public class Level
         if(playerDepth >= VIEWABLE_FLOORS_ADJECENT)
         {
             floors.removeFirst().dispose();
-            addFloor(newFloor);
             depthOffset++;
+            addFloor(newFloor);
         }
     }
 
@@ -194,14 +194,17 @@ public class Level
         for(int i = 0; i <= playerDepth; i++)
         {
             startNextFloor(i);
+            floors.getLast().getRender().build();
         }
     }
 
     private Vector2i offset = new Vector2i();
+    private float yOffset = 0;
 
     private void offsetLastFloor()
     {
-        if(floors.size() <= 1) return;
+        int depth = (floors.size() - 1) + depthOffset;
+        if(depth < 1) return;
 
         Floor penult = floors.get(floors.size() - 2);
         Floor last = floors.getLast();
@@ -213,7 +216,7 @@ public class Level
         tmpVec2i_1.sub(lastStart.x, lastStart.z);
         offset.add(tmpVec2i_1);
 
-        float yOffset = (1-floors.size()) * Constants.FLOOR_SPACING;
+        float yOffset = -depth * Constants.FLOOR_SPACING;
 
         last.setOffset(offset.x, offset.y);
         last.setPosition(offset.x, yOffset, offset.y);
@@ -277,7 +280,6 @@ public class Level
 
     private int getIndex(int depth)
     {
-
         return depth - depthOffset;
     }
 }
