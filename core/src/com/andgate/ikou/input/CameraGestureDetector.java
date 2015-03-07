@@ -13,15 +13,12 @@
 
 package com.andgate.ikou.input;
 
-import com.andgate.ikou.Constants;
 import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 public class CameraGestureDetector extends GestureDetector
 {

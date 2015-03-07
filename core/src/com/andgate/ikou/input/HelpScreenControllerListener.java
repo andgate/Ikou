@@ -15,18 +15,18 @@ package com.andgate.ikou.input;
 
 import com.andgate.ikou.input.mappings.OuyaPad;
 import com.andgate.ikou.input.mappings.Xbox360Pad;
-import com.andgate.ikou.view.GameScreen;
+import com.andgate.ikou.view.HelpScreen;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 
-public class GameScreenControllerListener extends ControllerAdapter
+public class HelpScreenControllerListener extends ControllerAdapter
 {
-    private static final String TAG = "GameScreenControllerListener";
+    private static final String TAG = "HelpScreenControllerListener";
 
-    private final GameScreen screen;
+    private final HelpScreen screen;
     private int startButton = -1;
 
-    public GameScreenControllerListener(GameScreen screen)
+    public HelpScreenControllerListener(HelpScreen screen)
     {
         this.screen = screen;
     }

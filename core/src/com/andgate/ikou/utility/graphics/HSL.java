@@ -17,7 +17,6 @@
 package com.andgate.ikou.utility.graphics;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector3;
 
 public class HSL
 {

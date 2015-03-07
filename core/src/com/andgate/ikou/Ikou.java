@@ -17,19 +17,14 @@ package com.andgate.ikou;
 
 import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
-import com.andgate.ikou.model.Floor;
-import com.andgate.ikou.model.Level;
 import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.graphics.ShaderFont;
-import com.andgate.ikou.view.GameScreen;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 

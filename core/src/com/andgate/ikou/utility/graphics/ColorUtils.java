@@ -17,8 +17,6 @@ import com.andgate.ikou.utility.MathExtra;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 
-import java.util.Random;
-
 public class ColorUtils
 {
     public static boolean isOpaque(Color color)

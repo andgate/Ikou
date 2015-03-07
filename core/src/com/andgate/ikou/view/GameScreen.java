@@ -25,7 +25,6 @@ import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
 import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
@@ -69,8 +68,9 @@ public class GameScreen extends ScreenAdapter
     private PlayerControllerListener playerControllerListener;
     private CameraControllerListener cameraControllerListener;
 
-    private enum GameState { Start, Play, End }
-    private GameState gameState = GameState.Start;
+    private enum State
+    { Start, Play, End }
+    private State state = State.Start;
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
@@ -179,7 +179,7 @@ public class GameScreen extends ScreenAdapter
 
     private void update(float delta)
     {
-        switch(gameState)
+        switch(state)
         {
             case Start:
                 updateStart(delta);
@@ -197,7 +197,7 @@ public class GameScreen extends ScreenAdapter
 
     private void updateStart(float delta)
     {
-        gameState = GameState.Play;
+        state = State.Play;
     }
 
     private void updatePlay(float delta)
@@ -292,8 +292,8 @@ public class GameScreen extends ScreenAdapter
         buildTextLayer();
     }
 
-    public void endGame()
+    public void end()
     {
-        gameState = GameState.End;
+        state = State.End;
     }
 }

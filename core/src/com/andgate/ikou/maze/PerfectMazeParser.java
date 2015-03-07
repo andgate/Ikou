@@ -18,7 +18,6 @@ import com.andgate.ikou.model.MasterSector;
 import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.TileStack.Tile;
-import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
 
 public class PerfectMazeParser extends MazeParser

@@ -13,12 +13,12 @@
 
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.input.PlayerInput.DirectionListener;
 import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
-import com.andgate.ikou.input.PlayerInput.DirectionListener;
 
 public class PlayerGestureDetector extends GestureDetector
 {

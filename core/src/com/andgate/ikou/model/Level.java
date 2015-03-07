@@ -13,10 +13,9 @@
 
 package com.andgate.ikou.model;
 
+import com.andgate.ikou.Constants;
 import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
-import com.andgate.ikou.model.TileStack.Tile;
-import com.andgate.ikou.Constants;
 import com.andgate.ikou.render.FloorRender;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
@@ -25,7 +24,6 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 
 import java.util.LinkedList;
 import java.util.Random;

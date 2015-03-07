@@ -20,7 +20,6 @@ import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.utility.MathExtra;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransformListener

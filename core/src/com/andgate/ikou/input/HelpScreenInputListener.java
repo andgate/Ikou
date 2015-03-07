@@ -13,26 +13,33 @@
 
 package com.andgate.ikou.input;
 
-import com.andgate.ikou.view.GameScreen;
+import com.andgate.ikou.view.HelpScreen;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
-public class GameScreenInputListener extends InputAdapter
+public class HelpScreenInputListener extends InputAdapter
 {
-    private static final String TAG = "GameScreenInputListener";
-    private final GameScreen screen;
+    private static final String TAG = "HelpScreenInputListener";
+    private final HelpScreen screen;
 
-    public GameScreenInputListener(GameScreen screen)
+    public HelpScreenInputListener(HelpScreen screen)
     {
         this.screen = screen;
     }
 
-    public boolean keyDown (int keycode) {
+    public boolean keyDown (int keycode)
+    {
         if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE)
         {
             screen.end();
         }
 
+        return false;
+    }
+
+    public boolean touchDown (int screenX, int screenY, int pointer, int button)
+    {
+        screen.end();
         return false;
     }
 }

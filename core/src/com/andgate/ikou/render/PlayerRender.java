@@ -13,7 +13,6 @@
 
 package com.andgate.ikou.render;
 
-import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileStack;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;

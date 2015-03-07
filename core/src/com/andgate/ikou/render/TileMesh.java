@@ -13,10 +13,7 @@
 
 package com.andgate.ikou.render;
 
-import com.andgate.ikou.Constants;
 import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.utility.FloatStack;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
@@ -26,8 +23,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ShortArray;
-
-import java.util.LinkedList;
 
 public class TileMesh implements Disposable
 {

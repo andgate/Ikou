@@ -13,15 +13,12 @@
 
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.input.PlayerInput.DirectionListener;
 import com.andgate.ikou.input.mappings.OuyaPad;
 import com.andgate.ikou.input.mappings.Xbox360Pad;
 import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.andgate.ikou.input.PlayerInput.DirectionListener;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.controllers.mappings.Ouya;
-import com.badlogic.gdx.math.Vector2;
 
 public class PlayerControllerListener extends ControllerAdapter
 {
