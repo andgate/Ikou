@@ -11,8 +11,11 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.render;
+package com.andgate.ikou.input;
 
-public class FirstPersonCamera
+import com.badlogic.gdx.InputAdapter;
+
+public class MainMenuScreenInputListener extends InputAdapter
 {
+
 }
