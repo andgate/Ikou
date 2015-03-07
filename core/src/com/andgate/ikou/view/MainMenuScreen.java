@@ -15,9 +15,11 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.input.MainMenuScreenInputListener;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -36,16 +38,30 @@ public class MainMenuScreen implements Screen
 
     private final Ikou game;
     private Stage stage;
+    private InputMultiplexer im;
 
     private static final String NEW_GAME_BUTTON_TEXT = "New";
     private static final String CONTINUE_BUTTON_TEXT = "Continue";
+    private static final String HELP_BUTTON_TEXT = "Help";
 
     private final boolean isNewGame;
+
+    private enum State
+    { Start, Play, End }
+    private State state = State.Start;
+
+    private enum Option
+    { None, New, Continue, Help }
+    private Option selectedOption = Option.None;
 
     public MainMenuScreen(final Ikou game) {
         this.game = game;
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+
+        im = new InputMultiplexer();
+        im.addProcessor(stage);
+        im.addProcessor(new MainMenuScreenInputListener(this));
+        Gdx.input.setInputProcessor(im);
 
         Color bg = Constants.BACKGROUND_COLOR;
         Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
@@ -91,7 +107,8 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.buttonPressedSound.play();
-                MainMenuScreen.this.startNewGame();
+                MainMenuScreen.this.setOption(Option.New);
+                MainMenuScreen.this.end();
             }
         });
 
@@ -103,13 +120,29 @@ public class MainMenuScreen implements Screen
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 //game.buttonPressedSound.play();
-                MainMenuScreen.this.continueLastGame();
+                MainMenuScreen.this.setOption(Option.Continue);
+                MainMenuScreen.this.end();
+            }
+        });
+
+        final ShaderLabel helpButtonLabel = new ShaderLabel(HELP_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Button helpButton = new Button(buttonStyle);
+        helpButton.add(helpButtonLabel);
+
+        helpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //game.buttonPressedSound.play();
+                MainMenuScreen.this.setOption(Option.Help);
+                MainMenuScreen.this.end();
             }
         });
 
         Table menuButtonsTable = new Table();
-            menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).padLeft(10.0f).padRight(10.0f).row();
-            if(!isNewGame) menuButtonsTable.add(continueButton).fill();
+            menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).row();
+            if(!isNewGame) menuButtonsTable.add(continueButton).fill().spaceBottom(20.0f).row();
+            menuButtonsTable.add(helpButton).fill();
+
 
         return menuButtonsTable;
     }
@@ -121,12 +154,66 @@ public class MainMenuScreen implements Screen
 
         stage.draw();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        update(delta);
+    }
+
+    private void update(float delta)
+    {
+        switch(state)
         {
-            Gdx.app.exit();
+            case Start:
+                updateStart(delta);
+                break;
+            case Play:
+                updatePlay(delta);
+                break;
+            case End:
+                updateEnd(delta);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void updateStart(float delta)
+    {
+        state = State.Play;
+    }
+
+    private void updatePlay(float delta)
+    {
+        stage.act();
+    }
+
+    private void updateEnd(float delta)
+    {
+        switch(selectedOption)
+        {
+            case New:
+                game.setScreen(new GameScreen(game, true));
+                break;
+            case Continue:
+                game.setScreen(new GameScreen(game, false));
+                break;
+            case Help:
+                game.setScreen(new HelpScreen(game));
+                break;
+            default:
+                Gdx.app.exit();
+                return;
         }
 
-        stage.act();
+        this.dispose();
+    }
+
+    public void end()
+    {
+        state = State.End;
+    }
+
+    public void setOption(Option option)
+    {
+        this.selectedOption = option;
     }
 
     @Override
@@ -154,17 +241,5 @@ public class MainMenuScreen implements Screen
     @Override
     public void dispose() {
         if(stage != null) stage.dispose();
-    }
-
-    private void startNewGame()
-    {
-        game.setScreen(new GameScreen(game, true));
-        this.dispose();
-    }
-
-    private void continueLastGame()
-    {
-        game.setScreen(new GameScreen(game, false));
-        this.dispose();
     }
 }

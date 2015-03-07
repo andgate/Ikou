@@ -95,7 +95,7 @@ public class HelpScreen extends ScreenAdapter
 
     public void end()
     {
-
+        state = State.End;
     }
 
     @Override

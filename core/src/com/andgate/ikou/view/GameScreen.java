@@ -48,21 +48,20 @@ public class GameScreen extends ScreenAdapter
     private static final String TAG = "GameScreen";
 
     private final Ikou game;
-    private CameraGestureDetector cameraGestureDetector;
+
+    private Level level;
+    private Player player;
 
     private ThirdPersonCamera camera;
     private ModelBatch modelBatch;
     private Environment environment;
 
-    private Level level;
-    private Player player;
-
-    private InputMultiplexer im;
-
     private SpriteBatch batch;
 
     private FrameBuffer textFBO;
     private Sprite textSprite;
+
+    private InputMultiplexer im;
 
     private GameScreenControllerListener gameScreenControllerListener;
     private PlayerControllerListener playerControllerListener;

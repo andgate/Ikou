@@ -13,9 +13,27 @@
 
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.view.MainMenuScreen;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class MainMenuScreenInputListener extends InputAdapter
 {
+    private static final String TAG = "HelpScreenInputListener";
+    private final MainMenuScreen screen;
 
+    public MainMenuScreenInputListener(MainMenuScreen screen)
+    {
+        this.screen = screen;
+    }
+
+    public boolean keyDown (int keycode)
+    {
+        if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE)
+        {
+            screen.end();
+        }
+
+        return false;
+    }
 }

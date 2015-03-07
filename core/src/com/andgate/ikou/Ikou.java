@@ -80,10 +80,6 @@ public class Ikou extends Game
         loadFonts();
         loadSounds();
 
-        MazeGenerator mazegen = new RecursiveBacktrackerMazeGenerator(100, 100, 0, 0, 50, 50);
-        mazegen.generate();
-        mazegen.computeFloor();
-
         setScreen(new MainMenuScreen(this));
 	}
 
