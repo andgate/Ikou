@@ -4,15 +4,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PlayerInput
 {
-    private final CameraInputController cameraController;
+    private final CameraInput cameraInput;
     private final DirectionListener directionListener;
 
     Vector2 velocity = new Vector2();
     Vector2 direction = new Vector2();
 
-    public PlayerInput(DirectionListener directionListener, CameraInputController cameraController)
+    public PlayerInput(DirectionListener directionListener, CameraInput cameraInput)
     {
-        this.cameraController = cameraController;
+        this.cameraInput = cameraInput;
         this.directionListener = directionListener;
     }
 
@@ -33,7 +33,7 @@ public class PlayerInput
     public void velocityToDirection(Vector2 velocity, Vector2 direction)
     {
         direction.set(0f,0f);
-        velocity.rotate(-cameraController.getAngleX());
+        velocity.rotate(-cameraInput.getAngleX());
 
         float absVelocityX = Math.abs(velocity.x);
         float absVelocityY = Math.abs(velocity.y);

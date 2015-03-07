@@ -15,8 +15,9 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.input.CameraInputController;
+import com.andgate.ikou.input.CameraInput;
 import com.andgate.ikou.input.GameControlsMenu;
+import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -48,7 +50,7 @@ public class GameScreen extends ScreenAdapter
     private static final String TAG = "GameScreen";
 
     private final Ikou game;
-    private CameraInputController camController;
+    private CameraInput cameraInput;
 
     private GameControlsMenu controlsMenu;
 
@@ -92,11 +94,12 @@ public class GameScreen extends ScreenAdapter
 
         level.setCamera(camera);
 
-        InputProcessor moveController = new PlayerGestureDetector(player, camController);
+        InputProcessor moveController = new PlayerGestureDetector(player, cameraInput);
+        Controllers.addListener(new PlayerControllerListener(player, cameraInput));
         im = new InputMultiplexer();
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
-        controlsMenu = new GameControlsMenu(game, im, moveController, camController);
+        controlsMenu = new GameControlsMenu(game, im, moveController, cameraInput);
 
         buildTextLayer();
     }
@@ -150,7 +153,7 @@ public class GameScreen extends ScreenAdapter
         camera.far = Constants.CAMERA_FAR;
         camera.update();
 
-        camController = new CameraInputController(camera, player);
+        cameraInput = new CameraInput(camera, player);
     }
 
     private void createEnvironment()
@@ -175,7 +178,7 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
-        camController.update(delta);
+        cameraInput.update(delta);
 
         renderScene();
         controlsMenu.render();

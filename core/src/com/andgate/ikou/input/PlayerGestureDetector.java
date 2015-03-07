@@ -23,8 +23,8 @@ public class PlayerGestureDetector extends GestureDetector
 
     private final DirectionGestureListener directionGestureListener;
 
-    public PlayerGestureDetector(DirectionListener directionListener, CameraInputController cameraController) {
-        this(new DirectionGestureListener(directionListener, cameraController));
+    public PlayerGestureDetector(DirectionListener directionListener, CameraInput cameraInput) {
+        this(new DirectionGestureListener(directionListener, cameraInput));
     }
 
     public PlayerGestureDetector(DirectionGestureListener directionGestureListener)
@@ -67,9 +67,9 @@ public class PlayerGestureDetector extends GestureDetector
     {
         PlayerInput playerInput;
 
-        public DirectionGestureListener(PlayerInput.DirectionListener directionListener, CameraInputController cameraController)
+        public DirectionGestureListener(PlayerInput.DirectionListener directionListener, CameraInput cameraInput)
         {
-            playerInput = new PlayerInput(directionListener, cameraController);
+            playerInput = new PlayerInput(directionListener, cameraInput);
         }
 
         public PlayerInput getPlayerInput()

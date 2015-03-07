@@ -25,7 +25,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-public class CameraInputController extends GestureDetector implements PlayerTransformListener
+public class CameraInput extends GestureDetector implements PlayerTransformListener
 {
     private static final String TAG = "CameraInputController";
 
@@ -49,12 +49,12 @@ public class CameraInputController extends GestureDetector implements PlayerTran
     private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();
 
-    public CameraInputController(final PerspectiveCamera camera, final Player player)
+    public CameraInput(final PerspectiveCamera camera, final Player player)
     {
         this(new CameraGestureListener(), camera, player);
     }
 
-    public CameraInputController(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final Player player)
+    public CameraInput(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final Player player)
     {
         super(gestureListener);
         gestureListener.setController(this);
@@ -177,15 +177,15 @@ public class CameraInputController extends GestureDetector implements PlayerTran
     {
         private static final String TAG = "CameraGestureListener";
 
-        private CameraInputController controller = null;
+        private CameraInput controller = null;
         private float previousZoom;
 
-        public void setController(CameraInputController controller)
+        public void setController(CameraInput controller)
         {
             this.controller = controller;
         }
 
-        public CameraInputController getController()
+        public CameraInput getController()
         {
             return controller;
         }
