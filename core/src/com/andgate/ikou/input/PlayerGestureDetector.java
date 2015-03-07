@@ -11,23 +11,23 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.controller;
+package com.andgate.ikou.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
-import com.andgate.ikou.controller.PlayerController.DirectionListener;
+import com.andgate.ikou.input.PlayerInput.DirectionListener;
 
-public class PlayerDirectionGestureDetector extends GestureDetector
+public class PlayerGestureDetector extends GestureDetector
 {
     private static final String TAG = "PlayerDirectionGestureDetector";
 
     private final DirectionGestureListener directionGestureListener;
 
-    public PlayerDirectionGestureDetector(DirectionListener directionListener, CameraInputController cameraController) {
+    public PlayerGestureDetector(DirectionListener directionListener, CameraInputController cameraController) {
         this(new DirectionGestureListener(directionListener, cameraController));
     }
 
-    public PlayerDirectionGestureDetector(DirectionGestureListener directionGestureListener)
+    public PlayerGestureDetector(DirectionGestureListener directionGestureListener)
     {
         super(directionGestureListener);
         this.directionGestureListener = directionGestureListener;
@@ -36,25 +36,25 @@ public class PlayerDirectionGestureDetector extends GestureDetector
     @Override
     public boolean keyDown(int keyCode)
     {
-        PlayerController playerControls = directionGestureListener.getPlayerControls();
+        PlayerInput playerInput = directionGestureListener.getPlayerInput();
 
         switch(keyCode)
         {
             case Input.Keys.W:
             case Input.Keys.UP:
-                playerControls.move(0.0f, -1.0f);
+                playerInput.move(0.0f, -1.0f);
                 break;
             case Input.Keys.S:
             case Input.Keys.DOWN:
-                playerControls.move(0.0f, 1.0f);
+                playerInput.move(0.0f, 1.0f);
                 break;
             case Input.Keys.A:
             case Input.Keys.LEFT:
-                playerControls.move(-1.0f, 0.0f);
+                playerInput.move(-1.0f, 0.0f);
                 break;
             case Input.Keys.D:
             case Input.Keys.RIGHT:
-                playerControls.move(1.0f, 0.0f);
+                playerInput.move(1.0f, 0.0f);
                 break;
             default:
                 break;
@@ -65,22 +65,22 @@ public class PlayerDirectionGestureDetector extends GestureDetector
 
     private static class DirectionGestureListener extends GestureAdapter
     {
-        PlayerController playerControls;
+        PlayerInput playerInput;
 
-        public DirectionGestureListener(PlayerController.DirectionListener directionListener, CameraInputController cameraController)
+        public DirectionGestureListener(PlayerInput.DirectionListener directionListener, CameraInputController cameraController)
         {
-            playerControls = new PlayerController(directionListener, cameraController);
+            playerInput = new PlayerInput(directionListener, cameraController);
         }
 
-        public PlayerController getPlayerControls()
+        public PlayerInput getPlayerInput()
         {
-            return playerControls;
+            return playerInput;
         }
 
         @Override
         public boolean fling(float x, float y, int button)
         {
-            playerControls.move(x, y);
+            playerInput.move(x, y);
             return super.fling(x, y, button);
         }
     }

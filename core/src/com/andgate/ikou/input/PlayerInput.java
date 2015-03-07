@@ -1,8 +1,8 @@
-package com.andgate.ikou.controller;
+package com.andgate.ikou.input;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class PlayerController
+public class PlayerInput
 {
     private final CameraInputController cameraController;
     private final DirectionListener directionListener;
@@ -10,7 +10,7 @@ public class PlayerController
     Vector2 velocity = new Vector2();
     Vector2 direction = new Vector2();
 
-    public PlayerController(DirectionListener directionListener, CameraInputController cameraController)
+    public PlayerInput(DirectionListener directionListener, CameraInputController cameraController)
     {
         this.cameraController = cameraController;
         this.directionListener = directionListener;

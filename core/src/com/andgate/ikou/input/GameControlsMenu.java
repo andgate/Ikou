@@ -11,12 +11,11 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.controller;
+package com.andgate.ikou.input;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.utility.Icon;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

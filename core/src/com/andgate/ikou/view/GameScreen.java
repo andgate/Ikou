@@ -15,12 +15,11 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.controller.CameraInputController;
-import com.andgate.ikou.controller.GameControlsMenu;
-import com.andgate.ikou.controller.PlayerDirectionGestureDetector;
+import com.andgate.ikou.input.CameraInputController;
+import com.andgate.ikou.input.GameControlsMenu;
+import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
-import com.andgate.ikou.model.TilePalette;
 import com.andgate.ikou.model.TileStack;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -93,7 +92,7 @@ public class GameScreen extends ScreenAdapter
 
         level.setCamera(camera);
 
-        InputProcessor moveController = new PlayerDirectionGestureDetector(player, camController);
+        InputProcessor moveController = new PlayerGestureDetector(player, camController);
         im = new InputMultiplexer();
         im.addProcessor(moveController);
         Gdx.input.setInputProcessor(im);
