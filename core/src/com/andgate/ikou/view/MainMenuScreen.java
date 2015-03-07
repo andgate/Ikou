@@ -37,7 +37,6 @@ public class MainMenuScreen implements Screen
     private final Ikou game;
     private Stage stage;
 
-    private static final String TAP_TO_PLAY_TEXT = "Tap to play";
     private static final String NEW_GAME_BUTTON_TEXT = "New";
     private static final String CONTINUE_BUTTON_TEXT = "Continue";
 
@@ -67,21 +66,11 @@ public class MainMenuScreen implements Screen
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
         final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
 
+        Table menuButtonTable = buildMenuButtonTable();
+
         Table table = new Table();
-
-        table.add(titleLabel).center().top().spaceBottom(25.0f).row();
-
-        if(isNewGame)
-        {
-            ShaderLabel tapToPlayLabel = buildTapToPlay();
-            table.add(tapToPlayLabel).spaceBottom(20.0f).center();
-        }
-        else
-        {
-            Table menuButtonTable = buildMenuButtonTable();
+            table.add(titleLabel).center().top().spaceBottom(25.0f).row();
             table.add(menuButtonTable).center();
-        }
-
         table.setFillParent(true);
 
         stage.addActor(table);
@@ -119,17 +108,10 @@ public class MainMenuScreen implements Screen
         });
 
         Table menuButtonsTable = new Table();
-        menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).padLeft(10.0f).padRight(10.0f).row();
-        menuButtonsTable.add(continueButton).fill();
+            menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).padLeft(10.0f).padRight(10.0f).row();
+            if(!isNewGame) menuButtonsTable.add(continueButton).fill();
 
         return menuButtonsTable;
-    }
-
-    private ShaderLabel buildTapToPlay()
-    {
-        final LabelStyle tapToPlayLabelStyle = new LabelStyle(game.menuOptionFont, Color.DARK_GRAY);
-        final ShaderLabel tapToPlayLabel = new ShaderLabel(TAP_TO_PLAY_TEXT, tapToPlayLabelStyle, game.fontShader);
-        return tapToPlayLabel;
     }
 
     @Override
@@ -137,18 +119,11 @@ public class MainMenuScreen implements Screen
     {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //batch.begin();
         stage.draw();
-        //batch.end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             Gdx.app.exit();
-        }
-
-        if(isNewGame && Gdx.input.isTouched())
-        {
-            startNewGame();
         }
 
         stage.act();

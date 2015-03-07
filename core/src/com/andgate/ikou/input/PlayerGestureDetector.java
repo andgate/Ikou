@@ -24,8 +24,6 @@ public class PlayerGestureDetector extends GestureDetector
 {
     private static final String TAG = "PlayerDirectionGestureDetector";
 
-    private static final int MAX_FINGERS = 1;
-
     private final DirectionGestureListener directionGestureListener;
 
     public PlayerGestureDetector(DirectionListener directionListener, ThirdPersonCamera camera) {

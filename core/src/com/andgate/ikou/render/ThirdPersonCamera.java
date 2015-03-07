@@ -7,6 +7,7 @@ import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.utility.MathExtra;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransformListener
@@ -26,7 +27,6 @@ public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransf
 
     private float angleX = 0.0f;
     private float angleY = 0.0f;
-    private float startX, startY;
     private final Vector3 tmpV1 = new Vector3();
 
     public ThirdPersonCamera(Player player)
@@ -88,6 +88,8 @@ public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransf
 
     public void rotate(float deltaAngleX, float deltaAngleY)
     {
+        if(deltaAngleX == 0.0f && deltaAngleY == 0.0f) return;
+
         tmpV1.set(super.direction).crs(super.up).y = 0f;
         angleX += deltaAngleX;
 

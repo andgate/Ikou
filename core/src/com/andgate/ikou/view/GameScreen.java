@@ -15,8 +15,10 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.input.CameraControllerListener;
 import com.andgate.ikou.input.CameraGestureDetector;
-import com.andgate.ikou.input.GameControlsMenu;
+import com.andgate.ikou.input.GameScreenControllerListener;
+import com.andgate.ikou.input.GameScreenInputListener;
 import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.model.Level;
@@ -39,8 +41,6 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
-import com.badlogic.gdx.graphics.g3d.utils.DepthShaderProvider;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
 
@@ -65,8 +65,12 @@ public class GameScreen extends ScreenAdapter
     private FrameBuffer textFBO;
     private Sprite textSprite;
 
+    private GameScreenControllerListener gameScreenControllerListener;
     private PlayerControllerListener playerControllerListener;
-    //private CameraControllerListener cameraControllerListener;
+    private CameraControllerListener cameraControllerListener;
+
+    private enum GameState { Start, Play, End }
+    private GameState gameState = GameState.Start;
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
@@ -92,15 +96,21 @@ public class GameScreen extends ScreenAdapter
 
         level.setCamera(camera);
 
+        InputProcessor gameScreenInputProcessor = new GameScreenInputListener(this);
         InputProcessor playerInputProcessor = new PlayerGestureDetector(player, camera);
         InputProcessor cameraInputProcessor = new CameraGestureDetector(camera);
         im = new InputMultiplexer();
+        im.addProcessor(gameScreenInputProcessor);
         im.addProcessor(playerInputProcessor);
         im.addProcessor(cameraInputProcessor);
         Gdx.input.setInputProcessor(im);
 
+        gameScreenControllerListener = new GameScreenControllerListener(this);
         playerControllerListener = new PlayerControllerListener(player, camera);
+        cameraControllerListener = new CameraControllerListener(camera);
+        Controllers.addListener(gameScreenControllerListener);
         Controllers.addListener(playerControllerListener);
+        Controllers.addListener(cameraControllerListener);
 
         buildTextLayer();
 
@@ -158,6 +168,9 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
+        playerControllerListener.update(delta);
+        cameraControllerListener.update(delta);
+
         renderScene();
         if(game.debug) renderOverlay();
 
@@ -166,18 +179,36 @@ public class GameScreen extends ScreenAdapter
 
     private void update(float delta)
     {
-        updatePlay(delta);
+        switch(gameState)
+        {
+            case Start:
+                updateStart(delta);
+                break;
+            case Play:
+                updatePlay(delta);
+                break;
+            case End:
+                updateEnd(delta);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void updateStart(float delta)
+    {
+        gameState = GameState.Play;
     }
 
     private void updatePlay(float delta)
     {
         doPhysicsStep(delta);
+    }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-        {
-            game.setScreen(new MainMenuScreen(game));
-            this.dispose();
-        }
+    private void updateEnd(float delta)
+    {
+        game.setScreen(new MainMenuScreen(game));
+        this.dispose();
     }
 
     private void renderScene()
@@ -244,6 +275,8 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
+        Controllers.removeListener(gameScreenControllerListener);
+        Controllers.removeListener(cameraControllerListener);
         Controllers.removeListener(playerControllerListener);
         level.dispose();
         modelBatch.dispose();
@@ -257,5 +290,10 @@ public class GameScreen extends ScreenAdapter
         camera.resize(width, height);
 
         buildTextLayer();
+    }
+
+    public void endGame()
+    {
+        gameState = GameState.End;
     }
 }

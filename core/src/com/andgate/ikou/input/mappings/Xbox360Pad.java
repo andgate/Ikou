@@ -44,7 +44,7 @@ public class Xbox360Pad
 
     public static boolean isXbox360Controller(Controller controller)
     {
-        return controller.getName().toLowerCase().contains("xbox") && controller.getName().contains("360");
+        return controller.getName().toLowerCase().contains("xbox") || controller.getName().contains("360");
     }
 
 }
