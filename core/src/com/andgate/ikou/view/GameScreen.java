@@ -103,6 +103,8 @@ public class GameScreen extends ScreenAdapter
         Controllers.addListener(playerControllerListener);
 
         buildTextLayer();
+
+        Gdx.input.setCursorCatched(true);
     }
 
     private void buildTextLayer()
@@ -171,7 +173,7 @@ public class GameScreen extends ScreenAdapter
     {
         doPhysicsStep(delta);
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             game.setScreen(new MainMenuScreen(game));
             this.dispose();
@@ -182,12 +184,12 @@ public class GameScreen extends ScreenAdapter
     {
         renderSetup();
 
-        game.bloom.capture();
+        //game.bloom.capture();
             modelBatch.begin(camera);
                 level.render(modelBatch, environment);
                 modelBatch.render(player.getRender(), environment);
             modelBatch.end();
-        game.bloom.render();
+        //game.bloom.render();
     }
 
     private void renderOverlay()
@@ -229,6 +231,9 @@ public class GameScreen extends ScreenAdapter
     private void renderSetup()
     {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
 

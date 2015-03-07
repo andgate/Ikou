@@ -15,7 +15,9 @@ package com.andgate.ikou.input;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.render.ThirdPersonCamera;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -24,94 +26,84 @@ import com.badlogic.gdx.math.Vector3;
 public class CameraGestureDetector extends GestureDetector
 {
     private static final String TAG = "CameraGestureDetector";
-
+    private CameraGestureListener gestureListener;
     private ThirdPersonCamera camera;
 
-    private float startX, startY;
-
-    private int button = -1;
-    private int touched;
-    private boolean multiTouch;
+    float startX, startY;
 
     public CameraGestureDetector(final ThirdPersonCamera camera)
     {
-        this(new CameraGestureListener(), camera);
+        this(new CameraGestureListener(camera));
+        this.camera = camera;
+        startX = Gdx.input.getX();
+        startY = Gdx.input.getY();
     }
 
-    public CameraGestureDetector(final CameraGestureListener gestureListener, final ThirdPersonCamera camera)
+    public CameraGestureDetector(final CameraGestureListener gestureListener)
     {
         super(gestureListener);
-        gestureListener.setController(this);
-        this.camera = camera;
     }
-
-
 
     @Override
     public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-        touched |= (1 << pointer);
-        multiTouch = !MathUtils.isPowerOfTwo(touched);
-        if (multiTouch)
-            this.button = -1;
-        else if (this.button < 0) {
+        if(button == Input.Buttons.LEFT)
+        {
             startX = screenX;
             startY = screenY;
-            this.button = button;
         }
-        return super.touchDown(screenX, screenY, pointer, button);
+        return touchDown((float)screenX, (float)screenY, pointer, button);
     }
 
     @Override
-    public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-        touched &= -1 ^ (1 << pointer);
-        multiTouch = !MathUtils.isPowerOfTwo(touched);
-        if (button == this.button) this.button = -1;
-        return super.touchUp(screenX, screenY, pointer, button);
+    public boolean scrolled (int amount)
+    {
+        float zoomAmount = -amount / ThirdPersonCamera.MAX_PLAYER_DISTANCE;
+        camera.zoom(zoomAmount);
+        return false;
     }
 
-    @Override
-    public boolean touchDragged (int screenX, int screenY, int pointer) {
-        boolean result = super.touchDragged(screenX, screenY, pointer);
-        if (result || this.button < 0) return result;
-        final float deltaX = (screenX - startX) / Gdx.graphics.getWidth();
-        final float deltaY = (startY - screenY) / Gdx.graphics.getHeight();
+    public boolean touchDragged (int screenX, int screenY, int pointer)
+    {
         startX = screenX;
         startY = screenY;
-        return process(deltaX, deltaY, button);
+
+        return touchDragged((float)screenX, (float)screenY, pointer);
     }
 
-    protected boolean process (float deltaX, float deltaY, int button)
+    @Override
+    public boolean mouseMoved (int screenX, int screenY)
     {
-        camera.rotate(deltaX, deltaY);
-        return true;
+        if(Gdx.app.getType() != Application.ApplicationType.Desktop) return false;
+
+        final float deltaX = screenX - startX;
+        final float deltaY = screenY - startY;
+        startX = screenX;
+        startY = screenY;
+
+        camera.rotateFromDrag(deltaX, deltaY);
+        return false;
     }
 
-    protected boolean pinchZoom (float amount)
-    {
-        camera.zoom(amount);
-        return true;
-    }
 
-    protected static class CameraGestureListener extends GestureAdapter
+    private static class CameraGestureListener extends GestureAdapter
     {
         private static final String TAG = "CameraGestureListener";
 
-        private CameraGestureDetector cameraGestureDetector = null;
-        private float previousZoom;
+        private ThirdPersonCamera camera;
+        private float previousDeltaZoom;
+        private float previousDeltaX;
+        private float previousDeltaY;
 
-        public void setController(CameraGestureDetector cameraGestureDetector)
+        public CameraGestureListener(ThirdPersonCamera camera)
         {
-            this.cameraGestureDetector = cameraGestureDetector;
-        }
-
-        public CameraGestureDetector getController()
-        {
-            return cameraGestureDetector;
+            this.camera = camera;
         }
 
         @Override
         public boolean touchDown (float x, float y, int pointer, int button) {
-            previousZoom = 0;
+            previousDeltaZoom = 0;
+            previousDeltaX = 0;
+            previousDeltaY = 0;
             return false;
         }
 
@@ -131,27 +123,60 @@ public class CameraGestureDetector extends GestureDetector
         }
 
         @Override
-        public boolean pan (float x, float y, float deltaX, float deltaY) {
+        public boolean pan (float x, float y, float deltaX, float deltaY)
+        {
             return false;
         }
 
         @Override
-        public boolean zoom (float initialDistance, float distance)
+        public boolean zoom(float initialDistance, float distance)
         {
-            float newZoom = distance - initialDistance;
-            float amount = newZoom - previousZoom;
-            previousZoom = newZoom;
-
-            float w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
-            float percentZoom = amount / ((w > h) ? w : h);
-
-            return cameraGestureDetector.pinchZoom(percentZoom);
+            return false;
         }
 
         @Override
         public boolean pinch (Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2)
         {
+            float initialDistance = initialPointer1.dst(initialPointer2);
+            float distance = pointer1.dst(pointer2);
+            float newZoom = distance - initialDistance;
+
+            zoom(newZoom);
+
+            float midX1 = (initialPointer1.x + initialPointer2.x) / 2.0f;
+            float midY1 = (initialPointer1.y + initialPointer2.y) / 2.0f;
+
+            float midX2 = (pointer1.x + pointer2.x) / 2.0f;
+            float midY2 = (pointer1.y + pointer2.y) / 2.0f;
+
+            float newDeltaX = midX2 - midX1;
+            float newDeltaY = midY2 - midY1;
+
+            rotate(newDeltaX, newDeltaY);
+
             return false;
+        }
+
+        private void zoom(float newDeltaZoom)
+        {
+            float amount = newDeltaZoom - previousDeltaZoom;
+            previousDeltaZoom = newDeltaZoom;
+
+            float w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
+            float percentZoom = amount / ((w > h) ? w : h);
+
+            camera.zoom(percentZoom);
+        }
+
+        private void rotate(float newDeltaX, float newDeltaY)
+        {
+            float deltaX = newDeltaX - previousDeltaX;
+            float deltaY = newDeltaY - previousDeltaY;
+
+            previousDeltaX = newDeltaX;
+            previousDeltaY = newDeltaY;
+
+            camera.rotateFromDrag(deltaX, deltaY);
         }
     };
 

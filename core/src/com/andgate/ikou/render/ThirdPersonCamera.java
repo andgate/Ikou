@@ -18,7 +18,6 @@ public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransf
     public static final float MAX_PLAYER_DISTANCE = Constants.FLOOR_SPACING;
     public static final float MIN_PLAYER_DISTANCE = 3.0f;
 
-    public final float ROTATE_ANGLE = 360f;
     public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
     public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 10.0f;
 
@@ -79,14 +78,19 @@ public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransf
         super.update();
     }
 
-    public void rotate(float deltaX, float deltaY)
+    private static final float FULL_ROTATION_ANGLE = -360f;
+    public void rotateFromDrag(float deltaX, float deltaY)
+    {
+        float deltaAngleX = FULL_ROTATION_ANGLE * deltaX / Gdx.graphics.getWidth();
+        float deltaAngleY = FULL_ROTATION_ANGLE * deltaY / Gdx.graphics.getHeight();
+        rotate(deltaAngleX, deltaAngleY);
+    }
+
+    public void rotate(float deltaAngleX, float deltaAngleY)
     {
         tmpV1.set(super.direction).crs(super.up).y = 0f;
-
-        float deltaAngleX = deltaX * -ROTATE_ANGLE;
         angleX += deltaAngleX;
 
-        float deltaAngleY = deltaY * ROTATE_ANGLE;
         float tmpAngleY = angleY + deltaAngleY;
         if(!MathExtra.inRangeInclusive(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
         {

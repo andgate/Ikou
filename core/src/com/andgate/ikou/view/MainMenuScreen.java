@@ -55,6 +55,7 @@ public class MainMenuScreen implements Screen
         isNewGame = !playerPrefs.contains(Constants.PLAYER_PREF_LEVEL_SEED);
 
         buildStage();
+        Gdx.input.setCursorCatched(false);
     }
 
     public void buildStage()
@@ -140,7 +141,7 @@ public class MainMenuScreen implements Screen
         stage.draw();
         //batch.end();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
+        if(Gdx.input.isKeyJustPressed(Input.Keys.BACK) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
         {
             Gdx.app.exit();
         }

@@ -14,6 +14,8 @@
 package com.andgate.ikou.input;
 
 import com.andgate.ikou.render.ThirdPersonCamera;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.andgate.ikou.input.PlayerInput.DirectionListener;
@@ -21,6 +23,8 @@ import com.andgate.ikou.input.PlayerInput.DirectionListener;
 public class PlayerGestureDetector extends GestureDetector
 {
     private static final String TAG = "PlayerDirectionGestureDetector";
+
+    private static final int MAX_FINGERS = 1;
 
     private final DirectionGestureListener directionGestureListener;
 
@@ -66,7 +70,7 @@ public class PlayerGestureDetector extends GestureDetector
 
     private static class DirectionGestureListener extends GestureAdapter
     {
-        PlayerInput playerInput;
+        private PlayerInput playerInput;
 
         public DirectionGestureListener(PlayerInput.DirectionListener directionListener, ThirdPersonCamera camera)
         {
@@ -81,8 +85,11 @@ public class PlayerGestureDetector extends GestureDetector
         @Override
         public boolean fling(float x, float y, int button)
         {
+            if(Gdx.app.getType() != Application.ApplicationType.Android) return false;
+            if(Gdx.input.isTouched(1)) return false;
+
             playerInput.move(x, y);
-            return super.fling(x, y, button);
+            return false;
         }
     }
 }
