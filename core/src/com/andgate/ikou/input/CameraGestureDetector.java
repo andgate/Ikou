@@ -14,71 +14,38 @@
 package com.andgate.ikou.input;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.utility.MathExtra;
-import com.andgate.ikou.model.Player;
-import com.andgate.ikou.model.Player.PlayerTransformListener;
+import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-public class CameraInput extends GestureDetector implements PlayerTransformListener
+public class CameraGestureDetector extends GestureDetector
 {
-    private static final String TAG = "CameraInputController";
+    private static final String TAG = "CameraGestureDetector";
 
-    private final PerspectiveCamera camera;
-    private final Player player;
-
-    private Vector3 target = new Vector3();
-
-    public final float ROTATE_ANGLE = 360f;
-
-    protected int button = -1;
-
-    /** World units per screen size **/
-    public static final float PINCH_ZOOM_FACTOR = 10.0f;
-    public static final float MAX_PLAYER_DISTANCE = Constants.FLOOR_SPACING;
-    public static final float MIN_PLAYER_DISTANCE = 3.0f;
-
-    public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
-    public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 10.0f;
+    private ThirdPersonCamera camera;
 
     private float startX, startY;
-    private final Vector3 tmpV1 = new Vector3();
 
-    public CameraInput(final PerspectiveCamera camera, final Player player)
+    private int button = -1;
+    private int touched;
+    private boolean multiTouch;
+
+    public CameraGestureDetector(final ThirdPersonCamera camera)
     {
-        this(new CameraGestureListener(), camera, player);
+        this(new CameraGestureListener(), camera);
     }
 
-    public CameraInput(final CameraGestureListener gestureListener, final PerspectiveCamera camera, final Player player)
+    public CameraGestureDetector(final CameraGestureListener gestureListener, final ThirdPersonCamera camera)
     {
         super(gestureListener);
         gestureListener.setController(this);
         this.camera = camera;
-        this.player = player;
-        player.addPlayerTransformListener(this);
-
-        setTarget();
     }
 
-    private void setTarget()
-    {
-        target.set(player.getPosition());
-        target.x += TileStack.HALF_WIDTH;
-        target.z += TileStack.HALF_DEPTH;
-    }
 
-    public void update (final float delta)
-    {
-        camera.update();
-    }
-
-    private int touched;
-    private boolean multiTouch;
 
     @Override
     public boolean touchDown (int screenX, int screenY, int pointer, int button) {
@@ -113,81 +80,33 @@ public class CameraInput extends GestureDetector implements PlayerTransformListe
         return process(deltaX, deltaY, button);
     }
 
-    private float angleX = 0.0f;
-    private float angleY = 0.0f;
     protected boolean process (float deltaX, float deltaY, int button)
     {
-        tmpV1.set(camera.direction).crs(camera.up).y = 0f;
-
-        float deltaAngleX = deltaX * -ROTATE_ANGLE;
-        angleX += deltaAngleX;
-
-        float deltaAngleY = deltaY * ROTATE_ANGLE;
-        float tmpAngleY = angleY + deltaAngleY;
-        if(!MathExtra.inRangeInclusive(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
-        {
-            tmpAngleY = MathExtra.pickClosestBound(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX);
-            deltaAngleY = tmpAngleY - angleY;
-        }
-        angleY = tmpAngleY;
-
-        camera.rotateAround(target, tmpV1.nor(), deltaAngleY);
-        camera.rotateAround(target, Vector3.Y, deltaAngleX);
-        camera.update();
-        return true;
-    }
-
-    public float getAngleX()
-    {
-        return angleX;
-    }
-
-    public boolean zoom (float amount)
-    {
-        camera.translate(tmpV1.set(camera.direction).scl(amount));
-        camera.update();
+        camera.rotate(deltaX, deltaY);
         return true;
     }
 
     protected boolean pinchZoom (float amount)
     {
-        float currentDistance = camera.position.dst(player.getPosition());
-
-        float displacement = amount * PINCH_ZOOM_FACTOR;
-        float newDistance = currentDistance - displacement;
-
-        if(!MathExtra.inRangeExclusive(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE))
-        {
-            float bound = MathExtra.pickClosestBound(newDistance, MIN_PLAYER_DISTANCE, MAX_PLAYER_DISTANCE);
-            displacement = currentDistance - bound;
-        }
-
-        return zoom(displacement);
-    }
-
-
-    @Override
-    public void playerTransformModified(float dx, float dy, float dz)
-    {
-        camera.translate(dx, dy, dz);
-        target.add(dx, dy, dz);
+        camera.zoom(amount);
+        return true;
     }
 
     protected static class CameraGestureListener extends GestureAdapter
     {
         private static final String TAG = "CameraGestureListener";
 
-        private CameraInput controller = null;
+        private CameraGestureDetector cameraGestureDetector = null;
         private float previousZoom;
 
-        public void setController(CameraInput controller)
+        public void setController(CameraGestureDetector cameraGestureDetector)
         {
-            this.controller = controller;
+            this.cameraGestureDetector = cameraGestureDetector;
         }
 
-        public CameraInput getController()
+        public CameraGestureDetector getController()
         {
-            return controller;
+            return cameraGestureDetector;
         }
 
         @Override
@@ -226,7 +145,7 @@ public class CameraInput extends GestureDetector implements PlayerTransformListe
             float w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
             float percentZoom = amount / ((w > h) ? w : h);
 
-            return controller.pinchZoom(percentZoom);
+            return cameraGestureDetector.pinchZoom(percentZoom);
         }
 
         @Override

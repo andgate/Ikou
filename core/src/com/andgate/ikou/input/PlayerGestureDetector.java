@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.input.GestureDetector;
 import com.andgate.ikou.input.PlayerInput.DirectionListener;
@@ -23,8 +24,8 @@ public class PlayerGestureDetector extends GestureDetector
 
     private final DirectionGestureListener directionGestureListener;
 
-    public PlayerGestureDetector(DirectionListener directionListener, CameraInput cameraInput) {
-        this(new DirectionGestureListener(directionListener, cameraInput));
+    public PlayerGestureDetector(DirectionListener directionListener, ThirdPersonCamera camera) {
+        this(new DirectionGestureListener(directionListener, camera));
     }
 
     public PlayerGestureDetector(DirectionGestureListener directionGestureListener)
@@ -67,9 +68,9 @@ public class PlayerGestureDetector extends GestureDetector
     {
         PlayerInput playerInput;
 
-        public DirectionGestureListener(PlayerInput.DirectionListener directionListener, CameraInput cameraInput)
+        public DirectionGestureListener(PlayerInput.DirectionListener directionListener, ThirdPersonCamera camera)
         {
-            playerInput = new PlayerInput(directionListener, cameraInput);
+            playerInput = new PlayerInput(directionListener, camera);
         }
 
         public PlayerInput getPlayerInput()

@@ -1,6 +1,7 @@
 package com.andgate.ikou.input;
 
 import com.andgate.ikou.input.mappings.Xbox360Pad;
+import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.andgate.ikou.input.PlayerInput.DirectionListener;
@@ -13,9 +14,9 @@ public class PlayerControllerListener extends ControllerAdapter
     private float yAxis = Xbox360Pad.AXIS_LEFT_Y;
     private float xAxis = Xbox360Pad.AXIS_LEFT_X;
 
-    public PlayerControllerListener(DirectionListener directionListener, CameraInput cameraInput)
+    public PlayerControllerListener(DirectionListener directionListener, ThirdPersonCamera camera)
     {
-        playerInput = new PlayerInput(directionListener, cameraInput);
+        playerInput = new PlayerInput(directionListener, camera);
     }
 
     public int indexOf (Controller controller) {

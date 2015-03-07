@@ -1,18 +1,19 @@
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerInput
 {
-    private final CameraInput cameraInput;
+    private final ThirdPersonCamera camera;
     private final DirectionListener directionListener;
 
     Vector2 velocity = new Vector2();
     Vector2 direction = new Vector2();
 
-    public PlayerInput(DirectionListener directionListener, CameraInput cameraInput)
+    public PlayerInput(DirectionListener directionListener, ThirdPersonCamera camera)
     {
-        this.cameraInput = cameraInput;
+        this.camera = camera;
         this.directionListener = directionListener;
     }
 
@@ -33,7 +34,7 @@ public class PlayerInput
     public void velocityToDirection(Vector2 velocity, Vector2 direction)
     {
         direction.set(0f,0f);
-        velocity.rotate(-cameraInput.getAngleX());
+        velocity.rotate(-camera.getAngleX());
 
         float absVelocityX = Math.abs(velocity.x);
         float absVelocityY = Math.abs(velocity.y);

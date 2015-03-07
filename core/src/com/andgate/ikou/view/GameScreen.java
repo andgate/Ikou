@@ -15,13 +15,13 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.input.CameraInput;
+import com.andgate.ikou.input.CameraGestureDetector;
 import com.andgate.ikou.input.GameControlsMenu;
 import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
-import com.andgate.ikou.model.TileStack;
+import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -31,7 +31,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -50,19 +49,14 @@ public class GameScreen extends ScreenAdapter
     private static final String TAG = "GameScreen";
 
     private final Ikou game;
-    private CameraInput cameraInput;
+    private CameraGestureDetector cameraGestureDetector;
 
-    private GameControlsMenu controlsMenu;
-
-    private PerspectiveCamera camera;
+    private ThirdPersonCamera camera;
     private ModelBatch modelBatch;
     private Environment environment;
 
     private Level level;
     private Player player;
-
-    private ModelBatch shadowBatch;
-    private DirectionalShadowLight shadowLight;
 
     private InputMultiplexer im;
 
@@ -70,6 +64,9 @@ public class GameScreen extends ScreenAdapter
 
     private FrameBuffer textFBO;
     private Sprite textSprite;
+
+    private PlayerControllerListener playerControllerListener;
+    //private CameraControllerListener cameraControllerListener;
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
@@ -90,16 +87,20 @@ public class GameScreen extends ScreenAdapter
 
         modelBatch = new ModelBatch();
         createEnvironment();
-        setupCamera();
+
+        camera = new ThirdPersonCamera(player);
 
         level.setCamera(camera);
 
-        InputProcessor moveController = new PlayerGestureDetector(player, cameraInput);
-        Controllers.addListener(new PlayerControllerListener(player, cameraInput));
+        InputProcessor playerInputProcessor = new PlayerGestureDetector(player, camera);
+        InputProcessor cameraInputProcessor = new CameraGestureDetector(camera);
         im = new InputMultiplexer();
-        im.addProcessor(moveController);
+        im.addProcessor(playerInputProcessor);
+        im.addProcessor(cameraInputProcessor);
         Gdx.input.setInputProcessor(im);
-        controlsMenu = new GameControlsMenu(game, im, moveController, cameraInput);
+
+        playerControllerListener = new PlayerControllerListener(player, camera);
+        Controllers.addListener(playerControllerListener);
 
         buildTextLayer();
     }
@@ -139,35 +140,12 @@ public class GameScreen extends ScreenAdapter
         player.setPosition(playerX, playerY, playerZ);
     }
 
-    private void setupCamera()
-    {
-        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        float playerCenterX = player.getPosition().x + TileStack.HALF_WIDTH;
-        float playerCenterZ = player.getPosition().z + TileStack.HALF_DEPTH;
-        camera.position.set(playerCenterX,
-                            player.getPosition().y + Constants.CAMERA_VERTICAL_DISTANCE,
-                            playerCenterZ - Constants.CAMERA_HORIZONTAL_DISTANCE);
-        camera.lookAt(playerCenterX, player.getPosition().y, playerCenterZ);
-        camera.near = 1f;
-        camera.far = Constants.CAMERA_FAR;
-        camera.update();
-
-        cameraInput = new CameraInput(camera, player);
-    }
-
     private void createEnvironment()
     {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-        shadowLight = new DirectionalShadowLight(1024, 1024, 60f, 60f, .1f, 50f);
-        shadowLight.set(0.8f, 0.8f, 0.8f, -1f, -.8f, -.2f);
-        //environment.shadowMap = shadowLight;
-
-        shadowBatch = new ModelBatch(new DepthShaderProvider());
     }
 
     @Override
@@ -178,10 +156,7 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
-        cameraInput.update(delta);
-
         renderScene();
-        controlsMenu.render();
         if(game.debug) renderOverlay();
 
         update(delta);
@@ -195,7 +170,6 @@ public class GameScreen extends ScreenAdapter
     private void updatePlay(float delta)
     {
         doPhysicsStep(delta);
-        controlsMenu.update();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.BACK))
         {
@@ -265,9 +239,9 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void dispose()
     {
+        Controllers.removeListener(playerControllerListener);
         level.dispose();
         modelBatch.dispose();
-        controlsMenu.dispose();
     }
 
     @Override
@@ -275,11 +249,7 @@ public class GameScreen extends ScreenAdapter
     {
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 
-        camera.viewportHeight = game.worldHeight;
-        camera.viewportWidth = game.worldWidth;
-        camera.update(true);
-
-        controlsMenu.resize(width, height);
+        camera.resize(width, height);
 
         buildTextLayer();
     }
