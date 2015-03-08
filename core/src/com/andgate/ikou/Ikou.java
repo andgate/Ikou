@@ -15,6 +15,7 @@ package com.andgate.ikou;
 
 import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.graphics.ShaderFont;
+import com.andgate.ikou.view.HelpScreen;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -39,6 +41,7 @@ public class Ikou extends Game
     public ShaderFont logoFont;
     public ShaderFont menuTitleFont;
     public ShaderFont menuOptionFont;
+    public ShaderFont helpFont;
 
     public ShaderProgram fontShader;
 
@@ -105,6 +108,7 @@ public class Ikou extends Game
         logoFont = new ShaderFont(Constants.LOGO_FONT_FNT, Constants.LOGO_FONT_PNG, fontShader);
         menuTitleFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
         menuOptionFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
+        helpFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
     }
 
     private void loadShader()
@@ -206,15 +210,24 @@ public class Ikou extends Game
     public void scaleFonts()
     {
         logoFont.resetScale();
-        float logoFontScale = Constants.LOGO_FONT_SIZE / (logoFont.getCapHeight() / ppm);
+        float logoFontScale = Constants.LOGO_FONT_SIZE / (logoFont.getLineHeight() / ppm);
         logoFont.setScale(logoFontScale);
 
         menuTitleFont.resetScale();
-        float menuTitleFontScale = Constants.MENU_TITLE_FONT_SIZE / (menuTitleFont.getCapHeight() / ppm);
+        float menuTitleFontScale = Constants.MENU_TITLE_FONT_SIZE / (menuTitleFont.getLineHeight() / ppm);
         menuTitleFont.setScale(menuTitleFontScale);
 
         menuOptionFont.resetScale();
-        float menuOptionFontScale = Constants.MENU_OPTION_FONT_SIZE / (menuOptionFont.getCapHeight() / ppm);
+        float menuOptionFontScale = Constants.MENU_OPTION_FONT_SIZE / (menuOptionFont.getLineHeight() / ppm);
         menuOptionFont.setScale(menuOptionFontScale);
+
+        /*helpFont.resetScale();
+        String helpText = HelpScreen.loadHelpScreenText();
+        BitmapFont.TextBounds helpTextBounds = helpFont.getBounds(helpText);
+        float helpFontScale = (4f / 5f) - (helpTextBounds.height / Gdx.graphics.getHeight());
+        helpFont.setScale(helpFontScale);*/
+        helpFont.resetScale();
+        float helpFontScale = Constants.HELP_FONT_SIZE / (helpFont.getLineHeight() / ppm);
+        helpFont.setScale(menuOptionFontScale);
     }
 }

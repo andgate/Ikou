@@ -33,13 +33,15 @@ public class HelpScreenInputListener extends InputAdapter
         {
             screen.end();
         }
+        else if(keycode == Input.Keys.UP || keycode == Input.Keys.W)
+        {
+            screen.scroll(0.0f);
+        }
+        else if(keycode == Input.Keys.DOWN || keycode == Input.Keys.S)
+        {
+            screen.scroll(1.0f);
+        }
 
-        return false;
-    }
-
-    public boolean touchDown (int screenX, int screenY, int pointer, int button)
-    {
-        screen.end();
         return false;
     }
 }

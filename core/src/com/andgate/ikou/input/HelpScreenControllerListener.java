@@ -27,6 +27,9 @@ public class HelpScreenControllerListener extends ControllerAdapter
     private int startButton = -1;
     private int cancelButton = -1;
 
+    private int yAxisLeft = -1;
+    private int yAxisRight = -1;
+
     public HelpScreenControllerListener(HelpScreen screen)
     {
         this.screen = screen;
@@ -44,17 +47,46 @@ public class HelpScreenControllerListener extends ControllerAdapter
         return false;
     }
 
+    @Override
+    public boolean axisMoved (Controller controller, int axisIndex, float value)
+    {
+        mapToController(controller);
+
+        if(Math.abs(value) < 1.0f)
+        {
+            return false;
+        }
+
+        if(axisIndex == yAxisLeft || axisIndex == yAxisLeft)
+        {
+            if(value > 0)
+            {
+                screen.scroll(1.0f);
+            }
+            else if(value < 0)
+            {
+                screen.scroll(0.0f);
+            }
+        }
+
+        return false;
+    }
+
     private void mapToController(Controller controller)
     {
         if(Xbox360Pad.isXbox360Controller(controller))
         {
             startButton = Xbox360Pad.BUTTON_START;
             cancelButton = Xbox360Pad.BUTTON_B;
+            yAxisLeft = Xbox360Pad.AXIS_LEFT_Y;
+            yAxisRight = Xbox360Pad.AXIS_RIGHT_Y;
         }
         else if(OuyaPad.isOuyaController(controller))
         {
             startButton = OuyaPad.BUTTON_MENU;
             cancelButton = OuyaPad.BUTTON_A;
+            yAxisLeft = OuyaPad.AXIS_LEFT_Y;
+            yAxisRight = OuyaPad.AXIS_RIGHT_Y;
         }
         else
         {

@@ -1,0 +1,7 @@
+Playing Ikou is simple!
+You control the orange tile.
+The red tile is the goal.
+Use your finger to slide in the direction you want to go.
+Use two fingers to move the camera and pinch to zoom.
+Can be played with a controller, or a mouse and keyboard!
+Have fun!

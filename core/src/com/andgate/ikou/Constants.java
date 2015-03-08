@@ -63,8 +63,9 @@ public class Constants
             = MENU_FONT_NAME + PNG_EXTENSION;
 
     public static final int LOGO_FONT_SIZE = 7;
-    public static final int MENU_TITLE_FONT_SIZE = 3;
-    public static final int MENU_OPTION_FONT_SIZE = 2;
+    public static final int MENU_TITLE_FONT_SIZE = 4;
+    public static final int MENU_OPTION_FONT_SIZE = 3;
+    public static final int HELP_FONT_SIZE = 2;
 
     public static final String CAMERA_ICON_LOCATION
             = "data/icons/camera.png";
@@ -114,12 +115,14 @@ public class Constants
     public static final float CAMERA_VERTICAL_DISTANCE = (float)Math.sin(Math.toRadians(CAMERA_ANGLE_TO_PLAYER)) * CAMERA_DISTANCE;
     public static final float CAMERA_HORIZONTAL_DISTANCE = (float)Math.cos(Math.toRadians(CAMERA_ANGLE_TO_PLAYER)) * CAMERA_DISTANCE;
 
-    public static final String PLAYER_PREFS = "Player Preferences";
+    public static final String PLAYER_PREFS = "Ikou Player Preferences";
     public static final String PLAYER_PREF_X = "x coord";
     public static final String PLAYER_PREF_Y = "y coord";
     public static final String PLAYER_PREF_Z = "z coord";
     public static final String PLAYER_PREF_DEPTH = "depth";
     public static final String PLAYER_PREF_LEVEL_SEED = "level seed";
+
+    public static final String HELP_TEXT = "data/text/help.txt";
 
     public static final long RESERVED_SEED = -1;
 
