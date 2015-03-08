@@ -14,6 +14,7 @@
 package com.andgate.ikou.input;
 
 import com.andgate.ikou.view.GameScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
@@ -32,6 +33,9 @@ public class GameScreenInputListener extends InputAdapter
         {
             screen.end();
         }
+
+        if(keycode == Input.Keys.F11)
+            Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), !Gdx.graphics.isFullscreen());
 
         return false;
     }

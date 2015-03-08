@@ -25,6 +25,7 @@ public class GameScreenControllerListener extends ControllerAdapter
 
     private final GameScreen screen;
     private int startButton = -1;
+    private int cancelButton = -1;
 
     public GameScreenControllerListener(GameScreen screen)
     {
@@ -35,7 +36,7 @@ public class GameScreenControllerListener extends ControllerAdapter
     public boolean buttonDown (Controller controller, int buttonIndex)
     {
         mapToController(controller);
-        if(startButton == buttonIndex)
+        if(startButton == buttonIndex || cancelButton == buttonIndex)
         {
             screen.end();
         }
@@ -48,10 +49,12 @@ public class GameScreenControllerListener extends ControllerAdapter
         if(Xbox360Pad.isXbox360Controller(controller))
         {
             startButton = Xbox360Pad.BUTTON_START;
+            cancelButton = Xbox360Pad.BUTTON_B;
         }
         else if(OuyaPad.isOuyaController(controller))
         {
             startButton = OuyaPad.BUTTON_MENU;
+            cancelButton = OuyaPad.BUTTON_A;
         }
         else
         {

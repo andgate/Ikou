@@ -332,6 +332,7 @@ public class MainMenuScreen implements Screen
     public void selectNextOption()
     {
         int nextOptionIndex = selectedOption.getValue() + 1;
+        if(nextOptionIndex == CONTINUE_BUTTON && isNewGame) nextOptionIndex += 1;
         if(nextOptionIndex > HELP_BUTTON) nextOptionIndex = NEW_GAME_BUTTON;
 
         setSelection(getOption(nextOptionIndex));
@@ -340,6 +341,7 @@ public class MainMenuScreen implements Screen
     public void selectPreviousOption()
     {
         int nextOptionIndex = selectedOption.getValue() - 1;
+        if(nextOptionIndex == CONTINUE_BUTTON && isNewGame) nextOptionIndex -= 1;
         if(nextOptionIndex < NEW_GAME_BUTTON) nextOptionIndex = HELP_BUTTON;
 
         setSelection(getOption(nextOptionIndex));
@@ -348,6 +350,8 @@ public class MainMenuScreen implements Screen
     public void setSelection(Option newSelection)
     {
         cancelSelection();
+
+        if(newSelection == Option.Continue && isNewGame) return;
 
         selectedOption = newSelection;
         int newOptionIndex = selectedOption.getValue();
