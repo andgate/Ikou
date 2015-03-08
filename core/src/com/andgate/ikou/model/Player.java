@@ -410,6 +410,11 @@ public class Player implements DirectionListener, Disposable
         }
     }
 
+    public int getDepth()
+    {
+        return depth;
+    }
+
     @Override
     public void dispose()
     {

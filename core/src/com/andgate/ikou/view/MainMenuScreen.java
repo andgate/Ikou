@@ -18,6 +18,7 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.input.MainMenuButtonClickListener;
 import com.andgate.ikou.input.MainMenuControllerListener;
 import com.andgate.ikou.input.MainMenuScreenInputListener;
+import com.andgate.ikou.render.Preview;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -42,6 +43,7 @@ public class MainMenuScreen implements Screen
     private static final String TAG = "MainMenuScreen";
 
     private final Ikou game;
+    private Preview preview;
     private Stage stage;
     private InputMultiplexer im;
     private MainMenuControllerListener mainMenuControllerListener;
@@ -85,6 +87,7 @@ public class MainMenuScreen implements Screen
 
     public MainMenuScreen(final Ikou game) {
         this.game = game;
+        preview = new Preview();
         stage = new Stage();
 
         im = new InputMultiplexer();
@@ -120,6 +123,7 @@ public class MainMenuScreen implements Screen
             table.add(titleLabel).expand().center().top().row();
             table.add(menuButtonTable).bottom().fill();
         table.setFillParent(true);
+        table.setBackground(game.whiteTransparentOverlay);
 
         stage.addActor(table);
     }
@@ -173,8 +177,9 @@ public class MainMenuScreen implements Screen
     @Override
     public void render(float delta)
     {
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        preview.render();
         stage.draw();
 
         update(delta);
@@ -243,6 +248,7 @@ public class MainMenuScreen implements Screen
     public void resize(int width, int height)
     {
         buildStage();
+        preview.resize(width, height);
     }
 
     @Override
@@ -265,6 +271,7 @@ public class MainMenuScreen implements Screen
     public void dispose() {
         if(stage != null) stage.dispose();
         Controllers.removeListener(mainMenuControllerListener);
+        preview.dispose();
     }
 
     public void selectNextOption()

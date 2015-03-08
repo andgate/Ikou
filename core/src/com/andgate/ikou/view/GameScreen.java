@@ -32,15 +32,12 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector3;
 
 public class GameScreen extends ScreenAdapter
@@ -57,9 +54,6 @@ public class GameScreen extends ScreenAdapter
     private Environment environment;
 
     private SpriteBatch batch;
-
-    private FrameBuffer textFBO;
-    private Sprite textSprite;
 
     private InputMultiplexer im;
 
@@ -111,18 +105,7 @@ public class GameScreen extends ScreenAdapter
         Controllers.addListener(playerControllerListener);
         Controllers.addListener(cameraControllerListener);
 
-        buildTextLayer();
-
         Gdx.input.setCursorCatched(true);
-    }
-
-    private void buildTextLayer()
-    {
-        textFBO = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-        TextureRegion textTextureRegion = new TextureRegion(textFBO.getColorBufferTexture());
-        textTextureRegion.flip(false, true);
-        textSprite = new Sprite(textTextureRegion);
-
     }
 
     private void startNewGame()
@@ -171,7 +154,8 @@ public class GameScreen extends ScreenAdapter
         cameraControllerListener.update(delta);
 
         renderScene();
-        if(game.debug) renderOverlay();
+        renderDepthInfo();
+        if(game.debug) renderDebugInfo();
 
         update(delta);
     }
@@ -222,25 +206,44 @@ public class GameScreen extends ScreenAdapter
         //game.bloom.render();
     }
 
-    private void renderOverlay()
+    private void renderDepthInfo()
     {
-        String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond() + ",  Seed: " + level.getSeed();
-        float font_height = game.menuOptionFont.getCapHeight() * game.menuOptionFont.getScale();
-        float font_y = Gdx.graphics.getHeight() - font_height;
+        final String fpsString = "" + (player.getDepth() + 1);
+        final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
+        //final float font_y = Gdx.graphics.getHeight() - font_height;
 
-        textFBO.begin();
-            Gdx.gl.glClearColor(0, 0, 0, 0);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-            batch.begin();
-            batch.setShader(game.fontShader);
-                game.menuOptionFont.setColor(Color.BLACK);
-                game.menuOptionFont.draw(batch, fpsString, game.ppm, font_y);
-            batch.setShader(null);
-            batch.end();
-        textFBO.end();
+        BitmapFont.TextBounds bounds = game.menuOptionFont.getBounds(fpsString);
+
+        final float font_y = Gdx.graphics.getHeight();
+        final float font_x = (Gdx.graphics.getWidth() - bounds.width) / 2.0f;
+
+        final float overlaybarWidth = Gdx.graphics.getWidth();
+        final float overlaybarHeight = (bounds.height * 4f / 3f);
+        final float overlaybarX = 0.0f;
+        final float overlaybarY = Gdx.graphics.getHeight() - overlaybarHeight;
 
         batch.begin();
-        textSprite.draw(batch);
+        game.whiteTransparentOverlay.draw(batch, overlaybarX, overlaybarY, overlaybarWidth, overlaybarHeight);
+        batch.setShader(game.fontShader);
+        game.menuOptionFont.setColor(Color.BLACK);
+        game.menuOptionFont.draw(batch, fpsString, font_x, font_y);
+        batch.setShader(null);
+        batch.end();
+
+    }
+
+    private void renderDebugInfo()
+    {
+        final String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\nSeed: " + level.getSeed();
+        final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
+        final float lineNumbers = 2.0f;
+        final float font_y = font_height * lineNumbers;
+
+        batch.begin();
+        batch.setShader(game.fontShader);
+            game.menuOptionFont.setColor(Color.BLACK);
+            game.menuOptionFont.drawMultiLine(batch, fpsString, game.ppm, font_y);
+        batch.setShader(null);
         batch.end();
 
     }
@@ -287,8 +290,6 @@ public class GameScreen extends ScreenAdapter
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 
         camera.resize(width, height);
-
-        buildTextLayer();
     }
 
     public void end()

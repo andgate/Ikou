@@ -13,8 +13,6 @@
 
 package com.andgate.ikou;
 
-import com.andgate.ikou.maze.MazeGenerator;
-import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
 import com.andgate.ikou.shader.bloom.Bloom;
 import com.andgate.ikou.utility.graphics.ShaderFont;
 import com.andgate.ikou.view.MainMenuScreen;
@@ -28,7 +26,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -38,8 +35,6 @@ public class Ikou extends Game
     public float ppm = 0.0f;
     public float worldWidth = 0.0f;
     public float worldHeight = 0.0f;
-
-    public Skin skin;
 
     public ShaderFont logoFont;
     public ShaderFont menuTitleFont;
@@ -56,6 +51,7 @@ public class Ikou extends Game
     final public boolean free;
     final public boolean debug;
 
+    public Drawable whiteTransparentOverlay;
     public Drawable newGameButtonUp;
     public Drawable newGameButtonDown;
     public Drawable continueButtonUp;
@@ -84,8 +80,6 @@ public class Ikou extends Game
 
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
-
-        skin = new Skin(Gdx.files.internal(Constants.SKIN_LOCATION));
 
         loadShader();
         loadFonts();
@@ -130,17 +124,19 @@ public class Ikou extends Game
 
     private void buildMainMenuButtonDrawables()
     {
-        newGameButtonDown = buildMainMenuButtonDrawable(Color.CYAN);
-        newGameButtonUp = buildMainMenuButtonDrawable(Color.LIGHT_GRAY);
+        whiteTransparentOverlay = buildSolidRectangleDrawable(new Color(1.0f, 1.0f, 1.0f, 0.5f));
 
-        continueButtonDown = buildMainMenuButtonDrawable(Color.ORANGE);
-        continueButtonUp = buildMainMenuButtonDrawable(Color.GRAY);
+        newGameButtonDown = buildSolidRectangleDrawable(Color.CYAN);
+        newGameButtonUp = buildSolidRectangleDrawable(Color.LIGHT_GRAY);
 
-        helpButtonDown = buildMainMenuButtonDrawable(Color.GREEN);
-        helpButtonUp = buildMainMenuButtonDrawable(Color.DARK_GRAY);
+        continueButtonDown = buildSolidRectangleDrawable(Color.ORANGE);
+        continueButtonUp = buildSolidRectangleDrawable(Color.GRAY);
+
+        helpButtonDown = buildSolidRectangleDrawable(Color.GREEN);
+        helpButtonUp = buildSolidRectangleDrawable(Color.DARK_GRAY);
     }
 
-    private Drawable buildMainMenuButtonDrawable(Color color)
+    private Drawable buildSolidRectangleDrawable(Color color)
     {
         Pixmap mainMenuButtonPixmap = new Pixmap(12, 20, Pixmap.Format.RGBA8888);
         mainMenuButtonPixmap.setColor(color);
