@@ -15,6 +15,7 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.input.MainMenuControllerListener;
 import com.andgate.ikou.input.MainMenuScreenInputListener;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
@@ -22,9 +23,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
@@ -39,10 +43,17 @@ public class MainMenuScreen implements Screen
     private final Ikou game;
     private Stage stage;
     private InputMultiplexer im;
+    private MainMenuControllerListener mainMenuControllerListener;
 
     private static final String NEW_GAME_BUTTON_TEXT = "New";
     private static final String CONTINUE_BUTTON_TEXT = "Continue";
     private static final String HELP_BUTTON_TEXT = "Help";
+
+    private static final int NEW_GAME_BUTTON = 0;
+    private static final int CONTINUE_BUTTON = 1;
+    private static final int HELP_BUTTON = 2;
+
+    private Button[] buttons = new Button[3];
 
     private final boolean isNewGame;
 
@@ -50,9 +61,26 @@ public class MainMenuScreen implements Screen
     { Start, Play, End }
     private State state = State.Start;
 
-    private enum Option
-    { None, New, Continue, Help }
+    public enum Option
+    {
+        New(0), Continue(1), Help(2), None(3);
+        private final int value;
+
+        private Option(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
     private Option selectedOption = Option.None;
+
+    private static Option[] options = Option.values();
+    private Option getOption(int index)
+    {
+        return options[index];
+    }
 
     public MainMenuScreen(final Ikou game) {
         this.game = game;
@@ -62,6 +90,10 @@ public class MainMenuScreen implements Screen
         im.addProcessor(stage);
         im.addProcessor(new MainMenuScreenInputListener(this));
         Gdx.input.setInputProcessor(im);
+        Gdx.input.setCursorCatched(false);
+
+        mainMenuControllerListener = new MainMenuControllerListener(this);
+        Controllers.addListener(mainMenuControllerListener);
 
         Color bg = Constants.BACKGROUND_COLOR;
         Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
@@ -70,7 +102,6 @@ public class MainMenuScreen implements Screen
         isNewGame = !playerPrefs.contains(Constants.PLAYER_PREF_LEVEL_SEED);
 
         buildStage();
-        Gdx.input.setCursorCatched(false);
     }
 
     public void buildStage()
@@ -98,9 +129,11 @@ public class MainMenuScreen implements Screen
         final ButtonStyle buttonStyle = new ButtonStyle(game.skin.getDrawable("default-round"),
                 game.skin.getDrawable("default-round-down"),
                 game.skin.getDrawable("default-round"));
+        buttonStyle.over = game.skin.getDrawable("default-round-down");
 
         final ShaderLabel newGameButtonLabel = new ShaderLabel(NEW_GAME_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        final Button newGameButton = new Button(buttonStyle);
+        buttons[NEW_GAME_BUTTON] = new Button(buttonStyle);
+        final Button newGameButton = buttons[NEW_GAME_BUTTON];
         newGameButton.add(newGameButtonLabel);
 
         newGameButton.addListener(new ClickListener() {
@@ -110,10 +143,28 @@ public class MainMenuScreen implements Screen
                 MainMenuScreen.this.setOption(Option.New);
                 MainMenuScreen.this.end();
             }
+
+            @Override
+            public boolean keyDown (InputEvent event, int keycode) {
+                if(keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE)
+                {
+                    MainMenuScreen.this.setOption(Option.New);
+                    MainMenuScreen.this.end();
+                }
+                return false;
+            }
+
+            @Override
+            public void enter (InputEvent event, float x, float y, int pointer, Actor fromActor)
+            {
+                MainMenuScreen.this.setSelection(Option.New);
+            }
         });
 
+
         final ShaderLabel continueButtonLabel = new ShaderLabel(CONTINUE_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        final Button continueButton = new Button(buttonStyle);
+        buttons[CONTINUE_BUTTON] = new Button(buttonStyle);
+        final Button continueButton = buttons[CONTINUE_BUTTON];
         continueButton.add(continueButtonLabel);
 
         continueButton.addListener(new ClickListener() {
@@ -123,10 +174,28 @@ public class MainMenuScreen implements Screen
                 MainMenuScreen.this.setOption(Option.Continue);
                 MainMenuScreen.this.end();
             }
+
+            @Override
+            public boolean keyDown (InputEvent event, int keycode) {
+                if(keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE)
+                {
+                    MainMenuScreen.this.setOption(Option.Continue);
+                    MainMenuScreen.this.end();
+                }
+                return false;
+            }
+
+            @Override
+            public void enter (InputEvent event, float x, float y, int pointer, Actor fromActor)
+            {
+                MainMenuScreen.this.setSelection(Option.Continue);
+            }
         });
 
+
         final ShaderLabel helpButtonLabel = new ShaderLabel(HELP_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        final Button helpButton = new Button(buttonStyle);
+        buttons[HELP_BUTTON] = new Button(buttonStyle);
+        final Button helpButton = buttons[HELP_BUTTON];
         helpButton.add(helpButtonLabel);
 
         helpButton.addListener(new ClickListener() {
@@ -136,13 +205,29 @@ public class MainMenuScreen implements Screen
                 MainMenuScreen.this.setOption(Option.Help);
                 MainMenuScreen.this.end();
             }
+
+            @Override
+            public boolean keyDown (InputEvent event, int keycode) {
+                if(keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE)
+                {
+                    MainMenuScreen.this.setOption(Option.Help);
+                    MainMenuScreen.this.end();
+                }
+                return false;
+            }
+
+            @Override
+            public void enter (InputEvent event, float x, float y, int pointer, Actor fromActor)
+            {
+                MainMenuScreen.this.setSelection(Option.Help);
+            }
         });
+
 
         Table menuButtonsTable = new Table();
             menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).row();
             if(!isNewGame) menuButtonsTable.add(continueButton).fill().spaceBottom(20.0f).row();
             menuButtonsTable.add(helpButton).fill();
-
 
         return menuButtonsTable;
     }
@@ -241,5 +326,54 @@ public class MainMenuScreen implements Screen
     @Override
     public void dispose() {
         if(stage != null) stage.dispose();
+        Controllers.removeListener(mainMenuControllerListener);
+    }
+
+    public void selectNextOption()
+    {
+        int nextOptionIndex = selectedOption.getValue() + 1;
+        if(nextOptionIndex > HELP_BUTTON) nextOptionIndex = NEW_GAME_BUTTON;
+
+        setSelection(getOption(nextOptionIndex));
+    }
+
+    public void selectPreviousOption()
+    {
+        int nextOptionIndex = selectedOption.getValue() - 1;
+        if(nextOptionIndex < NEW_GAME_BUTTON) nextOptionIndex = HELP_BUTTON;
+
+        setSelection(getOption(nextOptionIndex));
+    }
+
+    public void setSelection(Option newSelection)
+    {
+        cancelSelection();
+
+        selectedOption = newSelection;
+        int newOptionIndex = selectedOption.getValue();
+        if(selectedOption != Option.None)
+        {
+            buttons[newOptionIndex].getClickListener().touchDown(null, 0, 0, 0, Input.Buttons.LEFT);
+            stage.setKeyboardFocus(buttons[newOptionIndex]);
+        }
+    }
+
+    public void cancelSelection()
+    {
+        if(selectedOption != Option.None)
+        {
+            Button currentButton = buttons[selectedOption.getValue()];
+            currentButton.getClickListener().cancel();
+            currentButton.getClickListener().touchUp(null, 0, 0, 0, Input.Buttons.LEFT);
+            selectedOption = Option.None;
+        }
+    }
+
+    public void confirmSelection()
+    {
+        if(selectedOption != Option.None)
+        {
+            MainMenuScreen.this.end();
+        }
     }
 }

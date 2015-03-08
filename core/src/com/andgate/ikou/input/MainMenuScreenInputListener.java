@@ -19,7 +19,7 @@ import com.badlogic.gdx.InputAdapter;
 
 public class MainMenuScreenInputListener extends InputAdapter
 {
-    private static final String TAG = "HelpScreenInputListener";
+    private static final String TAG = "MainMenuScreenInputListener";
     private final MainMenuScreen screen;
 
     public MainMenuScreenInputListener(MainMenuScreen screen)
@@ -31,7 +31,16 @@ public class MainMenuScreenInputListener extends InputAdapter
     {
         if(keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE)
         {
+            screen.setOption(MainMenuScreen.Option.None);
             screen.end();
+        }
+        else if(keycode == Input.Keys.DOWN || keycode == Input.Keys.S)
+        {
+            screen.selectNextOption();
+        }
+        else if(keycode == Input.Keys.UP || keycode == Input.Keys.W)
+        {
+            screen.selectPreviousOption();
         }
 
         return false;
