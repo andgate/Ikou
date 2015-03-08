@@ -13,8 +13,6 @@
 
 package com.andgate.ikou;
 
-//import android.os.Debug;
-
 import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
 import com.andgate.ikou.shader.bloom.Bloom;
@@ -24,9 +22,15 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class Ikou extends Game
 {
@@ -51,6 +55,13 @@ public class Ikou extends Game
 
     final public boolean free;
     final public boolean debug;
+
+    public Drawable newGameButtonUp;
+    public Drawable newGameButtonDown;
+    public Drawable continueButtonUp;
+    public Drawable continueButtonDown;
+    public Drawable helpButtonUp;
+    public Drawable helpButtonDown;
 
     public Ikou()
     {
@@ -79,6 +90,8 @@ public class Ikou extends Game
         loadShader();
         loadFonts();
         loadSounds();
+
+        buildMainMenuButtonDrawables();
 
         setScreen(new MainMenuScreen(this));
 	}
@@ -113,6 +126,27 @@ public class Ikou extends Game
         bloom.setClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         bloom.setTreshold(0.6f);
         bloom.setBloomIntesity(1.5f);
+    }
+
+    private void buildMainMenuButtonDrawables()
+    {
+        newGameButtonDown = buildMainMenuButtonDrawable(Color.CYAN);
+        newGameButtonUp = buildMainMenuButtonDrawable(Color.LIGHT_GRAY);
+
+        continueButtonDown = buildMainMenuButtonDrawable(Color.ORANGE);
+        continueButtonUp = buildMainMenuButtonDrawable(Color.GRAY);
+
+        helpButtonDown = buildMainMenuButtonDrawable(Color.GREEN);
+        helpButtonUp = buildMainMenuButtonDrawable(Color.DARK_GRAY);
+    }
+
+    private Drawable buildMainMenuButtonDrawable(Color color)
+    {
+        Pixmap mainMenuButtonPixmap = new Pixmap(12, 20, Pixmap.Format.RGBA8888);
+        mainMenuButtonPixmap.setColor(color);
+        mainMenuButtonPixmap.fill();
+        TextureRegionDrawable mainMenuButtonDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(mainMenuButtonPixmap)));
+        return mainMenuButtonDrawable;
     }
 
     @Override

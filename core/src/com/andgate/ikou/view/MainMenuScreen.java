@@ -117,8 +117,8 @@ public class MainMenuScreen implements Screen
         Table menuButtonTable = buildMenuButtonTable();
 
         Table table = new Table();
-            table.add(titleLabel).center().top().spaceBottom(25.0f).row();
-            table.add(menuButtonTable).center();
+            table.add(titleLabel).expand().center().top().row();
+            table.add(menuButtonTable).bottom().fill();
         table.setFillParent(true);
 
         stage.addActor(table);
@@ -127,13 +127,19 @@ public class MainMenuScreen implements Screen
     private Table buildMenuButtonTable()
     {
         final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
-        final ButtonStyle buttonStyle = new ButtonStyle(game.skin.getDrawable("default-round"),
-                game.skin.getDrawable("default-round-down"),
-                game.skin.getDrawable("default-round"));
-        buttonStyle.over = game.skin.getDrawable("default-round-down");
+        final ButtonStyle newGameButtonStyle = new ButtonStyle(game.newGameButtonUp,
+                game.newGameButtonDown,
+                game.newGameButtonUp);
+        final ButtonStyle continueButtonStyle = new ButtonStyle(game.continueButtonUp,
+                game.continueButtonDown,
+                game.continueButtonUp);
+        final ButtonStyle helpButtonStyle = new ButtonStyle(game.helpButtonUp,
+                game.helpButtonDown,
+                game.helpButtonUp);
+        //buttonStyle.over = game.newGameButtonDown;
 
         final ShaderLabel newGameButtonLabel = new ShaderLabel(NEW_GAME_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        buttons[NEW_GAME_BUTTON] = new Button(buttonStyle);
+        buttons[NEW_GAME_BUTTON] = new Button(newGameButtonStyle);
         final Button newGameButton = buttons[NEW_GAME_BUTTON];
         newGameButton.add(newGameButtonLabel);
 
@@ -141,7 +147,7 @@ public class MainMenuScreen implements Screen
 
 
         final ShaderLabel continueButtonLabel = new ShaderLabel(CONTINUE_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        buttons[CONTINUE_BUTTON] = new Button(buttonStyle);
+        buttons[CONTINUE_BUTTON] = new Button(continueButtonStyle);
         final Button continueButton = buttons[CONTINUE_BUTTON];
         continueButton.add(continueButtonLabel);
 
@@ -149,7 +155,7 @@ public class MainMenuScreen implements Screen
 
 
         final ShaderLabel helpButtonLabel = new ShaderLabel(HELP_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
-        buttons[HELP_BUTTON] = new Button(buttonStyle);
+        buttons[HELP_BUTTON] = new Button(helpButtonStyle);
         final Button helpButton = buttons[HELP_BUTTON];
         helpButton.add(helpButtonLabel);
 
@@ -157,8 +163,8 @@ public class MainMenuScreen implements Screen
 
 
         Table menuButtonsTable = new Table();
-            menuButtonsTable.add(newGameButton).fill().spaceBottom(20.0f).row();
-            if(!isNewGame) menuButtonsTable.add(continueButton).fill().spaceBottom(20.0f).row();
+            menuButtonsTable.add(newGameButton).expandX().fill().row();
+            if(!isNewGame) menuButtonsTable.add(continueButton).fill().row();
             menuButtonsTable.add(helpButton).fill();
 
         return menuButtonsTable;
