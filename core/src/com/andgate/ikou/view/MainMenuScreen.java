@@ -15,6 +15,7 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.input.MainMenuButtonClickListener;
 import com.andgate.ikou.input.MainMenuControllerListener;
 import com.andgate.ikou.input.MainMenuScreenInputListener;
 import com.andgate.ikou.utility.Scene2d.ShaderLabel;
@@ -45,7 +46,7 @@ public class MainMenuScreen implements Screen
     private InputMultiplexer im;
     private MainMenuControllerListener mainMenuControllerListener;
 
-    private static final String NEW_GAME_BUTTON_TEXT = "New";
+    private static final String NEW_GAME_BUTTON_TEXT = "New Game";
     private static final String CONTINUE_BUTTON_TEXT = "Continue";
     private static final String HELP_BUTTON_TEXT = "Help";
 
@@ -136,30 +137,7 @@ public class MainMenuScreen implements Screen
         final Button newGameButton = buttons[NEW_GAME_BUTTON];
         newGameButton.add(newGameButtonLabel);
 
-        newGameButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //game.buttonPressedSound.play();
-                MainMenuScreen.this.setOption(Option.New);
-                MainMenuScreen.this.end();
-            }
-
-            @Override
-            public boolean keyDown (InputEvent event, int keycode) {
-                if(keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE)
-                {
-                    MainMenuScreen.this.setOption(Option.New);
-                    MainMenuScreen.this.end();
-                }
-                return false;
-            }
-
-            @Override
-            public void enter (InputEvent event, float x, float y, int pointer, Actor fromActor)
-            {
-                MainMenuScreen.this.setSelection(Option.New);
-            }
-        });
+        newGameButton.addListener(new MainMenuButtonClickListener(this, Option.New));
 
 
         final ShaderLabel continueButtonLabel = new ShaderLabel(CONTINUE_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
@@ -167,30 +145,7 @@ public class MainMenuScreen implements Screen
         final Button continueButton = buttons[CONTINUE_BUTTON];
         continueButton.add(continueButtonLabel);
 
-        continueButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //game.buttonPressedSound.play();
-                MainMenuScreen.this.setOption(Option.Continue);
-                MainMenuScreen.this.end();
-            }
-
-            @Override
-            public boolean keyDown (InputEvent event, int keycode) {
-                if(keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE)
-                {
-                    MainMenuScreen.this.setOption(Option.Continue);
-                    MainMenuScreen.this.end();
-                }
-                return false;
-            }
-
-            @Override
-            public void enter (InputEvent event, float x, float y, int pointer, Actor fromActor)
-            {
-                MainMenuScreen.this.setSelection(Option.Continue);
-            }
-        });
+        continueButton.addListener(new MainMenuButtonClickListener(this, Option.Continue));
 
 
         final ShaderLabel helpButtonLabel = new ShaderLabel(HELP_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
@@ -198,30 +153,7 @@ public class MainMenuScreen implements Screen
         final Button helpButton = buttons[HELP_BUTTON];
         helpButton.add(helpButtonLabel);
 
-        helpButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                //game.buttonPressedSound.play();
-                MainMenuScreen.this.setOption(Option.Help);
-                MainMenuScreen.this.end();
-            }
-
-            @Override
-            public boolean keyDown (InputEvent event, int keycode) {
-                if(keycode == Input.Keys.ENTER || keycode == Input.Keys.SPACE)
-                {
-                    MainMenuScreen.this.setOption(Option.Help);
-                    MainMenuScreen.this.end();
-                }
-                return false;
-            }
-
-            @Override
-            public void enter (InputEvent event, float x, float y, int pointer, Actor fromActor)
-            {
-                MainMenuScreen.this.setSelection(Option.Help);
-            }
-        });
+        helpButton.addListener(new MainMenuButtonClickListener(this, Option.Help));
 
 
         Table menuButtonsTable = new Table();
