@@ -11,7 +11,7 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.render;
+package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.maze.MazeGenerator;
@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -49,6 +50,7 @@ public class Preview implements Disposable
         groundFloor = mazeGenerator.computeFloor();
         groundFloor.getRender().build();
 
+        mazeGenerator.setEnd(0,0);
         mazeGenerator.generate();
         upperFloor = mazeGenerator.computeFloor();
         upperFloor.getRender().build();
@@ -56,7 +58,7 @@ public class Preview implements Disposable
 
         modelBatch = new ModelBatch();
         setupCamera();
-        setupEnvironment();
+        createEnvironment();
     }
 
     private static final float PREVIEW_FIELD_OF_VIEW = 95f;
@@ -87,12 +89,20 @@ public class Preview implements Disposable
         rotate(45);
     }
 
-    private void setupEnvironment()
+    private void createEnvironment()
     {
         environment = new Environment();
+
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        Vector3 lightDirection1 = new Vector3(0, 0, 1.0f);
+        lightDirection1.rot(new Matrix4().setFromEulerAngles(45.0f, 45.0f, 0.0f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, lightDirection1));
+
+        Vector3 lightDirection2 = new Vector3(0, 0, 1.0f);
+        lightDirection2.rot(new Matrix4().setFromEulerAngles(15.0f, -15.0f, 0.0f));
+        environment.add(new DirectionalLight().set(0.3f, 0.8f, 0.8f, lightDirection2));
     }
 
     public void render()

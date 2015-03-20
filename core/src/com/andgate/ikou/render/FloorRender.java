@@ -136,8 +136,6 @@ public class FloorRender implements RenderableProvider, Disposable
     private boolean isBuilt = false;
     public void build()
     {
-        assert(isBuilt == false);
-
         int rows = sectorMeshes.length;
         for(int currRow = 0; currRow < rows; currRow++)
         {

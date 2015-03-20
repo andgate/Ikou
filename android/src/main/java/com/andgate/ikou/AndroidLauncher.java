@@ -30,7 +30,7 @@ public class AndroidLauncher extends AndroidApplication {
         cfg.useAccelerometer = false;
         cfg.useCompass = false;
         cfg.hideStatusBar = true;
-        cfg.numSamples = 16;
+        cfg.numSamples = 2;
 
         // Do the stuff that initialize() would do for you
         requestWindowFeature(Window.FEATURE_NO_TITLE);

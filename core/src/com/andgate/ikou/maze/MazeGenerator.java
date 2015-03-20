@@ -266,4 +266,9 @@ public abstract class MazeGenerator
     {
         return parser.parse(this);
     }
+
+    public void setEnd(int x, int y)
+    {
+        end.set(x, y);
+    }
 }

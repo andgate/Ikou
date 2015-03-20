@@ -18,6 +18,7 @@ import com.andgate.ikou.model.tile.TileCode;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 
 public class TileStack
 {
@@ -31,6 +32,7 @@ public class TileStack
     public static final Material TILE_MATERIAL
             = new Material(
                   new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+                , new ColorAttribute(ColorAttribute.Specular, 0.2f, 0.5f, 0.5f, 0.2f)
                 //, new IntAttribute(IntAttribute.CullFace, GL20.GL_NONE)
             );
 
