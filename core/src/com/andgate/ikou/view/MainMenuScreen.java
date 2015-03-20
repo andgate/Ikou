@@ -114,13 +114,13 @@ public class MainMenuScreen implements Screen
         stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-        final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Color.CYAN);
+        final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Constants.LOGO_FONT_COLOR);
         final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
 
         Table menuButtonTable = buildMenuButtonTable();
 
         Table table = new Table();
-            table.add(titleLabel).expand().center().top().row();
+            table.add(titleLabel).expand().center().row();
             table.add(menuButtonTable).bottom().fill();
         table.setFillParent(true);
         table.setBackground(game.whiteTransparentOverlay);
@@ -211,6 +211,7 @@ public class MainMenuScreen implements Screen
     private void updatePlay(float delta)
     {
         stage.act();
+        preview.update(delta);
     }
 
     private void updateEnd(float delta)

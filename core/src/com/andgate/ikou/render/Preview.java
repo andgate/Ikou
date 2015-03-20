@@ -31,39 +31,60 @@ import com.badlogic.gdx.utils.Disposable;
 public class Preview implements Disposable
 {
     private ModelBatch modelBatch;
-    private Floor floor;
+    private Floor groundFloor;
+    private Floor upperFloor;
     private PerspectiveCamera camera;
     private Environment environment;
 
     public Preview()
     {
-        MazeGenerator mazeGenerator = new RecursiveBacktrackerMazeGenerator(100, 100, 40, 40, 50, 50);
+        int mazeLength = (int)Constants.CAMERA_FAR + 1;
+        int mazeEnd = mazeLength / 2;
+        int startToEndDistance = (int)Constants.CAMERA_FAR / 4;
+        int mazeStartX = mazeEnd;
+        int mazeStartZ = mazeEnd - startToEndDistance;
+
+        MazeGenerator mazeGenerator = new RecursiveBacktrackerMazeGenerator(mazeLength, mazeLength, mazeStartX, mazeStartZ, mazeEnd, mazeEnd);
         mazeGenerator.generate();
-        floor = mazeGenerator.computeFloor();
-        floor.getRender().build();
+        groundFloor = mazeGenerator.computeFloor();
+        groundFloor.getRender().build();
+
+        mazeGenerator.generate();
+        upperFloor = mazeGenerator.computeFloor();
+        upperFloor.getRender().build();
+        upperFloor.getRender().transform.translate(0.0f, Constants.FLOOR_SPACING, 0.0f);
 
         modelBatch = new ModelBatch();
         setupCamera();
         setupEnvironment();
     }
 
+    private static final float PREVIEW_FIELD_OF_VIEW = 95f;
+
     private void setupCamera()
     {
-        camera = new PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new PerspectiveCamera(PREVIEW_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        Vector3i start = floor.getStart();
-        Vector3i end = floor.getEnd();
+        Vector3i start = groundFloor.getStart();
+        Vector3i end = groundFloor.getEnd();
+        target.set(end.x, end.y, end.z);
+        target.x += TileStack.HALF_WIDTH;
+        target.z += TileStack.HALF_DEPTH;
 
         camera.position.set( start.x,
                 start.y + Constants.CAMERA_VERTICAL_DISTANCE,
                 start.z - Constants.CAMERA_HORIZONTAL_DISTANCE);
 
-        camera.lookAt(end.x, end.y, end.z);
+        camera.lookAt(target);
         camera.near = 1f;
         camera.far = Constants.CAMERA_FAR;
         camera.update();
 
-        floor.getRender().setCamera(camera);
+        groundFloor.getRender().setCamera(camera);
+        upperFloor.getRender().setCamera(camera);
+
+        // Start with a 45 degree rotation
+        rotate(45);
     }
 
     private void setupEnvironment()
@@ -77,8 +98,17 @@ public class Preview implements Disposable
     public void render()
     {
         modelBatch.begin(camera);
-        modelBatch.render(floor.getRender(), environment);
+        modelBatch.render(groundFloor.getRender(), environment);
+        modelBatch.render(upperFloor.getRender(), environment);
         modelBatch.end();
+    }
+
+    private static final float ANGULAR_VELOCITY = 90f / 60f; // degrees per second
+
+    public void update(float delta)
+    {
+        float xAngleDelta = ANGULAR_VELOCITY * delta;
+        rotate(xAngleDelta);
     }
 
     public void resize(int width, int height)
@@ -92,6 +122,17 @@ public class Preview implements Disposable
     public void dispose()
     {
         modelBatch.dispose();
-        floor.dispose();
+        groundFloor.dispose();
+    }
+
+    private Vector3 tmpV1 = new Vector3();
+    private Vector3 target = new Vector3();
+
+    public void rotate(float xAngleDelta)
+    {
+        tmpV1.set(camera.direction).crs(camera.up).y = 0f;
+
+        camera.rotateAround(target, Vector3.Y, xAngleDelta);
+        camera.update();
     }
 }

@@ -151,4 +151,6 @@ public class FloorRender implements RenderableProvider, Disposable
 
         isBuilt = true;
     }
+
+    public boolean isBuilt() { return isBuilt; }
 }

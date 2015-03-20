@@ -126,6 +126,21 @@ public class Level
         offsetLastFloor();
     }
 
+    public void initializePlayerDepth(int playerDepth)
+    {
+        for(int i = 0; i <= playerDepth; i++)
+        {
+            startNextFloor(i);
+        }
+
+        for(Floor floor: floors)
+        {
+            FloorRender floorRender = floor.getRender();
+            if(!floorRender.isBuilt())
+                floorRender.build();
+        }
+    }
+
     public void startNextFloor(int playerDepth)
     {
         startNextFloor(buildRandomFloor(random.nextLong()), playerDepth);
@@ -140,7 +155,6 @@ public class Level
             addFloor(newFloor);
         }
     }
-
 
     public void startNextFloorThreaded(final int playerDepth)
     {
@@ -184,15 +198,6 @@ public class Level
                 Level.this.startNextFloor(floor, playerDepth);
                 floor.getRender().build();
             }
-        }
-    }
-
-    public void initializePlayerDepth(int playerDepth)
-    {
-        for(int i = 0; i <= playerDepth; i++)
-        {
-            startNextFloor(i);
-            floors.getLast().getRender().build();
         }
     }
 

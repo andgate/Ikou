@@ -26,9 +26,6 @@ public class Constants
 
     public static final Color BACKGROUND_COLOR = new Color(Color.WHITE);
 
-    public static final String SKIN_LOCATION
-            = "data/ui/uiskin.json";
-
     public static final String SOUND_FOLDER
             = "data/sound/";
 
@@ -62,39 +59,12 @@ public class Constants
     public static final String MENU_FONT_PNG
             = MENU_FONT_NAME + PNG_EXTENSION;
 
-    public static final int LOGO_FONT_SIZE = 7;
+    public static final int LOGO_FONT_SIZE = 9;
     public static final int MENU_TITLE_FONT_SIZE = 4;
     public static final int MENU_OPTION_FONT_SIZE = 3;
     public static final int HELP_FONT_SIZE = 2;
 
-    public static final String CAMERA_ICON_LOCATION
-            = "data/icons/camera.png";
-    public static final String CAMERA_ICON_DOWN_LOCATION
-            = "data/icons/camera_down.png";
-    public static final String MOVE_ICON_LOCATION
-            = "data/icons/move.png";
-    public static final String MOVE_ICON_DOWN_LOCATION
-            = "data/icons/move_down.png";
-
-    public static final String LEVELS_INTERNAL_PATH
-            = "data/levels/";
-    public static final String LEVELS_EXTERNAL_PATH
-            = "Ikou/levels/";
-    public static final String FLOOR_EXTENSION
-            = ".txt";
-
-    public static final String LEVEL_EXTENSION_NO_DOT
-            = "lvl";
-    public static final String LEVEL_EXTENSION
-            = "." + LEVEL_EXTENSION_NO_DOT;
-
-    public static final String TEMP_EXTENSION_NO_DOT
-            = "tmp";
-    public static final String TEMP_EXTENSION
-            = "." + TEMP_EXTENSION_NO_DOT;
-
-    public static final String PROGRESS_DATABASE_EXTERNAL_PATH
-            = "Ikou/progress.data";
+    public static final Color LOGO_FONT_COLOR = new Color(0.215f, 0.647f, 1.0f, 0.5f);
 
     public static final float LITTLE_EPSILON = 1.0f / 1E10f;
     public static final float EPSILON = 1.0f / 1E7f;

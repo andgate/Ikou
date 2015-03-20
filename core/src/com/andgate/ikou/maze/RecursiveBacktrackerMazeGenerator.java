@@ -32,7 +32,7 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
     protected void generateMaze()
     {
         boolean[][] cells = new boolean[size.y+1][size.x+1];
-        LinkedList<Vector2i> stack = new LinkedList<>();
+        LinkedList<Vector2i> stack = new LinkedList<>(); 
 
         // A cell is a location in the maze.
         Vector2i cell = new Vector2i(start);
