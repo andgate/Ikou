@@ -13,11 +13,10 @@
 
 package com.andgate.ikou;
 
-import com.andgate.ikou.shader.bloom.Bloom;
-import com.andgate.ikou.utility.graphics.ShaderFont;
 import com.andgate.ikou.view.HelpScreen;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -25,8 +24,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
+
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -38,14 +46,12 @@ public class Ikou extends Game
     public float worldWidth = 0.0f;
     public float worldHeight = 0.0f;
 
-    public ShaderFont logoFont;
-    public ShaderFont menuTitleFont;
-    public ShaderFont menuOptionFont;
-    public ShaderFont helpFont;
+    public AssetManager manager;
 
-    public ShaderProgram fontShader;
-
-    public Bloom bloom;
+    public BitmapFont logoFont;
+    public BitmapFont menuTitleFont;
+    public BitmapFont menuOptionFont;
+    public BitmapFont helpFont;
 
     public Sound roughSound;
     public Sound fallSound;
@@ -84,6 +90,8 @@ public class Ikou extends Game
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        manager = new AssetManager(resolver);
         loadShader();
         loadFonts();
         loadSounds();
@@ -105,25 +113,19 @@ public class Ikou extends Game
 
     private void loadFonts()
     {
-        logoFont = new ShaderFont(Constants.LOGO_FONT_FNT, Constants.LOGO_FONT_PNG, fontShader);
-        menuTitleFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
-        menuOptionFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
-        helpFont = new ShaderFont(Constants.MENU_FONT_FNT, Constants.MENU_FONT_PNG, fontShader);
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        manager.load(Constants.LOGO_FONT_TTF, FreeTypeFontGenerator.class);
+        manager.load(Constants.MENU_FONT_TTF, FreeTypeFontGenerator.class);
+
+        buildFonts();
     }
 
     private void loadShader()
     {
-        if(fontShader != null) fontShader.dispose();
-        fontShader = new ShaderProgram(Gdx.files.internal(Constants.FONT_VERT_SHADER), Gdx.files.internal(Constants.FONT_FRAG_SHADER));
-        if (!fontShader.isCompiled()) {
-            Gdx.app.error(TAG + " fontShader", "compilation failed:\n" + fontShader.getLog());
-        }
-
-        if(bloom != null) bloom.dispose();
-        bloom = new Bloom();
-        bloom.setClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        bloom.setTreshold(0.6f);
-        bloom.setBloomIntesity(1.5f);
+        // Maybe have an ambient occlusion shader someday
     }
 
     private void buildMainMenuButtonDrawables()
@@ -152,23 +154,10 @@ public class Ikou extends Game
     @Override
     public void dispose()
     {
-        disposeFonts();
-
-        fontShader.dispose();
-        bloom.dispose();
+        manager.dispose();
 
         if(getScreen() != null)
             getScreen().dispose();
-    }
-
-    private void disposeFonts()
-    {
-        if(menuOptionFont != null)
-            menuOptionFont.dispose();
-        if(menuTitleFont != null)
-            menuTitleFont.dispose();
-        if(logoFont != null)
-            logoFont.dispose();
     }
 
 
@@ -181,7 +170,7 @@ public class Ikou extends Game
     public void resize(int width, int height)
     {
         screenAdjustments(width, height);
-        scaleFonts();
+        buildFonts();
 
         if(getScreen() != null)
         {
@@ -207,27 +196,37 @@ public class Ikou extends Game
         }
     }
 
-    public void scaleFonts()
+    public void buildFonts()
     {
-        logoFont.resetScale();
-        float logoFontScale = Constants.LOGO_FONT_SIZE / (logoFont.getLineHeight() / ppm);
-        logoFont.setScale(logoFontScale);
+        int logoFontSize = (int)(Constants.LOGO_FONT_SIZE / ppm);
+        logoFont = buildFont(Constants.LOGO_FONT_TTF, Constants.LOGO_FONT, logoFontSize);
 
-        menuTitleFont.resetScale();
-        float menuTitleFontScale = Constants.MENU_TITLE_FONT_SIZE / (menuTitleFont.getLineHeight() / ppm);
-        menuTitleFont.setScale(menuTitleFontScale);
+        int menuTitleFontSize = (int)(Constants.MENU_TITLE_FONT_SIZE / ppm);
+        menuTitleFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_TITLE_FONT, menuTitleFontSize);
 
-        menuOptionFont.resetScale();
-        float menuOptionFontScale = Constants.MENU_OPTION_FONT_SIZE / (menuOptionFont.getLineHeight() / ppm);
-        menuOptionFont.setScale(menuOptionFontScale);
+        int menuOptionFontSize = (int)(Constants.MENU_OPTION_FONT_SIZE / ppm);
+        menuOptionFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_OPTION_FONT, menuOptionFontSize);
 
         /*helpFont.resetScale();
         String helpText = HelpScreen.loadHelpScreenText();
         BitmapFont.TextBounds helpTextBounds = helpFont.getBounds(helpText);
         float helpFontScale = (4f / 5f) - (helpTextBounds.height / Gdx.graphics.getHeight());
         helpFont.setScale(helpFontScale);*/
-        helpFont.resetScale();
-        float helpFontScale = Constants.HELP_FONT_SIZE / (helpFont.getLineHeight() / ppm);
-        helpFont.setScale(menuOptionFontScale);
+
+        int helpFontSize = (int)(Constants.HELP_FONT_SIZE / ppm);
+        helpFont = buildFont(Constants.MENU_FONT_TTF, Constants.HELP_FONT, helpFontSize);
+    }
+
+    private BitmapFont buildFont(String in_font_path, String out_font_path, int size)
+    {
+        FreeTypeFontLoaderParameter params = new FreeTypeFontLoaderParameter();
+        params.fontFileName = in_font_path;
+        params.fontParameters.size = size;
+        //params.fontParameters.genMipMaps = true;
+
+        if(manager.isLoaded(out_font_path)) manager.unload(out_font_path);
+        manager.load(out_font_path, BitmapFont.class, params);
+        manager.finishLoading();
+        return manager.get(out_font_path, BitmapFont.class);
     }
 }

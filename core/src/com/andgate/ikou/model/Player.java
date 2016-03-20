@@ -294,7 +294,6 @@ public class Player implements DirectionListener, Disposable
         Color nextFloorColor = level.getFloor(depth + 1).getPalette().background;
 
         ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpBg);
-        game.bloom.setClearColor(tmpBg.r, tmpBg.g, tmpBg.b, tmpBg.a);
     }
 
     private Color tmpColor = new Color();

@@ -34,8 +34,10 @@ public class GameScreenInputListener extends InputAdapter
             screen.end();
         }
 
-        if(keycode == Input.Keys.F11)
-            Gdx.graphics.setDisplayMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), !Gdx.graphics.isFullscreen());
+        if(keycode == Input.Keys.F11) {
+            if(Gdx.graphics.isFullscreen()) Gdx.graphics.setWindowedMode(640, 480);
+            else Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        }
 
         return false;
     }

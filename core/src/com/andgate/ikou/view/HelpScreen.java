@@ -17,7 +17,6 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.input.HelpScreenControllerListener;
 import com.andgate.ikou.input.HelpScreenInputListener;
-import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
@@ -29,7 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.utils.Align;
 
 public class HelpScreen extends ScreenAdapter
 {
@@ -81,10 +80,10 @@ public class HelpScreen extends ScreenAdapter
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.ORANGE);
-        final ShaderLabel titleLabel = new ShaderLabel(HELP_SCREEN_TITLE, titleLabelStyle, game.fontShader);
+        final Label titleLabel = new Label(HELP_SCREEN_TITLE, titleLabelStyle);
 
         final Label.LabelStyle helpTextLabelStyle = new Label.LabelStyle(game.helpFont, Color.BLACK);
-        final ShaderLabel helpTextLabel = new ShaderLabel(helpText, helpTextLabelStyle, game.fontShader);
+        final Label helpTextLabel = new Label(helpText, helpTextLabelStyle);
         helpTextLabel.setWrap(true);
         helpTextLabel.setAlignment(Align.center);
         helpTextScrollPane = new ScrollPane(helpTextLabel);

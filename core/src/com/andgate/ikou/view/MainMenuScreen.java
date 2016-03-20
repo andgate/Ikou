@@ -18,7 +18,6 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.input.MainMenuButtonClickListener;
 import com.andgate.ikou.input.MainMenuControllerListener;
 import com.andgate.ikou.input.MainMenuScreenInputListener;
-import com.andgate.ikou.utility.Scene2d.ShaderLabel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
@@ -30,6 +29,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -110,7 +110,7 @@ public class MainMenuScreen implements Screen
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Constants.LOGO_FONT_COLOR);
-        final ShaderLabel titleLabel = new ShaderLabel(Constants.GAME_NAME, titleLabelStyle, game.fontShader);
+        final Label titleLabel = new Label(Constants.GAME_NAME, titleLabelStyle);
 
         Table menuButtonTable = buildMenuButtonTable();
 
@@ -137,7 +137,7 @@ public class MainMenuScreen implements Screen
                 game.helpButtonUp);
         //buttonStyle.over = game.newGameButtonDown;
 
-        final ShaderLabel newGameButtonLabel = new ShaderLabel(NEW_GAME_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Label newGameButtonLabel = new Label(NEW_GAME_BUTTON_TEXT, buttonLabelStyle);
         buttons[NEW_GAME_BUTTON] = new Button(newGameButtonStyle);
         final Button newGameButton = buttons[NEW_GAME_BUTTON];
         newGameButton.add(newGameButtonLabel);
@@ -145,7 +145,7 @@ public class MainMenuScreen implements Screen
         newGameButton.addListener(new MainMenuButtonClickListener(this, Option.New));
 
 
-        final ShaderLabel continueButtonLabel = new ShaderLabel(CONTINUE_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Label continueButtonLabel = new Label(CONTINUE_BUTTON_TEXT, buttonLabelStyle);
         buttons[CONTINUE_BUTTON] = new Button(continueButtonStyle);
         final Button continueButton = buttons[CONTINUE_BUTTON];
         continueButton.add(continueButtonLabel);
@@ -153,7 +153,7 @@ public class MainMenuScreen implements Screen
         continueButton.addListener(new MainMenuButtonClickListener(this, Option.Continue));
 
 
-        final ShaderLabel helpButtonLabel = new ShaderLabel(HELP_BUTTON_TEXT, buttonLabelStyle, game.fontShader);
+        final Label helpButtonLabel = new Label(HELP_BUTTON_TEXT, buttonLabelStyle);
         buttons[HELP_BUTTON] = new Button(helpButtonStyle);
         final Button helpButton = buttons[HELP_BUTTON];
         helpButton.add(helpButtonLabel);

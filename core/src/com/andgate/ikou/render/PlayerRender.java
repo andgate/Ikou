@@ -56,10 +56,10 @@ public class PlayerRender implements RenderableProvider, Disposable
     {
         Renderable renderable = pool.obtain();
         renderable.material = material;
-        renderable.meshPartOffset = 0;
-        renderable.meshPartSize = tileMesh.getMesh().getNumIndices();
-        renderable.primitiveType = GL20.GL_TRIANGLES;
-        renderable.mesh = tileMesh.getMesh();
+        renderable.meshPart.offset = 0;
+        renderable.meshPart.size = tileMesh.getMesh().getNumIndices();
+        renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
+        renderable.meshPart.mesh = tileMesh.getMesh();
         renderables.add(renderable);
 
         renderable.worldTransform.set(tileMesh.getTransform());

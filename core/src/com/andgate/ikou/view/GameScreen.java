@@ -81,7 +81,6 @@ public class GameScreen extends ScreenAdapter
         }
 
         Color bg = Constants.BACKGROUND_COLOR;
-        game.bloom.setClearColor(bg.r, bg.g, bg.b, bg.a);
 
         modelBatch = new ModelBatch();
         createEnvironment();
@@ -162,8 +161,8 @@ public class GameScreen extends ScreenAdapter
         cameraControllerListener.update(delta);
 
         renderScene();
-        renderDepthInfo();
-        if(game.debug) renderDebugInfo();
+        //renderDepthInfo();
+        //if(game.debug) renderDebugInfo();
 
         update(delta);
     }
@@ -214,7 +213,7 @@ public class GameScreen extends ScreenAdapter
         //game.bloom.render();
     }
 
-    private void renderDepthInfo()
+    /*private void renderDepthInfo()
     {
         final String fpsString = "" + (player.getDepth() + 1);
         final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
@@ -254,7 +253,7 @@ public class GameScreen extends ScreenAdapter
         batch.setShader(null);
         batch.end();
 
-    }
+    }*/
 
     private float accumulator = 0.0f;
 

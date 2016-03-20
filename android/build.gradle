@@ -2,8 +2,12 @@ android {
     buildToolsVersion "23.0.2"
     compileSdkVersion 23
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 23
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     sourceSets {
         main {
@@ -13,7 +17,7 @@ android {
             //renderscript.srcDirs = ['src']
             //res.srcDirs = ['res']
             assets.srcDirs = ['assets']
-            //jniLibs.srcDirs = ['libs']
+            jniLibs.srcDirs = ['libs']
         }
 
         //instrumentTest.setRoot('tests')

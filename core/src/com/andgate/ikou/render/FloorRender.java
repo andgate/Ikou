@@ -91,10 +91,10 @@ public class FloorRender implements RenderableProvider, Disposable
                 {
                     Renderable renderable = pool.obtain();
                     renderable.material = TileStack.TILE_MATERIAL;
-                    renderable.meshPartOffset = 0;
-                    renderable.meshPartSize = mesh.getNumIndices();
-                    renderable.primitiveType = GL20.GL_TRIANGLES;
-                    renderable.mesh = mesh;
+                    renderable.meshPart.offset = 0;
+                    renderable.meshPart.size = mesh.getNumIndices();
+                    renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
+                    renderable.meshPart.mesh = mesh;
                     renderables.add(renderable);
 
                     renderable.worldTransform.set(transform);
