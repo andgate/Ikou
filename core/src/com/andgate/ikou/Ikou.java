@@ -198,13 +198,13 @@ public class Ikou extends Game
 
     public void buildFonts()
     {
-        int logoFontSize = (int)(Constants.LOGO_FONT_SIZE / ppm);
+        int logoFontSize = (int)(Constants.LOGO_FONT_SIZE * ppm);
         logoFont = buildFont(Constants.LOGO_FONT_TTF, Constants.LOGO_FONT, logoFontSize);
 
-        int menuTitleFontSize = (int)(Constants.MENU_TITLE_FONT_SIZE / ppm);
+        int menuTitleFontSize = (int)(Constants.MENU_TITLE_FONT_SIZE * ppm);
         menuTitleFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_TITLE_FONT, menuTitleFontSize);
 
-        int menuOptionFontSize = (int)(Constants.MENU_OPTION_FONT_SIZE / ppm);
+        int menuOptionFontSize = (int)(Constants.MENU_OPTION_FONT_SIZE * ppm);
         menuOptionFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_OPTION_FONT, menuOptionFontSize);
 
         /*helpFont.resetScale();
@@ -213,7 +213,7 @@ public class Ikou extends Game
         float helpFontScale = (4f / 5f) - (helpTextBounds.height / Gdx.graphics.getHeight());
         helpFont.setScale(helpFontScale);*/
 
-        int helpFontSize = (int)(Constants.HELP_FONT_SIZE / ppm);
+        int helpFontSize = (int)(Constants.HELP_FONT_SIZE * ppm);
         helpFont = buildFont(Constants.MENU_FONT_TTF, Constants.HELP_FONT, helpFontSize);
     }
 
