@@ -40,6 +40,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.phoenixframework.channels.*;
 
@@ -73,6 +75,51 @@ public class GameScreen extends ScreenAdapter
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
+        // Test code for phoenix websocket
+        try {
+            socket = new Socket("ws://phoenix-andgate1.c9users.io:8080/socket/websocket");
+            socket.connect();
+
+            channel = socket.chan("rooms:lobby", null);
+
+            channel.join()
+                    .receive("ignore", new IMessageCallback() {
+                        @Override
+                        public void onMessage(Envelope envelope) {
+                            Gdx.app.log("WebSocket", "IGNORE");
+                        }
+                    })
+                    .receive("ok", new IMessageCallback() {
+                        @Override
+                        public void onMessage(Envelope envelope) {
+                            Gdx.app.log("WebSocket", "JOINED with " + envelope.toString());
+                        }
+                    });
+
+            channel.on("new:msg", new IMessageCallback() {
+                @Override
+                public void onMessage(Envelope envelope) {
+                    Gdx.app.log("WebSocket", "NEW MESSAGE: " + envelope.toString());
+                }
+            });
+
+            channel.onClose(new IMessageCallback() {
+                @Override
+                public void onMessage(Envelope envelope) {
+                    Gdx.app.log("WebSocket", "CLOSED: " + envelope.toString());
+                }
+            });
+
+            //Sending a message. This library uses Jackson for JSON serialization
+            ObjectNode node = new ObjectNode(JsonNodeFactory.instance)
+                    .put("user", "my_username")
+                    .put("body", "hello from ikou!");
+
+            channel.push("new:msg", node);
+        } catch(Exception e) {
+            Gdx.app.error("WebSocket", "Failed to connect", e);
+        }
+
         this.game = game;
         batch = new SpriteBatch();
 

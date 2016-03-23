@@ -29,6 +29,7 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 
@@ -38,6 +39,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 
 public class Ikou extends Game
 {
@@ -46,12 +48,7 @@ public class Ikou extends Game
     public float worldWidth = 0.0f;
     public float worldHeight = 0.0f;
 
-    public AssetManager manager;
-
-    public BitmapFont logoFont;
-    public BitmapFont menuTitleFont;
-    public BitmapFont menuOptionFont;
-    public BitmapFont helpFont;
+    public BitmapFont arial_fnt;
 
     public Sound roughSound;
     public Sound fallSound;
@@ -91,7 +88,6 @@ public class Ikou extends Game
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
         FileHandleResolver resolver = new InternalFileHandleResolver();
-        manager = new AssetManager(resolver);
         loadShader();
         loadFonts();
         loadSounds();
@@ -113,12 +109,7 @@ public class Ikou extends Game
 
     private void loadFonts()
     {
-        FileHandleResolver resolver = new InternalFileHandleResolver();
-        manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-
-        manager.load(Constants.LOGO_FONT_TTF, FreeTypeFontGenerator.class);
-        manager.load(Constants.MENU_FONT_TTF, FreeTypeFontGenerator.class);
+        arial_fnt = genBitmapFont(Constants.ARIAL_TTF, Constants.ARIAL_TTF_SIZE);
 
         buildFonts();
     }
@@ -154,7 +145,7 @@ public class Ikou extends Game
     @Override
     public void dispose()
     {
-        manager.dispose();
+        arial_fnt.dispose();
 
         if(getScreen() != null)
             getScreen().dispose();
@@ -198,7 +189,7 @@ public class Ikou extends Game
 
     public void buildFonts()
     {
-        int logoFontSize = (int)(Constants.LOGO_FONT_SIZE * ppm);
+        /*int logoFontSize = (int)(Constants.LOGO_FONT_SIZE * ppm);
         logoFont = buildFont(Constants.LOGO_FONT_TTF, Constants.LOGO_FONT, logoFontSize);
 
         int menuTitleFontSize = (int)(Constants.MENU_TITLE_FONT_SIZE * ppm);
@@ -207,26 +198,28 @@ public class Ikou extends Game
         int menuOptionFontSize = (int)(Constants.MENU_OPTION_FONT_SIZE * ppm);
         menuOptionFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_OPTION_FONT, menuOptionFontSize);
 
-        /*helpFont.resetScale();
+        helpFont.resetScale();
         String helpText = HelpScreen.loadHelpScreenText();
         BitmapFont.TextBounds helpTextBounds = helpFont.getBounds(helpText);
         float helpFontScale = (4f / 5f) - (helpTextBounds.height / Gdx.graphics.getHeight());
-        helpFont.setScale(helpFontScale);*/
+        helpFont.setScale(helpFontScale);
 
         int helpFontSize = (int)(Constants.HELP_FONT_SIZE * ppm);
-        helpFont = buildFont(Constants.MENU_FONT_TTF, Constants.HELP_FONT, helpFontSize);
+        helpFont = buildFont(Constants.MENU_FONT_TTF, Constants.HELP_FONT, helpFontSize);*/
     }
 
-    private BitmapFont buildFont(String in_font_path, String out_font_path, int size)
+    private BitmapFont genBitmapFont(String ttf_path, int size)
     {
-        FreeTypeFontLoaderParameter params = new FreeTypeFontLoaderParameter();
-        params.fontFileName = in_font_path;
-        params.fontParameters.size = size;
-        //params.fontParameters.genMipMaps = true;
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(ttf_path));
+        FreeTypeFontParameter params = new FreeTypeFontParameter();
+        params.size = size;
+        params.genMipMaps = true;
+        params.minFilter = Texture.TextureFilter.Nearest;
+        params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
 
-        if(manager.isLoaded(out_font_path)) manager.unload(out_font_path);
-        manager.load(out_font_path, BitmapFont.class, params);
-        manager.finishLoading();
-        return manager.get(out_font_path, BitmapFont.class);
+        BitmapFont font = generator.generateFont(params);
+        generator.dispose();
+
+        return font;
     }
 }

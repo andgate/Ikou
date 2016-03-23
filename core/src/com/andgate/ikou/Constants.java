@@ -41,27 +41,28 @@ public class Constants
 
     private static final String TTF_EXTENSION
             = ".ttf";
+    private static final String FNT_EXTENSION
+            = ".fnt";
 
-    private static String fnt_path(String name)
+    private static String ttf_path(String name)
     {
         return FONTS_FOLDER + name + TTF_EXTENSION;
     }
+    private static String fnt_path(String name) { return FONTS_FOLDER + name + FNT_EXTENSION; }
 
-    private static final String ARIAL_TTF
-            = fnt_path("arial");
-    public static final String LOGO_FONT_TTF
-            = ARIAL_TTF;
-    public static final String MENU_FONT_TTF
-            = ARIAL_TTF;
+    public static final String ARIAL_TTF
+            = ttf_path("arial");
+    public static final int ARIAL_TTF_SIZE
+            = 128;
 
     public static final String LOGO_FONT
-            = fnt_path("logo");
+            = ttf_path("logo");
     public static final String MENU_TITLE_FONT
-            = fnt_path("menu-title");
+            = ttf_path("menu-title");
     public static final String MENU_OPTION_FONT
-            = fnt_path("menu-option");
+            = ttf_path("menu-option");
     public static final String HELP_FONT
-            = fnt_path("help");
+            = ttf_path("help");
 
     public static final int LOGO_FONT_SIZE = 9;
     public static final int MENU_TITLE_FONT_SIZE = 4;

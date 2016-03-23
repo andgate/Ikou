@@ -51,6 +51,8 @@ public class MainMenuScreen implements Screen
     private static final int CONTINUE_BUTTON = 1;
     private static final int HELP_BUTTON = 2;
 
+    private float logo_fnt_scale = 0;
+
     private Button[] buttons = new Button[3];
 
     private final boolean isNewGame;
@@ -109,8 +111,11 @@ public class MainMenuScreen implements Screen
         stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-        final LabelStyle titleLabelStyle = new LabelStyle(game.logoFont, Constants.LOGO_FONT_COLOR);
+        calc_font_sizes();
+
+        final LabelStyle titleLabelStyle = new LabelStyle(game.arial_fnt, Constants.LOGO_FONT_COLOR);
         final Label titleLabel = new Label(Constants.GAME_NAME, titleLabelStyle);
+        titleLabel.setFontScale(logo_fnt_scale);
 
         Table menuButtonTable = buildMenuButtonTable();
 
@@ -121,11 +126,12 @@ public class MainMenuScreen implements Screen
         table.setBackground(game.whiteTransparentOverlay);
 
         stage.addActor(table);
+        stage.setDebugAll(true);
     }
 
     private Table buildMenuButtonTable()
     {
-        final LabelStyle buttonLabelStyle = new LabelStyle(game.menuOptionFont, Color.WHITE);
+        final LabelStyle buttonLabelStyle = new LabelStyle(game.arial_fnt, Color.WHITE);
         final ButtonStyle newGameButtonStyle = new ButtonStyle(game.newGameButtonUp,
                 game.newGameButtonDown,
                 game.newGameButtonUp);
@@ -243,8 +249,14 @@ public class MainMenuScreen implements Screen
     @Override
     public void resize(int width, int height)
     {
+        calc_font_sizes();
         buildStage();
         preview.resize(width, height);
+    }
+
+    private void calc_font_sizes()
+    {
+        logo_fnt_scale = 1.0f;
     }
 
     @Override

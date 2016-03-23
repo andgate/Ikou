@@ -79,10 +79,10 @@ public class HelpScreen extends ScreenAdapter
         stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-        final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.menuTitleFont, Color.ORANGE);
+        final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.arial_fnt, Color.ORANGE);
         final Label titleLabel = new Label(HELP_SCREEN_TITLE, titleLabelStyle);
 
-        final Label.LabelStyle helpTextLabelStyle = new Label.LabelStyle(game.helpFont, Color.BLACK);
+        final Label.LabelStyle helpTextLabelStyle = new Label.LabelStyle(game.arial_fnt, Color.BLACK);
         final Label helpTextLabel = new Label(helpText, helpTextLabelStyle);
         helpTextLabel.setWrap(true);
         helpTextLabel.setAlignment(Align.center);
