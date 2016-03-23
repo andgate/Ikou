@@ -32,8 +32,7 @@ public class TileStack
     public static final Material TILE_MATERIAL
             = new Material(
                   new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
-                , new ColorAttribute(ColorAttribute.Specular, 0.2f, 0.5f, 0.5f, 0.2f)
-                //, new IntAttribute(IntAttribute.CullFace, GL20.GL_NONE)
+                //, new ColorAttribute(ColorAttribute.Specular, 0.2f, 0.5f, 0.5f, 0.2f)
             );
 
     public enum Tile

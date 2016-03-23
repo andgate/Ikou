@@ -41,6 +41,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
+import org.phoenixframework.channels.*;
+
 public class GameScreen extends ScreenAdapter
 {
     private static final String TAG = "GameScreen";
@@ -65,6 +67,9 @@ public class GameScreen extends ScreenAdapter
     private enum State
     { Start, Play, End }
     private State state = State.Start;
+
+    Socket socket;
+    Channel channel;
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
@@ -137,16 +142,16 @@ public class GameScreen extends ScreenAdapter
     private void createEnvironment()
     {
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 1f));
 
         Vector3 lightDirection1 = new Vector3(0, 0, 1.0f);
         lightDirection1.rot(new Matrix4().setFromEulerAngles(45.0f, 45.0f, 0.0f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, lightDirection1));
+        environment.add(new DirectionalLight().set(0.3f, 0.3f, 0.3f, lightDirection1));
 
-        Vector3 lightDirection2 = new Vector3(0, 0, 1.0f);
+        /*Vector3 lightDirection2 = new Vector3(0, 0, 1.0f);
         lightDirection2.rot(new Matrix4().setFromEulerAngles(15.0f, -15.0f, 0.0f));
-        environment.add(new DirectionalLight().set(0.3f, 0.8f, 0.8f, lightDirection2));
+        environment.add(new DirectionalLight().set(0.3f, 0.8f, 0.8f, lightDirection2));*/
     }
 
     @Override
