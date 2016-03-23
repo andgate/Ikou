@@ -27,8 +27,8 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -51,9 +51,9 @@ public class MainMenuScreen implements Screen
     private static final int CONTINUE_BUTTON = 1;
     private static final int HELP_BUTTON = 2;
 
-    private float logo_fnt_scale = 0;
+    private float logo_fnt_scale, menu_option_fnt_scale;
 
-    private Button[] buttons = new Button[3];
+    private TextButton[] buttons = new TextButton[3];
 
     private final boolean isNewGame;
 
@@ -126,49 +126,45 @@ public class MainMenuScreen implements Screen
         table.setBackground(game.whiteTransparentOverlay);
 
         stage.addActor(table);
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
     }
 
     private Table buildMenuButtonTable()
     {
-        final LabelStyle buttonLabelStyle = new LabelStyle(game.arial_fnt, Color.WHITE);
-        final ButtonStyle newGameButtonStyle = new ButtonStyle(game.newGameButtonUp,
+        final TextButtonStyle newGameButtonStyle = new TextButtonStyle(game.newGameButtonUp,
                 game.newGameButtonDown,
-                game.newGameButtonUp);
-        final ButtonStyle continueButtonStyle = new ButtonStyle(game.continueButtonUp,
+                game.newGameButtonUp,
+                game.arial_fnt);
+        final TextButtonStyle continueButtonStyle = new TextButtonStyle(game.continueButtonUp,
                 game.continueButtonDown,
-                game.continueButtonUp);
-        final ButtonStyle helpButtonStyle = new ButtonStyle(game.helpButtonUp,
+                game.continueButtonUp,
+                game.arial_fnt);
+        final TextButtonStyle helpButtonStyle = new TextButtonStyle(game.helpButtonUp,
                 game.helpButtonDown,
-                game.helpButtonUp);
-        //buttonStyle.over = game.newGameButtonDown;
+                game.helpButtonUp,
+                game.arial_fnt);
 
-        final Label newGameButtonLabel = new Label(NEW_GAME_BUTTON_TEXT, buttonLabelStyle);
-        buttons[NEW_GAME_BUTTON] = new Button(newGameButtonStyle);
-        final Button newGameButton = buttons[NEW_GAME_BUTTON];
-        newGameButton.add(newGameButtonLabel);
 
+        buttons[NEW_GAME_BUTTON] = new TextButton(NEW_GAME_BUTTON_TEXT, newGameButtonStyle);
+        final TextButton newGameButton = buttons[NEW_GAME_BUTTON];
+        newGameButton.getLabel().setFontScale(menu_option_fnt_scale);
         newGameButton.addListener(new MainMenuButtonClickListener(this, Option.New));
 
 
-        final Label continueButtonLabel = new Label(CONTINUE_BUTTON_TEXT, buttonLabelStyle);
-        buttons[CONTINUE_BUTTON] = new Button(continueButtonStyle);
-        final Button continueButton = buttons[CONTINUE_BUTTON];
-        continueButton.add(continueButtonLabel);
-
+        buttons[CONTINUE_BUTTON] = new TextButton(CONTINUE_BUTTON_TEXT, continueButtonStyle);
+        final TextButton continueButton = buttons[CONTINUE_BUTTON];
+        continueButton.getLabel().setFontScale(menu_option_fnt_scale);
         continueButton.addListener(new MainMenuButtonClickListener(this, Option.Continue));
 
 
-        final Label helpButtonLabel = new Label(HELP_BUTTON_TEXT, buttonLabelStyle);
-        buttons[HELP_BUTTON] = new Button(helpButtonStyle);
-        final Button helpButton = buttons[HELP_BUTTON];
-        helpButton.add(helpButtonLabel);
-
+        buttons[HELP_BUTTON] = new TextButton(HELP_BUTTON_TEXT, helpButtonStyle);
+        final TextButton helpButton = buttons[HELP_BUTTON];
+        helpButton.getLabel().setFontScale(menu_option_fnt_scale);
         helpButton.addListener(new MainMenuButtonClickListener(this, Option.Help));
 
 
         Table menuButtonsTable = new Table();
-            menuButtonsTable.add(newGameButton).expandX().fill().row();
+            menuButtonsTable.add(newGameButton).expand().fill().row();
             if(!isNewGame) menuButtonsTable.add(continueButton).fill().row();
             menuButtonsTable.add(helpButton).fill();
 
@@ -256,7 +252,10 @@ public class MainMenuScreen implements Screen
 
     private void calc_font_sizes()
     {
-        logo_fnt_scale = 1.0f;
+        float font_scale_factor = game.ppu / (float)Constants.ARIAL_TTF_SIZE;
+
+        logo_fnt_scale = Constants.LOGO_FONT_UNIT_SIZE * font_scale_factor;
+        menu_option_fnt_scale = Constants.MENU_OPTION_FONT_UNIT_SIZE * font_scale_factor;
     }
 
     @Override
@@ -319,7 +318,7 @@ public class MainMenuScreen implements Screen
     {
         if(selectedOption != Option.None)
         {
-            Button currentButton = buttons[selectedOption.getValue()];
+            TextButton currentButton = buttons[selectedOption.getValue()];
             currentButton.getClickListener().cancel();
             currentButton.getClickListener().touchUp(null, 0, 0, 0, Input.Buttons.LEFT);
             selectedOption = Option.None;

@@ -24,6 +24,8 @@ public class Constants
     public static final int WORLD_LENGTH = 30;
     public static final float BUTTON_LENGTH = 3.0f;
 
+    public static final int DEV_SCREEN_WIDTH = 1080;
+
     public static final Color BACKGROUND_COLOR = new Color(Color.WHITE);
 
     public static final String SOUND_FOLDER
@@ -64,10 +66,10 @@ public class Constants
     public static final String HELP_FONT
             = ttf_path("help");
 
-    public static final int LOGO_FONT_SIZE = 9;
-    public static final int MENU_TITLE_FONT_SIZE = 4;
-    public static final int MENU_OPTION_FONT_SIZE = 3;
-    public static final int HELP_FONT_SIZE = 2;
+    public static final float LOGO_FONT_UNIT_SIZE = 9.0f;
+    public static final float MENU_TITLE_FONT_UNIT_SIZE = 4.0f;
+    public static final float MENU_OPTION_FONT_UNIT_SIZE = 3.0f;
+    public static final float HELP_FONT_UNIT_SIZE = 2.0f;
 
     public static final Color LOGO_FONT_COLOR = new Color(0.215f, 0.647f, 1.0f, 0.5f);
 

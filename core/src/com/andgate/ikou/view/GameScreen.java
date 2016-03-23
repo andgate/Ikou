@@ -301,7 +301,7 @@ public class GameScreen extends ScreenAdapter
         batch.begin();
         batch.setShader(game.fontShader);
             game.menuOptionFont.setColor(Color.BLACK);
-            game.menuOptionFont.drawMultiLine(batch, fpsString, game.ppm, font_y);
+            game.menuOptionFont.drawMultiLine(batch, fpsString, game.ppu, font_y);
         batch.setShader(null);
         batch.end();
 

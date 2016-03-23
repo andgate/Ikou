@@ -40,8 +40,8 @@ public class Icon
 
 
         ImageButton button = new ImageButton(buttonDrawable, buttonDownDrawable);
-        button.getImageCell().width(Constants.BUTTON_LENGTH * game.ppm);
-        button.getImageCell().height(Constants.BUTTON_LENGTH * game.ppm);
+        button.getImageCell().width(Constants.BUTTON_LENGTH * game.ppu);
+        button.getImageCell().height(Constants.BUTTON_LENGTH * game.ppu);
 
         button.addListener(listener);
 

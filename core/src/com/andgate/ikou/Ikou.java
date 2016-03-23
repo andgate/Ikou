@@ -13,10 +13,8 @@
 
 package com.andgate.ikou;
 
-import com.andgate.ikou.view.HelpScreen;
 import com.andgate.ikou.view.MainMenuScreen;
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -30,21 +28,16 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 
 public class Ikou extends Game
 {
     private static final String TAG = "Ikou Main Class";
-    public float ppm = 0.0f;
+    public float ppu = 0.0f;
     public float worldWidth = 0.0f;
     public float worldHeight = 0.0f;
 
@@ -87,7 +80,6 @@ public class Ikou extends Game
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glDisable(GL20.GL_CULL_FACE);
 
-        FileHandleResolver resolver = new InternalFileHandleResolver();
         loadShader();
         loadFonts();
         loadSounds();
@@ -110,13 +102,11 @@ public class Ikou extends Game
     private void loadFonts()
     {
         arial_fnt = genBitmapFont(Constants.ARIAL_TTF, Constants.ARIAL_TTF_SIZE);
-
-        buildFonts();
     }
 
     private void loadShader()
     {
-        // Maybe have an ambient occlusion shader someday
+        // TODO: Load AO shader(s)
     }
 
     private void buildMainMenuButtonDrawables()
@@ -161,7 +151,6 @@ public class Ikou extends Game
     public void resize(int width, int height)
     {
         screenAdjustments(width, height);
-        buildFonts();
 
         if(getScreen() != null)
         {
@@ -176,36 +165,15 @@ public class Ikou extends Game
         if(width < height)
         {
             worldWidth = Constants.WORLD_LENGTH;
-            ppm = (float)Gdx.graphics.getWidth() / worldWidth;
+            ppu = (float)Gdx.graphics.getWidth() / worldWidth;
             worldHeight = worldWidth / res;
         }
         else
         {
             worldHeight = Constants.WORLD_LENGTH;
-            ppm = (float)Gdx.graphics.getHeight() / worldHeight;
+            ppu = (float)Gdx.graphics.getHeight() / worldHeight;
             worldWidth = worldHeight * res;
         }
-    }
-
-    public void buildFonts()
-    {
-        /*int logoFontSize = (int)(Constants.LOGO_FONT_SIZE * ppm);
-        logoFont = buildFont(Constants.LOGO_FONT_TTF, Constants.LOGO_FONT, logoFontSize);
-
-        int menuTitleFontSize = (int)(Constants.MENU_TITLE_FONT_SIZE * ppm);
-        menuTitleFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_TITLE_FONT, menuTitleFontSize);
-
-        int menuOptionFontSize = (int)(Constants.MENU_OPTION_FONT_SIZE * ppm);
-        menuOptionFont = buildFont(Constants.MENU_FONT_TTF, Constants.MENU_OPTION_FONT, menuOptionFontSize);
-
-        helpFont.resetScale();
-        String helpText = HelpScreen.loadHelpScreenText();
-        BitmapFont.TextBounds helpTextBounds = helpFont.getBounds(helpText);
-        float helpFontScale = (4f / 5f) - (helpTextBounds.height / Gdx.graphics.getHeight());
-        helpFont.setScale(helpFontScale);
-
-        int helpFontSize = (int)(Constants.HELP_FONT_SIZE * ppm);
-        helpFont = buildFont(Constants.MENU_FONT_TTF, Constants.HELP_FONT, helpFontSize);*/
     }
 
     private BitmapFont genBitmapFont(String ttf_path, int size)
@@ -214,8 +182,8 @@ public class Ikou extends Game
         FreeTypeFontParameter params = new FreeTypeFontParameter();
         params.size = size;
         params.genMipMaps = true;
-        params.minFilter = Texture.TextureFilter.Nearest;
-        params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
+        params.minFilter = Texture.TextureFilter.Linear;
+        params.magFilter = Texture.TextureFilter.Linear;
 
         BitmapFont font = generator.generateFont(params);
         generator.dispose();
