@@ -190,7 +190,7 @@ public class GameScreen extends ScreenAdapter
     {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
-        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.7f));
 
         Vector3 lightDirection1 = new Vector3(0, 0, 1.0f);
         lightDirection1.rot(new Matrix4().setFromEulerAngles(45.0f, 45.0f, 0.0f));

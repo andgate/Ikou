@@ -24,8 +24,6 @@ public class Constants
     public static final int WORLD_LENGTH = 30;
     public static final float BUTTON_LENGTH = 3.0f;
 
-    public static final int DEV_SCREEN_WIDTH = 1080;
-
     public static final Color BACKGROUND_COLOR = new Color(Color.WHITE);
 
     public static final String SOUND_FOLDER
@@ -50,12 +48,12 @@ public class Constants
     {
         return FONTS_FOLDER + name + TTF_EXTENSION;
     }
-    private static String fnt_path(String name) { return FONTS_FOLDER + name + FNT_EXTENSION; }
+    private static String fnt_path(String name) { return FONTS_FOLDER + name + "/" + name + FNT_EXTENSION; }
 
-    public static final String ARIAL_TTF
+    public static final String ARIAL_FONT_PATH
             = ttf_path("arial");
-    public static final int ARIAL_TTF_SIZE
-            = 128;
+    public static final int ARIAL_FONT_SIZE
+            = 200;
 
     public static final String LOGO_FONT
             = ttf_path("logo");

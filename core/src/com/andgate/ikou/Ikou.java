@@ -101,7 +101,7 @@ public class Ikou extends Game
 
     private void loadFonts()
     {
-        arial_fnt = genBitmapFont(Constants.ARIAL_TTF, Constants.ARIAL_TTF_SIZE);
+        arial_fnt = genBitmapFont(Constants.ARIAL_FONT_PATH, Constants.ARIAL_FONT_SIZE);
     }
 
     private void loadShader()
@@ -176,17 +176,23 @@ public class Ikou extends Game
         }
     }
 
-    private BitmapFont genBitmapFont(String ttf_path, int size)
+    private BitmapFont genBitmapFont(String font_path, int font_size)
     {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(ttf_path));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(font_path));
         FreeTypeFontParameter params = new FreeTypeFontParameter();
-        params.size = size;
-        params.genMipMaps = true;
+        params.size = font_size;
         params.minFilter = Texture.TextureFilter.Linear;
         params.magFilter = Texture.TextureFilter.Linear;
+        params.incremental = true;
 
         BitmapFont font = generator.generateFont(params);
-        generator.dispose();
+        //generator.dispose();
+
+        /*BitmapFont font = new BitmapFont(Gdx.files.internal(font_path));
+
+        for(TextureRegion region : font.getRegions()) {
+            region.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }*/
 
         return font;
     }

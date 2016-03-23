@@ -43,6 +43,7 @@ public class HelpScreen extends ScreenAdapter
 
     private String helpText;
     private ScrollPane helpTextScrollPane;
+    private float help_fnt_scale;
 
     private enum State
     { Start, Play, End }
@@ -79,17 +80,21 @@ public class HelpScreen extends ScreenAdapter
         stage.getViewport().setWorldSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
+        calc_font_sizes();
+
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.arial_fnt, Color.ORANGE);
         final Label titleLabel = new Label(HELP_SCREEN_TITLE, titleLabelStyle);
+        titleLabel.setFontScale(help_fnt_scale);
 
         final Label.LabelStyle helpTextLabelStyle = new Label.LabelStyle(game.arial_fnt, Color.BLACK);
         final Label helpTextLabel = new Label(helpText, helpTextLabelStyle);
+        helpTextLabel.setFontScale(help_fnt_scale);
         helpTextLabel.setWrap(true);
         helpTextLabel.setAlignment(Align.center);
         helpTextScrollPane = new ScrollPane(helpTextLabel);
 
         Table table = new Table();
-        table.add(titleLabel).expand().center().top().row();
+        table.add(titleLabel).expandX().center().row();
         table.add(helpTextScrollPane).center().fill().row();
         table.setFillParent(true);
 
@@ -155,6 +160,12 @@ public class HelpScreen extends ScreenAdapter
     public void resize(int width, int height)
     {
         buildStage();
+    }
+
+    void calc_font_sizes()
+    {
+        float font_scale_factor = game.ppu / (float)Constants.ARIAL_FONT_SIZE;
+        help_fnt_scale = Constants.HELP_FONT_UNIT_SIZE * font_scale_factor;
     }
 
     @Override

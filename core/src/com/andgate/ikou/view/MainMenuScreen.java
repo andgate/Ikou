@@ -252,7 +252,7 @@ public class MainMenuScreen implements Screen
 
     private void calc_font_sizes()
     {
-        float font_scale_factor = game.ppu / (float)Constants.ARIAL_TTF_SIZE;
+        float font_scale_factor = game.ppu / (float)Constants.ARIAL_FONT_SIZE;
 
         logo_fnt_scale = Constants.LOGO_FONT_UNIT_SIZE * font_scale_factor;
         menu_option_fnt_scale = Constants.MENU_OPTION_FONT_UNIT_SIZE * font_scale_factor;
