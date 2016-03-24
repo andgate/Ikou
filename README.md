@@ -51,9 +51,6 @@ Tile maze game! Built with Android Studio and libgdx.
   - Prevent unsolvable closed mazes
   - Open maze generation
 
-### Font rendering improvements
-  - Font rendering is slow, needs to be 
-
 ### Settings
   - Window resolutions (desktop only)
   - Fullscreen (desktop only)
