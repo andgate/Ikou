@@ -1,3 +1,11 @@
+Player Mods
+  - Player tile color can be changed
+  - Unlockable skins.
+  - DLC skins.
+
+Gameplay
+  - Levels only last
+
 Tutorial Mode
   - An option in Single Player
   - Turns off automatically

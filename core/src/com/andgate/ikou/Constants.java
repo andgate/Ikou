@@ -78,7 +78,7 @@ public class Constants
     public static final float BIG_EPSILON = 1.0f / 1E3f;
 
     public static final float TILE_LENGTH = 1.0f;
-    public static final float TILE_HEIGHT = TILE_LENGTH / 50.0f;
+    public static final float TILE_HEIGHT = TILE_LENGTH / 25.0f;
 
     public static final float WALL_HEIGHT = TILE_HEIGHT * 2.0f;
     public static final float WALL_THICKNESS = TILE_LENGTH / 10.0f;
