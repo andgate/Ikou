@@ -43,7 +43,7 @@ public class HelpScreen extends ScreenAdapter
 
     private String helpText;
     private ScrollPane helpTextScrollPane;
-    private float help_fnt_scale;
+    private float help_fnt_scale, menu_title_fnt_scale;
 
     private enum State
     { Start, Play, End }
@@ -84,7 +84,7 @@ public class HelpScreen extends ScreenAdapter
 
         final Label.LabelStyle titleLabelStyle = new Label.LabelStyle(game.arial_fnt, Color.ORANGE);
         final Label titleLabel = new Label(HELP_SCREEN_TITLE, titleLabelStyle);
-        titleLabel.setFontScale(help_fnt_scale);
+        titleLabel.setFontScale(menu_title_fnt_scale);
 
         final Label.LabelStyle helpTextLabelStyle = new Label.LabelStyle(game.arial_fnt, Color.BLACK);
         final Label helpTextLabel = new Label(helpText, helpTextLabelStyle);
@@ -166,6 +166,8 @@ public class HelpScreen extends ScreenAdapter
     {
         float font_scale_factor = game.ppu / (float)Constants.ARIAL_FONT_SIZE;
         help_fnt_scale = Constants.HELP_FONT_UNIT_SIZE * font_scale_factor;
+
+        menu_title_fnt_scale = Constants.MENU_TITLE_FONT_UNIT_SIZE * font_scale_factor;
     }
 
     @Override

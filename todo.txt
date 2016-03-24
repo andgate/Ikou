@@ -32,6 +32,7 @@ Tilemap engine
   - Object pooling to possibly prevent breaking the heap for large tilemaps.
 
 Maze generator
+  - New name system for levels "<adjective>.<verb>.<noun>" that store the level seed.
   - Prevent unsolvable closed mazes
   - Open maze generation
 

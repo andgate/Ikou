@@ -73,6 +73,8 @@ public class GameScreen extends ScreenAdapter
     Socket socket;
     Channel channel;
 
+    float menu_title_font_size;
+
     public GameScreen(Ikou game, boolean isNewGame)
     {
         // Test code for phoenix websocket
@@ -213,8 +215,8 @@ public class GameScreen extends ScreenAdapter
         cameraControllerListener.update(delta);
 
         renderScene();
-        //renderDepthInfo();
-        //if(game.debug) renderDebugInfo();
+        renderDepthInfo();
+        if(game.debug) renderDebugInfo();
 
         update(delta);
     }
@@ -265,9 +267,9 @@ public class GameScreen extends ScreenAdapter
         //game.bloom.render();
     }
 
-    /*private void renderDepthInfo()
+    private void renderDepthInfo()
     {
-        final String fpsString = "" + (player.getDepth() + 1);
+        /*final String fpsString = "" + (player.getDepth() + 1);
         final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
         //final float font_y = Gdx.graphics.getHeight() - font_height;
 
@@ -283,29 +285,25 @@ public class GameScreen extends ScreenAdapter
 
         batch.begin();
         game.whiteTransparentOverlay.draw(batch, overlaybarX, overlaybarY, overlaybarWidth, overlaybarHeight);
-        batch.setShader(game.fontShader);
-        game.menuOptionFont.setColor(Color.BLACK);
-        game.menuOptionFont.draw(batch, fpsString, font_x, font_y);
-        batch.setShader(null);
-        batch.end();
+        game.arial_fnt.setColor(Color.BLACK);
+        game.arial_fnt.draw(batch, fpsString, font_x, font_y);
+        batch.end();*/
 
     }
 
     private void renderDebugInfo()
     {
         final String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\nSeed: " + level.getSeed();
-        final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
+        /*final float font_height = game.arial_fnt.getLineHeight() * game.arial_fnt.getScale();
         final float lineNumbers = 2.0f;
-        final float font_y = font_height * lineNumbers;
+        final float font_y = font_height * lineNumbers;*/
 
         batch.begin();
-        batch.setShader(game.fontShader);
-            game.menuOptionFont.setColor(Color.BLACK);
-            game.menuOptionFont.drawMultiLine(batch, fpsString, game.ppu, font_y);
-        batch.setShader(null);
+            game.arial_fnt.setColor(Color.BLACK);
+            game.arial_fnt.draw(batch, fpsString, 1.0f, 1.0f);
         batch.end();
 
-    }*/
+    }
 
     private float accumulator = 0.0f;
 

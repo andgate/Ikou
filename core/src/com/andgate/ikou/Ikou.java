@@ -14,17 +14,17 @@
 package com.andgate.ikou;
 
 import com.andgate.ikou.view.MainMenuScreen;
+import com.andgate.ikou.utility.XorRandomGen;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -180,9 +180,17 @@ public class Ikou extends Game
     {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(font_path));
         FreeTypeFontParameter params = new FreeTypeFontParameter();
+
+        // Font size should be fairly large
         params.size = font_size;
+
+        // A linear filter allows for fairly smooth downscaling.
         params.minFilter = Texture.TextureFilter.Linear;
         params.magFilter = Texture.TextureFilter.Linear;
+
+        // Not setting incremental results in a lot of glyphs not fitting onto
+        // the texture region pages. Eventually, for heavy text rendering,
+        // incremental glyph generation may begin missing chracters.
         params.incremental = true;
 
         BitmapFont font = generator.generateFont(params);
