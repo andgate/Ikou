@@ -17,6 +17,6 @@ public class AndroidLauncher extends AndroidApplication
         cfg.numSamples = 2;
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        initialize(new Ikou(), config);
+        initialize(new Ikou(BuildConfig.DEBUG), config);
     }
 }

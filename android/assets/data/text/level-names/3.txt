@@ -5,3 +5,16 @@ sculpture
 field
 corpse
 savior
+light
+shadow
+field
+plain
+mountain
+ocean
+valley
+castle
+destroyer
+smile
+lie
+cuts
+catastrophe

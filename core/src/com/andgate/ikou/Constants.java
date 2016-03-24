@@ -68,6 +68,8 @@ public class Constants
     public static final float MENU_TITLE_FONT_UNIT_SIZE = 4.0f;
     public static final float MENU_OPTION_FONT_UNIT_SIZE = 3.0f;
     public static final float HELP_FONT_UNIT_SIZE = 2.0f;
+    public static final float GAME_UI_FONT_UNIT_SIZE = 3.0f;
+    public static final float DEBUG_FONT_UNIT_SIZE = 2.0f;
 
     public static final Color LOGO_FONT_COLOR = new Color(0.215f, 0.647f, 1.0f, 0.5f);
 

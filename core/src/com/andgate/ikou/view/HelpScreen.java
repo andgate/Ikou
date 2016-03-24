@@ -69,7 +69,7 @@ public class HelpScreen extends ScreenAdapter
 
         helpText = loadHelpScreenText();
 
-        System.out.println(helpText);
+        if(game.debug) Gdx.app.log(TAG, helpText);
 
         buildStage();
     }

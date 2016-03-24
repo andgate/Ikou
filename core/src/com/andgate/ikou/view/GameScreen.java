@@ -24,6 +24,7 @@ import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.model.Level;
 import com.andgate.ikou.model.Player;
 import com.andgate.ikou.render.ThirdPersonCamera;
+import com.andgate.ikou.ui.SinglePlayerUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -32,7 +33,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -53,6 +53,7 @@ public class GameScreen extends ScreenAdapter
 
     private Level level;
     private Player player;
+    private SinglePlayerUI ui;
 
     private ThirdPersonCamera camera;
     private ModelBatch modelBatch;
@@ -160,6 +161,9 @@ public class GameScreen extends ScreenAdapter
         Controllers.addListener(cameraControllerListener);
 
         Gdx.input.setCursorCatched(true);
+
+        ui = new SinglePlayerUI(this.game, level, player);
+        ui.build();
     }
 
     private void startNewGame()
@@ -191,7 +195,7 @@ public class GameScreen extends ScreenAdapter
     private void createEnvironment()
     {
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 0.7f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.7f));
 
         Vector3 lightDirection1 = new Vector3(0, 0, 1.0f);
@@ -213,10 +217,11 @@ public class GameScreen extends ScreenAdapter
     {
         playerControllerListener.update(delta);
         cameraControllerListener.update(delta);
+        ui.update();
 
         renderScene();
         renderDepthInfo();
-        if(game.debug) renderDebugInfo();
+        ui.stage.draw();
 
         update(delta);
     }
@@ -291,20 +296,6 @@ public class GameScreen extends ScreenAdapter
 
     }
 
-    private void renderDebugInfo()
-    {
-        final String fpsString = "FPS: " + Gdx.graphics.getFramesPerSecond() + "\nSeed: " + level.getSeed();
-        /*final float font_height = game.arial_fnt.getLineHeight() * game.arial_fnt.getScale();
-        final float lineNumbers = 2.0f;
-        final float font_y = font_height * lineNumbers;*/
-
-        batch.begin();
-            game.arial_fnt.setColor(Color.BLACK);
-            game.arial_fnt.draw(batch, fpsString, 1.0f, 1.0f);
-        batch.end();
-
-    }
-
     private float accumulator = 0.0f;
 
     private void doPhysicsStep(float deltaTime) {
@@ -338,6 +329,7 @@ public class GameScreen extends ScreenAdapter
         Controllers.removeListener(playerControllerListener);
         level.dispose();
         modelBatch.dispose();
+        ui.dispose();
     }
 
     @Override
@@ -346,6 +338,8 @@ public class GameScreen extends ScreenAdapter
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 
         camera.resize(width, height);
+
+        ui.build();
     }
 
     public void end()

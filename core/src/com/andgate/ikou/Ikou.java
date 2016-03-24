@@ -47,7 +47,6 @@ public class Ikou extends Game
     public Sound fallSound;
     public Sound hitSound;
 
-    final public boolean free;
     final public boolean debug;
 
     public Drawable whiteTransparentOverlay;
@@ -58,14 +57,8 @@ public class Ikou extends Game
     public Drawable helpButtonUp;
     public Drawable helpButtonDown;
 
-    public Ikou()
+    public Ikou(boolean debug)
     {
-        this(false, false);
-    }
-
-    public Ikou(boolean free, boolean debug)
-    {
-        this.free = free;
         this.debug = debug;
     }
 	
