@@ -2,13 +2,15 @@
 Tile maze game! Built with Android Studio and libgdx.
 
 ## Todo list for v2
-### Player Mods
-  - Player tile color can be changed
+### Mods
+  - Change player/map tile color
   - Unlockable skins.
   - DLC skins.
 
 ### Gameplay
-  - Levels only last
+  - Levels needs a designated end, followed by a game summary.
+  - Show path that player has travelled.
+  - Show directions player can go with arrows or dots or blinking wireframe tiles
 
 ### Tutorial Mode
   - An option in Single Player
