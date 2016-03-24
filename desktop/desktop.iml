@@ -34,7 +34,6 @@
     <orderEntry type="library" exported="" name="gdx-controllers-desktop-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-platform-1.9.2-natives-desktop" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.9.2" level="project" />
-    <orderEntry type="library" exported="" name="gdx-box2d-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="JavaPhoenixChannels--SNAPSHOT" level="project" />
@@ -56,5 +55,6 @@
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-windows" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-osx" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
+    <orderEntry type="library" exported="" name="desktop.desktop-1.0" level="project" />
   </component>
 </module>

@@ -79,7 +79,7 @@ public class GameScreen extends ScreenAdapter
     public GameScreen(Ikou game, boolean isNewGame)
     {
         // Test code for phoenix websocket
-        try {
+        /*try {
             socket = new Socket("ws://phoenix-andgate1.c9users.io:8080/socket/websocket");
             socket.connect();
 
@@ -121,7 +121,7 @@ public class GameScreen extends ScreenAdapter
             channel.push("new:msg", node);
         } catch(Exception e) {
             Gdx.app.error("WebSocket", "Failed to connect", e);
-        }
+        }*/
 
         this.game = game;
         batch = new SpriteBatch();

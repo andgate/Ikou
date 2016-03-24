@@ -23,6 +23,7 @@ Warp to start
 Graphic Effects
   - SSAO/HBAO for aesthetic purposes
   - Fade in/fade out for warping
+  - Trails to show path travelled.
 
 Tilemap engine
   - Better names for a more distinct dataflow
