@@ -15,10 +15,10 @@ package com.andgate.ikou.maze;
 
 import com.andgate.ikou.model.Floor;
 import com.andgate.ikou.utility.Vector2i;
+import com.andgate.ikou.utility.XorRandomGen;
 
 import java.io.PrintStream;
 import java.util.Arrays;
-import java.util.Random;
 
 public abstract class MazeGenerator
 {
@@ -26,7 +26,7 @@ public abstract class MazeGenerator
     protected final Vector2i end = new Vector2i();
     protected final Vector2i size = new Vector2i();
 
-    protected Random random = new Random();
+    protected XorRandomGen random;
 
     public enum Direction {Up, Down, Left, Right }
     protected final static Direction[] directions = Direction.values();
@@ -40,10 +40,10 @@ public abstract class MazeGenerator
     protected MazeGenerator(MazeParser parser, int width, int height, int startX, int startY, int endX, int endY, long seed)
     {
         this(parser, width, height, startX, startY, endX, endY);
-        random.setSeed(seed);
+        random = new XorRandomGen(seed);
     }
 
-    protected MazeGenerator(MazeParser parser, int width, int height, int startX, int startY, int endX, int endY)
+    private MazeGenerator(MazeParser parser, int width, int height, int startX, int startY, int endX, int endY)
     {
         this.parser = parser;
 
@@ -80,7 +80,7 @@ public abstract class MazeGenerator
 
     protected Direction randomDirection()
     {
-        int pick = random.nextInt(directions.length);
+        int pick = random.nextInt(0, directions.length);
         return directions[pick];
     }
 

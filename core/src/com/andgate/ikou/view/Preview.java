@@ -29,6 +29,8 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 
+import java.util.Random;
+
 public class Preview implements Disposable
 {
     private ModelBatch modelBatch;
@@ -45,7 +47,8 @@ public class Preview implements Disposable
         int mazeStartX = mazeEnd;
         int mazeStartZ = mazeEnd - startToEndDistance;
 
-        MazeGenerator mazeGenerator = new RecursiveBacktrackerMazeGenerator(mazeLength, mazeLength, mazeStartX, mazeStartZ, mazeEnd, mazeEnd);
+        Random rand = new Random();
+        MazeGenerator mazeGenerator = new RecursiveBacktrackerMazeGenerator(mazeLength, mazeLength, mazeStartX, mazeStartZ, mazeEnd, mazeEnd, rand.nextLong());
         mazeGenerator.generate();
         groundFloor = mazeGenerator.computeFloor();
         groundFloor.getRender().build();

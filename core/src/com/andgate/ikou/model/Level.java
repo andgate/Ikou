@@ -26,7 +26,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.LinkedList;
-import java.util.Random;
+import com.andgate.ikou.utility.XorRandomGen;
 
 public class Level
 {
@@ -37,19 +37,15 @@ public class Level
     MazeGenerator mazegen;
     public LinkedList<Floor> floors = new LinkedList<>();
 
-    private Random random = new Random();
+    private XorRandomGen random;
     private long seed;
 
     private PerspectiveCamera camera = null;
 
-    public Level()
-    {
-        this(Constants.RESERVED_SEED);
-    }
-
     public Level(long seed)
     {
-        setSeed(seed);
+        random = new XorRandomGen(seed);
+        this.seed = seed;
 
         for(int i = 0; i < VIEWABLE_FLOORS; i++)
         {
@@ -63,20 +59,6 @@ public class Level
         return seed;
     }
 
-    public void setSeed(long seed)
-    {
-        if(seed == Constants.RESERVED_SEED)
-        {
-            this.seed = random.nextLong();
-            this.setSeed(this.seed);
-        }
-        else
-        {
-            this.seed = seed;
-            random.setSeed(seed);
-        }
-    }
-
     public void render(ModelBatch modelBatch, Environment environment)
     {
         for(Floor floor : floors)
@@ -87,7 +69,7 @@ public class Level
 
     public void addRandomFloor()
     {
-        addFloor(buildRandomFloor(random.nextLong()));
+        addFloor(buildRandomFloor(random.next()));
     }
 
     Vector2i tmpVec2i_1 = new Vector2i();
@@ -101,11 +83,11 @@ public class Level
 
         do
         {
-            tmpVec2i_1.x = random.nextInt(length);
-            tmpVec2i_1.y = random.nextInt(length);
+            tmpVec2i_1.x = random.nextInt(0, length);
+            tmpVec2i_1.y = random.nextInt(0, length);
 
-            tmpVec2i_2.x = random.nextInt(length);
-            tmpVec2i_2.y = random.nextInt(length);
+            tmpVec2i_2.x = random.nextInt(0, length);
+            tmpVec2i_2.y = random.nextInt(0, length);
 
             tmpVec2i_3.set(tmpVec2i_1);
             tmpVec2i_3.sub(tmpVec2i_2);
@@ -143,7 +125,7 @@ public class Level
 
     public void startNextFloor(int playerDepth)
     {
-        startNextFloor(buildRandomFloor(random.nextLong()), playerDepth);
+        startNextFloor(buildRandomFloor(random.next()), playerDepth);
     }
 
     public void startNextFloor(Floor newFloor, int playerDepth)

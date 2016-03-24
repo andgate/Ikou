@@ -168,7 +168,7 @@ public class GameScreen extends ScreenAdapter
 
     private void startNewGame()
     {
-        level = new Level(); // be completely random
+        level = new Level(546454794); // be completely random
         player = new Player(game, level, Constants.DEFAULT_DEPTH);
         player.saveProgress();
     }

@@ -24,11 +24,6 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
         super(new PerfectMazeParser(), width, height, startX, startY, endX, endY, seed);
     }
 
-    public RecursiveBacktrackerMazeGenerator(int width, int height, int startX, int startY, int endX, int endY)
-    {
-        super(new PerfectMazeParser(), width, height, startX, startY, endX, endY);
-    }
-
     protected void generateMaze()
     {
         boolean[][] cells = new boolean[size.y+1][size.x+1];
@@ -52,7 +47,7 @@ public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
                 stack.addFirst(cell);
                 cell = new Vector2i(cell.x, cell.y);
 
-                int index = random.nextInt(neighborhood.size());
+                int index = random.nextInt(0, neighborhood.size());
                 Direction carveDirection = neighborhood.get(index);
 
                 carve(cell.x, cell.y, carveDirection);

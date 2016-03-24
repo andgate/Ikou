@@ -24,4 +24,13 @@ public class XorRandomGen
     {
         return Math.abs(next(max-min)) + min;
     }
+
+    public int nextInt(int radius) {
+        return (int)next() % radius;
+    }
+
+    public int nextInt(int min, int max)
+    {
+        return Math.abs(nextInt(max-min)) + min;
+    }
 }
