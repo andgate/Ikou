@@ -13,6 +13,8 @@
 
 package com.andgate.ikou.model;
 
+import com.andgate.ikou.model.Tile;
+
 import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.andgate.ikou.utility.graphics.HSL;
 import com.badlogic.gdx.graphics.Color;
@@ -32,7 +34,7 @@ public class TilePalette {
         defaultScheme();
     }
 
-    public Color getColor(TileStack.Tile type)
+    public Color getColor(Tile.Type type)
     {
         switch(type)
         {

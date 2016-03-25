@@ -35,11 +35,6 @@ public class TileStack
                 //, new ColorAttribute(ColorAttribute.Specular, 0.2f, 0.5f, 0.5f, 0.2f)
             );
 
-    public enum Tile
-    {
-        Smooth, Obstacle, Rough, Player, End, Victory, Blank, None
-    }
-
     Tile[] tiles;
 
     public TileStack()

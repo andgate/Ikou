@@ -49,7 +49,7 @@ public class SectorMesh extends TileMesh
                     float yPos = (float) y * TileStack.HEIGHT;
                     float zPos = (float) z * TileStack.DEPTH + offsetZ;
 
-                    addCulledTile(masterSector, palette, masterX, masterY, masterZ, xPos, yPos, zPos);
+                    addVisibleQuads(masterSector, palette, masterX, masterY, masterZ, xPos, yPos, zPos);
                 }
             }
         }
@@ -65,7 +65,7 @@ public class SectorMesh extends TileMesh
      * @param yPos Used to designate tile location
      * @param zPos Used to designate tile location
      */
-    public void addCulledTile(MasterSector masterSector, TilePalette palette, int x, int y, int z, float xPos, float yPos, float zPos)
+    public void addVisibleQuads(MasterSector masterSector, TilePalette palette, int x, int y, int z, float xPos, float yPos, float zPos)
     {
         Tile tile = masterSector.get(x, y, z);
         Color tileColor = palette.getColor(tile);

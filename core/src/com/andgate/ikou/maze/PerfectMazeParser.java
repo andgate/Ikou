@@ -37,7 +37,7 @@ public class PerfectMazeParser extends MazeParser
         end.x = maze.getEnd().x;
         end.z = maze.getEnd().y;
 
-        master.setStack(new TileStack(Tile.End), end.z, end.x);
+        master.setStack(new TileStack(Tile.Type.End), end.z, end.x);
 
         return new Floor(master, palette, start, end);
     }

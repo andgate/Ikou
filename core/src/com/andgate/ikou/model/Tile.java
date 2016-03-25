@@ -11,33 +11,36 @@
      along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.model.tile;
+package com.andgate.ikou.model;
 
-import com.andgate.ikou.model.TileStack;
-
-public class TileData
+public class Tile
 {
-
-    private TileStack.Tile type;
-
-    public TileData()
+    public enum Type
     {
-        this(TileStack.Tile.Blank);
+        Smooth, Obstacle, Rough, Player, End, Victory, Blank, None
     }
 
-    public TileData(TileStack.Tile type)
+    private Type type;
+
+    public Tile()
+    {
+        this(Type.Blank);
+    }
+
+    public Tile(Type type)
     {
         this.type = type;
     }
 
-    public void setType(TileStack.Tile type)
+    public void setType(Type type)
     {
         this.type = type;
     }
 
-    public TileStack.Tile getType()
+    public Type getType()
     {
         return type;
     }
+
 
 }
