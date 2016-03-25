@@ -89,7 +89,7 @@ public class Player implements DirectionListener, Disposable
         position.set(x, y, z);
         initialPosition.set(x, y, z);
         finalPosition.set(x, y, z);
-        transform.idt().translate(x,y,z);
+        transform.idt().translate(x, y, z);
         playerRender.getTransform().idt().set(transform);
     }
 
@@ -291,7 +291,8 @@ public class Player implements DirectionListener, Disposable
     public void tweenBackground(float percent)
     {
         Color lastFloorColor = level.getFloor(depth).getPalette().background;
-        Color nextFloorColor = level.getFloor(depth + 1).getPalette().background;
+        //Color nextFloorColor = level.getFloor(depth + 1).getPalette().background;
+        Color nextFloorColor = Color.RED;
 
         ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpBg);
     }
@@ -300,7 +301,8 @@ public class Player implements DirectionListener, Disposable
     public void tweenPlayerColor(float percent)
     {
         Color lastFloorColor = level.getFloor(depth).getPalette().player;
-        Color nextFloorColor = level.getFloor(depth + 1).getPalette().player;
+        //Color nextFloorColor = level.getFloor(depth + 1).getPalette().player;
+        Color nextFloorColor = Color.WHITE;
 
         ColorUtils.tween(lastFloorColor, nextFloorColor, percent, tmpColor);
         playerRender.setColor(tmpColor);
@@ -309,7 +311,6 @@ public class Player implements DirectionListener, Disposable
     public void startNextFloor()
     {
         depth++;
-        level.startNextFloorThreaded(depth);
         saveProgress();
     }
 
@@ -324,6 +325,13 @@ public class Player implements DirectionListener, Disposable
         prefs.putFloat(Constants.PLAYER_PREF_Z, position.z);
 
         prefs.flush();
+
+        try {
+            prefs.wait();
+        } catch (Exception e)
+        {
+            Gdx.app.log(TAG, e.getMessage());
+        }
     }
 
     Vector3 initialPosition = new Vector3();

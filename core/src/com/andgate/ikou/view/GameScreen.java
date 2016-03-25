@@ -168,7 +168,7 @@ public class GameScreen extends ScreenAdapter
 
     private void startNewGame()
     {
-        level = new Level(546454794); // be completely random
+        level = new Level(65487654, 5, 10, 5); // be completely random
         player = new Player(game, level, Constants.DEFAULT_DEPTH);
         player.saveProgress();
     }
@@ -178,10 +178,9 @@ public class GameScreen extends ScreenAdapter
         Preferences prefs = Gdx.app.getPreferences(Constants.PLAYER_PREFS);
 
         long seed = prefs.getLong(Constants.PLAYER_PREF_LEVEL_SEED, Constants.RESERVED_SEED);
-        level = new Level(seed);
+        level = new Level(seed, 5, 10, 5);
 
         int depth = prefs.getInteger(Constants.PLAYER_PREF_DEPTH, Constants.DEFAULT_DEPTH);
-        level.initializePlayerDepth(depth);
         player = new Player(game, level, depth);
 
         final Vector3 defaultStart = level.getStartPosition(depth);

@@ -30,24 +30,24 @@ import com.andgate.ikou.utility.XorRandomGen;
 
 public class Level
 {
-    public static final int BASE_SIZE = 3;
-    public static final int VIEWABLE_FLOORS = 5;
-    public static final int VIEWABLE_FLOORS_ADJECENT = 2;
-
     MazeGenerator mazegen;
     public LinkedList<Floor> floors = new LinkedList<>();
 
     private XorRandomGen random;
     private long seed;
+    int min_size, max_size, floor_count;
 
     private PerspectiveCamera camera = null;
 
-    public Level(long seed)
+    public Level(long seed, int min_size, int max_size, int floor_count)
     {
         random = new XorRandomGen(seed);
         this.seed = seed;
+        this.min_size = min_size;
+        this.max_size = max_size;
+        this.floor_count = floor_count;
 
-        for(int i = 0; i < VIEWABLE_FLOORS; i++)
+        for(int i = 0; i < floor_count; i++)
         {
             addRandomFloor();
             floors.getLast().getRender().build();
@@ -79,21 +79,22 @@ public class Level
     public Floor buildRandomFloor(long mazeSeed)
     {
         int depth = floors.size() + depthOffset + 1;
-        int length = BASE_SIZE * depth;
+        int width = random.nextInt(min_size, max_size);
+        int height = random.nextInt(min_size, max_size);
 
         do
         {
-            tmpVec2i_1.x = random.nextInt(0, length);
-            tmpVec2i_1.y = random.nextInt(0, length);
+            tmpVec2i_1.x = random.nextInt(0, width);
+            tmpVec2i_1.y = random.nextInt(0, height);
 
-            tmpVec2i_2.x = random.nextInt(0, length);
-            tmpVec2i_2.y = random.nextInt(0, length);
+            tmpVec2i_2.x = random.nextInt(0, width);
+            tmpVec2i_2.y = random.nextInt(0, height);
 
             tmpVec2i_3.set(tmpVec2i_1);
             tmpVec2i_3.sub(tmpVec2i_2);
-        } while(tmpVec2i_3.len() <= (length / 2));
+        } while(tmpVec2i_3.len() <= Math.sqrt(width * width + height * height) / 2);
 
-        mazegen = new RecursiveBacktrackerMazeGenerator(length - 1, length - 1, tmpVec2i_1.x, tmpVec2i_1.y, tmpVec2i_2.x, tmpVec2i_2.y, mazeSeed);
+        mazegen = new RecursiveBacktrackerMazeGenerator(width - 1, height - 1, tmpVec2i_1.x, tmpVec2i_1.y, tmpVec2i_2.x, tmpVec2i_2.y, mazeSeed);
         mazegen.generate();
 
         return mazegen.computeFloor();
@@ -106,81 +107,6 @@ public class Level
         floor.getRender().setCamera(camera);
         floors.add(floor);
         offsetLastFloor();
-    }
-
-    public void initializePlayerDepth(int playerDepth)
-    {
-        for(int i = 0; i <= playerDepth; i++)
-        {
-            startNextFloor(i);
-        }
-
-        for(Floor floor: floors)
-        {
-            FloorRender floorRender = floor.getRender();
-            if(!floorRender.isBuilt())
-                floorRender.build();
-        }
-    }
-
-    public void startNextFloor(int playerDepth)
-    {
-        startNextFloor(buildRandomFloor(random.next()), playerDepth);
-    }
-
-    public void startNextFloor(Floor newFloor, int playerDepth)
-    {
-        if(playerDepth >= VIEWABLE_FLOORS_ADJECENT)
-        {
-            floors.removeFirst().dispose();
-            depthOffset++;
-            addFloor(newFloor);
-        }
-    }
-
-    public void startNextFloorThreaded(final int playerDepth)
-    {
-        if(playerDepth >= VIEWABLE_FLOORS_ADJECENT)
-        {
-            new FloorBuilderThread(seed, playerDepth).start();
-        }
-    }
-
-    private class FloorBuilderThread extends Thread
-    {
-        private long seed;
-        private int playerDepth;
-        public FloorBuilderThread(long seed, int playerDepth)
-        {
-            this.seed = seed;
-            this.playerDepth = playerDepth;
-        }
-
-        @Override
-        public void run()
-        {
-            Floor floor = buildRandomFloor(playerDepth);
-
-            Gdx.app.postRunnable(new FloorPoster(floor));
-        }
-
-        private class FloorPoster implements Runnable
-        {
-            Floor floor;
-
-            public FloorPoster(Floor floor)
-            {
-                this.floor = floor;
-            }
-
-            @Override
-            public void run()
-            {
-                // process the result, e.g. add it to an Array<Result> field of the ApplicationListener.
-                Level.this.startNextFloor(floor, playerDepth);
-                floor.getRender().build();
-            }
-        }
     }
 
     private Vector2i offset = new Vector2i();
