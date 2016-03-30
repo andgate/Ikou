@@ -23,7 +23,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.ShortArray;
 
-class CubeMesher
+open class CubeMesher
 {
     private val TAG: String = "TileMeshBuilder"
 
@@ -66,17 +66,6 @@ class CubeMesher
     private val vertices = FloatArray()
     private val indicies = ShortArray()
     private val transform = Matrix4()
-
-    fun addTile(color: Color, x: Float, y: Float, z: Float)
-    {
-        calculateVerts(x, y, z)
-        addFront(color)
-        addBack(color)
-        addRight(color)
-        addLeft(color)
-        addTop(color)
-        addBottom(color)
-    }
 
     fun calculateVerts(x: Float, y: Float, z: Float)
     {

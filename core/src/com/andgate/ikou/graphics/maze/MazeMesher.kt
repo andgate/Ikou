@@ -13,145 +13,70 @@
 
 package com.andgate.ikou.graphics.maze;
 
-import com.andgate.ikou.Constants;
+import com.andgate.ikou.constants.*
 import com.andgate.ikou.graphics.util.CubeMesher;
-import com.andgate.ikou.model.TilePalette;
-import com.andgate.ikou.utility.graphics.ColorUtils;
-import com.badlogic.gdx.graphics.Color;
+import com.andgate.ikou.model.Tile
+import com.badlogic.gdx.math.Vector3
 
 class MazeMesher : CubeMesher()
 {
-    public MazeMesher()
+    fun addMaze(maze_map: Map<Vector3, Tile>,
+                maze_sector_map: Map<Vector3, Tile>)
     {
-        Array2d<TileSector> sectors = masterSector.getSectors();
-        TileSector sector = sectors.get(sectorRow, sectorColumn);
-        TileStack[][] stacks = sector.getStacks();
-
-        for (int z = 0; z < TileSector.SIZE; z++)
+        for((pos, tile) in maze_sector_map)
         {
-            for (int x = 0; x < TileSector.SIZE; x++)
-            {
-                TileStack currTileStack = stacks[z][x];
-
-                for (int y = 0; y < currTileStack.size(); y++)
-                {
-                    int masterX = sectorColumn * TileSector.SIZE + x;
-                    int masterY = y;
-                    int masterZ = sectorRow * TileSector.SIZE + z;
-
-                    float xPos = (float) x * TileStack.WIDTH + offsetX;
-                    float yPos = (float) y * TileStack.HEIGHT;
-                    float zPos = (float) z * TileStack.DEPTH + offsetZ;
-
-                    addVisibleQuads(masterSector, palette, masterX, masterY, masterZ, xPos, yPos, zPos);
-                }
-            }
+            addTile(maze_map, pos, tile)
         }
     }
 
-    /**
-     * Adds a culled tile to the mesh, culling non-visible sides.
-     * @param masterSector The sector to fetch information from
-     * @param x Used to fetch tile information
-     * @param y Used to fetch tile information
-     * @param z Used to fetch tile information
-     * @param xPos Used to designate tile location
-     * @param yPos Used to designate tile location
-     * @param zPos Used to designate tile location
-     */
-    protected fun addVisibleQuads(MasterSector masterSector, TilePalette palette, int x, int y, int z, float xPos, float yPos, float zPos)
+    fun addTile(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
     {
-        Tile tile = masterSector.get(x, y, z);
-        Color tileColor = palette.getColor(tile);
+        var height = TILE_HEIGHT
+        if(tile.type == Tile.Type.OBSTACLE) height *= 2f
 
-        if(!ColorUtils.isVisible(tileColor))
-            return;
-
-        Color wallColor = palette.obstacle;
-
-        if(y == 0 && tile != Tile.Blank)
-        {
-            addWalls(masterSector, wallColor, x, z, xPos, zPos);
-        }
-
-        calculateVerts(xPos, yPos, zPos);
-
-        switch(tile)
-        {
-            case Smooth:
-                addTop(palette.obstacle);
-                addBottom(palette.obstacle);
-                break;
-            case Obstacle:
-                break;
-            case End:
-                break;
-            default:
-                break;
-        }
-
-        if (!masterSector.doesTileExist(x, y + 1, z))
-        {
-            addTop(tileColor);
-        }
-
-        if (!masterSector.doesTileExist(x, y - 1, z))
-        {
-            if(tile == Tile.Smooth)
-            {
-                addBottom(palette.obstacle);
-            }
-            else
-            {
-                addBottom(tileColor);
-            }
-        }
-
-        if(tile == Tile.Obstacle)
-        {
-            if (masterSector.doesTileExist(x, 0, z + 1)
-                    && !masterSector.doesTileExist(x, 1, z + 1))
-                addFront(tileColor);
-            if (masterSector.doesTileExist(x, 0, z - 1)
-                    && !masterSector.doesTileExist(x, 1, z - 1))
-                addBack(tileColor);
-            if (masterSector.doesTileExist(x - 1, 0, z)
-                    && !masterSector.doesTileExist(x - 1, 1, z))
-                addLeft(tileColor);
-            if (masterSector.doesTileExist(x + 1, 0, z)
-                    && !masterSector.doesTileExist(x + 1, 1, z))
-                addRight(tileColor);
-        }
+        calculateVerts(pos.x, pos.y, pos.z, TILE_LENGTH, height, TILE_LENGTH)
+        // Only the top and bottom are ever visible
+        addTop(tile.colorOf())
+        addBottom(OBSTACLE_TILE_COLOR)
+        // Walls border the sides
+        addWalls(maze_map, pos, tile)
     }
 
-    private void addWalls(MasterSector masterSector, Color wallColor, int x, int z, float xPos, float zPos)
+    private fun addWalls(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
     {
+        // Determine if an obstacle tile is obstructing part of the wall
+        val bordersObstacle = tile.type == Tile.Type.OBSTACLE
 
-        boolean isDualLayer = masterSector.doesTileExist(x, 1, z);
+        // Check for front neighbor
+        if (!maze_map.contains(Vector3(pos.x, pos.y, pos.z + 1)))
+        {
+            val leftCorner = getFrontLeftCorner(maze_map, pos)
+            val rightCorner = getFrontRightCorner(maze_map, pos)
+            addFrontWall(leftCorner, rightCorner, bordersObstacle, pos)
+        }
 
-        if (!masterSector.doesTileExist(x, 0, z + 1))
+        // Check for back neighbor
+        if (!maze_map.contains(Vector3(pos.x, pos.y, pos.z - 1)))
         {
-            WallCorner leftCorner = getFrontLeftCorner(masterSector, x, z);
-            WallCorner rightCorner = getFrontRightCorner(masterSector, x, z);
-            addFrontWall(leftCorner, rightCorner, wallColor, isDualLayer, xPos, zPos);
+            val leftCorner = getBackLeftCorner(maze_map, pos)
+            val rightCorner = getBackRightCorner(maze_map, pos)
+            addBackWall(leftCorner, rightCorner, bordersObstacle, pos)
         }
-        if (!masterSector.doesTileExist(x, 0, z - 1))
+
+        // Check for left neighbor
+        if (!maze_map.contains(Vector3(pos.x - 1, pos.y, pos.z)))
         {
-            WallCorner leftCorner = getBackLeftCorner(masterSector, x, z);
-            WallCorner rightCorner = getBackRightCorner(masterSector, x, z);
-            addBackWall(leftCorner, rightCorner, wallColor, isDualLayer, xPos, zPos);
+            val frontCorner = getFrontLeftCorner(maze_map, pos)
+            val backCorner = getBackLeftCorner(maze_map, pos)
+            addLeftWall(frontCorner, backCorner, bordersObstacle, pos)
         }
-        if (!masterSector.doesTileExist(x - 1, 0, z))
+
+        // Check for right neighbor
+        if (!maze_map.contains(Vector3(pos.x + 1, pos.y, pos.z)))
         {
-            WallCorner frontCorner = getFrontLeftCorner(masterSector, x, z);
-            WallCorner backCorner = getBackLeftCorner(masterSector, x, z);
-            addLeftWall(frontCorner, backCorner, wallColor, isDualLayer, xPos, zPos);
-        }
-        if (!masterSector.doesTileExist(x + 1, 0, z))
-        {
-            WallCorner frontCorner = getFrontRightCorner(masterSector, x, z);
-            WallCorner backCorner = getBackRightCorner(masterSector, x, z);
-            addRightWall(frontCorner, backCorner, wallColor, isDualLayer, xPos, zPos);
+            val frontCorner = getFrontRightCorner(maze_map, pos)
+            val backCorner = getBackRightCorner(maze_map, pos)
+            addRightWall(frontCorner, backCorner, bordersObstacle, pos)
         }
     }
 
@@ -160,267 +85,252 @@ class MazeMesher : CubeMesher()
     // each wall they each one needed it's own, special routine.
     // The worst part about it, is the routines are very similar.
 
-    private enum WallCorner {None, Inside, Outside }
+    private enum class WallCorner { None, Inside, Outside }
 
-    private WallCorner getFrontLeftCorner(MasterSector masterSector, int x, int z)
+    private fun getFrontLeftCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
-        WallCorner corner = WallCorner.Outside;
+        // Assume this is an outside (270 degree) corner
+        var corner = WallCorner.Outside
 
-        if(masterSector.doesTileExist(x-1, 0, z+1))
-        {
-            corner = WallCorner.Inside;
-        }
-        else if(masterSector.doesTileExist(x-1, 0, z))
-        {
-            corner = WallCorner.None;
-        }
+        // Check if there is a connecting neighbor that forms an inside (90 degree) corner
+        if(maze_map.contains(Vector3(pos.x-1, pos.y, pos.z+1)))
+            corner = WallCorner.Inside
+        // Otherwise, check to see if there is an adjacent neighbor (no corner at all)
+        else if(maze_map.contains(Vector3(pos.x-1, pos.y, pos.z)))
+            corner = WallCorner.None
 
-        return corner;
+        return corner
     }
 
-    private WallCorner getFrontRightCorner(MasterSector masterSector, int x, int z)
+    private fun getFrontRightCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
-        WallCorner corner = WallCorner.Outside;
+        var corner = WallCorner.Outside
 
-        if(masterSector.doesTileExist(x+1, 0, z+1))
-        {
-            corner = WallCorner.Inside;
-        }
-        else if(masterSector.doesTileExist(x+1, 0, z))
-        {
-            corner = WallCorner.None;
-        }
+        // Check if there is a connecting neighbor that forms an inside (90 degree) corner
+        if(maze_map.contains(Vector3(pos.x+1, pos.y, pos.z+1)))
+            corner = WallCorner.Inside
+        // Otherwise, check to see if there is an adjacent neighbor (no corner at all)
+        else if(maze_map.contains(Vector3(pos.x+1, pos.y, pos.z)))
+            corner = WallCorner.None
 
-        return corner;
+        return corner
     }
 
-    private WallCorner getBackLeftCorner(MasterSector masterSector, int x, int z)
+    private fun getBackLeftCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
-        WallCorner corner = WallCorner.Outside;
+        var corner = WallCorner.Outside
 
-        if(masterSector.doesTileExist(x-1, 0, z-1))
-        {
-            corner = WallCorner.Inside;
-        }
-        else if(masterSector.doesTileExist(x-1, 0, z))
-        {
-            corner = WallCorner.None;
-        }
+        // Check if there is a connecting neighbor that forms an inside (90 degree) corner
+        if(maze_map.contains(Vector3(pos.x-1, pos.y, pos.z-1)))
+            corner = WallCorner.Inside
+        // Otherwise, check to see if there is an adjacent neighbor (no corner at all)
+        else if(maze_map.contains(Vector3(pos.x-1, pos.y, pos.z)))
+            corner = WallCorner.None
 
-        return corner;
+        return corner
     }
 
-    private WallCorner getBackRightCorner(MasterSector masterSector, int x, int z)
+    private fun getBackRightCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
-        WallCorner corner = WallCorner.Outside;
+        var corner = WallCorner.Outside
 
-        if(masterSector.doesTileExist(x+1, 0, z-1))
-        {
-            corner = WallCorner.Inside;
-        }
-        else if(masterSector.doesTileExist(x+1, 0, z))
-        {
-            corner = WallCorner.None;
-        }
+        // Check if there is a connecting neighbor that forms an inside (90 degree) corner
+        if(maze_map.contains(Vector3(pos.x+1, pos.y, pos.z-1)))
+            corner = WallCorner.Inside
+        // Otherwise, check to see if there is an adjacent neighbor (no corner at all)
+        else if(maze_map.contains(Vector3(pos.x+1, pos.y, pos.z)))
+            corner = WallCorner.None
 
-        return corner;
+        return corner
     }
 
-    private void addFrontWall(WallCorner leftCorner, WallCorner rightCorner, Color color, boolean isDualLayer, final float x, final float z)
+    private fun addFrontWall(leftCorner: WallCorner, rightCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        float width = Constants.TILE_LENGTH;
-        float height = Constants.WALL_HEIGHT;
-        float depth = Constants.WALL_THICKNESS;
-        float xPos = x;
-        float yPos = 0;
-        float zPos = z + Constants.TILE_LENGTH;
+        var width: Float = TILE_LENGTH
+        var height: Float = WALL_HEIGHT
+        val depth: Float = WALL_THICKNESS
+        var x: Float = pos.x
+        var y: Float = pos.y
+        val z: Float = pos.z + TILE_LENGTH
 
-        switch(leftCorner)
+        when(leftCorner)
         {
-            case Inside:
-                width -= Constants.WALL_THICKNESS;
-                xPos += Constants.WALL_THICKNESS;
-                break;
-            case Outside:
-                width += Constants.WALL_THICKNESS;
-                xPos -= Constants.WALL_THICKNESS;
-                break;
-            default:
-                break;
+            WallCorner.Inside -> {
+                width -= WALL_THICKNESS
+                x += WALL_THICKNESS
+            }
+            WallCorner.Outside -> {
+                width += WALL_THICKNESS
+                x -= WALL_THICKNESS
+            }
+            WallCorner.None -> {}
         }
 
-        switch(rightCorner)
+        when(rightCorner)
         {
-            case Inside:
-                width -= Constants.WALL_THICKNESS;
-                break;
-            case Outside:
-                width += Constants.WALL_THICKNESS;
-                break;
-            default:
-                break;
+            WallCorner.Inside ->
+                width -= WALL_THICKNESS;
+            WallCorner.Outside ->
+                width += WALL_THICKNESS;
+            WallCorner.None -> {}
         }
 
-        calculateVerts(xPos, yPos, zPos, width, height, depth);
+        calculateVerts(x, y, z, width, height, depth);
 
-        addTop(color);
-        addBottom(color);
-        addFront(color);
+        addTop(TILE_WALL_COLOR);
+        addBottom(TILE_WALL_COLOR);
+        addFront(TILE_WALL_COLOR);
 
         if(rightCorner == WallCorner.Outside)
-            addRight(color);
+            addRight(TILE_WALL_COLOR);
 
         if(leftCorner == WallCorner.Outside)
-            addLeft(color);
+            addLeft(TILE_WALL_COLOR);
 
-        if(!isDualLayer)
+        if(!bordersObstacle)
         {
-            xPos = x;
-            width = Constants.TILE_LENGTH;
+            x = pos.x;
+            width = TILE_LENGTH;
             height /= 2.0f;
-            yPos = height;
-            calculateVerts(xPos, yPos, zPos, width, height, depth);
-            addBack(color);
+            y += height;
+            calculateVerts(x, y, z, width, height, depth);
+            addBack(TILE_WALL_COLOR);
         }
     }
 
-    private void addBackWall(WallCorner leftCorner, WallCorner rightCorner, Color color, boolean isDualLayer, float x, float z)
+    private fun addBackWall(leftCorner: WallCorner, rightCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        float width = Constants.TILE_LENGTH;
-        float height = Constants.WALL_HEIGHT;
-        float depth = Constants.WALL_THICKNESS;
-        float xPos = x;
-        float yPos = 0;
-        float zPos = z - depth;
+        var width: Float = TILE_LENGTH
+        var height: Float = WALL_HEIGHT
+        val depth: Float = WALL_THICKNESS
+        var x: Float = pos.x
+        var y: Float = pos.y
+        val z: Float = pos.z - depth
 
-        switch(leftCorner)
+        when(leftCorner)
         {
-            case Inside:
-                width -= Constants.WALL_THICKNESS;
-                xPos += Constants.WALL_THICKNESS;
-                break;
-            case Outside:
-                width += Constants.WALL_THICKNESS;
-                xPos -= Constants.WALL_THICKNESS;
-                break;
-            default:
-                break;
+            WallCorner.Inside -> {
+                width -= WALL_THICKNESS
+                x += WALL_THICKNESS
+            }
+            WallCorner.Outside -> {
+                width += WALL_THICKNESS
+                x -= WALL_THICKNESS
+            }
+            WallCorner.None -> {}
         }
 
-        switch(rightCorner)
+        when(rightCorner)
         {
-            case Inside:
-                width -= Constants.WALL_THICKNESS;
-                break;
-            case Outside:
-                width += Constants.WALL_THICKNESS;
-                break;
-            default:
-                break;
+            WallCorner.Inside ->
+                width -= WALL_THICKNESS
+            WallCorner.Outside ->
+                width += WALL_THICKNESS
+            WallCorner.None -> {}
         }
 
-        calculateVerts(xPos, yPos, zPos, width, height, depth);
+        calculateVerts(x, y, z, width, height, depth)
 
-        addTop(color);
-        addBottom(color);
-        addBack(color);
+        addTop(TILE_WALL_COLOR)
+        addBottom(TILE_WALL_COLOR)
+        addBack(TILE_WALL_COLOR)
 
         if(rightCorner == WallCorner.Outside)
-            addRight(color);
+            addRight(TILE_WALL_COLOR)
 
         if(leftCorner == WallCorner.Outside)
-            addLeft(color);
+            addLeft(TILE_WALL_COLOR)
 
-        if(!isDualLayer)
+        if(!bordersObstacle)
         {
-            xPos = x;
-            width = Constants.TILE_LENGTH;
-            height /= 2.0f;
-            yPos = height;
-            calculateVerts(xPos, yPos, zPos, width, height, depth);
-            addFront(color);
+            x = pos.x
+            width = TILE_LENGTH
+            height /= 2.0f
+            y += height
+            calculateVerts(x, y, z, width, height, depth)
+            addFront(TILE_WALL_COLOR)
         }
     }
 
-    private void addLeftWall(WallCorner frontCorner, WallCorner backCorner, Color color, boolean isDualLayer, float x, float z)
+    private fun addLeftWall(frontCorner: WallCorner, backCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        float depth = Constants.TILE_LENGTH;
-        float width = Constants.WALL_THICKNESS;
-        float height = Constants.WALL_HEIGHT;
-        float xPos = x - width;
-        float yPos = 0;
-        float zPos = z;
+        val width: Float = WALL_THICKNESS
+        var height: Float = WALL_HEIGHT
+        var depth: Float = TILE_LENGTH
+        val x: Float = pos.x - width
+        var y: Float = pos.y
+        var z: Float = pos.z
 
-        calculateVerts(xPos, yPos, zPos, width, height, depth);
+        calculateVerts(x, y, z, width, height, depth);
 
-        addTop(color);
-        addBottom(color);
+        addTop(TILE_WALL_COLOR);
+        addBottom(TILE_WALL_COLOR);
 
         if(frontCorner == WallCorner.Inside)
         {
-            addFront(color);
-            depth -= Constants.WALL_THICKNESS;
+            addFront(TILE_WALL_COLOR)
+            depth -= WALL_THICKNESS
         }
 
         if(backCorner == WallCorner.Inside)
         {
-            addBack(color);
-            depth -= Constants.WALL_THICKNESS;
-            zPos += Constants.WALL_THICKNESS;
+            addBack(TILE_WALL_COLOR)
+            depth -= WALL_THICKNESS
+            z += WALL_THICKNESS
         }
 
-        calculateVerts(xPos, yPos, zPos, width, height, depth);
-        addLeft(color);
+        calculateVerts(x, y, z, width, height, depth);
+        addLeft(TILE_WALL_COLOR);
 
-        if(!isDualLayer)
+        if(!bordersObstacle)
         {
             height /= 2.0f;
-            depth = Constants.TILE_LENGTH;
-            yPos = height;
-            zPos = z;
-            calculateVerts(xPos, yPos, zPos, width, height, depth);
-            addRight(color);
+            depth = TILE_LENGTH;
+            y += height;
+            z = pos.z;
+            calculateVerts(x, y, z, width, height, depth);
+            addRight(TILE_WALL_COLOR);
         }
     }
 
-    private void addRightWall(WallCorner frontCorner, WallCorner backCorner, Color color, boolean isDualLayer, float x, float z)
+    private fun addRightWall(frontCorner: WallCorner, backCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        float width = Constants.WALL_THICKNESS;
-        float depth = Constants.TILE_LENGTH;
-        float height = Constants.WALL_HEIGHT;
-        float xPos = x + Constants.TILE_LENGTH;
-        float yPos = 0;
-        float zPos = z;
+        val width: Float = WALL_THICKNESS
+        var height: Float = WALL_HEIGHT
+        var depth: Float = TILE_LENGTH
+        val x: Float = pos.x + TILE_LENGTH
+        var y: Float = pos.y
+        var z: Float = pos.z
 
-        calculateVerts(xPos, yPos, zPos, width, height, depth);
+        calculateVerts(x, y, z, width, height, depth);
 
-        addTop(color);
-        addBottom(color);
+        addTop(TILE_WALL_COLOR);
+        addBottom(TILE_WALL_COLOR);
 
         if(frontCorner == WallCorner.Inside)
         {
-            addFront(color);
-            depth -= Constants.WALL_THICKNESS;
+            addFront(TILE_WALL_COLOR);
+            depth -= WALL_THICKNESS;
         }
 
         if(backCorner == WallCorner.Inside)
         {
-            addBack(color);
-            depth -= Constants.WALL_THICKNESS;
-            zPos += Constants.WALL_THICKNESS;
+            addBack(TILE_WALL_COLOR);
+            depth -= WALL_THICKNESS;
+            z += WALL_THICKNESS;
         }
 
-        calculateVerts(xPos, yPos, zPos, width, height, depth);
-        addRight(color);
+        calculateVerts(x, y, z, width, height, depth);
+        addRight(TILE_WALL_COLOR);
 
-        if(!isDualLayer)
+        if(!bordersObstacle)
         {
             height /= 2.0f;
-            depth = Constants.TILE_LENGTH;
-            yPos = height;
-            zPos = z;
-            calculateVerts(xPos, yPos, zPos, width, height, depth);
-            addLeft(color);
+            depth = TILE_LENGTH;
+            y += height;
+            z = pos.z;
+            calculateVerts(x, y, z, width, height, depth);
+            addLeft(TILE_WALL_COLOR);
         }
     }
 }

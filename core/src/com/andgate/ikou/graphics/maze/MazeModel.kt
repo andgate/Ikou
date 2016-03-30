@@ -11,26 +11,24 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.graphics.maze;
+package com.andgate.ikou.graphics.maze
 
 import com.andgate.ikou.constants.*
-import com.andgate.ikou.graphics.maze.MazeMesher;
 import com.andgate.ikou.model.*
-import com.andgate.ikou.utility.Array2d;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g3d.Renderable;
-import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Mesh
+import com.badlogic.gdx.graphics.PerspectiveCamera
+import com.badlogic.gdx.graphics.g3d.Renderable
+import com.badlogic.gdx.graphics.g3d.RenderableProvider
+import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.math.collision.BoundingBox
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.Pool
 import java.util.*
 
-class MazeModel(val maze_map: HashMap<Vector3, Tile>,
+class MazeModel(val maze_map: Map<Vector3, Tile>,
                 var camera: PerspectiveCamera)
 : RenderableProvider, Disposable
 {
@@ -53,7 +51,7 @@ class MazeModel(val maze_map: HashMap<Vector3, Tile>,
             {
                 // Use a new MazeMesher to construct a mesh
                 val mesher = MazeMesher()
-                mesher.addMaze(maze_sector_map)
+                mesher.addMaze(maze_map, maze_sector_map)
                 val mesh = mesher.build()
 
                 // Save that mesh and it's bounding box
@@ -72,14 +70,14 @@ class MazeModel(val maze_map: HashMap<Vector3, Tile>,
             if(camera.frustum.boundsInFrustum(bbox))
             {
                 val renderable = pool.obtain()
-                renderable.material = TILE_MATERIAL;
-                renderable.meshPart.offset = 0;
-                renderable.meshPart.size = mesh.getNumIndices();
-                renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
-                renderable.meshPart.mesh = mesh;
-                renderables.add(renderable);
+                renderable.material = TILE_MATERIAL
+                renderable.meshPart.offset = 0
+                renderable.meshPart.size = mesh.getNumIndices()
+                renderable.meshPart.primitiveType = GL20.GL_TRIANGLES
+                renderable.meshPart.mesh = mesh
+                renderables.add(renderable)
 
-                renderable.worldTransform.set(transform);
+                renderable.worldTransform.set(transform)
             }
         }
     }
@@ -92,7 +90,7 @@ class MazeModel(val maze_map: HashMap<Vector3, Tile>,
         }
     }
 
-    private fun calculateMazeBounds(maze_map: HashMap<Vector3, Tile>) : Pair<Vector3, Vector3>
+    private fun calculateMazeBounds(maze_map: Map<Vector3, Tile>) : Pair<Vector3, Vector3>
     {
         // Determine maxima and minima of the maze
         val minima = Vector3()
@@ -111,7 +109,7 @@ class MazeModel(val maze_map: HashMap<Vector3, Tile>,
         return Pair(minima, maxima)
     }
 
-    private class SectorStream(val maze_map: HashMap<Vector3, Tile>, bounds: Pair<Vector3, Vector3>)
+    private class SectorStream(val maze_map: Map<Vector3, Tile>, bounds: Pair<Vector3, Vector3>)
     {
         var hasNext = true
 
