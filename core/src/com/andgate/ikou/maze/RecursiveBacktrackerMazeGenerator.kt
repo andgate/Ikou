@@ -17,7 +17,7 @@ import com.andgate.ikou.utility.Vector2i;
 
 import java.util.LinkedList;
 
-public class RecursiveBacktrackerMazeGenerator extends MazeGenerator
+class RecursiveBacktrackerMazeGenerator : MazeGenerator()
 {
     public RecursiveBacktrackerMazeGenerator(int width, int height, int startX, int startY, int endX, int endY, long seed)
     {

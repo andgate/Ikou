@@ -20,7 +20,7 @@ import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.model.TileStack.Tile;
 import com.andgate.ikou.utility.Vector3i;
 
-public class PerfectMazeParser extends MazeParser
+class PerfectMazeParser : MazeParser()
 {
     Vector3i start = new Vector3i();
     Vector3i end = new Vector3i();

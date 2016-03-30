@@ -13,9 +13,7 @@
 
 package com.andgate.ikou.maze;
 
-import com.andgate.ikou.model.Floor;
-
 public abstract class MazeParser
 {
-    abstract public Floor parse(MazeGenerator maze);
+    abstract public TileMap parse(MazeGenerator maze);
 }

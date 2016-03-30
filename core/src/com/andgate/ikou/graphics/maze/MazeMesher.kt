@@ -16,12 +16,13 @@ package com.andgate.ikou.graphics.maze;
 import com.andgate.ikou.constants.*
 import com.andgate.ikou.graphics.util.CubeMesher;
 import com.andgate.ikou.maze.Tile
+import com.andgate.ikou.maze.TileMap
 import com.badlogic.gdx.math.Vector3
 
 class MazeMesher : CubeMesher()
 {
-    fun addMaze(maze_map: Map<Vector3, Tile>,
-                maze_sector_map: Map<Vector3, Tile>)
+    fun addMaze(maze_map: TileMap,
+                maze_sector_map: TileMap)
     {
         for((pos, tile) in maze_sector_map)
         {
@@ -29,7 +30,7 @@ class MazeMesher : CubeMesher()
         }
     }
 
-    fun addTile(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
+    fun addTile(maze_map: TileMap, pos: Vector3, tile: Tile)
     {
         var height = TILE_HEIGHT
         if(tile.type == Tile.Type.OBSTACLE) height *= 2f
@@ -42,7 +43,7 @@ class MazeMesher : CubeMesher()
         addWalls(maze_map, pos, tile)
     }
 
-    private fun addWalls(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
+    private fun addWalls(maze_map: TileMap, pos: Vector3, tile: Tile)
     {
         // Determine if an obstacle tile is obstructing part of the wall
         val bordersObstacle = tile.type == Tile.Type.OBSTACLE
@@ -87,7 +88,7 @@ class MazeMesher : CubeMesher()
 
     private enum class WallCorner { None, Inside, Outside }
 
-    private fun getFrontLeftCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
+    private fun getFrontLeftCorner(maze_map: TileMap, pos: Vector3): WallCorner
     {
         // Assume this is an outside (270 degree) corner
         var corner = WallCorner.Outside
@@ -102,7 +103,7 @@ class MazeMesher : CubeMesher()
         return corner
     }
 
-    private fun getFrontRightCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
+    private fun getFrontRightCorner(maze_map: TileMap, pos: Vector3): WallCorner
     {
         var corner = WallCorner.Outside
 
@@ -116,7 +117,7 @@ class MazeMesher : CubeMesher()
         return corner
     }
 
-    private fun getBackLeftCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
+    private fun getBackLeftCorner(maze_map: TileMap, pos: Vector3): WallCorner
     {
         var corner = WallCorner.Outside
 
@@ -130,7 +131,7 @@ class MazeMesher : CubeMesher()
         return corner
     }
 
-    private fun getBackRightCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
+    private fun getBackRightCorner(maze_map: TileMap, pos: Vector3): WallCorner
     {
         var corner = WallCorner.Outside
 

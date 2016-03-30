@@ -28,7 +28,7 @@ class MovePlayer(maze: MazeActor,
         // Process the command
         while(!this.finished) {
             // This could throw an array out of bounds I guess?
-            val next_tile: Tile? = maze.tiles[next_pos]
+            val next_tile: Tile? = maze.map[next_pos]
 
             if(next_tile == null) {
                 player.cmd_proc.accept(HitEdge(player))

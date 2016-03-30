@@ -15,7 +15,7 @@ package com.andgate.ikou.graphics.maze
 
 import com.andgate.ikou.constants.*
 import com.andgate.ikou.maze.Tile
-import com.andgate.ikou.model.*
+import com.andgate.ikou.maze.TileMap
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Mesh
 import com.badlogic.gdx.graphics.PerspectiveCamera
@@ -29,7 +29,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Pool
 import java.util.*
 
-class MazeModel(val maze_map: Map<Vector3, Tile>,
+class MazeModel(val maze_map: TileMap,
                 var camera: PerspectiveCamera)
 : RenderableProvider, Disposable
 {
@@ -91,7 +91,7 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
         }
     }
 
-    private fun calculateMazeBounds(maze_map: Map<Vector3, Tile>) : Pair<Vector3, Vector3>
+    private fun calculateMazeBounds(maze_map: TileMap) : Pair<Vector3, Vector3>
     {
         // Determine maxima and minima of the maze
         val minima = Vector3()
@@ -110,7 +110,7 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
         return Pair(minima, maxima)
     }
 
-    private class SectorStream(val maze_map: Map<Vector3, Tile>, bounds: Pair<Vector3, Vector3>)
+    private class SectorStream(val maze_map: TileMap, bounds: Pair<Vector3, Vector3>)
     {
         var hasNext = true
 
@@ -126,7 +126,7 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
         var x2: Int = x1 + SECTOR_SPAN
         var z2: Int = z1 + SECTOR_SPAN
 
-        fun getNext() : Map<Vector3, Tile>
+        fun getNext() : TileMap
         {
             val maze_sector_map = maze_map.filter { e ->
                 with(e.key) {
@@ -135,7 +135,7 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
             }
 
             update()
-            return maze_sector_map
+            return maze_sector_map as TileMap
         }
 
         private fun update()
