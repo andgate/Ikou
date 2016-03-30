@@ -39,6 +39,15 @@ public class LinearTween
         reset();
     }
 
+    public void setup(float x1, float y1, float z1, float x2, float y2, float z2, float speed)
+    {
+        this.start.set(x1, y1, z1);
+        this.end.set(x2, y2, z2);
+        this.duration = calculateTweenTime(this.start, this.end, speed);
+
+        reset();
+    }
+
     /**
      * Update the tween. New value can be retrieved with LinearTween.get()
      * @param delta Time to elapse.
@@ -84,6 +93,7 @@ public class LinearTween
         return time;
     }
 
+    // Get delta time unused by the tween, for chaining consecutive tweens.
     public float getLeftOverTime()
     {
         float deltaAccum = accumulator - ACCUMULATOR_MAX;

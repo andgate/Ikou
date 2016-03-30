@@ -16,10 +16,9 @@ package com.andgate.ikou.model;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.maze.MazeGenerator;
 import com.andgate.ikou.maze.RecursiveBacktrackerMazeGenerator;
-import com.andgate.ikou.render.FloorRender;
+import com.andgate.ikou.graphics.maze.MazeModel;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -168,7 +167,7 @@ public class Level
 
         for(Floor floor : floors)
         {
-            FloorRender floorRender = floor.getRender();
+            MazeModel floorRender = floor.getRender();
             floorRender.setCamera(camera);
         }
     }

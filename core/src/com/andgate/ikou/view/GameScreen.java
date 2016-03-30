@@ -15,20 +15,20 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.actor.MazeActor;
+import com.andgate.ikou.actor.PlayerActor;
 import com.andgate.ikou.input.CameraControllerListener;
 import com.andgate.ikou.input.CameraGestureDetector;
 import com.andgate.ikou.input.GameScreenControllerListener;
 import com.andgate.ikou.input.GameScreenInputListener;
 import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
-import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.Player;
-import com.andgate.ikou.render.ThirdPersonCamera;
+import com.andgate.ikou.input.PlayerGestureDetector.DirectionGestureListener;
+import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.andgate.ikou.ui.SinglePlayerUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
@@ -40,8 +40,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.phoenixframework.channels.*;
 
@@ -51,9 +49,10 @@ public class GameScreen extends ScreenAdapter
 
     private final Ikou game;
 
-    private Level level;
-    private Player player;
     private SinglePlayerUI ui;
+
+    private MazeActor maze;
+    private PlayerActor player;
 
     private ThirdPersonCamera camera;
     private ModelBatch modelBatch;
@@ -73,8 +72,6 @@ public class GameScreen extends ScreenAdapter
 
     Socket socket;
     Channel channel;
-
-    float menu_title_font_size;
 
     public GameScreen(Ikou game, boolean isNewGame)
     {
@@ -126,14 +123,8 @@ public class GameScreen extends ScreenAdapter
         this.game = game;
         batch = new SpriteBatch();
 
-        if(isNewGame)
-        {
-            startNewGame();
-        }
-        else
-        {
-            loadLastGame();
-        }
+        player = new PlayerActor(this);
+        maze = new MazeActor(this, tiles, new PlayerActor[]{player});
 
         Color bg = Constants.BACKGROUND_COLOR;
 
@@ -145,7 +136,7 @@ public class GameScreen extends ScreenAdapter
         level.setCamera(camera);
 
         InputProcessor gameScreenInputProcessor = new GameScreenInputListener(this);
-        InputProcessor playerInputProcessor = new PlayerGestureDetector(player, camera);
+        InputProcessor playerInputProcessor = new PlayerGestureDetector(new DirectionGestureListener(maze, currPlayerId, camera));
         InputProcessor cameraInputProcessor = new CameraGestureDetector(camera);
         im = new InputMultiplexer();
         im.addProcessor(gameScreenInputProcessor);
@@ -154,7 +145,7 @@ public class GameScreen extends ScreenAdapter
         Gdx.input.setInputProcessor(im);
 
         gameScreenControllerListener = new GameScreenControllerListener(this);
-        playerControllerListener = new PlayerControllerListener(player, camera);
+        playerControllerListener = new PlayerControllerListener(maze, currPlayerId, camera);
         cameraControllerListener = new CameraControllerListener(camera);
         Controllers.addListener(gameScreenControllerListener);
         Controllers.addListener(playerControllerListener);
@@ -166,7 +157,7 @@ public class GameScreen extends ScreenAdapter
         ui.build();
     }
 
-    private void startNewGame()
+    /*private void startNewGame()
     {
         level = new Level(65487654, 5, 10, 5); // be completely random
         player = new Player(game, level, Constants.DEFAULT_DEPTH);
@@ -189,7 +180,7 @@ public class GameScreen extends ScreenAdapter
         float playerZ = prefs.getFloat(Constants.PLAYER_PREF_Z, defaultStart.z);
 
         player.setPosition(playerX, playerY, playerZ);
-    }
+    }*/
 
     private void createEnvironment()
     {
@@ -219,7 +210,6 @@ public class GameScreen extends ScreenAdapter
         ui.update();
 
         renderScene();
-        renderDepthInfo();
         ui.stage.draw();
 
         update(delta);
@@ -263,40 +253,13 @@ public class GameScreen extends ScreenAdapter
     {
         renderSetup();
 
-        //game.bloom.capture();
-            modelBatch.begin(camera);
-                level.render(modelBatch, environment);
-                modelBatch.render(player.getRender(), environment);
-            modelBatch.end();
-        //game.bloom.render();
-    }
-
-    private void renderDepthInfo()
-    {
-        /*final String fpsString = "" + (player.getDepth() + 1);
-        final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
-        //final float font_y = Gdx.graphics.getHeight() - font_height;
-
-        BitmapFont.TextBounds bounds = game.menuOptionFont.getBounds(fpsString);
-
-        final float font_y = Gdx.graphics.getHeight();
-        final float font_x = (Gdx.graphics.getWidth() - bounds.width) / 2.0f;
-
-        final float overlaybarWidth = Gdx.graphics.getWidth();
-        final float overlaybarHeight = (bounds.height * 4f / 3f);
-        final float overlaybarX = 0.0f;
-        final float overlaybarY = Gdx.graphics.getHeight() - overlaybarHeight;
-
-        batch.begin();
-        game.whiteTransparentOverlay.draw(batch, overlaybarX, overlaybarY, overlaybarWidth, overlaybarHeight);
-        game.arial_fnt.setColor(Color.BLACK);
-        game.arial_fnt.draw(batch, fpsString, font_x, font_y);
-        batch.end();*/
-
+        modelBatch.begin(camera);
+            level.render(modelBatch, environment);
+            modelBatch.render(player.getRender(), environment);
+        modelBatch.end();
     }
 
     private float accumulator = 0.0f;
-
     private void doPhysicsStep(float deltaTime) {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
@@ -311,7 +274,6 @@ public class GameScreen extends ScreenAdapter
     private void renderSetup()
     {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }

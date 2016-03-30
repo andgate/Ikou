@@ -2,17 +2,16 @@ package com.andgate.ikou.actor;
 
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.command.CommandProcessor
+import com.badlogic.gdx.math.Vector3
 
-class PlayerActor(game: Ikou) {
-    val TAG: String = "PlayerActor"
-    val cmd_proc = CommandProcessor(this)
+class PlayerActor(val game: Ikou) {
+    private val TAG: String = "PlayerActor"
+    val cmd_proc = CommandProcessor()
 
-    var x: Float = 0f
-    var y: Float = 0f
-    var z: Float = 0f
+    var pos = Vector3()
 
-    fun update()
+    fun update(delta_time: Float)
     {
-        cmd_proc.update()
+        cmd_proc.update(delta_time)
     }
 }

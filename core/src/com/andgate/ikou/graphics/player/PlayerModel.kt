@@ -11,8 +11,9 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.render;
+package com.andgate.ikou.graphics.player;
 
+import com.andgate.ikou.graphics.util.CubeMesher;
 import com.andgate.ikou.model.TileStack;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,15 +26,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 
-public class PlayerRender implements RenderableProvider, Disposable
+public class PlayerModel implements RenderableProvider, Disposable
 {
     public final Material material;
 
-    TileMesh tileMesh;
+    CubeMesher tileMesh;
 
-    public PlayerRender()
+    public PlayerModel()
     {
-        tileMesh = new TileMesh();
+        tileMesh = new CubeMesher();
         tileMesh.addTile(Color.WHITE, 0, 0, 0);
         tileMesh.build();
 

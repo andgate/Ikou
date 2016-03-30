@@ -13,7 +13,7 @@
 
 package com.andgate.ikou.input;
 
-import com.andgate.ikou.render.ThirdPersonCamera;
+import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

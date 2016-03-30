@@ -15,7 +15,7 @@ package com.andgate.ikou.input;
 
 import com.andgate.ikou.input.mappings.OuyaPad;
 import com.andgate.ikou.input.mappings.Xbox360Pad;
-import com.andgate.ikou.render.ThirdPersonCamera;
+import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;

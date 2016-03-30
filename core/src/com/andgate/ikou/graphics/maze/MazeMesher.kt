@@ -11,24 +11,18 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.render;
+package com.andgate.ikou.graphics.maze;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.MasterSector;
+import com.andgate.ikou.graphics.util.CubeMesher;
 import com.andgate.ikou.model.TilePalette;
-import com.andgate.ikou.model.TileSector;
-import com.andgate.ikou.model.TileStack;
-import com.andgate.ikou.model.TileStack.Tile;
-import com.andgate.ikou.utility.Array2d;
 import com.andgate.ikou.utility.graphics.ColorUtils;
 import com.badlogic.gdx.graphics.Color;
 
-public class SectorMesh extends TileMesh
+class MazeMesher : CubeMesher()
 {
-    public SectorMesh(MasterSector masterSector, int sectorRow, int sectorColumn, TilePalette palette, int offsetX, int offsetZ)
+    public MazeMesher()
     {
-        super();
-
         Array2d<TileSector> sectors = masterSector.getSectors();
         TileSector sector = sectors.get(sectorRow, sectorColumn);
         TileStack[][] stacks = sector.getStacks();
@@ -65,7 +59,7 @@ public class SectorMesh extends TileMesh
      * @param yPos Used to designate tile location
      * @param zPos Used to designate tile location
      */
-    public void addVisibleQuads(MasterSector masterSector, TilePalette palette, int x, int y, int z, float xPos, float yPos, float zPos)
+    protected fun addVisibleQuads(MasterSector masterSector, TilePalette palette, int x, int y, int z, float xPos, float yPos, float zPos)
     {
         Tile tile = masterSector.get(x, y, z);
         Color tileColor = palette.getColor(tile);

@@ -2,9 +2,14 @@ package com.andgate.ikou.command.player
 
 import com.andgate.ikou.actor.PlayerActor
 
-class HitEdge : PlayerCommand()
+class HitEdge(player: PlayerActor) : PlayerCommand(player)
 {
-    override fun execute(target: PlayerActor) {
-        throw UnsupportedOperationException()
+    override fun begin() {}
+
+    override fun step(deltaTime: Float) {
+        player.game.hitSound.play(0.5f)
+        finished = true
     }
+
+    override fun end() {}
 }

@@ -14,7 +14,7 @@
 package com.andgate.ikou.model;
 
 import com.andgate.ikou.model.TileStack.Tile;
-import com.andgate.ikou.render.FloorRender;
+import com.andgate.ikou.graphics.maze.MazeModel;
 import com.andgate.ikou.utility.Vector2i;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.graphics.g3d.Environment;
@@ -29,7 +29,7 @@ public class Floor
     private Vector2i offset = new Vector2i();
     private TilePalette palette = new TilePalette();
 
-    FloorRender floorRender;
+    MazeModel floorRender;
 
     public Floor(MasterSector masterSector, TilePalette palette, Vector3i start, Vector3i end)
     {
@@ -38,7 +38,7 @@ public class Floor
         this.start.set(start);
         this.end.set(end);
 
-        floorRender = new FloorRender(this);
+        floorRender = new MazeModel(this);
     }
 
     public MasterSector getMasterSector()
@@ -91,7 +91,7 @@ public class Floor
         return palette;
     }
 
-    public FloorRender getRender() { return floorRender; }
+    public MazeModel getRender() { return floorRender; }
 
     public void shrink()
     {

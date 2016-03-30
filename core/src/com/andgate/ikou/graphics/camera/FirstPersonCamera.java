@@ -11,7 +11,7 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.render;
+package com.andgate.ikou.graphics.camera;
 
 public class FirstPersonCamera
 {

@@ -17,7 +17,7 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.input.PlayerInput.DirectionListener;
 import com.andgate.ikou.model.TileStack.Tile;
-import com.andgate.ikou.render.PlayerRender;
+import com.andgate.ikou.graphics.player.PlayerModel;
 import com.andgate.ikou.utility.AcceleratedTween;
 import com.andgate.ikou.utility.LinearTween;
 import com.andgate.ikou.utility.Vector3i;
@@ -42,7 +42,7 @@ public class Player implements DirectionListener, Disposable
 
     private int depth;
     private Level level;
-    private final PlayerRender playerRender;
+    private final PlayerModel playerRender;
 
     private AcceleratedTween fallingTween = new AcceleratedTween();
 
@@ -71,7 +71,7 @@ public class Player implements DirectionListener, Disposable
         this.game = game;
         this.level = level;
 
-        playerRender = new PlayerRender();
+        playerRender = new PlayerModel();
         playerRender.setColor(level.getFloor(depth).getPalette().player);
         playerRender.getTransform().set(transform);
 
@@ -79,7 +79,7 @@ public class Player implements DirectionListener, Disposable
         setPosition(level.getStartPosition(depth));
     }
 
-    public PlayerRender getRender()
+    public PlayerModel getRender()
     {
         return playerRender;
     }

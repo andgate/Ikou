@@ -11,12 +11,11 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.render;
+package com.andgate.ikou.graphics.camera;
 
 import com.andgate.ikou.Constants;
-import com.andgate.ikou.model.Player;
+import com.andgate.ikou.model.PlayerActor;
 import com.andgate.ikou.model.Player.PlayerTransformListener;
-import com.andgate.ikou.model.TileStack;
 import com.andgate.ikou.utility.MathExtra;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -34,7 +33,7 @@ public class ThirdPersonCamera extends PerspectiveCamera implements PlayerTransf
     public static final float ANGLE_Y_MIN = Constants.CAMERA_ANGLE_TO_PLAYER - 90.0f;
     public static final float ANGLE_Y_MAX = Constants.CAMERA_ANGLE_TO_PLAYER - 10.0f;
 
-    private final Player player;
+    private final PlayerActor player;
     private Vector3 target = new Vector3();
 
     private float angleX = 0.0f;
