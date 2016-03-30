@@ -14,6 +14,7 @@
 package com.andgate.ikou.graphics.maze
 
 import com.andgate.ikou.constants.*
+import com.andgate.ikou.maze.Tile
 import com.andgate.ikou.model.*
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Mesh

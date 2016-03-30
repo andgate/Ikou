@@ -13,63 +13,48 @@
 
 package com.andgate.ikou.graphics.player;
 
-import com.andgate.ikou.graphics.util.CubeMesher;
-import com.andgate.ikou.model.TileStack;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.Renderable;
-import com.badlogic.gdx.graphics.g3d.RenderableProvider;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Pool;
+import com.andgate.ikou.constants.*
+import com.andgate.ikou.graphics.util.CubeMesher
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Mesh
+import com.badlogic.gdx.graphics.g3d.Material
+import com.badlogic.gdx.graphics.g3d.Renderable
+import com.badlogic.gdx.graphics.g3d.RenderableProvider
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute
+import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.Pool
 
-public class PlayerModel implements RenderableProvider, Disposable
+class PlayerModel : RenderableProvider, Disposable
 {
-    public final Material material;
+    val material = Material(TILE_MATERIAL)
+    val mesh: Mesh
+    val transform = Matrix4()
 
-    CubeMesher tileMesh;
-
-    public PlayerModel()
-    {
-        tileMesh = new CubeMesher();
-        tileMesh.addTile(Color.WHITE, 0, 0, 0);
-        tileMesh.build();
-
-        material = new Material(TileStack.TILE_MATERIAL);
-        setColor(new Color(1.0f, 1.0f, 1.0f, 1.0f));
+    init {
+        val mesher = CubeMesher()
+        mesher.calculateVerts(0f ,0f ,0f, TILE_LENGTH, TILE_HEIGHT, TILE_LENGTH)
+        mesher.addAll(PLAYER_TILE_COLOR)
+        mesh = mesher.build()
     }
 
-    public Matrix4 getTransform()
+    override fun getRenderables(renderables: Array<Renderable>, pool: Pool<Renderable>)
     {
-        return tileMesh.getTransform();
+        val renderable: Renderable = pool.obtain()
+        renderable.material = material
+        renderable.meshPart.offset = 0
+        renderable.meshPart.size = mesh.getNumIndices()
+        renderable.meshPart.primitiveType = GL20.GL_TRIANGLES
+        renderable.meshPart.mesh = mesh
+        renderables.add(renderable)
+
+        renderable.worldTransform.set(transform)
     }
 
-    public void setColor(Color color)
+    override fun dispose()
     {
-        material.set(ColorAttribute.createDiffuse(color));
-    }
-
-    @Override
-    public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool)
-    {
-        Renderable renderable = pool.obtain();
-        renderable.material = material;
-        renderable.meshPart.offset = 0;
-        renderable.meshPart.size = tileMesh.getMesh().getNumIndices();
-        renderable.meshPart.primitiveType = GL20.GL_TRIANGLES;
-        renderable.meshPart.mesh = tileMesh.getMesh();
-        renderables.add(renderable);
-
-        renderable.worldTransform.set(tileMesh.getTransform());
-    }
-
-    @Override
-    public void dispose()
-    {
-        if(tileMesh != null)
-            tileMesh.dispose();
+        mesh.dispose();
     }
 }

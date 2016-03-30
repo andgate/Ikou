@@ -38,6 +38,8 @@ Tile maze game! Built with Android Studio and libgdx.
   - SSAO/HBAO for aesthetic purposes
   - Fade in/fade out for warping
   - Trails to show path travelled.
+  - Camera that snaps to closest side
+  - Camera that has some lag from acceleration when following
 
 ### Tilemap engine
   - Better names for a more distinct dataflow

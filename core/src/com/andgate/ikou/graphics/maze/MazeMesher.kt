@@ -15,7 +15,7 @@ package com.andgate.ikou.graphics.maze;
 
 import com.andgate.ikou.constants.*
 import com.andgate.ikou.graphics.util.CubeMesher;
-import com.andgate.ikou.model.Tile
+import com.andgate.ikou.maze.Tile
 import com.badlogic.gdx.math.Vector3
 
 class MazeMesher : CubeMesher()

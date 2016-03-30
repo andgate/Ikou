@@ -89,6 +89,17 @@ open class CubeMesher
         points[7] = pointVector7.set(x + width, y + height, z)
     }
 
+    fun addAll(color: Color)
+    {
+        addFront(color)
+        addBack(color)
+        addLeft(color)
+        addRight(color)
+        addTop(color)
+        addBottom(color)
+
+    }
+
     fun addFace(color: Color, point0: Vector3, point1: Vector3, point2: Vector3, point3: Vector3, normal: Vector3)
     {
         val vertexOffset: Int = vertices.size / NUM_COMPONENTS

@@ -2,7 +2,7 @@ package com.andgate.ikou.actor
 
 import com.andgate.ikou.Ikou
 import com.andgate.ikou.command.CommandProcessor
-import com.andgate.ikou.model.Tile
+import com.andgate.ikou.maze.Tile
 import com.badlogic.gdx.math.Vector3
 import java.util.*
 
