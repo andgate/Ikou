@@ -16,13 +16,12 @@ package com.andgate.ikou.graphics.maze;
 import com.andgate.ikou.constants.*
 import com.andgate.ikou.graphics.util.CubeMesher;
 import com.andgate.ikou.maze.Tile
-import com.andgate.ikou.maze.TileMap
 import com.badlogic.gdx.math.Vector3
 
 class MazeMesher : CubeMesher()
 {
-    fun addMaze(maze_map: TileMap,
-                maze_sector_map: TileMap)
+    fun addMaze(maze_map: Map<Vector3, Tile>,
+                maze_sector_map: Map<Vector3, Tile>)
     {
         for((pos, tile) in maze_sector_map)
         {
@@ -30,12 +29,18 @@ class MazeMesher : CubeMesher()
         }
     }
 
-    fun addTile(maze_map: TileMap, pos: Vector3, tile: Tile)
+    fun addTile(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
     {
+        var x = pos.x + TILE_HALF_SPAN
+        var y = pos.y
+        var z = pos.z + TILE_HALF_SPAN
+        var width = pos.x - TILE_HALF_SPAN
         var height = TILE_HEIGHT
+        var depth = pos.z - TILE_HALF_SPAN
+
         if(tile.type == Tile.Type.OBSTACLE) height *= 2f
 
-        calculateVerts(pos.x, pos.y, pos.z, TILE_LENGTH, height, TILE_LENGTH)
+        calculateVerts(x, y, z, TILE_HALF_SPAN, height, TILE_HALF_SPAN)
         // Only the top and bottom are ever visible
         addTop(tile.colorOf())
         addBottom(OBSTACLE_TILE_COLOR)
@@ -43,7 +48,7 @@ class MazeMesher : CubeMesher()
         addWalls(maze_map, pos, tile)
     }
 
-    private fun addWalls(maze_map: TileMap, pos: Vector3, tile: Tile)
+    private fun addWalls(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
     {
         // Determine if an obstacle tile is obstructing part of the wall
         val bordersObstacle = tile.type == Tile.Type.OBSTACLE
@@ -88,7 +93,7 @@ class MazeMesher : CubeMesher()
 
     private enum class WallCorner { None, Inside, Outside }
 
-    private fun getFrontLeftCorner(maze_map: TileMap, pos: Vector3): WallCorner
+    private fun getFrontLeftCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
         // Assume this is an outside (270 degree) corner
         var corner = WallCorner.Outside
@@ -103,7 +108,7 @@ class MazeMesher : CubeMesher()
         return corner
     }
 
-    private fun getFrontRightCorner(maze_map: TileMap, pos: Vector3): WallCorner
+    private fun getFrontRightCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
         var corner = WallCorner.Outside
 
@@ -117,7 +122,7 @@ class MazeMesher : CubeMesher()
         return corner
     }
 
-    private fun getBackLeftCorner(maze_map: TileMap, pos: Vector3): WallCorner
+    private fun getBackLeftCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
         var corner = WallCorner.Outside
 
@@ -131,7 +136,7 @@ class MazeMesher : CubeMesher()
         return corner
     }
 
-    private fun getBackRightCorner(maze_map: TileMap, pos: Vector3): WallCorner
+    private fun getBackRightCorner(maze_map: Map<Vector3, Tile>, pos: Vector3): WallCorner
     {
         var corner = WallCorner.Outside
 
@@ -147,12 +152,12 @@ class MazeMesher : CubeMesher()
 
     private fun addFrontWall(leftCorner: WallCorner, rightCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        var width: Float = TILE_LENGTH
+        var width: Float = TILE_CELL_SPAN
         var height: Float = WALL_HEIGHT
         val depth: Float = WALL_THICKNESS
         var x: Float = pos.x
         var y: Float = pos.y
-        val z: Float = pos.z + TILE_LENGTH
+        val z: Float = pos.z + TILE_CELL_SPAN
 
         when(leftCorner)
         {
@@ -191,7 +196,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             x = pos.x;
-            width = TILE_LENGTH;
+            width = TILE_CELL_SPAN;
             height /= 2.0f;
             y += height;
             calculateVerts(x, y, z, width, height, depth);
@@ -201,7 +206,7 @@ class MazeMesher : CubeMesher()
 
     private fun addBackWall(leftCorner: WallCorner, rightCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        var width: Float = TILE_LENGTH
+        var width: Float = TILE_CELL_SPAN
         var height: Float = WALL_HEIGHT
         val depth: Float = WALL_THICKNESS
         var x: Float = pos.x
@@ -245,7 +250,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             x = pos.x
-            width = TILE_LENGTH
+            width = TILE_CELL_SPAN
             height /= 2.0f
             y += height
             calculateVerts(x, y, z, width, height, depth)
@@ -257,7 +262,7 @@ class MazeMesher : CubeMesher()
     {
         val width: Float = WALL_THICKNESS
         var height: Float = WALL_HEIGHT
-        var depth: Float = TILE_LENGTH
+        var depth: Float = TILE_CELL_SPAN
         val x: Float = pos.x - width
         var y: Float = pos.y
         var z: Float = pos.z
@@ -286,7 +291,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             height /= 2.0f;
-            depth = TILE_LENGTH;
+            depth = TILE_CELL_SPAN;
             y += height;
             z = pos.z;
             calculateVerts(x, y, z, width, height, depth);
@@ -298,8 +303,8 @@ class MazeMesher : CubeMesher()
     {
         val width: Float = WALL_THICKNESS
         var height: Float = WALL_HEIGHT
-        var depth: Float = TILE_LENGTH
-        val x: Float = pos.x + TILE_LENGTH
+        var depth: Float = TILE_CELL_SPAN
+        val x: Float = pos.x + TILE_CELL_SPAN
         var y: Float = pos.y
         var z: Float = pos.z
 
@@ -327,7 +332,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             height /= 2.0f;
-            depth = TILE_LENGTH;
+            depth = TILE_CELL_SPAN;
             y += height;
             z = pos.z;
             calculateVerts(x, y, z, width, height, depth);

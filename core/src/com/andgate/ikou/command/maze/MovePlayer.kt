@@ -13,9 +13,7 @@ class MovePlayer(maze: MazeActor,
                  val playerId: Int)
 : MazeCommand(maze)
 {
-    override fun begin() {
-        throw UnsupportedOperationException()
-    }
+    override fun begin() {}
 
     override fun step(delta_time: Float)
     {
@@ -62,7 +60,5 @@ class MovePlayer(maze: MazeActor,
         }
     }
 
-    override fun end() {
-        throw UnsupportedOperationException()
-    }
+    override fun end() {}
 }

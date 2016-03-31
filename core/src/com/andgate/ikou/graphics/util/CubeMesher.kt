@@ -67,15 +67,6 @@ open class CubeMesher
     private val indicies = ShortArray()
     private val transform = Matrix4()
 
-    fun calculateVerts(x: Float, y: Float, z: Float)
-    {
-        val width:  Float = TILE_LENGTH
-        val height: Float = TILE_HEIGHT
-        val depth:  Float = TILE_LENGTH
-
-        calculateVerts(x, y, z, width, height, depth)
-    }
-
     fun calculateVerts(x: Float, y: Float, z: Float, width: Float, height: Float, depth: Float)
     {
         // Creates the 8 vector points that exists on a box. Those will be used to create the vertex.

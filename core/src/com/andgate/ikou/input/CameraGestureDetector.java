@@ -13,6 +13,7 @@
 
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.constants.CameraConstantsKt;
 import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -54,7 +55,7 @@ public class CameraGestureDetector extends GestureDetector
     @Override
     public boolean scrolled (int amount)
     {
-        float zoomAmount = -amount / ThirdPersonCamera.MAX_PLAYER_DISTANCE;
+        float zoomAmount = -amount / CameraConstantsKt.getMAX_PLAYER_DISTANCE();
         camera.zoom(zoomAmount);
         return false;
     }

@@ -4,9 +4,11 @@ import com.andgate.ikou.Ikou;
 import com.andgate.ikou.command.CommandProcessor
 import com.andgate.ikou.graphics.player.PlayerModel
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.Disposable
 
 class PlayerActor(val game: Ikou,
                   val model: PlayerModel)
+: Disposable
 {
     private val TAG: String = "PlayerActor"
     val cmd_proc = CommandProcessor()
@@ -16,5 +18,10 @@ class PlayerActor(val game: Ikou,
     fun update(delta_time: Float)
     {
         cmd_proc.update(delta_time)
+    }
+
+    override fun dispose()
+    {
+        model.dispose()
     }
 }

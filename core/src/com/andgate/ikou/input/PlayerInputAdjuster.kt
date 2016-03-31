@@ -37,7 +37,7 @@ class PlayerInputAdjuster(private val maze: MazeActor,
     {
         vel.set(velX, velY)
         dir.set(0f,0f)
-        vel.rotate(-camera.getAngleX())
+        vel.rotate(-camera.angleX)
 
         val absVelX = Math.abs(vel.x)
         val absVelY = Math.abs(vel.y)

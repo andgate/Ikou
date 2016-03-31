@@ -216,10 +216,10 @@ public class MainMenuScreen implements Screen
         switch(selectedOption)
         {
             case New:
-                game.setScreen(new GameScreen(game, true));
+                game.setScreen(new GameScreen(game, true, 123456789));
                 break;
             case Continue:
-                game.setScreen(new GameScreen(game, false));
+                game.setScreen(new GameScreen(game, false, 123456789));
                 break;
             case Help:
                 game.setScreen(new HelpScreen(game));

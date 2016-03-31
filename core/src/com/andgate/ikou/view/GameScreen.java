@@ -17,6 +17,8 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.actor.MazeActor;
 import com.andgate.ikou.actor.PlayerActor;
+import com.andgate.ikou.graphics.maze.MazeModel;
+import com.andgate.ikou.graphics.player.PlayerModel;
 import com.andgate.ikou.input.CameraControllerListener;
 import com.andgate.ikou.input.CameraGestureDetector;
 import com.andgate.ikou.input.GameScreenControllerListener;
@@ -25,6 +27,10 @@ import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.input.PlayerGestureDetector.DirectionGestureListener;
 import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
+import com.andgate.ikou.maze.Maze;
+import com.andgate.ikou.maze.Tile;
+import com.andgate.ikou.maze.TileMap;
+import com.andgate.ikou.maze.prims.PrimsMaze;
 import com.andgate.ikou.ui.SinglePlayerUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -43,6 +49,8 @@ import com.badlogic.gdx.math.Vector3;
 
 import org.phoenixframework.channels.*;
 
+import java.util.Map;
+
 public class GameScreen extends ScreenAdapter
 {
     private static final String TAG = "GameScreen";
@@ -51,7 +59,7 @@ public class GameScreen extends ScreenAdapter
 
     private SinglePlayerUI ui;
 
-    private MazeActor maze;
+    private MazeActor mazeActor;
     private PlayerActor player;
 
     private ThirdPersonCamera camera;
@@ -73,7 +81,7 @@ public class GameScreen extends ScreenAdapter
     Socket socket;
     Channel channel;
 
-    public GameScreen(Ikou game, boolean isNewGame)
+    public GameScreen(Ikou game, boolean isNewGame, long seed)
     {
         // Test code for phoenix websocket
         /*try {
@@ -123,20 +131,24 @@ public class GameScreen extends ScreenAdapter
         this.game = game;
         batch = new SpriteBatch();
 
-        player = new PlayerActor(this);
-        maze = new MazeActor(this, tiles, new PlayerActor[]{player});
+        player = new PlayerActor(game, new PlayerModel());
+        camera = new ThirdPersonCamera(player);
+
+        //PrimsMaze maze
+        Maze maze = new PrimsMaze(32, 32, 5, 7, seed);
+        Map<Vector3, Tile> tile_map = maze.buildTileMap();
+        MazeModel maze_model = new MazeModel(tile_map, camera);
+        mazeActor = new MazeActor(game, tile_map, new PlayerActor[]{player}, maze_model);
+
+        int currPlayerId = 0;
 
         Color bg = Constants.BACKGROUND_COLOR;
 
         modelBatch = new ModelBatch();
         createEnvironment();
 
-        camera = new ThirdPersonCamera(player);
-
-        level.setCamera(camera);
-
         InputProcessor gameScreenInputProcessor = new GameScreenInputListener(this);
-        InputProcessor playerInputProcessor = new PlayerGestureDetector(new DirectionGestureListener(maze, currPlayerId, camera));
+        InputProcessor playerInputProcessor = new PlayerGestureDetector(new DirectionGestureListener(mazeActor, currPlayerId, camera));
         InputProcessor cameraInputProcessor = new CameraGestureDetector(camera);
         im = new InputMultiplexer();
         im.addProcessor(gameScreenInputProcessor);
@@ -145,7 +157,7 @@ public class GameScreen extends ScreenAdapter
         Gdx.input.setInputProcessor(im);
 
         gameScreenControllerListener = new GameScreenControllerListener(this);
-        playerControllerListener = new PlayerControllerListener(maze, currPlayerId, camera);
+        playerControllerListener = new PlayerControllerListener(mazeActor, currPlayerId, camera);
         cameraControllerListener = new CameraControllerListener(camera);
         Controllers.addListener(gameScreenControllerListener);
         Controllers.addListener(playerControllerListener);
@@ -153,7 +165,7 @@ public class GameScreen extends ScreenAdapter
 
         Gdx.input.setCursorCatched(true);
 
-        ui = new SinglePlayerUI(this.game, level, player);
+        ui = new SinglePlayerUI(this.game, mazeActor, player);
         ui.build();
     }
 
@@ -210,7 +222,7 @@ public class GameScreen extends ScreenAdapter
         ui.update();
 
         renderScene();
-        ui.stage.draw();
+        ui.getStage().draw();
 
         update(delta);
     }
@@ -254,8 +266,8 @@ public class GameScreen extends ScreenAdapter
         renderSetup();
 
         modelBatch.begin(camera);
-            level.render(modelBatch, environment);
-            modelBatch.render(player.getRender(), environment);
+            modelBatch.render(mazeActor.getModel());
+            modelBatch.render(player.getModel(), environment);
         modelBatch.end();
     }
 
@@ -288,7 +300,8 @@ public class GameScreen extends ScreenAdapter
         Controllers.removeListener(gameScreenControllerListener);
         Controllers.removeListener(cameraControllerListener);
         Controllers.removeListener(playerControllerListener);
-        level.dispose();
+        mazeActor.dispose();
+        player.dispose();
         modelBatch.dispose();
         ui.dispose();
     }

@@ -35,7 +35,7 @@ class PlayerModel : RenderableProvider, Disposable
 
     init {
         val mesher = CubeMesher()
-        mesher.calculateVerts(0f ,0f ,0f, TILE_LENGTH, TILE_HEIGHT, TILE_LENGTH)
+        mesher.calculateVerts(0f ,0f ,0f, TILE_SPAN, TILE_HEIGHT, TILE_SPAN)
         mesher.addAll(PLAYER_TILE_COLOR)
         mesh = mesher.build()
     }

@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector3
 import java.util.*
 
-class TileMap() : HashMap<Vector3, Tile>()
-
-class Tile(var type: Type)
+class Tile(var type: Type, var walls: EnumSet<Wall>)
 {
     enum class Type {
         SMOOTH, STICKY, OBSTACLE, DROP, FINISH
+    }
+
+    enum class Wall {
+        FRONT, BACK, LEFT, RIGHT
     }
 
     fun colorOf(): Color {

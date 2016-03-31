@@ -1,9 +1,10 @@
 package com.andgate.ikou.constants
 
 
-const val SLIDE_SPEED = TILE_LENGTH * 15.0f / 1.0f // units per second
 
-const val ROUGH_SLIDE_DISTANCE = TILE_LENGTH // units
+const val SLIDE_SPEED = TILE_SPAN * 15.0f / 1.0f // units per second
+
+const val ROUGH_SLIDE_DISTANCE = TILE_SPAN // units
 const val ROUGH_SLIDE_INITIAL_SPEED = SLIDE_SPEED
 const val ROUGH_SLIDE_FINAL_SPEED = 0f
 const val ROUGH_SLIDE_AVERAGE_SPEED = (ROUGH_SLIDE_FINAL_SPEED + ROUGH_SLIDE_INITIAL_SPEED) / 2.0f

@@ -7,15 +7,18 @@ import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute
 
 
 // Default measurements
-const val TILE_LENGTH = 1.0f
-const val TILE_HALF_LENGHT: Float = TILE_LENGTH / 2.0f
-const val TILE_HEIGHT = TILE_LENGTH / 25.0f
-const val TILE_HALF_HEIGHT: Float = TILE_HEIGHT / 2.0f
+const val TILE_CELL_SPAN = 1.0f
+const val WALL_THICKNESS = 0.1f
+const val WALL_HALF_THICKNESS = WALL_THICKNESS / 2f
 
-const val WALL_HEIGHT = TILE_HEIGHT * 2.0f
-const val WALL_THICKNESS = TILE_LENGTH / 10.0f
+const val TILE_SPAN = TILE_CELL_SPAN - WALL_HALF_THICKNESS * 2f
+const val TILE_HALF_SPAN: Float = TILE_SPAN / 2f
+const val TILE_HEIGHT = TILE_CELL_SPAN / 25f
+const val TILE_HALF_HEIGHT: Float = TILE_CELL_SPAN / 2f
 
-const val FLOOR_SPACING = 10.0f
+const val WALL_HEIGHT = TILE_HEIGHT * 2f
+
+const val FLOOR_SPACING = 10f
 const val SECTOR_SPAN = 16 // in tiles per side
 
 
