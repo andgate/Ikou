@@ -4,9 +4,10 @@ import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 
 import com.andgate.ikou.actor.MazeActor;
-import com.andgate.ikou.actor.PlayerActor;
+import com.andgate.ikou.actor.player.PlayerActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -43,7 +44,7 @@ class SinglePlayerUI(val game: Ikou,
 
         calc_font_size()
 
-        val depthString: String = "" + player.pos.y
+        val depthString: String = "" + player.model.transform.getTranslation(Vector3()).y
         depthLabel = Label(depthString, uiLabelStyle)
         depthLabel.setText(depthString)
         depthLabel.setFontScale(game_ui_font_scale)
@@ -73,7 +74,7 @@ class SinglePlayerUI(val game: Ikou,
 
     fun update()
     {
-        val depthString: String = "" + (player.pos.y + 1)
+        val depthString: String = "" + (player.model.transform.getTranslation(Vector3()).y + 1)
         depthLabel.setText(depthString)
 
         val fpsString: String = "FPS: " + Gdx.graphics.getFramesPerSecond()

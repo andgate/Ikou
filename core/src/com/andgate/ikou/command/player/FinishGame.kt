@@ -1,6 +1,6 @@
 package com.andgate.ikou.command.player
 
-import com.andgate.ikou.actor.PlayerActor
+import com.andgate.ikou.actor.player.PlayerActor
 
 class FinishGame(player: PlayerActor) : PlayerCommand(player)
 {

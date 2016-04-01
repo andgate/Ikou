@@ -17,6 +17,7 @@ import com.andgate.ikou.constants.*
 import com.andgate.ikou.maze.Maze
 import com.andgate.ikou.maze.MazeLayer
 import com.andgate.ikou.maze.Tile
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Mesh
 import com.badlogic.gdx.graphics.PerspectiveCamera
@@ -88,27 +89,10 @@ class MazeModel(val maze: Maze,
         }
     }
 
-    private fun calculateMazeBounds(maze_map: Map<Vector3, Tile>) : Pair<Vector3, Vector3>
-    {
-        // Determine maxima and minima of the maze
-        val minima = Vector3()
-        val maxima = Vector3()
-        for((pos, tile) in maze_map)
-        {
-            minima.x = Math.min(minima.x, pos.x)
-            minima.y = Math.min(minima.y, pos.y)
-            minima.z = Math.min(minima.z, pos.z)
-
-            maxima.x = Math.max(minima.x, pos.x)
-            maxima.y = Math.max(minima.y, pos.y)
-            maxima.z = Math.max(minima.z, pos.z)
-        }
-
-        return Pair(minima, maxima)
-    }
-
     private class SectorStream(val maze: Maze)
     {
+        private val TAG: String = "SectorStream"
+
         // Flag to determine if the stream is active
         var hasNext = true
 
@@ -124,9 +108,10 @@ class MazeModel(val maze: Maze,
 
         init
         {
-            assert(maze.layers.isNotEmpty())
-            layer = maze.layers[layerIndex]
+            if ( maze.layers.isEmpty() )
+                Gdx.app.log(TAG, "Sector Stream cannot operate on empty maze", UnsupportedOperationException())
 
+            layer = maze.layers[layerIndex]
             x1 = layer.bounds.x.toInt()
             z1 = layer.bounds.y.toInt()
             x2 = x1 + SECTOR_SPAN

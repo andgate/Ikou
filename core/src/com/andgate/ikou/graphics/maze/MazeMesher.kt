@@ -31,16 +31,10 @@ class MazeMesher : CubeMesher()
 
     fun addTile(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
     {
-        var x = pos.x + TILE_HALF_SPAN
-        var y = pos.y
-        var z = pos.z + TILE_HALF_SPAN
-        var width = pos.x - TILE_HALF_SPAN
         var height = TILE_HEIGHT
-        var depth = pos.z - TILE_HALF_SPAN
-
         if(tile.type == Tile.Type.OBSTACLE) height *= 2f
+        calculateVerts(pos.x, pos.y, pos.z, TILE_SPAN, height, TILE_SPAN)
 
-        calculateVerts(x, y, z, TILE_HALF_SPAN, height, TILE_HALF_SPAN)
         // Only the top and bottom are ever visible
         addTop(tile.colorOf())
         addBottom(OBSTACLE_TILE_COLOR)
@@ -87,7 +81,7 @@ class MazeMesher : CubeMesher()
     }
 
     // This gets REALLY ugly. I'm not proud of it.
-    // Unfortunantly, there are just too many little differences for
+    // Unfortunately, there are just too many little differences for
     // each wall they each one needed it's own, special routine.
     // The worst part about it, is the routines are very similar.
 
@@ -152,12 +146,12 @@ class MazeMesher : CubeMesher()
 
     private fun addFrontWall(leftCorner: WallCorner, rightCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        var width: Float = TILE_CELL_SPAN
+        var width: Float = TILE_SPAN
         var height: Float = WALL_HEIGHT
         val depth: Float = WALL_THICKNESS
         var x: Float = pos.x
         var y: Float = pos.y
-        val z: Float = pos.z + TILE_CELL_SPAN
+        val z: Float = pos.z + TILE_SPAN
 
         when(leftCorner)
         {
@@ -196,7 +190,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             x = pos.x;
-            width = TILE_CELL_SPAN;
+            width = TILE_SPAN;
             height /= 2.0f;
             y += height;
             calculateVerts(x, y, z, width, height, depth);
@@ -206,7 +200,7 @@ class MazeMesher : CubeMesher()
 
     private fun addBackWall(leftCorner: WallCorner, rightCorner: WallCorner, bordersObstacle: Boolean, pos: Vector3)
     {
-        var width: Float = TILE_CELL_SPAN
+        var width: Float = TILE_SPAN
         var height: Float = WALL_HEIGHT
         val depth: Float = WALL_THICKNESS
         var x: Float = pos.x
@@ -250,7 +244,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             x = pos.x
-            width = TILE_CELL_SPAN
+            width = TILE_SPAN
             height /= 2.0f
             y += height
             calculateVerts(x, y, z, width, height, depth)
@@ -262,7 +256,7 @@ class MazeMesher : CubeMesher()
     {
         val width: Float = WALL_THICKNESS
         var height: Float = WALL_HEIGHT
-        var depth: Float = TILE_CELL_SPAN
+        var depth: Float = TILE_SPAN
         val x: Float = pos.x - width
         var y: Float = pos.y
         var z: Float = pos.z
@@ -291,7 +285,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             height /= 2.0f;
-            depth = TILE_CELL_SPAN;
+            depth = TILE_SPAN;
             y += height;
             z = pos.z;
             calculateVerts(x, y, z, width, height, depth);
@@ -303,8 +297,8 @@ class MazeMesher : CubeMesher()
     {
         val width: Float = WALL_THICKNESS
         var height: Float = WALL_HEIGHT
-        var depth: Float = TILE_CELL_SPAN
-        val x: Float = pos.x + TILE_CELL_SPAN
+        var depth: Float = TILE_SPAN
+        val x: Float = pos.x + TILE_SPAN
         var y: Float = pos.y
         var z: Float = pos.z
 
@@ -332,7 +326,7 @@ class MazeMesher : CubeMesher()
         if(!bordersObstacle)
         {
             height /= 2.0f;
-            depth = TILE_CELL_SPAN;
+            depth = TILE_SPAN;
             y += height;
             z = pos.z;
             calculateVerts(x, y, z, width, height, depth);

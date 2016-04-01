@@ -15,10 +15,10 @@ data class MazeAlgorithmInput(val width: Int,
 
 abstract class MazeAlgorithm(val input: MazeAlgorithmInput)
 {
-    private val rand = XorRandomGen(input.seed)
+    protected val rand = XorRandomGen(input.seed)
 
     // These values should not be accessed until after buildTileMap is called.
-    val layer: MazeLayer? = null
+    var layer: MazeLayer? = null
     val map = LinkedHashMap<Vector3, Tile>()
 
     // This is where the algorithm should build

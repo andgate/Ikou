@@ -4,6 +4,7 @@ import java.util.*
 
 class CommandProcessor
 {
+    private val TAG: String = "CommandProcessor"
     // Command history stores commands that were executed and are now finished
     private var comm_history = Vector<Command>()
 

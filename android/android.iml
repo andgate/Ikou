@@ -77,17 +77,17 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="jackson-databind-2.5.3" level="project" />
-    <orderEntry type="library" exported="" name="jackson-annotations-2.5.0" level="project" />
-    <orderEntry type="library" exported="" name="gdx-controllers-1.9.2" level="project" />
-    <orderEntry type="library" exported="" name="gdx-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-android-1.9.2" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-stdlib-1.0.1-1" level="project" />
+    <orderEntry type="library" exported="" name="jackson-annotations-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="gdx-1.9.2" level="project" />
+    <orderEntry type="library" exported="" name="gdx-controllers-1.9.2" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-android-1.9.2" level="project" />
-    <orderEntry type="library" exported="" name="kotlin-stdlib-1.0.1-1" level="project" />
     <orderEntry type="library" exported="" name="jackson-core-2.5.3" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-1.9.2" level="project" />
-    <orderEntry type="library" exported="" name="kotlin-runtime-1.0.1-1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-ws-2.7.2" level="project" />
+    <orderEntry type="library" exported="" name="kotlin-runtime-1.0.1-1" level="project" />
     <orderEntry type="library" exported="" name="JavaPhoenixChannels--SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.7.2" level="project" />
     <orderEntry type="module" module-name="core" exported="" />

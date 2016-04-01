@@ -14,7 +14,8 @@
 package com.andgate.ikou.graphics.camera
 
 import com.andgate.ikou.Constants
-import com.andgate.ikou.actor.PlayerActor
+import com.andgate.ikou.actor.player.PlayerActor
+import com.andgate.ikou.actor.player.PlayerPositionObserver.PlayerPositionListener
 import com.andgate.ikou.constants.*
 import com.andgate.ikou.utility.MathExtra
 import com.badlogic.gdx.Gdx
@@ -22,7 +23,8 @@ import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.Vector3
 
 class ThirdPersonCamera(val player: PlayerActor)
-:PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth().toFloat(), Gdx.graphics.getHeight().toFloat())
+: PerspectiveCamera(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth().toFloat(), Gdx.graphics.getHeight().toFloat())
+, PlayerPositionListener
 {
     private val TAG: String = "ThirdPersonCamera";
 
@@ -34,18 +36,9 @@ class ThirdPersonCamera(val player: PlayerActor)
     private val target = Vector3()
     private val tmpV1 = Vector3()
 
-    /*fun ThirdPersonCamera(Player player)
-    {
-        super(Constants.DEFAULT_FIELD_OF_VIEW, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.player = player;
-        player.addPlayerTransformListener(this);
-
-        initialize();
-    }*/
-
     init
     {
-        // Once upon a time, it would add a player transform here
+        player.pos_observer.add(this)
 
         target.set(player.pos)
         target.x += TILE_HALF_SPAN
@@ -115,11 +108,10 @@ class ThirdPersonCamera(val player: PlayerActor)
         super.update()
     }
 
-    /*@Override
-    public void playerTransformModified(float dx, float dy, float dz)
+    override fun playerPositionModified(dx: Float, dy: Float, dz: Float)
     {
-        super.translate(dx, dy, dz);
-        target.add(dx, dy, dz);
-        super.update();
-    }*/
+        super.translate(dx, dy, dz)
+        target.add(dx, dy, dz)
+        super.update()
+    }
 }

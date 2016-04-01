@@ -1,6 +1,7 @@
 package com.andgate.ikou.actor
 
 import com.andgate.ikou.Ikou
+import com.andgate.ikou.actor.player.PlayerActor
 import com.andgate.ikou.command.CommandProcessor
 import com.andgate.ikou.graphics.maze.MazeModel
 import com.andgate.ikou.maze.Maze

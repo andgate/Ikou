@@ -16,7 +16,7 @@ package com.andgate.ikou.view;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.actor.MazeActor;
-import com.andgate.ikou.actor.PlayerActor;
+import com.andgate.ikou.actor.player.PlayerActor;
 import com.andgate.ikou.graphics.maze.MazeModel;
 import com.andgate.ikou.graphics.player.PlayerModel;
 import com.andgate.ikou.input.CameraControllerListener;
@@ -29,8 +29,6 @@ import com.andgate.ikou.input.PlayerGestureDetector.DirectionGestureListener;
 import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.andgate.ikou.maze.Maze;
 import com.andgate.ikou.maze.MazeFactory;
-import com.andgate.ikou.maze.Tile;
-import com.andgate.ikou.maze.algorithm.prims.PrimsMazeAlgorithm;
 import com.andgate.ikou.ui.SinglePlayerUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -48,8 +46,6 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import org.phoenixframework.channels.*;
-
-import java.util.Map;
 
 public class GameScreen extends ScreenAdapter
 {
@@ -135,7 +131,7 @@ public class GameScreen extends ScreenAdapter
         camera = new ThirdPersonCamera(player);
 
         //PrimsMaze maze
-        MazeFactory maze_factory = new MazeFactory(32, 32, 5, 7, "", seed);
+        MazeFactory maze_factory = new MazeFactory(5, 5, 5, 7, "", seed);
         Maze maze = maze_factory.build();
         MazeModel maze_model = new MazeModel(maze, camera);
         mazeActor = new MazeActor(game, maze, new PlayerActor[]{player}, maze_model);
@@ -220,6 +216,8 @@ public class GameScreen extends ScreenAdapter
         playerControllerListener.update(delta);
         cameraControllerListener.update(delta);
         ui.update();
+        mazeActor.update(delta);
+        player.update(delta);
 
         renderScene();
         ui.getStage().draw();

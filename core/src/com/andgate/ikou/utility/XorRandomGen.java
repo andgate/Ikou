@@ -27,11 +27,16 @@ public class XorRandomGen
 
     public int nextInt(int radius) {
         if(radius == 0) return 0;
-        return (int)next() % radius;
+        return (int)next() % (radius+1);
     }
 
     public int nextInt(int min, int max)
     {
         return Math.abs(nextInt(max-min)) + min;
+    }
+
+    public boolean nextBool()
+    {
+        return nextInt(0,1) != 0;
     }
 }

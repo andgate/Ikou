@@ -1,4 +1,4 @@
-package com.andgate.ikou.actor;
+package com.andgate.ikou.actor.player;
 
 import com.andgate.ikou.Ikou;
 import com.andgate.ikou.command.CommandProcessor
@@ -12,8 +12,14 @@ class PlayerActor(val game: Ikou,
 {
     private val TAG: String = "PlayerActor"
     val cmd_proc = CommandProcessor()
+    val pos_observer = PlayerPositionObserver()
 
-    var pos = Vector3()
+    var pos = model.transform.getTranslation(Vector3())
+        set(value) {
+            model.transform.setTranslation(value);
+            pos_observer.notify(value.x - field.x, value.y - field.y, value.z - field.z)
+            field.set(value)
+        }
 
     fun update(delta_time: Float)
     {
@@ -24,4 +30,7 @@ class PlayerActor(val game: Ikou,
     {
         model.dispose()
     }
+
+
+
 }

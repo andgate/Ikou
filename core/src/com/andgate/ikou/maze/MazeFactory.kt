@@ -41,13 +41,13 @@ class MazeFactory(val min_span: Int,
         val maze = Maze(seed_phrase, seed, map, Vector<MazeLayer>())
 
 
-        val floorCount = rand.nextInt(min_floors, max_floors)-1
-        for(floor in 0 .. floorCount)
+        val floors = rand.nextInt(min_floors, max_floors)
+        for(floor in 0 .. floors-1)
         {
             val width = rand.nextInt(min_span, max_span)
             val depth = rand.nextInt(min_span, max_span)
-            val y: Float = floor * FLOOR_SPACING
-            val lastEnd = if(maze.layers.size > 1) maze.layers[floor-1].end
+            val y: Float = -floor * FLOOR_SPACING
+            val lastEnd = if(maze.layers.size > 0) maze.layers[floor-1].end
                           else Vector2()
 
             val input = MazeAlgorithmInput(width, depth, y, lastEnd, rand.next())
