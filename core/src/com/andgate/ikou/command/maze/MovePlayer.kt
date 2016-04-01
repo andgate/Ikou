@@ -8,16 +8,16 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 
 
-class MovePlayer(maze: MazeActor,
+class MovePlayer(mazeActor: MazeActor,
                  val dir: Vector2,
                  val playerId: Int)
-: MazeCommand(maze)
+: MazeCommand(mazeActor)
 {
     override fun begin() {}
 
     override fun step(delta_time: Float)
     {
-        val player: PlayerActor = maze.players[playerId]
+        val player: PlayerActor = mazeActor.players[playerId]
 
         var next_pos = Vector3(player.pos.x + dir.x,
                                player.pos.y        ,
@@ -26,7 +26,7 @@ class MovePlayer(maze: MazeActor,
         // Process the command
         while(!this.finished) {
             // This could throw an array out of bounds I guess?
-            val next_tile: Tile? = maze.map[next_pos]
+            val next_tile: Tile? = mazeActor.maze.map[next_pos]
 
             if(next_tile == null) {
                 player.cmd_proc.accept(HitEdge(player))

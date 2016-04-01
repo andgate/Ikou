@@ -28,9 +28,9 @@ import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.input.PlayerGestureDetector.DirectionGestureListener;
 import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.andgate.ikou.maze.Maze;
+import com.andgate.ikou.maze.MazeFactory;
 import com.andgate.ikou.maze.Tile;
-import com.andgate.ikou.maze.TileMap;
-import com.andgate.ikou.maze.prims.PrimsMaze;
+import com.andgate.ikou.maze.algorithm.prims.PrimsMazeAlgorithm;
 import com.andgate.ikou.ui.SinglePlayerUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -135,10 +135,10 @@ public class GameScreen extends ScreenAdapter
         camera = new ThirdPersonCamera(player);
 
         //PrimsMaze maze
-        Maze maze = new PrimsMaze(32, 32, 5, 7, seed);
-        Map<Vector3, Tile> tile_map = maze.buildTileMap();
-        MazeModel maze_model = new MazeModel(tile_map, camera);
-        mazeActor = new MazeActor(game, tile_map, new PlayerActor[]{player}, maze_model);
+        MazeFactory maze_factory = new MazeFactory(32, 32, 5, 7, "", seed);
+        Maze maze = maze_factory.build();
+        MazeModel maze_model = new MazeModel(maze, camera);
+        mazeActor = new MazeActor(game, maze, new PlayerActor[]{player}, maze_model);
 
         int currPlayerId = 0;
 

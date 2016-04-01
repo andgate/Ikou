@@ -16,7 +16,8 @@ package com.andgate.ikou.view;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.graphics.maze.MazeModel
 import com.andgate.ikou.maze.Maze;
-import com.andgate.ikou.maze.recursivebacktracker.RecursiveBacktrackerMaze;
+import com.andgate.ikou.maze.MazeFactory
+import com.andgate.ikou.maze.algorithm.recursivebacktracker.RecursiveBacktrackerMazeAlgorithm;
 import com.andgate.ikou.utility.Vector3i;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -41,6 +42,9 @@ class Preview : Disposable
 
     init
     {
+        setupCamera()
+        createEnvironment()
+
         val mazeLength: Int = Constants.CAMERA_FAR.toInt() + 1
         val mazeFloors: Int = 2
         val mazeEnd: Int = mazeLength / 2
@@ -49,11 +53,9 @@ class Preview : Disposable
         val mazeStartZ: Int = mazeEnd - startToEndDistance
 
         val rand = Random()
-        val maze = RecursiveBacktrackerMaze(mazeLength, mazeLength, mazeFloors, mazeFloors, rand.nextLong())
 
-        setupCamera()
-        model = MazeModel(maze.buildTileMap(), camera)
-        createEnvironment()
+        val maze = MazeFactory(mazeLength, mazeLength, mazeFloors, mazeFloors, "", rand.nextLong())
+        model = MazeModel(maze.build(), camera)
     }
 
     private fun setupCamera()

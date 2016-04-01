@@ -14,6 +14,8 @@
 package com.andgate.ikou.graphics.maze
 
 import com.andgate.ikou.constants.*
+import com.andgate.ikou.maze.Maze
+import com.andgate.ikou.maze.MazeLayer
 import com.andgate.ikou.maze.Tile
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Mesh
@@ -28,7 +30,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Pool
 import java.util.*
 
-class MazeModel(val maze_map: Map<Vector3, Tile>,
+class MazeModel(val maze: Maze,
                 var camera: PerspectiveCamera)
 : RenderableProvider, Disposable
 {
@@ -36,11 +38,7 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
     val transform = Matrix4()
 
     init {
-        // Determine maxima and minima of the maze
-        val maze_bounds = calculateMazeBounds(maze_map)
-        val sectors = SectorStream(maze_map, maze_bounds)
-
-
+        val sectors = SectorStream(maze)
         while(sectors.hasNext)
         {
             // Extract a map of the current sector
@@ -51,7 +49,7 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
             {
                 // Use a new MazeMesher to construct a mesh
                 val mesher = MazeMesher()
-                mesher.addMaze(maze_map, maze_sector_map)
+                mesher.addMaze(maze.map, maze_sector_map)
                 val mesh = mesher.build()
 
                 // Save that mesh and it's bounding box
@@ -109,52 +107,83 @@ class MazeModel(val maze_map: Map<Vector3, Tile>,
         return Pair(minima, maxima)
     }
 
-    private class SectorStream(val maze_map: Map<Vector3, Tile>, bounds: Pair<Vector3, Vector3>)
+    private class SectorStream(val maze: Maze)
     {
+        // Flag to determine if the stream is active
         var hasNext = true
 
-        val minima = bounds.first
-        val maxima = bounds.second
+        var layerIndex = 0
+        var layer: MazeLayer
 
-        // These are the bounds for the floor and section
+        // These are the bounds for a section of the current layer
         // This allows the maze model to be split into multiple meshes
-        var y1: Int = bounds.first.y.toInt() // Tracks the current floor
-        // Bounds for the current section
-        var x1: Int = minima.x.toInt()
-        var z1: Int = minima.z.toInt()
-        var x2: Int = x1 + SECTOR_SPAN
-        var z2: Int = z1 + SECTOR_SPAN
+        var x1: Int
+        var x2: Int
+        var z1: Int
+        var z2: Int
+
+        init
+        {
+            assert(maze.layers.isNotEmpty())
+            layer = maze.layers[layerIndex]
+
+            x1 = layer.bounds.x.toInt()
+            z1 = layer.bounds.y.toInt()
+            x2 = x1 + SECTOR_SPAN
+            z2 = z1 + SECTOR_SPAN
+        }
 
         fun getNext() : Map<Vector3, Tile>
         {
-            val maze_sector_map = maze_map.filter { e ->
+            // Filter out a sector by the current bounds
+            val maze_sector_map = maze.map.filter { e ->
                 with(e.key) {
-                    (x.toInt() in x1..x2) && (z.toInt() in z1..z2) && (y.toInt() == y1)
+                    (x.toInt() in x1..x2) && (z.toInt() in z1..z2) && (y == layer.y)
                 }
             }
 
+            // Grab the next bounds
             update()
             return maze_sector_map
         }
 
         private fun update()
         {
-            // Update the current
+            // First move the sector along x
             x1 += SECTOR_SPAN
-            z1 += SECTOR_SPAN
             x2 += SECTOR_SPAN
-            z2 += SECTOR_SPAN
 
-            if(x2 > maxima.x && z2 > maxima.z)
+            // If the sector goes out of the x bounds..
+            val max_x = with(layer.bounds) { x + width }
+            if(x1 > max_x)
             {
-                ++y1
-                x1 = minima.x.toInt()
-                z1 = minima.z.toInt()
-                x2 = x1 + SECTOR_SPAN
-                z2 = z1 + SECTOR_SPAN
-            }
+                // Then move the z bounds
+                z1 += SECTOR_SPAN
+                z2 += SECTOR_SPAN
 
-            if(y1 > maxima.y) hasNext = false
+                // If after moving z, if the sector goes out of the z bounds...
+                val max_z = with(layer.bounds) { y + height }
+                if(z1 > max_z)
+                {
+                    // ..move to the next layer...
+                    ++layerIndex
+                    if(layerIndex < maze.layers.size)
+                        layer = maze.layers[layerIndex]
+                    else { // If there are no more layers, end the stream
+                        hasNext = false
+                        return
+                    }
+
+                    // ..and reset the z bounds.
+                    z1 = layer.bounds.y.toInt()
+                    z2 = z1 + SECTOR_SPAN
+                }
+
+                // Reset the x bounds last
+                // in case the layer has been bumped during the z bounds check.
+                x1 = layer.bounds.x.toInt()
+                x2 = x1 + SECTOR_SPAN
+            }
         }
     }
 }

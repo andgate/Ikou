@@ -26,6 +26,7 @@ public class XorRandomGen
     }
 
     public int nextInt(int radius) {
+        if(radius == 0) return 0;
         return (int)next() % radius;
     }
 
