@@ -3,7 +3,7 @@ package com.andgate.ikou.ui;
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
 
-import com.andgate.ikou.actor.MazeActor;
+import com.andgate.ikou.actor.maze.MazeActor;
 import com.andgate.ikou.actor.player.PlayerActor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -74,7 +74,7 @@ class SinglePlayerUI(val game: Ikou,
 
     fun update()
     {
-        val depthString: String = "" + (player.model.transform.getTranslation(Vector3()).y + 1)
+        val depthString: String = "" + (player.model.transform.getTranslation(Vector3()).y)
         depthLabel.setText(depthString)
 
         val fpsString: String = "FPS: " + Gdx.graphics.getFramesPerSecond()

@@ -32,7 +32,7 @@ import com.badlogic.gdx.utils.Pool
 import java.util.*
 
 class MazeModel(val maze: Maze,
-                var camera: PerspectiveCamera)
+                var cam: PerspectiveCamera)
 : RenderableProvider, Disposable
 {
     private val bmeshes = Vector<Pair<Mesh, BoundingBox>>()
@@ -66,7 +66,7 @@ class MazeModel(val maze: Maze,
             val mesh = bmesh.first
             val bbox = bmesh.second
 
-            if(camera.frustum.boundsInFrustum(bbox))
+            if(cam.frustum.boundsInFrustum(bbox))
             {
                 val renderable = pool.obtain()
                 renderable.material = TILE_MATERIAL

@@ -1,4 +1,4 @@
-package com.andgate.ikou.command
+package com.andgate.ikou.actor
 
 abstract class Command {
     var finished: Boolean = false

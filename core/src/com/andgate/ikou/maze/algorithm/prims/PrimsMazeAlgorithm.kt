@@ -115,36 +115,30 @@ class PrimsMazeAlgorithm(input: MazeAlgorithmInput)
 
     override fun buildTileMap()
     {
-        // Calculate the end point
-        val end: Vector2 = calculateEnd()
-
         // Convert the start coordinates from prim maze to tile maze
-        start.x = start.x * 2f - 1f
-        start.y = start.y * 2f - 1f
-
-        //
+        start.scl(2f)
         // calculate offset from lastEnd - start, and set start to lastEnd
         val offset = Vector2(input.lastEnd).sub(start)
-
         // Update the end and set the offset
-        start.x = input.lastEnd.x
-        start.y = input.lastEnd.y
-        end.x = end.x * 2f - 1f + offset.x
-        end.y = end.y * 2f - 1f + offset.y
+        start.set(input.lastEnd)
+
+        // Calculate the end point
+        val end: Vector2 = calculateEnd()
+        end.scl(2f).add(offset)
 
         // calculate tile map width and depth, use the offset as the minima of the tiles
         val tileMapWidth: Float = 2f * input.width - 1f
         val tileMapDepth: Float = 2f * input.depth - 1f
         val bounds = Rectangle(offset.x, offset.y, tileMapWidth, tileMapDepth)
 
-        for(x in 0 .. (cells.size - 1))
+        for(x in 0 .. (cells.size-1))
         {
             for(y in 0 .. (cells[x].size-1))
             {
                 // Generate the cell
                 // Needs to take account of the offset as well...
-                val tileX: Float = 2f*(x+1f) - 1f + bounds.x
-                val tileZ: Float = 2f*(y+1f) - 1f + bounds.y
+                val tileX: Float = 2f*x + bounds.x
+                val tileZ: Float = 2f*y + bounds.y
 
                 val cell = cells[x][y]
                 if(countPaths(cell) > 2)

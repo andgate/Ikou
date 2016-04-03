@@ -31,15 +31,42 @@ class MazeMesher : CubeMesher()
 
     fun addTile(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
     {
-        var height = TILE_HEIGHT
-        if(tile.type == Tile.Type.OBSTACLE) height *= 2f
-        calculateVerts(pos.x, pos.y, pos.z, TILE_SPAN, height, TILE_SPAN)
-
-        // Only the top and bottom are ever visible
-        addTop(tile.colorOf())
+        // Calculate verts and add a bottom. Every tile has a bottom.
+        calculateVerts(pos.x, pos.y, pos.z, TILE_SPAN, TILE_HEIGHT, TILE_SPAN)
         addBottom(OBSTACLE_TILE_COLOR)
+
+        if(tile.type == Tile.Type.OBSTACLE)
+            // Obstacle tiles are raised, and need to be constructed differently.
+            addObstacleTile(maze_map, pos, tile)
+        else
+            // Only the top and bottom are ever visible
+            addTop(tile.colorOf())
+
         // Walls border the sides
         addWalls(maze_map, pos, tile)
+    }
+
+    fun addObstacleTile(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)
+    {
+        // Add top and side (if they are unobstructed)
+        calculateVerts(pos.x, pos.y+TILE_HEIGHT, pos.z, TILE_SPAN, TILE_HEIGHT, TILE_SPAN)
+        addTop(OBSTACLE_TILE_COLOR)
+
+        // Grab neighbors
+        val front: Tile? = maze_map[Vector3(pos.x, pos.y, pos.z + 1)]
+        val back: Tile? = maze_map[Vector3(pos.x, pos.y, pos.z - 1)]
+        val left: Tile? = maze_map[Vector3(pos.x - 1, pos.y, pos.z)]
+        val right: Tile? = maze_map[Vector3(pos.x + 1, pos.y, pos.z)]
+
+        // Add the unobstructed sides
+        if (front != null && front.type != Tile.Type.OBSTACLE)
+            addFront(OBSTACLE_TILE_COLOR)
+        if (back != null && back.type != Tile.Type.OBSTACLE)
+            addBack(OBSTACLE_TILE_COLOR)
+        if (left != null && left.type != Tile.Type.OBSTACLE)
+            addLeft(OBSTACLE_TILE_COLOR)
+        if (right != null && right.type != Tile.Type.OBSTACLE)
+            addRight(OBSTACLE_TILE_COLOR)
     }
 
     private fun addWalls(maze_map: Map<Vector3, Tile>, pos: Vector3, tile: Tile)

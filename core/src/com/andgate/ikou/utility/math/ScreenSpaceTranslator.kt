@@ -11,33 +11,20 @@
     along with Ikou.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.andgate.ikou.input
+package com.andgate.ikou.utility.math
 
-import com.andgate.ikou.actor.MazeActor
-import com.andgate.ikou.command.maze.MovePlayer
-import com.andgate.ikou.graphics.camera.ThirdPersonCamera
 import com.badlogic.gdx.math.Vector2
 
-class PlayerInputAdjuster(private val maze: MazeActor,
-                          private val playerId: Int,
-                          private val camera: ThirdPersonCamera)
+class ScreenSpaceTranslator
 {
-
-
-    fun move(velX: Float, velY: Float)
-    {
-        adjust(velX, velY)
-        maze.cmd_proc.accept(MovePlayer(maze, dir.cpy(), playerId))
-    }
-
-    // Vectors are (kinda) expensive to create, so create some temp vectors
     private var vel = Vector2()
     private var dir = Vector2()
-    private fun adjust(velX: Float, velY: Float)
+
+    fun toMaxDirection(velX: Float, velY: Float, cam_angleX: Float): Vector2
     {
         vel.set(velX, velY)
         dir.set(0f,0f)
-        vel.rotate(-camera.angleX)
+        vel.rotate(-cam_angleX)
 
         val absVelX = Math.abs(vel.x)
         val absVelY = Math.abs(vel.y)
@@ -49,5 +36,7 @@ class PlayerInputAdjuster(private val maze: MazeActor,
         {
             dir.y = -vel.y / absVelY
         }
+
+        return dir.cpy()
     }
 }

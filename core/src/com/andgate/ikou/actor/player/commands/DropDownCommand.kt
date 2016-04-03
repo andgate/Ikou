@@ -1,4 +1,4 @@
-package com.andgate.ikou.command.player
+package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
 import com.andgate.ikou.constants.*
@@ -6,7 +6,7 @@ import com.andgate.ikou.utility.AcceleratedTween
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 
-class Drop(player: PlayerActor)
+class DropDownCommand(player: PlayerActor)
 : PlayerCommand(player)
 {
     private val TAG: String = "DropPlayerCommand"
@@ -18,10 +18,7 @@ class Drop(player: PlayerActor)
         val end_pos = Vector3(player.pos)
         end_pos.y -= FLOOR_SPACING
         tween.setup(player.pos, end_pos, FALL_SPEED_INITIAL, FALL_ACCELERATION)
-        player.game.roughSound.play(0.2f)
-
-        player.cmd_proc.nuke_buffer()
-        player.cmd_proc.rejectAll()
+        player.scene.game.roughSound.play(0.2f)
     }
 
     override fun step(delta_time: Float)
@@ -35,6 +32,5 @@ class Drop(player: PlayerActor)
 
     override fun end()
     {
-        player.cmd_proc.acceptAll()
     }
 }

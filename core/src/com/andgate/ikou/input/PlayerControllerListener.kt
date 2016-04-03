@@ -13,19 +13,21 @@
 
 package com.andgate.ikou.input
 
-import com.andgate.ikou.actor.MazeActor
+import com.andgate.ikou.actor.Scene
+import com.andgate.ikou.actor.camera.CameraActor
+import com.andgate.ikou.actor.maze.messages.MovePlayerMessage
 import com.andgate.ikou.input.mappings.OuyaPad
 import com.andgate.ikou.input.mappings.Xbox360Pad
-import com.andgate.ikou.graphics.camera.ThirdPersonCamera
+import com.andgate.ikou.utility.math.ScreenSpaceTranslator
 import com.badlogic.gdx.controllers.Controller
 import com.badlogic.gdx.controllers.ControllerAdapter
 
- class PlayerControllerListener(private val maze: MazeActor,
-                                private val playerId: Int,
-                                private val camera: ThirdPersonCamera)
+ class PlayerControllerListener(private val scene: Scene,
+                                private val playerId: String)
  : ControllerAdapter()
 {
-    private val playerInput = PlayerInputAdjuster(maze, playerId, camera)
+    private val trans = ScreenSpaceTranslator()
+    private val cam = scene.actors["camera"] as CameraActor
 
     private var xAxisLeft: Int = -1
     private var yAxisLeft: Int = -1
@@ -37,9 +39,11 @@ import com.badlogic.gdx.controllers.ControllerAdapter
     {
         if(!(xAxisValue == 0f && yAxisValue == 0f))
         {
-            playerInput.move(xAxisValue, yAxisValue)
-            xAxisValue = 0.0f
-            yAxisValue = 0.0f
+            val dir = trans.toMaxDirection(xAxisValue, yAxisValue, cam.angleX)
+            scene.dispatcher.push(MovePlayerMessage(dir, playerId))
+
+            xAxisValue = 0f
+            yAxisValue = 0f
         }
     }
 

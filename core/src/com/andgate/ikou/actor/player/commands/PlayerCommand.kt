@@ -1,6 +1,6 @@
-package com.andgate.ikou.command.player
+package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
-import com.andgate.ikou.command.Command
+import com.andgate.ikou.actor.Command
 
 abstract class PlayerCommand(val player: PlayerActor) : Command()

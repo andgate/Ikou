@@ -15,7 +15,9 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
-import com.andgate.ikou.actor.MazeActor;
+import com.andgate.ikou.actor.Scene;
+import com.andgate.ikou.actor.camera.CameraActor;
+import com.andgate.ikou.actor.maze.MazeActor;
 import com.andgate.ikou.actor.player.PlayerActor;
 import com.andgate.ikou.graphics.maze.MazeModel;
 import com.andgate.ikou.graphics.player.PlayerModel;
@@ -26,7 +28,6 @@ import com.andgate.ikou.input.GameScreenInputListener;
 import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
 import com.andgate.ikou.input.PlayerGestureDetector.DirectionGestureListener;
-import com.andgate.ikou.graphics.camera.ThirdPersonCamera;
 import com.andgate.ikou.maze.Maze;
 import com.andgate.ikou.maze.MazeFactory;
 import com.andgate.ikou.ui.SinglePlayerUI;
@@ -55,10 +56,12 @@ public class GameScreen extends ScreenAdapter
 
     private SinglePlayerUI ui;
 
+    private Scene scene;
     private MazeActor mazeActor;
     private PlayerActor player;
+    private CameraActor camActor;
+    private String playerId = "player";
 
-    private ThirdPersonCamera camera;
     private ModelBatch modelBatch;
     private Environment environment;
 
@@ -127,16 +130,15 @@ public class GameScreen extends ScreenAdapter
         this.game = game;
         batch = new SpriteBatch();
 
-        player = new PlayerActor(game, new PlayerModel());
-        camera = new ThirdPersonCamera(player);
+        scene = new Scene(game);
+        player = new PlayerActor(playerId, scene, new PlayerModel());
+        camActor = new CameraActor("camera", scene, playerId);
 
         //PrimsMaze maze
-        MazeFactory maze_factory = new MazeFactory(5, 5, 5, 7, "", seed);
+        MazeFactory maze_factory = new MazeFactory(5, 7, 5, 7, "", seed);
         Maze maze = maze_factory.build();
-        MazeModel maze_model = new MazeModel(maze, camera);
-        mazeActor = new MazeActor(game, maze, new PlayerActor[]{player}, maze_model);
-
-        int currPlayerId = 0;
+        MazeModel maze_model = new MazeModel(maze, camActor.getCam());
+        mazeActor = new MazeActor("maze", scene, maze, maze_model);
 
         Color bg = Constants.BACKGROUND_COLOR;
 
@@ -144,8 +146,8 @@ public class GameScreen extends ScreenAdapter
         createEnvironment();
 
         InputProcessor gameScreenInputProcessor = new GameScreenInputListener(this);
-        InputProcessor playerInputProcessor = new PlayerGestureDetector(new DirectionGestureListener(mazeActor, currPlayerId, camera));
-        InputProcessor cameraInputProcessor = new CameraGestureDetector(camera);
+        InputProcessor playerInputProcessor = new PlayerGestureDetector(new DirectionGestureListener(scene, playerId));
+        InputProcessor cameraInputProcessor = new CameraGestureDetector(camActor);
         im = new InputMultiplexer();
         im.addProcessor(gameScreenInputProcessor);
         im.addProcessor(playerInputProcessor);
@@ -153,8 +155,8 @@ public class GameScreen extends ScreenAdapter
         Gdx.input.setInputProcessor(im);
 
         gameScreenControllerListener = new GameScreenControllerListener(this);
-        playerControllerListener = new PlayerControllerListener(mazeActor, currPlayerId, camera);
-        cameraControllerListener = new CameraControllerListener(camera);
+        playerControllerListener = new PlayerControllerListener(scene, playerId);
+        cameraControllerListener = new CameraControllerListener(camActor);
         Controllers.addListener(gameScreenControllerListener);
         Controllers.addListener(playerControllerListener);
         Controllers.addListener(cameraControllerListener);
@@ -216,8 +218,6 @@ public class GameScreen extends ScreenAdapter
         playerControllerListener.update(delta);
         cameraControllerListener.update(delta);
         ui.update();
-        mazeActor.update(delta);
-        player.update(delta);
 
         renderScene();
         ui.getStage().draw();
@@ -250,7 +250,7 @@ public class GameScreen extends ScreenAdapter
 
     private void updatePlay(float delta)
     {
-        doPhysicsStep(delta);
+        steppedUpdate(delta);
     }
 
     private void updateEnd(float delta)
@@ -263,20 +263,20 @@ public class GameScreen extends ScreenAdapter
     {
         renderSetup();
 
-        modelBatch.begin(camera);
+        modelBatch.begin(camActor.getCam());
             modelBatch.render(mazeActor.getModel());
             modelBatch.render(player.getModel(), environment);
         modelBatch.end();
     }
 
     private float accumulator = 0.0f;
-    private void doPhysicsStep(float deltaTime) {
+    private void steppedUpdate(float deltaTime) {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            player.update(deltaTime);
+            scene.update(deltaTime);
             accumulator -= Constants.TIME_STEP;
         }
     }
@@ -309,7 +309,7 @@ public class GameScreen extends ScreenAdapter
     {
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 
-        camera.resize(width, height);
+        camActor.resize(width, height);
 
         ui.build();
     }

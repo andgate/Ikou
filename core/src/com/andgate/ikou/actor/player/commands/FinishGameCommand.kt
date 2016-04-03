@@ -1,8 +1,8 @@
-package com.andgate.ikou.command.player
+package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
 
-class FinishGame(player: PlayerActor) : PlayerCommand(player)
+class FinishGameCommand(player: PlayerActor) : PlayerCommand(player)
 {
     override fun begin() {
         throw UnsupportedOperationException()

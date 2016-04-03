@@ -1,12 +1,14 @@
-package com.andgate.ikou.command.player
+package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
+import com.andgate.ikou.actor.player.messages.SmoothSlideMessage
 import com.andgate.ikou.constants.SLIDE_SPEED;
 import com.andgate.ikou.utility.LinearTween
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 
-class SmoothSlide(player: PlayerActor, val end_pos: Vector3)
+class SmoothSlideCommand(player: PlayerActor,
+                         val end_pos: Vector3)
 : PlayerCommand(player)
 {
     private val TAG: String = "SmoothSlide"

@@ -13,7 +13,7 @@ const val WALL_HALF_THICKNESS = WALL_THICKNESS / 2f
 
 const val TILE_SPAN = 1.0f
 const val TILE_HALF_SPAN: Float = TILE_SPAN / 2f
-const val TILE_HEIGHT = TILE_SPAN / 25f
+const val TILE_HEIGHT = TILE_SPAN / 10f
 const val TILE_HALF_HEIGHT: Float = TILE_HEIGHT / 2f
 
 const val WALL_HEIGHT = TILE_HEIGHT * 2f

@@ -74,7 +74,7 @@ public class LinearTween
 
     public Vector3 get()
     {
-        return curr;
+        return curr.cpy();
     }
 
     public void reset()

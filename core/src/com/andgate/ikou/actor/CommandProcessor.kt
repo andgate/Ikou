@@ -1,4 +1,4 @@
-package com.andgate.ikou.command
+package com.andgate.ikou.actor
 
 import java.util.*
 
@@ -6,14 +6,14 @@ class CommandProcessor
 {
     private val TAG: String = "CommandProcessor"
     // Command history stores commands that were executed and are now finished
-    private var comm_history = Vector<Command>()
+    var comm_history = Vector<Command>()
 
     // Command buffer stores commands to be executed when the current command is finished
-    private var comm_buffer = Vector<Command>()
-    private var is_accepting = true
+    var comm_buffer = Vector<Command>()
+    var is_accepting = true
 
     // The command that is currently being executed
-    private var curr_comm: Command? = null
+    var curr_comm: Command? = null
 
     fun update(delta_time: Float)
     {
