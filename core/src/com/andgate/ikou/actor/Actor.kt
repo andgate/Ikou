@@ -12,20 +12,14 @@ abstract class Actor(val id: String, val scene: Scene) : Disposable {
         scene.actors.put(id, this)
     }
 
+    abstract fun update(delta_time: Float)
+
     abstract fun receive(event: Message)
 
     fun process_events()
     {
-        for(msg in channel.queue)
-        {
-            receive(msg)
-        }
+        channel.queue.map{ receive(it) }
         channel.clear()
-    }
-
-    fun process_commands(delta_time: Float)
-    {
-        cmd_proc.update(delta_time)
     }
 
     open override fun dispose()

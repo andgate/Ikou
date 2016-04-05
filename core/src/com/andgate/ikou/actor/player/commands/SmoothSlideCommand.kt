@@ -3,35 +3,19 @@ package com.andgate.ikou.actor.player.commands
 import com.andgate.ikou.actor.player.PlayerActor
 import com.andgate.ikou.actor.player.messages.SmoothSlideMessage
 import com.andgate.ikou.constants.SLIDE_SPEED;
-import com.andgate.ikou.utility.LinearTween
+import com.andgate.ikou.animate.LinearTween
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 
 class SmoothSlideCommand(player: PlayerActor,
-                         val end_pos: Vector3)
+                         val start: Vector3,
+                         val end: Vector3)
 : PlayerCommand(player)
 {
     private val TAG: String = "SmoothSlide"
 
-    val tween = LinearTween()
-
-    override fun begin()
+    override fun execute()
     {
-        tween.setup(player.pos, end_pos, SLIDE_SPEED)
-    }
-
-    override fun step(delta_time: Float)
-    {
-        finished = tween.update(delta_time)
-        // set the position
-        val pos = tween.get()
-        Gdx.app.debug(TAG, "(x,y): (${pos.x}, ${pos.y})")
-        player.pos = pos
-
-        if(finished)
-            residual_delta_time = tween.getLeftOverTime()
-    }
-
-    override fun end() {
+        player.animator.add(LinearTween(start, end, SLIDE_SPEED))
     }
 }

@@ -2,35 +2,28 @@ package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
 import com.andgate.ikou.constants.*
-import com.andgate.ikou.utility.AcceleratedTween
+import com.andgate.ikou.animate.AcceleratedTween
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 
-class DropDownCommand(player: PlayerActor)
+class DropDownCommand(player: PlayerActor,
+                      val start: Vector3,
+                      val end: Vector3)
 : PlayerCommand(player)
 {
     private val TAG: String = "DropPlayerCommand"
 
-    val tween = AcceleratedTween()
-
-    override fun begin()
+    override fun execute()
     {
-        val end_pos = Vector3(player.pos)
-        end_pos.y -= FLOOR_SPACING
-        tween.setup(player.pos, end_pos, FALL_SPEED_INITIAL, FALL_ACCELERATION)
-        player.scene.game.roughSound.play(0.2f)
-    }
+        val drop_pos = Vector3(player.pos)
+        drop_pos.y -= FLOOR_SPACING
+        player.animator.add(AcceleratedTween(start, end, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION))
+        player.animator.add(AcceleratedTween(end, drop_pos, FALL_SPEED_INITIAL, FALL_ACCELERATION))
 
-    override fun step(delta_time: Float)
-    {
-        finished = tween.update(delta_time)
 
-        val pos = tween.get()
-        Gdx.app.debug(TAG, "(x,y): (${pos.x}, ${pos.y})")
-        player.pos = pos
-    }
-
-    override fun end()
-    {
+        // at the start of the second animation, needs to play this sound
+        player.scene.game.fallSound.play(0.5f)
+        // At the end of the second animation, needs to play this sound
+        // player.scene.game.hitSound.play()
     }
 }

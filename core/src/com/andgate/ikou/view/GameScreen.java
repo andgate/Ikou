@@ -248,8 +248,7 @@ public class GameScreen extends ScreenAdapter
         state = State.Play;
     }
 
-    private void updatePlay(float delta)
-    {
+    private void updatePlay(float delta) {
         steppedUpdate(delta);
     }
 
@@ -276,7 +275,7 @@ public class GameScreen extends ScreenAdapter
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            scene.update(deltaTime);
+            scene.update(Constants.TIME_STEP);
             accumulator -= Constants.TIME_STEP;
         }
     }

@@ -6,10 +6,8 @@ import com.andgate.ikou.actor.Scene
 import com.andgate.ikou.actor.camera.commands.TranslateCameraCommand
 import com.andgate.ikou.actor.messaging.Message
 import com.andgate.ikou.actor.player.PlayerActor
-import com.andgate.ikou.actor.player.messages.PlayerMessage
 import com.andgate.ikou.actor.player.messages.PlayerPositionChangeMessage
 import com.andgate.ikou.constants.*
-import com.andgate.ikou.graphics.player.PlayerModel
 import com.andgate.ikou.utility.MathExtra
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.PerspectiveCamera
@@ -30,37 +28,24 @@ class CameraActor(id: String,
     var angleY: Float = 0.0f
         private set
 
-    init {
-        scene.dispatcher.subscribe("PlayerPositionChanged", channel)
-        channel.bind("PlayerPositionChanged", { msg ->
-            val msg = msg as PlayerPositionChangeMessage
-            cmd_proc.accept(TranslateCameraCommand(this, msg.dx, msg.dy, msg.dz))
-        })
-    }
-
-    override fun receive(event: Message)
-    {
-
-    }
-
-    override fun dispose()
-    {
-        super.dispose()
-    }
-
 
     val target = Vector3()
     private val tmpV1 = Vector3()
 
     init
     {
-        //player.pos_dispatcher.register(this)
+        /*scene.dispatcher.subscribe("PlayerPositionChanged", channel)
+        channel.bind("PlayerPositionChanged", { msg ->
+            val msg = msg as PlayerPositionChangeMessage
+            cmd_proc.accept(TranslateCameraCommand(this, msg.dx, msg.dy, msg.dz))
+        })*/
 
         target.set(player.pos)
         target.x += TILE_HALF_SPAN
         target.z += TILE_HALF_SPAN
 
-        cam.position.set( target.x,
+        cam.position.set(
+                target.x,
                 target.y + Constants.CAMERA_VERTICAL_DISTANCE,
                 target.z - Constants.CAMERA_HORIZONTAL_DISTANCE)
 
@@ -69,6 +54,8 @@ class CameraActor(id: String,
         cam.far = Constants.CAMERA_FAR
         cam.update()
     }
+
+    override fun update(delta_time: Float) {}
 
     fun resize(viewportWidth: Int, viewportHeight: Int)
     {
@@ -122,5 +109,15 @@ class CameraActor(id: String,
         cam.rotateAround(target, tmpV1.nor(), finalAngleY)
         cam.rotateAround(target, Vector3.Y, finalAngleX)
         cam.update()
+    }
+
+    override fun receive(event: Message)
+    {
+
+    }
+
+    override fun dispose()
+    {
+        super.dispose()
     }
 }

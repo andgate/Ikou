@@ -11,22 +11,18 @@ class Scene(val game: Ikou) {
     fun update(delta_time: Float)
     {
         process_events()
-        process_commands(delta_time)
+        process_commands()
+
+        actors.map { it.value.update(delta_time) }
     }
 
     private fun process_events()
     {
-        for((id, actor) in actors)
-        {
-            actor.process_events()
-        }
+        actors.map { it.value.process_events() }
     }
 
-    private fun process_commands(delta_time: Float)
+    private fun process_commands()
     {
-        for((id, actor) in actors)
-        {
-            actor.process_commands(delta_time)
-        }
+        actors.map { it.value.cmd_proc.update() }
     }
 }

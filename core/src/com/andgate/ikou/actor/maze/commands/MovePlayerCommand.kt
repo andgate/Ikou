@@ -13,63 +13,54 @@ class MovePlayerCommand(mazeActor: MazeActor,
                         val playerId: String)
 : MazeCommand(mazeActor)
 {
-    override fun begin() {}
-
-    override fun step(delta_time: Float)
+    override fun execute()
     {
         val player = mazeActor.scene.actors[playerId] as PlayerActor
 
         // If player is current executing commands,
         // just ignore this command
-        if(player.cmd_proc.comm_buffer.isNotEmpty()) {
-            finished = true
+        if(player.cmd_proc.buffer.isNotEmpty()) {
             return
         }
 
         // Current tile position of the player
-        val curr_pos = player.pos
-        var next_pos = Vector3(curr_pos.x + dir.x,
-                curr_pos.y, // Player is always a tile's height above
-                curr_pos.z + dir.y)
+        var curr_pos = Vector3(player.pos)
+        var next_pos = Vector3(curr_pos).add(dir.x, 0f, dir.y)
 
-        // Process the command
-        while(!this.finished) {
+        // Just keep processing until a return statement is hit
+        while(true) {
             val next_tile: Tile? = mazeActor.maze.map[next_pos]
             val dispatcher =  player.scene.dispatcher
 
             if(next_tile == null) {
                 dispatcher.push(HitEdgeMessage(playerId))
-                this.finished = true
                 return
             }
 
             when (next_tile.type) {
                 Tile.Type.SMOOTH -> {
-                    dispatcher.push(SmoothSlideMessage(playerId, next_pos.cpy()))
+                    dispatcher.push(SmoothSlideMessage(playerId, curr_pos.cpy(), next_pos.cpy()))
                 }
                 Tile.Type.STICKY -> {
-                    dispatcher.push(StickySlideMessage(playerId, next_pos.cpy()))
-                    this.finished = true
+                    dispatcher.push(StickySlideMessage(playerId, curr_pos.cpy(), next_pos.cpy()))
+                    return
                 }
                 Tile.Type.OBSTACLE -> {
                     dispatcher.push(HitEdgeMessage(playerId))
-                    this.finished = true // Can't move
+                    return
                 }
                 Tile.Type.DROP ->{
-                    dispatcher.push(StickySlideMessage(playerId, next_pos.cpy(), true))
-                    dispatcher.push(DropDownMessage(playerId))
-                    this.finished = true // Can't move
+                    dispatcher.push(DropDownMessage(playerId, curr_pos.cpy(), next_pos.cpy()))
+                    return
                 }
                 Tile.Type.FINISH ->{
                     dispatcher.push(FinishGameMessage(playerId))
-                    this.finished = true // Can't move
+                    return
                 }
             }
 
-            next_pos.x += dir.x;
-            next_pos.z += dir.y;
+            curr_pos.set(next_pos)
+            next_pos.add(dir.x, 0f, dir.y)
         }
     }
-
-    override fun end() {}
 }

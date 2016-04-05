@@ -5,6 +5,7 @@ import com.andgate.ikou.actor.Scene
 import com.andgate.ikou.actor.messaging.Message
 import com.andgate.ikou.actor.player.commands.*
 import com.andgate.ikou.actor.player.messages.*
+import com.andgate.ikou.animate.Animator
 import com.andgate.ikou.graphics.player.PlayerModel
 import com.badlogic.gdx.math.Vector3
 
@@ -15,31 +16,34 @@ class PlayerActor(id: String,
 {
     private val TAG: String = "PlayerActor"
 
+    val animator = Animator(model.transform)
+
     var pos = model.transform.getTranslation(Vector3())
         set(value) {
             model.transform.setTranslation(value)
-            scene.dispatcher.push(PlayerPositionChangeMessage(id, value.x - field.x, value.y - field.y, value.z - field.z))
+            val dp = Vector3(value.x - field.x, value.y - field.y, value.z - field.z)
             field.set(value)
+            scene.dispatcher.push(PlayerPositionChangeMessage(id, dp.x, dp.y, dp.z))
         }
 
     init {
-        // Don't read player events, because player movement commands need to be synchronous
+        // Bind to events that are coming from the maze
         scene.dispatcher.subscribe("SmoothSlide", channel)
         channel.bind("SmoothSlide", { msg ->
             val msg = msg as SmoothSlideMessage
-            if(msg.playerId == id) cmd_proc.accept(SmoothSlideCommand(this, msg.end_pos))
+            if(msg.playerId == id) cmd_proc.accept(SmoothSlideCommand(this, msg.start, msg.end))
         })
 
         scene.dispatcher.subscribe("StickySlide", channel)
         channel.bind("StickySlide", { msg ->
             val msg = msg as StickySlideMessage
-            if(msg.playerId == id) cmd_proc.accept(StickySlideCommand(this, msg.end_pos))
+            if(msg.playerId == id) cmd_proc.accept(StickySlideCommand(this, msg.start, msg.end))
         })
 
         scene.dispatcher.subscribe("DropDown", channel)
         channel.bind("DropDown", { msg ->
             val msg = msg as DropDownMessage
-            if(msg.playerId == id) cmd_proc.accept(DropDownCommand(this))
+            if(msg.playerId == id) cmd_proc.accept(DropDownCommand(this, msg.start, msg.end))
         })
 
         scene.dispatcher.subscribe("HitEdge", channel)
@@ -61,12 +65,15 @@ class PlayerActor(id: String,
         // no events that need to be received asynchronously
     }
 
+    override fun update(delta_time: Float)
+    {
+        animator.update(delta_time)
+    }
+
     override fun dispose()
     {
         super.dispose()
         model.dispose()
     }
-
-
 
 }

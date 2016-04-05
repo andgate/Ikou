@@ -11,16 +11,10 @@ class TranslateCameraCommand(camActor: CameraActor,
 {
     private val TAG: String = "TranslateCameraCommand"
 
-    override fun begin() {}
-
-    override fun step(delta_time: Float)
+    override fun execute()
     {
         camActor.cam.translate(dx, dy, dz);
         camActor.target.add(dx, dy, dz);
         camActor.cam.update();
-        finished = true
-    }
-
-    override fun end() {
     }
 }

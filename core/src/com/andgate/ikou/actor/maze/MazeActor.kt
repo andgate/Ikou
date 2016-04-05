@@ -20,16 +20,15 @@ class MazeActor(id: String,
 
     init {
         scene.dispatcher.subscribe("MovePlayer", channel)
+        channel.bind("MovePlayer", { msg ->
+            val msg = msg as MovePlayerMessage
+            cmd_proc.accept(MovePlayerCommand(this, msg.dir, msg.playerId))
+        })
     }
 
-    override fun receive(event: Message) {
-        if(event.id == "MovePlayer")
-        {
-            val e = event as MovePlayerMessage
-            val movePlayerCmd = MovePlayerCommand(this, e.dir, e.playerId)
-            cmd_proc.accept(movePlayerCmd)
-        }
-    }
+    override fun receive(event: Message) {}
+
+    override fun update(delta_time: Float) {}
 
     override fun dispose()
     {
