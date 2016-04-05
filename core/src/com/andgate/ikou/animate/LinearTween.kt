@@ -40,12 +40,16 @@ class LinearTween(start: Vector3,
     override fun update(target: Matrix4, delta: Float)
     {
         val percentTween: Float = delta / duration
+
+        if(accumulator == 0f)
+            start_hook()
         accumulator += percentTween
 
         if(accumulator >= ACCUMULATOR_MAX)
         {
             curr.set(end)
             isCompleted = true
+            finish_hook()
         }
         else
         {
@@ -54,6 +58,7 @@ class LinearTween(start: Vector3,
         }
 
         target.setTranslation(curr)
+        update_hook(curr.cpy())
     }
 
     private fun calculateTweenTime(start: Vector3, end: Vector3, speed: Float): Float

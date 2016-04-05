@@ -18,13 +18,8 @@ class PlayerActor(id: String,
 
     val animator = Animator(model.transform)
 
-    var pos = model.transform.getTranslation(Vector3())
-        set(value) {
-            model.transform.setTranslation(value)
-            val dp = Vector3(value.x - field.x, value.y - field.y, value.z - field.z)
-            field.set(value)
-            scene.dispatcher.push(PlayerPositionChangeMessage(id, dp.x, dp.y, dp.z))
-        }
+    val pos = Vector3()
+        get() = model.transform.getTranslation(field)
 
     init {
         // Bind to events that are coming from the maze

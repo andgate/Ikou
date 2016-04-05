@@ -9,6 +9,10 @@ abstract class Tween(val start: Vector3,
     protected val curr = Vector3()
     protected var duration: Float = 0f
 
+    var update_hook: (pos: Vector3) -> Unit = {}
+    var start_hook: () -> Unit = {}
+    var finish_hook: () -> Unit = {}
+
     var isCompleted: Boolean = false
         protected set
 

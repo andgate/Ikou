@@ -45,18 +45,21 @@ class AcceleratedTween(start: Vector3,
      */
     override fun update(target: Matrix4, delta: Float)
     {
+        if(elapsed_time == 0f) start_hook()
         elapsed_time += delta;
 
         if(elapsed_time >= duration) {
             curr.set(end)
             isCompleted = true
+            finish_hook()
         } else {
             curr.set(start)
-            curr.add(velocity.cpy().scl(elapsed_time)).add(acceleration.cpy())
+            curr.add(velocity.cpy().scl(elapsed_time))
             curr.add(acceleration.cpy().scl(elapsed_time*elapsed_time))
         }
 
         target.setTranslation(curr)
+        update_hook(curr.cpy())
     }
 
     private fun calculateTweenTime(dist: Float, vel: Float, accel: Float): Float

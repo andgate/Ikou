@@ -1,6 +1,7 @@
 package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
+import com.andgate.ikou.actor.player.messages.PlayerPositionChangeMessage
 import com.andgate.ikou.actor.player.messages.SmoothSlideMessage
 import com.andgate.ikou.constants.SLIDE_SPEED;
 import com.andgate.ikou.animate.LinearTween
@@ -16,6 +17,9 @@ class SmoothSlideCommand(player: PlayerActor,
 
     override fun execute()
     {
-        player.animator.add(LinearTween(start, end, SLIDE_SPEED))
+        val tween = LinearTween(start, end, SLIDE_SPEED)
+        tween.update_hook = { pos -> player.scene.dispatcher.push(PlayerPositionChangeMessage(player.id, pos.x, pos.y, pos.z)) }
+
+        player.animator.add(tween)
     }
 }

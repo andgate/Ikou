@@ -32,13 +32,15 @@ class CameraActor(id: String,
     val target = Vector3()
     private val tmpV1 = Vector3()
 
+    val player_pos = Vector3()
+
     init
     {
-        /*scene.dispatcher.subscribe("PlayerPositionChanged", channel)
+        scene.dispatcher.subscribe("PlayerPositionChanged", channel)
         channel.bind("PlayerPositionChanged", { msg ->
             val msg = msg as PlayerPositionChangeMessage
-            cmd_proc.accept(TranslateCameraCommand(this, msg.dx, msg.dy, msg.dz))
-        })*/
+            cmd_proc.accept(TranslateCameraCommand(this, msg.x, msg.y, msg.z))
+        })
 
         target.set(player.pos)
         target.x += TILE_HALF_SPAN
@@ -66,7 +68,7 @@ class CameraActor(id: String,
 
     fun zoom(amount: Float)
     {
-        val currentDistance: Float = cam.position.dst(player.pos)
+        val currentDistance: Float = cam.position.dst(target)
 
         var displacement: Float = amount * PINCH_ZOOM_FACTOR
         val newDistance: Float = currentDistance - displacement
@@ -91,23 +93,22 @@ class CameraActor(id: String,
 
     fun rotate(deltaAngleX: Float, deltaAngleY: Float)
     {
-        if(deltaAngleX == 0.0f && deltaAngleY == 0.0f) return
-        var finalAngleY: Float = deltaAngleY
-        val finalAngleX: Float = deltaAngleX
+        if(deltaAngleX == 0f && deltaAngleY == 0f) return
 
         tmpV1.set(cam.direction).crs(cam.up).y = 0f
         angleX += deltaAngleX
 
+        var deltaAngleY = deltaAngleY
         var tmpAngleY: Float = angleY + deltaAngleY
         if(!MathExtra.inRangeInclusive(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX))
         {
             tmpAngleY = MathExtra.pickClosestBound(tmpAngleY, ANGLE_Y_MIN, ANGLE_Y_MAX)
-            finalAngleY = tmpAngleY - angleY
+            deltaAngleY = tmpAngleY - angleY
         }
         angleY = tmpAngleY
 
-        cam.rotateAround(target, tmpV1.nor(), finalAngleY)
-        cam.rotateAround(target, Vector3.Y, finalAngleX)
+        cam.rotateAround(target, tmpV1.nor(), deltaAngleY)
+        cam.rotateAround(target, Vector3.Y, deltaAngleX)
         cam.update()
     }
 

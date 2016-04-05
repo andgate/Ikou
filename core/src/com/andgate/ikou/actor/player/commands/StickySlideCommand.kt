@@ -1,6 +1,7 @@
 package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
+import com.andgate.ikou.actor.player.messages.PlayerPositionChangeMessage
 import com.andgate.ikou.constants.ROUGH_SLIDE_DECCELERATION
 import com.andgate.ikou.constants.SLIDE_SPEED
 import com.andgate.ikou.animate.AcceleratedTween
@@ -16,7 +17,10 @@ class StickySlideCommand(player: PlayerActor,
 
     override fun execute()
     {
-        player.scene.game.roughSound.play(0.2f)
-        player.animator.add(AcceleratedTween(start, end, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION))
+        val tween = AcceleratedTween(start, end, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION)
+        tween.start_hook = { player.scene.game.roughSound.play(0.2f) }
+        tween.update_hook = { pos -> player.scene.dispatcher.push(PlayerPositionChangeMessage(player.id, pos.x, pos.y, pos.z)) }
+
+        player.animator.add(tween)
     }
 }

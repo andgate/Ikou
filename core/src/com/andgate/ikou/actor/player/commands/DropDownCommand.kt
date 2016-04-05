@@ -1,6 +1,7 @@
 package com.andgate.ikou.actor.player.commands
 
 import com.andgate.ikou.actor.player.PlayerActor
+import com.andgate.ikou.actor.player.messages.PlayerPositionChangeMessage
 import com.andgate.ikou.constants.*
 import com.andgate.ikou.animate.AcceleratedTween
 import com.badlogic.gdx.Gdx
@@ -15,15 +16,18 @@ class DropDownCommand(player: PlayerActor,
 
     override fun execute()
     {
-        val drop_pos = Vector3(player.pos)
+        val slideTween = AcceleratedTween(start, end, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION)
+        slideTween.update_hook = { pos -> player.scene.dispatcher.push(PlayerPositionChangeMessage(player.id, pos.x, pos.y, pos.z)) }
+        player.animator.add(slideTween)
+
+
+        val drop_pos = Vector3(end)
         drop_pos.y -= FLOOR_SPACING
-        player.animator.add(AcceleratedTween(start, end, SLIDE_SPEED, ROUGH_SLIDE_DECCELERATION))
-        player.animator.add(AcceleratedTween(end, drop_pos, FALL_SPEED_INITIAL, FALL_ACCELERATION))
 
-
-        // at the start of the second animation, needs to play this sound
-        player.scene.game.fallSound.play(0.5f)
-        // At the end of the second animation, needs to play this sound
-        // player.scene.game.hitSound.play()
+        val dropTween = AcceleratedTween(end, drop_pos, FALL_SPEED_INITIAL, FALL_ACCELERATION)
+        dropTween.start_hook = { player.scene.game.fallSound.play(0.5f) }
+        dropTween.update_hook = { pos -> player.scene.dispatcher.push(PlayerPositionChangeMessage(player.id, pos.x, pos.y, pos.z)) }
+        dropTween.finish_hook = { player.scene.game.hitSound.play() }
+        player.animator.add(dropTween)
     }
 }
