@@ -195,12 +195,12 @@ public class GameScreen extends ScreenAdapter
     private void createEnvironment()
     {
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 0.7f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.7f));
 
         Vector3 lightDirection1 = new Vector3(0, 0, 1.0f);
         lightDirection1.rot(new Matrix4().setFromEulerAngles(45.0f, 45.0f, 0.0f));
-        environment.add(new DirectionalLight().set(0.3f, 0.3f, 0.3f, lightDirection1));
+        environment.add(new DirectionalLight().set(1f,1f, 1f, lightDirection1));
 
         /*Vector3 lightDirection2 = new Vector3(0, 0, 1.0f);
         lightDirection2.rot(new Matrix4().setFromEulerAngles(15.0f, -15.0f, 0.0f));
@@ -263,7 +263,7 @@ public class GameScreen extends ScreenAdapter
         renderSetup();
 
         modelBatch.begin(camActor.getCam());
-            modelBatch.render(mazeActor.getModel());
+            modelBatch.render(mazeActor.getModel(), environment);
             modelBatch.render(player.getModel(), environment);
         modelBatch.end();
     }

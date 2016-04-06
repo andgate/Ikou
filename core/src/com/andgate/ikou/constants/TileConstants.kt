@@ -25,9 +25,9 @@ const val SECTOR_SPAN = 16 // in tiles per side
 // Default material and colors
 val TILE_MATERIAL = Material(BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA))
 
-val STICKY_TILE_COLOR = Color(Color.DARK_GRAY)
+val STICKY_TILE_COLOR = Color(Color.LIGHT_GRAY)
 val SMOOTH_TILE_COLOR = Color(Color.LIGHT_GRAY)
-val OBSTACLE_TILE_COLOR = Color(Color.BLUE)
+val OBSTACLE_TILE_COLOR = Color(0.2f, 0.2f, 0.8f, 1.0f)
 val DROP_TILE_COLOR = Color(Color.RED)
 val FINISH_TILE_COLOR = Color(Color.RED)
 val BACKGROUND_COLOR = Color(Color.WHITE)

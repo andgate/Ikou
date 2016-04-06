@@ -12,7 +12,6 @@ class Scene(val game: Ikou) {
     {
         process_events()
         process_commands()
-
         actors.map { it.value.update(delta_time) }
     }
 

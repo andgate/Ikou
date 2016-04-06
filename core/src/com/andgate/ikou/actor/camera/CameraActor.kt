@@ -36,13 +36,13 @@ class CameraActor(id: String,
 
     init
     {
-        scene.dispatcher.subscribe("PlayerPositionChanged", channel)
+        /*scene.dispatcher.subscribe("PlayerPositionChanged", channel)
         channel.bind("PlayerPositionChanged", { msg ->
             val msg = msg as PlayerPositionChangeMessage
             cmd_proc.accept(TranslateCameraCommand(this, msg.x, msg.y, msg.z))
-        })
+        })*/
 
-        target.set(player.pos)
+        player.model.transform.getTranslation(target)
         target.x += TILE_HALF_SPAN
         target.z += TILE_HALF_SPAN
 

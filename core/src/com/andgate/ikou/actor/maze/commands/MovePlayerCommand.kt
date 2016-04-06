@@ -17,14 +17,15 @@ class MovePlayerCommand(mazeActor: MazeActor,
     {
         val player = mazeActor.scene.actors[playerId] as PlayerActor
 
-        // If player is current executing commands,
+        // If player is current animated, or the direction is (0,0)
         // just ignore this command
-        if(player.cmd_proc.buffer.isNotEmpty()) {
+        if(player.animator.tweens.isNotEmpty() || dir.isZero) {
             return
         }
 
         // Current tile position of the player
-        var curr_pos = Vector3(player.pos)
+        var curr_pos = Vector3()
+        player.model.transform.getTranslation(curr_pos)
         var next_pos = Vector3(curr_pos).add(dir.x, 0f, dir.y)
 
         // Just keep processing until a return statement is hit

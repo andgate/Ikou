@@ -18,9 +18,6 @@ class PlayerActor(id: String,
 
     val animator = Animator(model.transform)
 
-    val pos = Vector3()
-        get() = model.transform.getTranslation(field)
-
     init {
         // Bind to events that are coming from the maze
         scene.dispatcher.subscribe("SmoothSlide", channel)

@@ -5,7 +5,7 @@ import java.util.*
 
 class Animator(val target: Matrix4)
 {
-    private val tweens = LinkedList<Tween>()
+    val tweens = LinkedList<Tween>()
 
     fun update(delta_time: Float)
     {

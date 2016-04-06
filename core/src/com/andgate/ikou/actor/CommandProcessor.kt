@@ -14,7 +14,7 @@ class CommandProcessor
 
     fun update()
     {
-        buffer.map { it.execute() }
+        for(i in buffer.indices) buffer[i].execute()
         history.addAll(buffer)
         buffer.clear()
     }

@@ -61,8 +61,9 @@ class MazeModel(val maze: Maze,
 
     override fun getRenderables(renderables: Array<Renderable>, pool: Pool<Renderable>)
     {
-        for(bmesh in bmeshes)
+        for(i in bmeshes.indices)
         {
+            val bmesh = bmeshes[i]
             val mesh = bmesh.first
             val bbox = bmesh.second
 
@@ -71,7 +72,7 @@ class MazeModel(val maze: Maze,
                 val renderable = pool.obtain()
                 renderable.material = TILE_MATERIAL
                 renderable.meshPart.offset = 0
-                renderable.meshPart.size = mesh.getNumIndices()
+                renderable.meshPart.size = mesh.numIndices
                 renderable.meshPart.primitiveType = GL20.GL_TRIANGLES
                 renderable.meshPart.mesh = mesh
                 renderables.add(renderable)
@@ -83,9 +84,9 @@ class MazeModel(val maze: Maze,
 
     override fun dispose()
     {
-        for(bmesh in bmeshes)
+        for(i in bmeshes.indices)
         {
-            bmesh.first.dispose()
+            bmeshes[i].first.dispose()
         }
     }
 
