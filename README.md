@@ -1,5 +1,5 @@
 # Ikou
-Tile maze game! Built with Android Studio and libgdx.
+Tile maze game! Built with Android Studio and libgdx. (Download it for Android on Google Play!)[https://play.google.com/store/apps/details?id=com.andgate.ikou]
 
 ## Todo list for v2
 ### Mods
