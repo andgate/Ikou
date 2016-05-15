@@ -77,14 +77,6 @@ public class Constants
     public static final float EPSILON = 1.0f / 1E7f;
     public static final float BIG_EPSILON = 1.0f / 1E3f;
 
-    public static final float TILE_LENGTH = 1.0f;
-    public static final float TILE_HEIGHT = TILE_LENGTH / 25.0f;
-
-    public static final float WALL_HEIGHT = TILE_HEIGHT * 2.0f;
-    public static final float WALL_THICKNESS = TILE_LENGTH / 10.0f;
-
-    public static final float FLOOR_SPACING = 10.0f;
-
     public static final float DEFAULT_FIELD_OF_VIEW = 67f;
     public static final float CAMERA_FAR = 40.0f;
     public static final float CAMERA_DISTANCE = 8.0f;

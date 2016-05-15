@@ -15,20 +15,25 @@ package com.andgate.ikou.view;
 
 import com.andgate.ikou.Constants;
 import com.andgate.ikou.Ikou;
+import com.andgate.ikou.actor.Scene;
+import com.andgate.ikou.actor.camera.CameraActor;
+import com.andgate.ikou.actor.maze.MazeActor;
+import com.andgate.ikou.actor.player.PlayerActor;
+import com.andgate.ikou.graphics.maze.MazeModel;
+import com.andgate.ikou.graphics.player.PlayerModel;
 import com.andgate.ikou.input.CameraControllerListener;
 import com.andgate.ikou.input.CameraGestureDetector;
 import com.andgate.ikou.input.GameScreenControllerListener;
 import com.andgate.ikou.input.GameScreenInputListener;
 import com.andgate.ikou.input.PlayerControllerListener;
 import com.andgate.ikou.input.PlayerGestureDetector;
-import com.andgate.ikou.model.Level;
-import com.andgate.ikou.model.Player;
-import com.andgate.ikou.render.ThirdPersonCamera;
+import com.andgate.ikou.input.PlayerGestureDetector.DirectionGestureListener;
+import com.andgate.ikou.maze.Maze;
+import com.andgate.ikou.maze.MazeFactory;
 import com.andgate.ikou.ui.SinglePlayerUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
@@ -40,8 +45,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.phoenixframework.channels.*;
 
@@ -51,11 +54,14 @@ public class GameScreen extends ScreenAdapter
 
     private final Ikou game;
 
-    private Level level;
-    private Player player;
     private SinglePlayerUI ui;
 
-    private ThirdPersonCamera camera;
+    private Scene scene;
+    private MazeActor mazeActor;
+    private PlayerActor player;
+    private CameraActor camActor;
+    private String playerId = "player";
+
     private ModelBatch modelBatch;
     private Environment environment;
 
@@ -74,9 +80,7 @@ public class GameScreen extends ScreenAdapter
     Socket socket;
     Channel channel;
 
-    float menu_title_font_size;
-
-    public GameScreen(Ikou game, boolean isNewGame)
+    public GameScreen(Ikou game, boolean isNewGame, long seed)
     {
         // Test code for phoenix websocket
         /*try {
@@ -126,27 +130,24 @@ public class GameScreen extends ScreenAdapter
         this.game = game;
         batch = new SpriteBatch();
 
-        if(isNewGame)
-        {
-            startNewGame();
-        }
-        else
-        {
-            loadLastGame();
-        }
+        scene = new Scene(game);
+        player = new PlayerActor(playerId, scene, new PlayerModel());
+        camActor = new CameraActor("camera", scene, playerId);
+
+        //PrimsMaze maze
+        MazeFactory maze_factory = new MazeFactory(5, 7, 5, 7, "", seed);
+        Maze maze = maze_factory.build();
+        MazeModel maze_model = new MazeModel(maze, camActor.getCam());
+        mazeActor = new MazeActor("maze", scene, maze, maze_model);
 
         Color bg = Constants.BACKGROUND_COLOR;
 
         modelBatch = new ModelBatch();
         createEnvironment();
 
-        camera = new ThirdPersonCamera(player);
-
-        level.setCamera(camera);
-
         InputProcessor gameScreenInputProcessor = new GameScreenInputListener(this);
-        InputProcessor playerInputProcessor = new PlayerGestureDetector(player, camera);
-        InputProcessor cameraInputProcessor = new CameraGestureDetector(camera);
+        InputProcessor playerInputProcessor = new PlayerGestureDetector(new DirectionGestureListener(scene, playerId));
+        InputProcessor cameraInputProcessor = new CameraGestureDetector(camActor);
         im = new InputMultiplexer();
         im.addProcessor(gameScreenInputProcessor);
         im.addProcessor(playerInputProcessor);
@@ -154,21 +155,21 @@ public class GameScreen extends ScreenAdapter
         Gdx.input.setInputProcessor(im);
 
         gameScreenControllerListener = new GameScreenControllerListener(this);
-        playerControllerListener = new PlayerControllerListener(player, camera);
-        cameraControllerListener = new CameraControllerListener(camera);
+        playerControllerListener = new PlayerControllerListener(scene, playerId);
+        cameraControllerListener = new CameraControllerListener(camActor);
         Controllers.addListener(gameScreenControllerListener);
         Controllers.addListener(playerControllerListener);
         Controllers.addListener(cameraControllerListener);
 
         Gdx.input.setCursorCatched(true);
 
-        ui = new SinglePlayerUI(this.game, level, player);
+        ui = new SinglePlayerUI(this.game, mazeActor, player);
         ui.build();
     }
 
-    private void startNewGame()
+    /*private void startNewGame()
     {
-        level = new Level(); // be completely random
+        level = new Level(65487654, 5, 10, 5); // be completely random
         player = new Player(game, level, Constants.DEFAULT_DEPTH);
         player.saveProgress();
     }
@@ -178,10 +179,9 @@ public class GameScreen extends ScreenAdapter
         Preferences prefs = Gdx.app.getPreferences(Constants.PLAYER_PREFS);
 
         long seed = prefs.getLong(Constants.PLAYER_PREF_LEVEL_SEED, Constants.RESERVED_SEED);
-        level = new Level(seed);
+        level = new Level(seed, 5, 10, 5);
 
         int depth = prefs.getInteger(Constants.PLAYER_PREF_DEPTH, Constants.DEFAULT_DEPTH);
-        level.initializePlayerDepth(depth);
         player = new Player(game, level, depth);
 
         final Vector3 defaultStart = level.getStartPosition(depth);
@@ -190,17 +190,17 @@ public class GameScreen extends ScreenAdapter
         float playerZ = prefs.getFloat(Constants.PLAYER_PREF_Z, defaultStart.z);
 
         player.setPosition(playerX, playerY, playerZ);
-    }
+    }*/
 
     private void createEnvironment()
     {
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 0.7f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.7f));
 
         Vector3 lightDirection1 = new Vector3(0, 0, 1.0f);
         lightDirection1.rot(new Matrix4().setFromEulerAngles(45.0f, 45.0f, 0.0f));
-        environment.add(new DirectionalLight().set(0.3f, 0.3f, 0.3f, lightDirection1));
+        environment.add(new DirectionalLight().set(1f,1f, 1f, lightDirection1));
 
         /*Vector3 lightDirection2 = new Vector3(0, 0, 1.0f);
         lightDirection2.rot(new Matrix4().setFromEulerAngles(15.0f, -15.0f, 0.0f));
@@ -220,8 +220,7 @@ public class GameScreen extends ScreenAdapter
         ui.update();
 
         renderScene();
-        renderDepthInfo();
-        ui.stage.draw();
+        ui.getStage().draw();
 
         update(delta);
     }
@@ -249,9 +248,8 @@ public class GameScreen extends ScreenAdapter
         state = State.Play;
     }
 
-    private void updatePlay(float delta)
-    {
-        doPhysicsStep(delta);
+    private void updatePlay(float delta) {
+        steppedUpdate(delta);
     }
 
     private void updateEnd(float delta)
@@ -264,47 +262,20 @@ public class GameScreen extends ScreenAdapter
     {
         renderSetup();
 
-        //game.bloom.capture();
-            modelBatch.begin(camera);
-                level.render(modelBatch, environment);
-                modelBatch.render(player.getRender(), environment);
-            modelBatch.end();
-        //game.bloom.render();
-    }
-
-    private void renderDepthInfo()
-    {
-        /*final String fpsString = "" + (player.getDepth() + 1);
-        final float font_height = game.menuOptionFont.getLineHeight() * game.menuOptionFont.getScale();
-        //final float font_y = Gdx.graphics.getHeight() - font_height;
-
-        BitmapFont.TextBounds bounds = game.menuOptionFont.getBounds(fpsString);
-
-        final float font_y = Gdx.graphics.getHeight();
-        final float font_x = (Gdx.graphics.getWidth() - bounds.width) / 2.0f;
-
-        final float overlaybarWidth = Gdx.graphics.getWidth();
-        final float overlaybarHeight = (bounds.height * 4f / 3f);
-        final float overlaybarX = 0.0f;
-        final float overlaybarY = Gdx.graphics.getHeight() - overlaybarHeight;
-
-        batch.begin();
-        game.whiteTransparentOverlay.draw(batch, overlaybarX, overlaybarY, overlaybarWidth, overlaybarHeight);
-        game.arial_fnt.setColor(Color.BLACK);
-        game.arial_fnt.draw(batch, fpsString, font_x, font_y);
-        batch.end();*/
-
+        modelBatch.begin(camActor.getCam());
+            modelBatch.render(mazeActor.getModel(), environment);
+            modelBatch.render(player.getModel(), environment);
+        modelBatch.end();
     }
 
     private float accumulator = 0.0f;
-
-    private void doPhysicsStep(float deltaTime) {
+    private void steppedUpdate(float deltaTime) {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)
         float frameTime = Math.min(deltaTime, 0.25f);
         accumulator += frameTime;
         while (accumulator >= Constants.TIME_STEP) {
-            player.update(deltaTime);
+            scene.update(Constants.TIME_STEP);
             accumulator -= Constants.TIME_STEP;
         }
     }
@@ -312,7 +283,6 @@ public class GameScreen extends ScreenAdapter
     private void renderSetup()
     {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
@@ -327,7 +297,8 @@ public class GameScreen extends ScreenAdapter
         Controllers.removeListener(gameScreenControllerListener);
         Controllers.removeListener(cameraControllerListener);
         Controllers.removeListener(playerControllerListener);
-        level.dispose();
+        mazeActor.dispose();
+        player.dispose();
         modelBatch.dispose();
         ui.dispose();
     }
@@ -337,7 +308,7 @@ public class GameScreen extends ScreenAdapter
     {
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
 
-        camera.resize(width, height);
+        camActor.resize(width, height);
 
         ui.build();
     }

@@ -13,16 +13,16 @@
 
 package com.andgate.ikou.input;
 
+import com.andgate.ikou.actor.camera.CameraActor;
 import com.andgate.ikou.input.mappings.OuyaPad;
 import com.andgate.ikou.input.mappings.Xbox360Pad;
-import com.andgate.ikou.render.ThirdPersonCamera;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 
 public class CameraControllerListener extends ControllerAdapter
 {
-    private final ThirdPersonCamera camera;
+    private final CameraActor camActor;
 
     private static final float CAMERA_ZOOM_SPEED = 2.0f;
     private static final float CAMERA_ROTATE_SPEED = 360.0f;
@@ -37,21 +37,21 @@ public class CameraControllerListener extends ControllerAdapter
     private float leftTriggerValue = 0.0f;
     private float rightTriggerValue = 0.0f;
 
-    public CameraControllerListener(ThirdPersonCamera camera)
+    public CameraControllerListener(CameraActor camActor)
     {
-        this.camera = camera;
+        this.camActor = camActor;
     }
 
     public void update(float delta)
     {
         float fullZoomDelta = CAMERA_ZOOM_SPEED * delta;
         float zoomDelta = (leftTriggerValue - rightTriggerValue) * fullZoomDelta;
-        camera.zoom(zoomDelta);
+        camActor.zoom(zoomDelta);
 
         float fullAngleDelta = CAMERA_ROTATE_SPEED * delta;
         float deltaAngleX = xAxisRightValue * fullAngleDelta;
         float deltaAngleY = yAxisRightValue * fullAngleDelta;
-        camera.rotate(deltaAngleX, deltaAngleY);
+        camActor.rotate(deltaAngleX, deltaAngleY);
     }
 
     public int indexOf (Controller controller) {

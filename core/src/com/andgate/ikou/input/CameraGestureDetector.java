@@ -13,7 +13,8 @@
 
 package com.andgate.ikou.input;
 
-import com.andgate.ikou.render.ThirdPersonCamera;
+import com.andgate.ikou.actor.camera.CameraActor;
+import com.andgate.ikou.constants.CameraConstantsKt;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,14 +25,14 @@ public class CameraGestureDetector extends GestureDetector
 {
     private static final String TAG = "CameraGestureDetector";
     private CameraGestureListener gestureListener;
-    private ThirdPersonCamera camera;
+    private CameraActor camActor;
 
     float startX, startY;
 
-    public CameraGestureDetector(final ThirdPersonCamera camera)
+    public CameraGestureDetector(final CameraActor camActor)
     {
-        this(new CameraGestureListener(camera));
-        this.camera = camera;
+        this(new CameraGestureListener(camActor));
+        this.camActor = camActor;
         startX = Gdx.input.getX();
         startY = Gdx.input.getY();
     }
@@ -54,8 +55,8 @@ public class CameraGestureDetector extends GestureDetector
     @Override
     public boolean scrolled (int amount)
     {
-        float zoomAmount = -amount / ThirdPersonCamera.MAX_PLAYER_DISTANCE;
-        camera.zoom(zoomAmount);
+        float zoomAmount = -amount / CameraConstantsKt.getMAX_PLAYER_DISTANCE();
+        camActor.zoom(zoomAmount);
         return false;
     }
 
@@ -77,7 +78,7 @@ public class CameraGestureDetector extends GestureDetector
         startX = screenX;
         startY = screenY;
 
-        camera.rotateFromDrag(deltaX, deltaY);
+        camActor.rotateFromDrag(deltaX, deltaY);
         return false;
     }
 
@@ -86,14 +87,14 @@ public class CameraGestureDetector extends GestureDetector
     {
         private static final String TAG = "CameraGestureListener";
 
-        private ThirdPersonCamera camera;
+        private CameraActor camActor;
         private float previousDeltaZoom;
         private float previousDeltaX;
         private float previousDeltaY;
 
-        public CameraGestureListener(ThirdPersonCamera camera)
+        public CameraGestureListener(CameraActor camActor)
         {
-            this.camera = camera;
+            this.camActor = camActor;
         }
 
         @Override
@@ -162,7 +163,7 @@ public class CameraGestureDetector extends GestureDetector
             float w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
             float percentZoom = amount / ((w > h) ? w : h);
 
-            camera.zoom(percentZoom);
+            camActor.zoom(percentZoom);
         }
 
         private void rotate(float newDeltaX, float newDeltaY)
@@ -173,7 +174,7 @@ public class CameraGestureDetector extends GestureDetector
             previousDeltaX = newDeltaX;
             previousDeltaY = newDeltaY;
 
-            camera.rotateFromDrag(deltaX, deltaY);
+            camActor.rotateFromDrag(deltaX, deltaY);
         }
     };
 
